@@ -1,0 +1,50 @@
+{% if form.visible_fields %}
+    {% if not oneline %}<div class="form-content">{% endif %}
+
+    {% if form.is_tabbed %}
+        {% include 'cubane/backend/form/form_header.html' %}
+        <div class="tab form-step">
+            <ul class="nav nav-tabs nav-steps" id="nav-steps">
+                {% for tab in form.tabs %}
+                    <li>
+                        <a href="#tab-{{ tab.slug }}" data-toggle="tab">
+                            <div class="nav-tab-step-text">{{ tab.title }}</div>
+                            <div class="nav-tab-step-outer"><div class="nav-tab-step{% if forloop.first %} visited{% endif %}"></div></div>
+                            <div class="extra-line"></div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="phone-nav-steps-container">
+                <select id="phone-nav-steps">
+                    {% for tab in form.tabs %}
+                        <option value="#tab-{{ tab.slug }}" data-toggle="tab">{{ tab.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="tab-content">
+                {% for tab in form.tabs %}
+                    <div class="tab-pane fade" id="tab-{{ tab.slug }}">
+                        {% include 'cubane/backend/form/form_content.html' with fields=tab.fields %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        {% include 'cubane/backend/form/form_header.html' %}
+
+        {% if not oneline %}<div class="form-content-fields">{% endif %}
+
+        {% include 'cubane/backend/form/form_content.html' with fields=form.visible_fields %}
+
+        {% if not oneline %}</div>{% endif %}
+    {% endif %}
+
+    {% if not oneline %}</div>{% endif %}
+{% endif %}
+
+{% if not oneline %}
+    {% include 'cubane/backend/form/form_hidden_fields.html' %}
+{% endif %}

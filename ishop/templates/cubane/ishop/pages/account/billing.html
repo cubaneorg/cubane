@@ -1,0 +1,34 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+
+{% block meta_title %}Delivery Address{% endblock %}
+{% block title %}Delivery Address{% endblock %}
+
+
+{% block account_breadcrumb %}
+    {% shop_breadcrumb 'Delivery Address' %}
+{% endblock %}
+
+
+{% block billing %}active{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var usstates = new innershed.USStates();
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    <form class="form form-horizontal account-form billing-address-form" method="post">
+        <div class="account-title">Billing Address</div>
+        <div class="alert alert-info">Changing your billing address will only affect new orders. Processing orders will not be changed.</div>
+        {% include 'cubane/form/form.html' %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" name="customer"><i class="icon-white icon-ok"></i>&nbsp;Change Address</button>
+        </div>
+    </form>
+{% endblock %}

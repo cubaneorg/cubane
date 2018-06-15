@@ -1,0 +1,28 @@
+{% load shop_tags %}
+
+<div class="row-fluid">
+    <div class="span10">
+        <p>
+            {% if order.free_delivery_to %}
+                <strong>
+                    Free: {{ order.delivery_company }}
+                    {% if order.is_click_and_collect %}
+                        <br/>
+                        (Click and Collect)
+                    {% endif %}
+                </strong>
+            {% elif order.is_click_and_collect %}
+                <strong>Click and Collect</strong>
+            {% else %}
+                <strong>Delivery</strong>
+                {% if delivery and order.delivery_option_title %}
+                    <br/>
+                    {{ order.delivery_option_title }}
+                {% endif %}
+            {% endif %}
+        </p>
+    </div>
+    <div class="span2">
+        <p class="align-right"><span class="price"><strong>{% if order.delivery %}{% shop_price order.delivery %}{% else %}0.00{% endif %}</strong></span></p>
+    </div>
+</div>

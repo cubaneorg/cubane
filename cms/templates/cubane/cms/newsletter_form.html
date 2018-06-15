@@ -1,0 +1,13 @@
+{% spaceless %}
+    <div class="mailchimp-subscription-form">
+        {% if msg and msg_type %}
+            <div class="alert alert-{{ msg_type }}">
+                <button type="button" class="close" data-dismiss="alert">&times;</button> {{ msg }}
+            </div>
+        {% endif %}
+        <form method="post"{% if action%} action="{{ action }}"{% endif %}>
+            {% include 'cubane/form/form.html' %}
+            <button class="btn" type="submit">{% if submit %}{{ submit }}{% else %}Signup{% endif %}</button>
+        </form>
+    </div>
+{% endspaceless %}

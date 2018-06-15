@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "Please consider improvement all the files listed below:"
+radon cc `find ../ -name "*.py"` -nc -s

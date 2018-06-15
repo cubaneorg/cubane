@@ -1,0 +1,23 @@
+<div class="dashboard-widget{% if widget.size %} dashboard-widget-size-{{ widget.size }}{% endif %}" data-identifier="{{ widget.identifier }}" data-size="{{ widget.size }}">
+    <div class="dashboard-widget-header">
+        <div class="dashboard-widget-title ui-sortable-handle"><p>{{ widget.title }}</p></div>
+        <div class="dashboard-widget-actions">
+            {% if widget.url %}
+                <a class="ui-action ui-url" href="{{ widget.url }}">View All</a>
+            {% endif %}
+            <div class="ui-action ui-widget-size">
+                <select size="1" data-option="size">
+                    {% for size in widget.sizes %}
+                        <option value="{{ size }}"{% if size == widget.size %} selected="selected"{% endif %}>{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="ui-action ui-remove"><svg viewBox="0 0 9.5 12"><use xlink:href="#icon-delete"/></svg></div>
+        </div>
+    </div>
+    <div class="dashboard-widget-content">
+        {% if widget.content %}
+            {{ widget.content }}
+        {% endif %}
+    </div>
+</div>

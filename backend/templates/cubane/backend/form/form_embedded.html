@@ -1,0 +1,48 @@
+{% load list_tags %}
+
+<div class="embed-forms" data-prefix-pattern="{{ prefix_pattern }}" data-sortable="{{ sortable }}"{% if form_template.has_visibility_rules %} data-visibility-rules="{{ form_template.get_encoded_visibility_rules }}"{% endif %}{% if form_template.has_blueprint_rules %} data-blueprint-rules="{{ form_template.get_encoded_blueprint_rules }}"{% endif %}{% if form.has_limit_rules %} data-limit-rules="{{ form.get_encoded_limit_rules }}"{% endif %}>
+    <div class="embed-forms-container{% if form_template.has_line_items %} embedded-line-items{% endif %}">
+        <div class="embed-forms-header">
+            <div class="embed-forms-header-columns">
+                {% for field in form_template.visible_fields %}
+                    <div class="embed-forms-header-column embed-forms-header-column-{{ field.name }}">
+                        {{ field.label }}{% if not form.all_fields_are_requried and field.field.required %}<span class="required_indicator">*</span>{% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="embed-forms-header-column embed-forms-header-column-ui-remove"></div>
+
+                {% if sortable %}
+                    <div class="embed-forms-header-column embed-forms-header-column-ui-sortable-handle"></div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="embed-forms-body">
+            {% for form in forms %}
+                {% include 'cubane/backend/form/form_embedded_fields.html' %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="embed-form-template">
+        {% include field_template with form=form_template %}
+    </div>
+
+    <div class="embed-forms-footer">
+        <div class="embed-forms-footer-columns">
+            <div class="embed-forms-footer-column">
+                <div class="btn btn-primary embed-forms-add">
+                    <i class="icon icon-plus"></i>
+                    Add {{ verbose_name }}
+                </div>
+            </div>
+
+            <div class="embed-forms-footer-column embed-forms-footer-summary">
+                {% if form_summary %}
+                    {{ form_summary }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

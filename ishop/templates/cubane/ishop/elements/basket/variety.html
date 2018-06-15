@@ -1,0 +1,21 @@
+{% load shop_tags %}
+{% load media_tags %}
+
+<div class="variety-option">
+    <div class="variety-title">
+        {{ assignment.variety_option.variety.display_title }}:</div>
+    <div class="variety-option-title">{{ assignment.variety_option.title }}</div>
+    {% if assignment.variety_option.image %}
+        <div class="variety-image">
+            {% image assignment.variety_option.image 'product' %}
+        </div>
+    {% endif %}
+
+    {% if assignment.variety_option.text_label and assignment.variety_option.text_label_value %}
+        <div class="variety-option-label-text">&raquo;<span class="variety-option-label-text-data">{{ assignment.variety_option.text_label_value }}</span>&laquo;</div>
+    {% endif %}
+
+    {% if assignment.price and not hide_price %}
+        <div class="variety-price">(&nbsp;{% shop_price assignment.price %}&nbsp;)</div>
+    {% endif %}
+</div>

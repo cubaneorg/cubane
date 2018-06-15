@@ -1,0 +1,93 @@
+/*
+ * Hide scrollbars in all browsers
+ */
+.scrollable {
+    position: relative;
+    overflow: hidden;
+}
+
+.scrollable-container {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollable-items {
+    overflow: visible;
+}
+
+.scrollable-x > .scrollable-container {
+    overflow-x: scroll;
+    padding-bottom: 100px;
+}
+
+.scrollable-y > .scrollable-container {
+    overflow-y: scroll;
+    padding-right: 100px;
+}
+
+.scrollable-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+/*
+ * Controls
+ */
+.scrollable-controls {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+
+/*
+ * Scrollbar
+ */
+.scrollable-x > .scrollbar {
+    height: 8px;
+}
+
+.scrollable-y > .scrollbar {
+    width: 8px;
+}
+
+.without-scrollbar .scrollbar {
+    display: none;
+}
+
+.scrollbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+
+    -webkit-transition: opacity .3s ease;
+    -moz-transition: opacity .3s ease;
+    -ms-transition: opacity .3s ease;
+    -o-transition: opacity .3s ease;
+    transition: opacity .3s ease;
+}
+
+.scrollable.can-scroll:hover > .scrollbar {
+    opacity: 1;
+}
+
+.scrollbar-handle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 8px;
+    height: 8px;
+}
+
+.scrollable > .scrollbar,
+.scrollable > .scrollbar > .scrollbar-handle {
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}

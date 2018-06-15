@@ -1,0 +1,32 @@
+{% load resource_tags %}
+{% load message_tags %}
+{% load backend_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    {% inline_resources 'backend-inline' 'css' %}
+    {% resources 'backend' 'css' %}
+    {% resources 'backend' 'css' 'print' %}
+</head>
+
+<body>
+    {% include "cubane/backend/icons.html" %}
+    <div class="wrapper">
+        <div class="content" id="content">
+            <div class="content-frame auth-content-frame">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% inline_resources 'backend-inline' 'js' %}
+    {% resources 'backend' 'js' %}
+    {% block js %}{% endblock %}
+    {% include 'cubane/backend/includes/settings_js.html' %}
+</body>
+
+</html>

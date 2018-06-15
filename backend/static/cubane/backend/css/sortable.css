@@ -1,0 +1,29 @@
+/*
+ * Placeholder
+ */
+.sortable-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    margin: 0 !important;
+    padding-bottom: 0;
+    outline: 1px solid #f49e2d;
+}
+
+
+/*
+ * Spacer
+ */
+.sortable-spacer {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border: none !important;
+}
+
+
+/*
+ * Element being sorted
+ */
+.sorting-in-progress {
+    display: none !important;
+}

@@ -1,0 +1,13 @@
+<ul class="breadcrumbs">
+    {% for title, url in items %}
+        {% if not forloop.last %}
+            {% if brand %}
+                <li><a href="{{ url }}">{{ title }}</a> <span class="divider">{{ sep|safe }}</span></li>
+            {% else %}
+                <li><a href="{{ url }}">{{ title }}</a> <span class="divider">{{ sep|safe }}</span></li>
+            {% endif %}
+        {% else %}
+            <li class="active"><a href="{{ url }}">{{ title }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

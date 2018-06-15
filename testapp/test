@@ -1,0 +1,11 @@
+#!/bin/sh
+if [ "$1" = "full" ]
+then
+  echo "Running full test suite. Please Wait..."
+  export DEV_TEST_FULL=1
+else
+  echo "Run full test with ./test full. This test suite will NOT cover all tests but runs significantly faster than running the full suite."
+fi
+
+python manage.py test cubane
+export DEV_TEST_FULL=0

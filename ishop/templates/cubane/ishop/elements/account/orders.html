@@ -1,0 +1,16 @@
+<div class="table">
+    <div class="row">
+        <div class="col-sm-3">Date</div>
+        <div class="col-sm-3">Order ID</div>
+        <div class="col-sm-3">Status</div>
+        <div class="col-sm-3">Total Price</div>
+    </div>
+    {% for order in orders %}
+    <div class="row">
+        <div class="col-sm-3">{{ order.created_on|date:'DATE_FORMAT' }}</div>
+        <div class="col-sm-3"><a href="{{ order.get_absolute_url }}">{{ order.order_id }}</a></div>
+        <div class="col-sm-3">{{ order.get_status_display }}</div>
+        <div class="col-sm-3">{{ order.total }}</div>
+    </div>
+    {% endfor %}
+</div>

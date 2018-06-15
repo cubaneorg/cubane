@@ -1,0 +1,93 @@
+{% extends 'cubane/ishop/pages/order/base.html' %}
+{% load shop_tags %}
+{% load message_tags %}
+{% load form_tags %}
+
+
+{% block meta_title %}{% if order.can_be_registered_for_payment %}Checkout{% else %}Order Details {{ order.order_id }}{% endif %}{% endblock %}
+{% block title %}{% if order.can_be_registered_for_payment %}Checkout{% else %}Order Details {{ order.order_id }}{% endif %}{% endblock %}
+{% block meta %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endblock %}
+
+
+{% block frame %}
+    <div class="checkout">
+        <div class="checkout-form">
+            {% if order.can_be_registered_for_payment or order.can_be_placed_via_invoice or order.can_be_placed_zero_amount or order.is_retry %}
+                {% shop_breadcrumb 'Checkout' %}
+            {% else %}
+                {% shop_breadcrumb 'Order Status' %}
+            {% endif %}
+            {% flash messages %}
+
+            {% if order.can_be_registered_for_payment or order.can_be_placed_via_invoice or order.can_be_placed_zero_amount or order.is_retry %}
+                <form id="pay-now-form" class="form form-horizontal status-form" method='POST' action="{% url 'shop.order.pay' %}">
+                    {% auto_csrf_token %}
+
+                    <div class="form-content clearfix">
+                        <div class="status-form-title">
+                            <div class="control-group form-section-control-group">
+                                <legend>Order Status:</legend>
+                            </div>
+                        </div>
+                        <div class="status-title">
+                            {{ order.get_status_display }}
+                        </div>
+                        <div class="status-text">{{ order.get_status_text_display }}</div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="hidden" name="secret_id" value="{{ order.secret_id }}" />
+                        {% if order.is_retry %}<input type="hidden" name="retry" value="1" />{% endif %}
+                        <div class="form-action">
+                            <button type="submit" class="btn btn-primary"><i class="icon-white icon-shopping-cart"></i>
+                                {% if order.is_retry %}
+                                    Retry Now (Secured)
+                                {% elif order.can_be_registered_for_payment %}
+                                    Pay Now (Secured)
+                                {% elif order.can_be_placed_zero_amount %}
+                                    Place Now (No Payment)
+                                {% elif order.is_invoice %}
+                                    Place Now (Invoice)
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            {% else %}
+                <div class="form-content clearfix">
+                    <div class="status-form-title">
+                        <div class="control-group form-section-control-group">
+                            <legend>Order Status:</legend>
+                        </div>
+                    </div>
+                    <div class="status-title">
+                        {{ order.get_status_display }}
+                    </div>
+                    <div class="status-text">{{ order.get_status_text_display }}</div>
+                </div>
+                <div class="form-actions">
+                    <div class="form-action">
+                        <a href="{% url 'shop.order.delivery' %}" class="btn">Continue Shopping</a>
+                    </div>
+                    <div class="form-action">
+                        <div class="btn btn-primary btn-print-order">Print Order</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="checkout-basket without-voucher">
+            {% include 'cubane/ishop/elements/basket/basket.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+
+    {% if order.is_payment_confirmed %}
+        {% include 'cubane/ishop/elements/ga/payment.js' %}
+    {% else %}
+        {% include 'cubane/ishop/elements/ga/checkout.js' with step='4' %}
+    {% endif %}
+{% endblock %}

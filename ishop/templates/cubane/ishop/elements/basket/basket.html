@@ -1,0 +1,109 @@
+{% load text_tags %}
+{% load shop_tags %}
+{% load form_tags %}
+
+
+<form class="basket" method="post" action="{{ post_url }}" data-total="{{ basket.total }}">
+    {% auto_csrf_token %}
+
+    <div class="basket-title">Basket<img src="{{ STATIC_URL }}cubane/ishop/frontend/img/basket.svg" alt="basket icon" ></div>
+
+    {% if basket.items %}
+        {% if basket.customer_messages %}
+            <div class="basket-messages">
+                {% for message in basket.customer_messages %}
+                    <div class="basket-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="basket-items">
+            {% for item in basket.items %}
+                {% include 'cubane/ishop/elements/basket/basket_item.html' %}
+            {% endfor %}
+        </div>
+
+        <div class="basket-footer">
+            {% if request.settings.has_voucher_codes %}
+                <div class="basket-voucher">
+                    <input type="text" name="voucher-code" class="input-small" placeholder="Discount Code" value="{% if basket.voucher %}{{ basket.voucher_code }}{% endif %}" />
+                    <button type="submit" class="btn">Apply</button>
+                </div>
+            {% endif %}
+
+            <div class="basket-totals">
+                <div class="basket-total-item">
+                    <div class="basket-total-label">
+                        Subtotal
+                        <span class="basket-total-info">
+                            {% if basket.is_click_and_collect %}
+                                Click and Collect
+                            {% else %}
+                                Shipping
+
+                                {% if basket.delivery_option_or_default %}
+                                    - {{ basket.delivery_option_or_default.title }}
+                                {% endif %}
+                                {% if basket.some_products_exempt_from_free_delivery %}
+                                    <br/>
+                                    (Some products are excempt from free delivery)
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="basket-total-price">
+                        {% shop_price basket.sub_total %}
+                        <span class="basket-total-info">
+                            {% if basket.is_quote_only %}
+                                Individual Quote
+                            {% else %}{% if basket.can_deliver %}
+                                {% if basket.delivery == 0 %}Free of Charge{% else %}{{ CURRENCY }}{{ basket.delivery }}{% endif %}
+                            {% else %}
+                                Choose different delivery option
+                            {% endif %}{% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                {% if basket.voucher %}
+                    <div class="basket-total-item">
+                        <div class="basket-total-label">
+                            Discount
+                            <span class="basket-total-info">
+                                {{ basket.voucher.title }}
+                                {% if basket.some_products_exempt_from_discount %}
+                                    <br/>
+                                    (Some products are excempt from this discount)
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="basket-total-price">-{{ CURRENCY }}{{ basket.discount_value }}</div>
+                    </div>
+                {% endif %}
+
+                <div class="basket-total-item">
+                    <div class="basket-total-label">
+                        Total
+                        <span class="basket-total-info">including VAT</span>
+                    </div>
+                    <div class="basket-total-price">
+                        {% if basket.custom_total %}
+                            <span class="basket-custom-old-price">{% shop_price basket.calculated_total %}</span>
+                            <span class="basket-custom-new-price">{% shop_price basket.total %}</span>
+                            <span class="basket-custom-price-notice">(Custom Price)</span>
+                        {% else %}
+                            {% shop_price basket.total %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="action" value="checkout" class="btn-checkout">Check Out</button>
+            </div>
+        </div>
+    {% else %}
+        <p>Your basket is empty.</p>
+    {% endif %}
+
+    <input type="hidden" name="remove_basket_item" id="id_remove_basket_item" value="" />
+</form>

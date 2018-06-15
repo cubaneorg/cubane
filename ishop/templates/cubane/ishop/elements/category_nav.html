@@ -1,0 +1,31 @@
+{% load media_tags %}
+
+
+{% if categories %}
+    <div class="ul nav"{% if level == 1 %} data-size-template{% endif %}>
+        {% if categories %}
+            {% if level == 3 and viewall %}
+                <div class="li">
+                    <a href="{{ parent.url }}" title="View All in {{ parent.title }}">View All</a>
+                </div>
+            {% endif %}
+
+            {% for category in categories %}
+                <div class="li{% if category.active %} active{% endif %}">
+                    <a href="{{ category.url }}" title="{{ category.title }}">{{ category.title }}</a>
+                    {% if category.children %}
+                        {% with parent=category categories=category.children template_name='cubane/ishop/elements/category_nav.html' level=level|add:"1" %}
+                            {% include template_name %}
+                        {% endwith %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if level == 2 and parent.nav_image %}
+            <div class="nav-image" data-size when-visible>
+                {% image parent.nav_image %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

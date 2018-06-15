@@ -1,0 +1,60 @@
+{% load media_tags %}
+{% load shop_tags %}
+
+
+<div class="basket-item">
+    {% if item.product %}
+        <a class="basket-item-image" href="{{ item.url }}" tabindex="-1">
+    {% else %}
+        <div class="basket-item-image">
+    {% endif %}
+        {% if item.image %}
+            {% image item.image 'product' item.image_attribute_url %}
+        {% else %}
+            {% image_placeholder 'product' %}
+        {% endif %}
+    {% if item.product %}
+        </a>
+    {% else %}
+        </div>
+    {% endif %}
+
+    <div class="basket-item-details">
+        {% if item.product %}
+            <a class="basket-item-title" href="{{ item.url }}" tabindex="-1">{{ item.title }}</a>
+        {% else %}
+            <div class="basket-item-title">{{ item.title }}</div>
+        {% endif %}
+
+        {% if item.variety_assignments %}
+            <div class="variety-options">
+                {% for assignment in item.variety_assignments %}
+                    {% include 'cubane/ishop/elements/basket/variety.html' %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if item.product.non_returnable %}<div class="non-returnable-info">This item cannot be returned.</div>{% endif %}
+    </div>
+
+    <div class="basket-item-quantity">
+        <div class="input-prepend">
+            <span role="button" class="add-on quantity-minus">-</span>
+            <input type="text" class="quantity input-mini" name="qty_{{ item.hash }}" value="{{ item.quantity }}" size="4" maxlength="4" />
+            <span class="quantity-readonly">{{ item.quantity }}</span>
+            <span role="button" class="add-on quantity-plus">+</span>
+        </div>
+    </div>
+
+    <div class="basket-item-remove">
+        <div role="button" class="basket-item-remove-btn"></div>
+    </div>
+
+    <div class="basket-item-price">
+        {% if item.deposit_only %}
+            <del>{% shop_price item.total_without_deposit %}</del><p>Deposit: {% shop_price item.total %}</p>
+        {% else %}
+            {% shop_price item.total %}
+        {% endif %}
+    </div>
+</div>

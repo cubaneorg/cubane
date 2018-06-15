@@ -1,0 +1,91 @@
+{% load list_tags %}
+{% load media_tags %}
+{% load backend_tags %}
+{% load url_tags %}
+{% load text_tags %}
+{% load attribute_tags %}
+
+
+{% spaceless %}
+    <div class="t t-scrollable cubane-listing-list cubane-listing-root{% if listing_with_image %} has-image{% endif %}" data-objects="{{ objects|length }}" data-objects-filtered="{{ objects_filtered }}">
+        {% if objects_count == 0 %}
+            <div class="cubane-listing-panel">
+                {% include 'cubane/backend/listing/empty.html' %}
+            </div>
+        {% else %}
+            <div class="t-scroll">
+                <div class="t-head">
+                    <div class="t-row">
+                        <div class="t-col-fixed-1">
+                            <div class="t-col"><div class="t-d"><input type="checkbox" name="selectall" /></div></div>
+
+                            <div class="t-columns">
+                                {% include 'cubane/backend/listing/columns.html' %}
+                            </div>
+
+                            {% include 'cubane/backend/listing/order.html' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="t-body lazy-load-container">
+                    {% for obj in objects %}
+                        <div id="item_{{ obj.pk }}" class="t-row cubane-listing-item{% if obj.listing_annotation %} cubane-listing-annotation-{{ obj.listing_annotation }}{% endif %}{% if has_folders %} draggable{% endif %}{% if sortable %} sortable{% endif %}{% if obj.listing_actions %} with-shortcut-actions{% endif %}{% if view == 'list-compact' %} cubane-listing-item-compact{% endif %}{% if listing_with_image %} has-image{% endif %}{% if obj.external_image_url and obj.embed_html %} cubane-listing-item-video{% endif %}" data-id="{{ obj.pk }}" data-title="{{ obj }}" data-image-url="{% if obj.image %}{% if obj.image.is_image_or_preview %}{{ obj.image.original_or_preview_url }}{% else %}{{ obj.image.url }}{% endif %}{% else %}{% if obj.is_image_or_preview %}{{ obj.original_or_preview_url }}{% endif %}{% endif %}" data-image-ar="{% if obj.image %} {{ obj.image.backend_orientation  }}{% else %}{% if obj.is_image %} {{ obj.backend_orientation }}{% endif %}{% endif %}">
+                            <div class="t-col-fixed-1">
+                                <div class="cubane-listing-annotation-frame"></div>
+
+                                <div class="t-col"><div class="t-d"><div class="cubane-listing-item-selected-state"></div></div></div>
+
+                                <div class="t-columns">
+                                    {% for column in columns %}
+                                        <div class="{{ column.col_class }}">
+                                            <div class="t-d{% if column.right_aligned %} t-d-right{% endif %}" title="{% include 'cubane/backend/listing/listing_cell_title.html' %}">
+                                                {% include 'cubane/backend/listing/listing_cell.html' %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                {% if listing_with_image %}
+                                    {% if obj.is_image_or_preview and obj.has_original_image %}
+                                        <a class="thumbnail-image-frame cubane-listing-item-lightbox" href="#cms-lightbox" data-image-url="{{ obj.original_or_preview_url }}" data-filename="{{ obj.caption }}" data-id="{{ obj.id }}">
+                                            {% include 'cubane/backend/listing/listing_image.html' with image=obj %}
+                                        </a>
+                                    {% elif obj.external_image_url and obj.embed_html %}
+                                        <a class="thumbnail-image-frame cubane-listing-item-lightbox" href="#cms-lightbox" data-video="{% autoescape on %}{{ obj.embed_html }}{% endautoescape %}">
+                                            {% include 'cubane/backend/listing/listing_image.html' with image_url=obj.external_image_url %}
+                                        </a>
+                                    {% elif obj.external_image_url %}
+                                        <a class="thumbnail-image-frame cubane-listing-item-lightbox" href="#cms-lightbox" data-image-url="{{ obj.external_image_url }}">
+                                            {% include 'cubane/backend/listing/listing_image.html' with image_url=obj.external_image_url %}
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if obj|has_attr:"get_absolute_url" and obj.get_absolute_url %}
+                                    <div class="cubane-listing-item-view-obj"><a href="#preview" data-href="{{ obj.get_absolute_url }}" target="cubane_preview">View</a></div>
+                                {% endif %}
+
+                                {% if sortable and is_leaf_folder_view %}
+                                    <div class="ui-sortable-handle"></div>
+                                {% endif %}
+
+                                <div class="item-shortcut-actions">
+                                    {% for action in obj.listing_actions %}
+                                        <a class="cubane-shortcut-action{% if action.dialog %} cubane-backend-open-dialog{% if action.small_dialog %} cubane-backend-open-dialog-small{% endif %}{% endif %}{% if action.external %} cubane-backend-open-dialog-external{% endif %}" href="{% shortcut_action_url action.url obj 'pk' obj.pk %}"{% if action.method %} data-method="{{ action.method }}"{% endif %}>{{ action.title }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if controls_visible %}
+            <div class="t-foot">
+                {% include 'cubane/backend/listing/listing_foot.html' %}
+            </div>
+        {% endif %}
+    </div>
+{% endspaceless %}

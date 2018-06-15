@@ -1,0 +1,15 @@
+{% extends 'cubane/backend/create_edit.html' %}
+{% load form_tags %}
+
+
+{% block content %}
+    {% if edit %}
+        <div class="preview-form"{% if preview_url %} data-preview-url="{% url preview_url object.pk %}"{% endif %}>
+            {{ block.super }}
+        </div>
+    {% else %}
+        <div class="preview-form"{% if preview_url %} data-preview-url="{% url preview_url %}"{% endif %}>
+            {{ block.super }}
+        </div>
+    {% endif %}
+{% endblock %}

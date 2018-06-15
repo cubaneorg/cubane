@@ -1,0 +1,38 @@
+{% extends 'cubane/backend/base.html' %}
+{% load form_tags %}
+
+{% block content %}
+    <h1 class="page-title">Data Import</h1>
+    <div class="content-panel">
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="control-group form-section-control-group">
+                    <h2 class="form-section">Inventory Import</h2>
+                </div>
+
+                <div class="cubane-ishop-dataimport-form">
+                    {% with submit='Import' no_form_cancel=True icon='icon-upload' %}
+                        {% form form 'multipart/form-data'%}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="span6">
+                <div class="control-group form-section-control-group">
+                    <h2 class="form-section">Inventory Export</h2>
+                </div>
+
+                <p>
+                    Shop inventory is organised around unique <em>SKU</em> numbers for each product or product variety.
+                </p><p>
+                    A unique price and/or stock level can be assigned for each <em>SKU</em> number and this data import and export will allow bulk modification of your shop inventory.
+                </p>
+
+                <div class="cubane-ishop-dataexport-form">
+                    {% with submit='Export' no_form_cancel=True icon='icon-download' form_action=export_form_action form_method='GET' form_no_disable=True %}
+                        {% form export_form %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

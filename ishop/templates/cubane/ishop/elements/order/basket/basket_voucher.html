@@ -1,0 +1,6 @@
+{% if request.settings.has_voucher_codes and not basket.is_frozen %}
+    <div class="basket-voucher">
+        <input type="text" name="voucher-code" class="basket-voucher-input" placeholder="Discount Code" value="{% if basket.voucher %}{{ basket.voucher_code }}{% endif %}" />
+        <button type="submit" class="btn">Apply</button>
+    </div>
+{% endif %}

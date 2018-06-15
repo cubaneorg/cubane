@@ -1,0 +1,62 @@
+{% extends 'cubane/ishop/pages/base.html' %}
+{% load media_tags %}
+{% load shop_tags %}
+{% load cms_tags %}
+
+
+{% block meta_title %}{% meta_title product %}{% endblock %}
+{% block meta_description %}{% if product.meta_description %}{{ product.meta_description }}{% endif %}{% endblock %}
+{% block keywords %}{% if product.keywords %}{{ product.keywords }}{% endif %}{% endblock %}
+{% block title %}{{ product.title }}{% endblock %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="product">
+        <div class="product-image">
+            {% image product.image 'product' %}
+        </div>
+        <div class="product-image-gallery">
+            {% for gallery_image in product.image_gallery %}
+                {% image gallery_image 'product' %}
+            {% endfor %}
+        </div>
+
+        <div class="product-form">
+            {% shop_add_to_basket product %}
+        </div>
+
+        <h2>Description</h2>
+        <div class="product-details-container product-description">
+            {{ product.description|safe }}
+        </div>
+
+        {% if stocklevel %}
+            <h3>Availability</h3>
+            <div class="product-details-container">
+                <p>{{ product.stocklevel_display }}</p>
+            </div>
+        {% endif %}
+
+        {% for name, content in properties %}
+            <h3>{{ name }}</h3>
+            <div class="product-details-container">
+                {{ content|safe }}
+            </div>
+        {% endfor %}
+
+        {% if product.non_returnable %}
+            <h3>Non Returnable</h3>
+            <div class="product-details-container">
+                <p>Please note that this product cannot be returned.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+    {% include 'cubane/ishop/elements/ga/product.js' %}
+{% endblock %}

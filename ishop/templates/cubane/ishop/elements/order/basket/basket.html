@@ -1,0 +1,28 @@
+{% load text_tags %}
+{% load shop_tags %}
+{% load form_tags %}
+
+
+<div class="basket" data-prefix="{{ basket.prefix }}">
+    {% include 'cubane/ishop/elements/order/basket/basket_messages.html' %}
+
+    <div class="basket-items">
+        {% for item in basket.items %}
+            {% include 'cubane/ishop/elements/order/basket/basket_item.html' %}
+        {% empty %}
+            <div class="basket-empty">Empty Order</div>
+        {% endfor %}
+    </div>
+
+    {% if not basket.is_frozen %}
+        <div class="basket-items-actions">
+            <div role="button" class="btn btn-primary btn-basket-add">Add Products</div>
+        </div>
+    {% endif %}
+
+    <div class="basket-footer">
+        {% include 'cubane/ishop/elements/order/basket/basket_voucher.html' %}
+        {% include 'cubane/ishop/elements/order/basket/basket_delivery.html' %}
+        {% include 'cubane/ishop/elements/order/basket/basket_totals.html' %}
+    </div>
+</div>

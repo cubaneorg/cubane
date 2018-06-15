@@ -1,0 +1,28 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+{% load form_tags %}
+
+
+{% block meta_title %}My Details{% endblock %}
+{% block title %}My Details{% endblock %}
+
+
+{% block account_breadcrumb %}
+    {% shop_breadcrumb 'My Details' %}
+{% endblock %}
+
+
+{% block details %}active{% endblock %}
+
+
+{% block content %}
+    <form class="form form-horizontal account-form" method="post">
+        {% auto_csrf_token %}
+
+        <div class="account-title">Personal Details</div>
+        {% include 'cubane/form/form.html' %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" name="customer">Save</button>
+        </div>
+    </form>
+{% endblock %}

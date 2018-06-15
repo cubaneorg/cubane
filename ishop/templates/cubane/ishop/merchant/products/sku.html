@@ -1,0 +1,59 @@
+{% extends 'cubane/backend/base.html' %}
+{% load form_tags %}
+
+
+{% block content %}
+    <div class="sku-editor-screen">
+        <h1 class="page-title">Product Varieties <small>for <em>{{ product.title }}</em></small></h1>
+        <div class="content-panel">
+            <form class="sku-editor" method="POST">
+                {% auto_csrf_token %}
+
+                <div class="sku-editor-container">
+                    <div class="sku-editor-varieties-frame">
+                        <div class="sku-editor-varieties-container">
+                            <div class="sku-editor-varieties">
+                                {% for variety in varieties %}
+                                    <div class="sku-editor-variety">
+                                        <div class="sku-editor-variety-title">{{ variety.title }}</div>
+                                        <select name="options" class="sku-editor-variety-options select-tags{% if variety.sku %} sku-editor-active-variety{% endif %}" data-variety-id="{{ variety.id }}" size="1" multiple>
+                                            {% for option in variety.options %}
+                                                <option value="{{ option.id }}"{% if option.assigned %} selected{% endif %}>{{ option.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% empty %}
+                                    <div class="sku-editor-empty-message alert alert-warning">
+                                        No Varieties available. Please enable <b>SKU</b> for at least one variety.
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sku-editor-options-container">
+                        <div class="sku-editor-options"></div>
+                        <div class="sku-editor-empty-message alert alert-warning">
+                            No Varieties assigned. Assign varieties from the right in order to built up your SKU numbers.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"{% if not varieties %} disabled{% endif %}><i class="icon-ok"></i> {{ BACKEND_DEFAULT_SAVE_BUTTON_LABEL }}</button>
+                    <button type="submit" class="btn btn-save-and-continue"{% if not varieties %} disabled{% endif %}><i class="icon-save"></i> {{ BACKEND_DEFAULT_SAVE_AND_CONTINUE_BUTTON_LABEL }}</button>
+                	<div class="form-legend"><span class="asterix">*</span> Fields are required.</div>
+                </div>
+            </form>
+
+            <script id="sku-editor-form-template" type="template">
+                {% include 'cubane/ishop/merchant/products/product_sku_form.html' with form=form_template %}
+            </script>
+
+            <script>
+                window.SKU_VARIETY_INDEX = {{ variety_index_json|safe }};
+                window.SKU_INITIAL = {{ initial|safe }};
+            </script>
+        </form>
+    </div>
+{% endblock %}

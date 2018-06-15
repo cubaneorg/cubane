@@ -1,0 +1,59 @@
+{% load list_tags %}
+{% load media_tags %}
+{% load backend_tags %}
+
+{% spaceless %}
+    <div class="t t-scrollable cubane-listing-list cubane-listing-root{% if listing_with_image %} has-image{% endif %}" data-objects="{{ objects|length }}" data-objects-filtered="{{ objects_filtered }}">
+        {% if objects_count == 0 %}
+            <div class="cubane-listing-panel">
+                {% include 'cubane/backend/listing/empty.html' %}
+            </div>
+        {% else %}
+            <div class="t-scroll">
+                <div class="t-head">
+                    <div class="t-row">
+                        <div class="t-columns">
+                            {% include 'cubane/backend/listing/columns.html' %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="t-body lazy-load-container">
+                    {% for obj in objects %}
+                        <div id="item_{{ obj.pk }}" class="t-row cubane-listing-item edit-form {% if has_folders %} draggable{% endif %}{% if obj.listing_actions %} with-shortcut-actions{% endif %}" data-id="{{ obj.pk }}" data-title="{{ obj }}" data-image-url="{% if obj.image %}{{ obj.image.url }}{% else %}{% if obj.is_image_or_preview %}{{ obj.original_or_preview_url }}{% endif %}{% endif %}" data-image-ar="{% if obj.image %} {{ obj.image.backend_orientation  }}{% else %}{% if obj.is_image %} {{ obj.backend_orientation }}{% endif %}{% endif %}">
+                            <form class="cubane-listing-form">
+                                <div class="t-columns">
+                                    {% for column in columns %}
+                                        <div class="{{ column.col_class }}">
+                                            <div class="t-d">
+                                                {% with field=obj.cubane_view_edit_form|get:column.fieldname %}
+                                                    {% if field %}
+                                                        {% include 'cubane/backend/form/form_field.html' %}
+                                                    {% else %}
+                                                        {% include 'cubane/backend/listing/listing_cell.html' %}
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                {% if listing_with_image and obj.is_image_or_preview and obj.has_original_image %}
+                                    <a class="thumbnail-image-frame cubane-listing-item-lightbox" href="#cms-lightbox" data-image-url="{{ obj.original_or_preview_url }}" data-filename="{{ obj.caption }}" data-id="{{ obj.id }}">
+                                        {% include 'cubane/backend/listing/listing_image.html' with image=obj %}
+                                    </a>
+                                {% endif %}
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if controls_visible %}
+            <div class="t-foot">
+                {% include 'cubane/backend/listing/listing_foot.html' %}
+            </div>
+        {% endif %}
+    </div>
+{% endspaceless %}

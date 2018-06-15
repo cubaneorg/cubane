@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #666;
+            }
+
+            object,
+            embed {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            object p {
+                font-size: 26px;
+                color: white;
+                text-align: center;
+                margin: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <object data="{{ url }}" type="application/pdf">
+            <embed src="{{ url }}" type="application/pdf" />
+            <p>No Preview available</p>
+        </object>
+    </body>
+</html>

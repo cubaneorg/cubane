@@ -1,0 +1,44 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Combine Varieties</h1>
+    <br/>
+    <br/>
+
+    <div class="content-panel">
+        <p>The following varieties will be combined with <em>{{ target.title }}</em>:</p>
+        <ul>
+            {% for v in sources %}
+                <li><em>{{ v.title }}</em></li>
+            {% endfor %}
+        </ul>
+
+        <p>This will result in combining the following options into <em>{{ target.title }}</em> without duplications.</p>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Type</th>
+                    <th>Offset</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for option in options %}
+                    <tr>
+                        <td><em>{{ option.title }}</em></td>
+                        <td>{% if option.default_offset_type %}{{ option.get_default_offset_type_display }}{% else %}-----{% endif %}</td>
+                        <td>{% if option.default_offset_value %}{{ option.default_offset_value }}{% else %}-----{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p>
+            Please <em>confirm</em> that you would like to combine those varieties.
+            This step cannot be reversed back automatically.
+        </p>
+    </div>
+
+    {% include 'cubane/backend/form.html' with without_continuation=True save_label='Apply' %}
+{% endblock %}

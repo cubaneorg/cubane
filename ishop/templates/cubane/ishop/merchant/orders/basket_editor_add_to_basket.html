@@ -1,0 +1,91 @@
+{% load shop_tags %}
+{% load media_tags %}
+{% load cms_tags %}
+{% load barcode_tags %}
+
+
+<div class="add-to-basket-product-title">
+    <div class="add-to-basket-product-title-text">{{ product.title }}</div>
+    <div class="add-to-basket-product-title-actions">
+        <a class="btn open-edit-dialog" href="{% url 'cubane.ishop.products.edit' %}?pk={{ product.pk }}">Edit</a>
+    </div>
+</div>
+<div class="add-to-basket-sections">
+    <div class="add-to-basket-section add-to-basket-image-section{% if product.gallery|length > 1 %} with-gallery{% endif %}">
+        <div class="add-to-basket-image-frame lazy-load-shape-product" data-size-template>
+            {% if product.image %}
+                {% if product.gallery|length == 0 %}
+                    <div class="add-to-basket-image active" data-size when-visible>
+                        {% image product.image 'product' %}
+                    </div>
+                {% else %}
+                    {% for gallery_image in product.gallery %}
+                        <div class="product-image add-to-basket-image{% if forloop.first %} active{% endif %}" data-size when-visible>
+                            {% image gallery_image 'product' %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <div class="add-to-basket-image">
+                    {% image_placeholder 'product' %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if product.gallery|length > 1 %}
+            <div class="add-to-basket-gallery">
+                {% for gallery_image in product.gallery %}
+                    <div class="add-to-basket-gallery-item{% if forloop.first %} active{% endif %}">
+                        {% image gallery_image 'product' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if product.has_excerpt or product.description %}
+            <div class="add-to-basket-product-details">
+                {% if product.has_excerpt %}
+                    <div class="add-to-basket-product-excerpt">{% cms_content product.excerpt %}</div>
+                {% endif %}
+
+                {% if product.description %}
+                    <div class="add-to-basket-product-description">{% cms_content product.description %}</div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="add-to-basket-section add-to-basket-details-section">
+        {% if product.sku_enabled and product.sku or product.part_number or product.barcode %}
+            <div class="add-to-basket-identifiers">
+                <div class="add-to-basket-identifiers-list">
+                    {% if product.sku_enabled and product.sku %}
+                        <div class="add-to-basket-identifier">
+                            <div class="add-to-basket-identifier-label">SKU:</div>
+                            <div class="add-to-basket-identifier-value">{{ product.sku.sku_or_barcode }}</div>
+                        </div>
+                    {% endif %}
+
+                    {% if product.part_number %}
+                        <div class="add-to-basket-identifier">
+                            <div class="add-to-basket-identifier-label">Part Number:</div>
+                            <div class="add-to-basket-identifier-value">{{ product.part_number }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if product.barcode %}
+                    <div class="add-to-basket-identifiers-barcode">
+                        {% if product.barcode_system %}
+                            {% barcode_image product.barcode_system product.barcode %}
+                        {% else %}
+                            {% barcode_image request.settings.barcode_system product.barcode %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% shop_add_to_basket product prefix 'cubane/ishop/merchant/orders/basket_editor_add_to_basket_form.html' %}
+    </div>
+</div>

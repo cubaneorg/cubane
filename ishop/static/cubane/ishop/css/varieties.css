@@ -1,0 +1,162 @@
+/*
+ * Import variety options
+ */
+.cubane-variety-options-inport .control-group {
+    float: left;
+    margin-right: 20px;
+}
+
+
+/*
+ * Variety options
+ */
+.cubane-variety-options table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.cubane-variety-options table tr {
+    border-top: 1px solid #ddd;
+}
+
+.cubane-variety-options table td,
+.cubane-variety-options table th {
+    vertical-align: middle;
+    border: none;
+}
+
+.cubane-variety-options .form-column-move,
+.cubane-variety-options-placeholder .form-column-move {
+    width: 65px;
+}
+
+.cubane-variety-options .ui-sortable-handle,
+.cubane-variety-options-placeholder .ui-sortable-handle {
+    top: 0;
+    left: 0;
+    height: 40px;
+}
+
+.cubane-variety-options .ui-sortable-helper,
+.cubane-variety-options-placeholder .ui-sortable-helper {
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+}
+
+.cubane-variety-options .ui-sortable-placeholder,
+.cubane-variety-options-placeholder .ui-sortable-placeholder {
+    height: 57px;
+}
+
+.cubane-variety-options .form-column-enabled,
+.cubane-variety-options-placeholder .form-column-enabled {
+    width: 80px;
+    text-align: center;
+}
+
+.cubane-variety-options .form-column-image,
+.cubane-variety-options-placeholder .form-column-image {
+    width: 110px;
+}
+
+.cubane-variety-options .form-column-color,
+.cubane-variety-options-placeholder .form-column-color {
+    width: 115px;
+}
+
+.cubane-variety-options .form-column-offset_type,
+.cubane-variety-options-placeholder .form-column-offset_type {
+    width: 105px;
+}
+
+.cubane-variety-options .form-column-offset_value,
+.cubane-variety-options-placeholder .form-column-offset_value {
+    width: 205px;
+}
+
+.cubane-variety-options .form-column-text_label,
+.cubane-variety-options-placeholder .form-column-text_label {
+    width: 60px;
+    text-align: center;
+}
+
+.cubane-variety-options .form-column-DELETE,
+.cubane-variety-options-placeholder .form-column-DELETE {
+    width: 60px;
+    text-align: center;
+}
+
+.cubane-variety-options .form-column-color {
+    display: none;
+}
+
+.cubane-variety-options.with-layer-color-option .form-column-color {
+    display: table-cell;
+}
+
+
+/*
+ * Sortable
+ */
+.cubane-variety-options .sortable-spacer {
+    height: 57px;
+    width: 0;
+}
+
+.cubane-variety-options-placeholder {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.cubane-variety-options-placeholder td {
+    vertical-align: middle;
+    border: none;
+}
+
+.cubane-variety-options-placeholder input {
+    height: 28px !important;
+    line-height: 18px;
+    margin-bottom: 0;
+}
+
+
+/*
+ * Variety option assignments
+ */
+.cubane-variety-option-assignments table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.cubane-variety-option-assignments table tr {
+    border-top: 1px solid #ddd;
+}
+
+.cubane-variety-option-assignments table td,
+.cubane-variety-option-assignments table th {
+    vertical-align: middle;
+    border: none;
+}
+
+.cubane-variety-option-assignments .form-column-enabled {
+    width: 80px;
+    text-align: center;
+}
+
+.cubane-variety-option-assignments .form-column-image {
+    width: 65px;
+}
+
+.cubane-variety-option-assignments .form-column-offset_type {
+    width: 105px;
+}
+
+.cubane-variety-option-assignments .form-column-offset_value {
+    width: 205px;
+}
+
+.cubane-variety-option-assignments .form-column-text_label {
+    width: 60px;
+    text-align: center;
+}

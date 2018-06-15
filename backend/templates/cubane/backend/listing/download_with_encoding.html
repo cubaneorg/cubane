@@ -1,0 +1,23 @@
+{% extends 'cubane/backend/create_edit.html' %}
+{% load form_tags %}
+
+
+{% block content %}
+    <form class="form form-horizontal">
+        {% auto_csrf_token %}
+
+        <div class="form-content form-content-condensed">
+            <p>
+                Please choose the required encoding for the file to download.
+            </p><p>
+                The encoding may depend on your operating system and the region
+                of the world you live in. Please find below some examples based
+                on Western Europe:
+            </p>
+
+            {% include 'cubane/backend/includes/encodings.html' %}
+
+            {% include 'cubane/backend/form/form_fields.html' with fields='encoding' %}
+        </div>
+    </form>
+{% endblock %}

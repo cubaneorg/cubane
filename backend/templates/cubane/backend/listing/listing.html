@@ -1,0 +1,175 @@
+{% load form_tags %}
+{% load attribute_tags %}
+
+
+<div class="cubane-listing{% if related_listing %} related-listing{% if full_height %} full-height{% endif %}{% endif %}{% if selector %} with-selector{% endif %}{% if has_folders %} with-folders{% if single_model_with_folders %} single-model-with-folders{% endif %}{% endif %}{% if sortable %} sortable{% endif %}{% if view == 'edit' %} edit-mode{% endif %}{% if open_in_new_window %} cubane-open-in-new-window{% endif %}" data-view="{{ view }}" data-url="{{ urls.index }}"{% if selector %} data-selector-url="{{ urls.selector }}"{% endif %}{% if sortable %} data-seq-url="{{ urls.seq }}"{% endif %}{% if has_folders %} data-move-to-tree-node-url="{{ urls.move_to_tree_node }}"{% endif %} data-view-identifier="{{ view_identifier }}"{% if related_instance_attr %} data-related-instance-pk="{{ related_instance_pk }}" data-related-instance-attr="{{ related_instance_attr }}"{% endif %}>
+    {% if has_folders and not related_instance_attr %}
+        <div class="cubane-listing-folders cubane-listing-resize-panel{% if folder_model_create %} with-header{% endif %}" style="width: {{ sidepanel_folder_width }}px;" data-resize-panel-id="folders">
+            <div class="cubane-listing-resize-panel-handle"></div>
+            {% if folder_model_create %}
+                <div class="cubane-listing-folders-header">
+                    <div class="cubane-backend-browse-add-button">
+                        <span class="btn cubane-listing-folders-create-folder" data-create-url="{{ create_folder_url }}" data-model-name="{{ folder_model_name }}" data-args="parent_id={{ folder_id }}">New {{ folder_model_name_singular }}</span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="cubane-listing-folders-tree" data-tree-node-state-url="{{ urls.tree_node_state }}" data-move-tree-node-url="{{ urls.move_tree_node }}" data-get-tree-url="{{ urls.get_tree }}" data-edit-url="{{ edit_folder_url }}" data-model-name="{{ folder_model_name }}">
+                {% include 'cubane/backend/listing/folders.html' %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if selector and not related_instance_attr %}
+        <div class="cubane-selector">
+            <div class="cubane-selector-frame">
+                <div class="cubane-selector-header">
+                    <input type="text" class="selector-search search-query" placeholder="Search">
+                </div>
+
+                <div class="cubane-selector-list lazy-load-container">
+                    {% include 'cubane/backend/listing/selector.html' %}
+                </div>
+
+                <div class="cubane-selector-footer">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="cubane-listing-frame">
+        {% if controls_visible %}
+            <div class="cubane-listing-header" style="{% if has_folders %}left: {{ sidepanel_folder_width }}px;{% endif %}{% if filter_enabled %} right: {{ sidepanel_filter_width }}px;{% endif %}">
+                <div class="cubane-listing-header-content">
+                    {% if not related_instance_attr %}
+                        <h1 class="cubane-listing-header-section-title">
+                            {% if BACKEND.current_sub_section %}
+                                {{ BACKEND.current_sub_section.title }}
+                            {% else %}
+                                {{ BACKEND.current_section.title }}
+                            {% endif %}
+                        </h1>
+                    {% endif %}
+
+                    <div class="cubane-listing-header-save-changes-toolbar">
+                        <a class="btn cubane-listing-save-changes disabled" href="{{ urls.save_changes }}" accesskey="s"><i class="icon icon-save"></i> Save Changes</a>
+                        <a class="btn cubane-listing-discard-changes disabled" href="#discard-changes"><svg viewBox="0 0 9.5 12"><use xlink:href="#icon-delete"/></svg> Discard Changes</a>
+                    </div>
+
+                    <div class="cubane-listing-header-toolbar">
+                        {% if permissions.create %}
+                            <a class="btn cubane-listing-create{% if related_listing %} cubane-backend-open-dialog{% endif %}" href="{{ urls.create }}" accesskey="c" data-folder-assignment-name="{{ folder_assignment_name }}"><i class="icon icon-plus"></i> Create</a>
+                        {% endif %}
+
+                        {% if permissions.edit_or_view %}
+                            <a class="btn cubane-listing-edit disabled" href="{{ urls.edit }}" accesskey="v">
+                                <svg viewBox="0 0 12 12"><use xlink:href="#icon-edit"/></svg>
+                                {% if permissions.edit %}Edit{% else %}View{% endif %}
+                            </a>
+                        {% endif %}
+
+                        {% if permissions.delete %}
+                            <a class="btn cubane-listing-action cubane-listing-action-multiple disabled confirm" href="{{ urls.delete }}" title="Delete selected items" data-method="post">
+                                <svg viewBox="0 0 9.5 12"><use xlink:href="#icon-delete"/></svg>
+                                Delete
+                            </a>
+                        {% endif %}
+
+                        {% if has_actions %}
+                            <div class="btn-group">
+                                <button type="button" class="btn" data-toggle="dropdown">Action</button>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% if permissions.view and permissions.edit and permissions.create %}
+                                        <li><a class="cubane-listing-action cubane-listing-duplicate disabled" href="{{ urls.duplicate }}" accesskey="d">
+                                            <svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-duplicate"/></svg>
+                                            Duplicate
+                                        </a></li>
+                                    {% endif %}
+
+                                    {% if permissions.changes %}
+                                        <li><a class="cubane-listing-action cubane-listing-action-single cubane-backend-open-dialog cubane-backend-open-dialog-external" href="{{ urls.changes }}" data-pk-pattern="f_target_id">View Changes</a></li>
+                                    {% endif %}
+
+                                    {% for action in listing_actions %}
+                                        <li><a class="cubane-listing-action{% if action.typ == 'multiple' %} cubane-listing-action-multiple{% else %}{% if action.typ == 'any' %} cubane-listing-action-any{% else %} cubane-listing-action-single{% endif %}{% endif %}{% if action.confirm %} confirm{% endif %}{% if action.dialog %} cubane-backend-open-dialog{% if action.small_dialog %} cubane-backend-open-dialog-small{% endif %}{% endif %}{% if action.external %} cubane-backend-open-dialog-external{% endif %} disabled" data-method="{% if action.method %}{{ action.method }}{% else %}location{% endif %}" href="{{ action.url }}">{{ action.title }}</a></li>
+                                    {% endfor %}
+
+                                    {% if import and permissions.import %}<li><a class="cubane-listing-action" data-method="location" href="{{ urls.import }}"><i class="icon icon-upload"></i> Import</a></li>{% endif %}
+                                    {% if export and permissions.export %}<li><a class="cubane-listing-action cubane-listing-action-any" data-method="download-with-encoding" href="{{ urls.export }}"><i class="icon icon-download"></i> Export</a></li>{% endif %}
+
+                                    {% if permissions.clean %}
+                                        <li><a class="cubane-listing-delete-empty confirm" href="{{ urls.delete_empty_folders }}" title="Delete ALL empty {{ folder_model_name }}">
+                                            <svg viewBox="0 0 9.5 12"><use xlink:href="#icon-delete"/></svg>
+                                            Clean {{ folder_model_name }}
+                                        </a></li>
+                                    {% endif %}
+
+                                    {% if permissions.merge %}
+                                        <li><a class="cubane-listing-action cubane-listing-action-many" data-method="location" href="{{ urls.merge }}"><svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-duplicate"/></svg> Merge</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="cubane-listing-nav-actions">
+                        <div class="btn-group cubane-listing-view" data-toggle="buttons-radio">
+                            <div class="btn{% if view == 'list' %} active{% endif %}" title="Switch to List" data-view="list"><i class="icon icon-th-list"></i></div>
+                            <div class="btn{% if view == 'list-compact' %} active{% endif %}" title="Switch to List (Compact)" data-view="list-compact"><i class="icon icon-list"></i></div>
+
+                            {% if edit_view %}
+                                <div class="btn{% if view == 'edit' %} active{% endif %}" title="Switch to Edit Mode" data-view="edit"><i class="icon icon-list-alt"></i></div>
+                            {% endif %}
+
+                            {% if grid_view %}
+                                <div class="btn{% if view == 'grid' %} active{% endif %}" title="Switch to Grid" data-view="grid"><i class="icon icon-th"></i></div>
+                            {% endif %}
+                        </div>
+
+                        {% if search %}
+                            <input type="text" class="listing-search search-query" placeholder="Search" accesskey="s"{% if q %} value="{{ q }}"{% endif %}>
+                        {% endif %}
+
+                        {% if filter_form %}
+                            <a class="btn btn-primary cubane-listing-filter-toggle{% if filter_enabled %} active{% endif %}" accesskey=q" data-toggle="button"><i class="icon icon-filter"></i> Filter...<span class="badge badge-important cubane-listing-filter-form-objects-filtered{% if objects_filtered > 0 %} filtered{% endif %}">{{ objects_filtered }}</span></a>
+                            {% if objects_filtered > 0 %}
+                                <a class="btn btn-mini btn-danger ui-listing-filter-reset" href="#clear-filter">Clear Filter</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if filter_form and controls_visible %}
+        <div class="cubane-listing-filter cubane-listing-resize-panel" style="width: {{ sidepanel_filter_width }}px;" data-resize-panel-id="filter">
+            <div class="cubane-listing-resize-panel-handle left"></div>
+            <div class="cubane-listing-filter-form">
+                <p class="cubane-listing-filter-form-objects-filtered{% if objects_filtered > 0 %} filtered{% endif %}">
+                    <span class="badge badge-important">{{ objects_filtered }}</span> item{{ objects_filtered|pluralize }} are NOT visible due to the current filter options.
+                </p>
+
+                {% filter_form %}
+
+                <div class="cubane-listing-filter-actions">
+                    <button class="btn btn-primary ui-listing-filter-close"><i class="icon-ok"></i> OK</button>
+                    <button class="btn ui-listing-filter-reset"><i class="icon-remove"></i> Clear</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="cubane-listing-content-frame" style="{% if has_folders %}left: {{ sidepanel_folder_width }}px;{% endif %}{% if filter_enabled %} right: {{ sidepanel_filter_width }}px;{% endif %}">
+        <div class="cubane-listing-content">
+            {% if template %}
+                {% include template %}
+            {% else %}
+                {% include 'cubane/backend/listing/listing_list.html' %}
+            {% endif %}
+        </div>
+    </div>
+</div>

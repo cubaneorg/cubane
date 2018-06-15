@@ -1,0 +1,18 @@
+<div class="sku-editor-option">
+    <div class="sku-editor-option-items">
+        <div class="control-group field-varieties">
+            <div class="sku-editor-option-varieties">
+            </div>
+        </div>
+
+        {% include 'cubane/backend/form/form_fields.html' with fields='enabled' field_class='field-enabled' %}
+        {% include 'cubane/backend/form/form_fields.html' with fields='sku' field_class='field-sku' %}
+        {% include 'cubane/backend/form/form_fields.html' with fields='barcode' field_class='field-barcode' %}
+        {% include 'cubane/backend/form/form_fields.html' with fields='price' field_class='field-price' %}
+        {% include 'cubane/backend/form/form_fields.html' with fields='stocklevel' field_class='field-stocklevel' %}
+    </div>
+    <div class="sku-editor-option-hidden">
+        {% include 'cubane/backend/form/form_fields.html' with fields='_id' %}
+        <input type="hidden" name="skus">
+    </div>
+</div>

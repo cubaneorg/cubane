@@ -1,0 +1,14 @@
+<div class="row-fluid order-item">
+    <div class="span9">
+        <div class="order-item-image">&nbsp;</div>
+        <div class="order-item-description">
+            <h3>Rejected</h3>
+            <p>
+                This brand rejected delivery.
+                {% if part.reject_msg %}Reason given: {{ part.reject_msg }}{% endif %}
+            </p>
+        </div>
+    </div>
+    <div class="span2">&nbsp;</div>
+    <div class="span1">&nbsp;</div>
+</div>

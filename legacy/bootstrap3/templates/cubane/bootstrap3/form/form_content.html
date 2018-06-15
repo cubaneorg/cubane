@@ -1,0 +1,23 @@
+{% load form_tags %}
+
+{% if form.layout == 'flat' %}
+    {% for field in fields %}
+        {% if not field.field.widget.is_hidden %}
+            {% include 'cubane/bootstrap3/form/form_field.html' %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% for row in fields|fields_per_row %}
+        <div class="row">
+            {% for col in row %}
+                <div class="{% if row|length == 1 %}col-md-12{% else %}col-md-6{% endif %}">
+                    {% for field in col %}
+                        {% if not field.field.widget.is_hidden %}
+                            {% include 'cubane/bootstrap3/form/form_field.html' %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endif %}

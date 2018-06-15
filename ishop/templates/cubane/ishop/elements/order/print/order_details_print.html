@@ -1,0 +1,370 @@
+{% load shop_tags %}
+{% load media_tags %}
+{% load text_tags %}
+
+<h1 class="page-title">{{ order }}</h1>
+
+<img src="{{ STATIC_URL}}img/{{ CLIENT_LOGO }}" alt="" class="order-logo">
+
+<div class="order-block order-details">
+    <table class="table table-condensed inner-border">
+        <colgroup width="50%">
+        <tr>
+            <th>Order</th>
+            <td>{{ order.order_id }}</td>
+        </tr>
+
+        <tr>
+            <th>E-mail Address</th>
+            <td>{{ order.email }}</td>
+        </tr>
+
+        <tr>
+            <th>Phone Number</th>
+            <td>{{ order.telephone }}</td>
+        </tr>
+
+        <tr>
+            <th>Order Status</th>
+            <td>{% include 'cubane/ishop/elements/order/print/order_status.html' %}</td>
+        </tr>
+
+        {% if SHOP_PREAUTH and order.is_payment_confirmed %}
+            <tr>
+                <th>Approval Status:</th>
+                <td>{% include 'cubane/ishop/elements/order/print/order_approval_status.html' %}</td>
+            </tr>
+        {% endif %}
+
+        {% if order.finance_option %}
+            <tr>
+                <th>Finance Option</th>
+                <td>{{ order.finance_option }}</td>
+            </tr>
+            <tr>
+                <th>Loan Status:</th>
+                <td>{{ order.get_loan_status_display }}</td>
+            </tr>
+        {% endif %}
+
+        {% if order.has_payment_gateway %}
+            <tr>
+                <th>Payment Via:</th>
+                <td>{{ order.payment_gateway_display }}</td>
+            </tr>
+        {% elif order.is_invoice %}
+            <tr>
+                <th>Payment Via:</th>
+                <td>Invoice</td>
+            </tr>
+        {% endif %}
+
+        {% if order.cancelled %}
+            <tr>
+                <th>Cancellation</th>
+                <td>{{ order.cancel_msg }}</td>
+            </tr>
+        {% endif %}
+
+        {% if order.reject_msg %}
+            <tr>
+                <th>Payment Rejection</th>
+                <td>{{ order.reject_msg }}</td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <th>Delivery Type</th>
+            <td>{{ order.delivery_display }}</td>
+        </tr>
+
+        {% if order.order_type_display %}
+            <tr>
+                <th>Order Type</th>
+                <td>{{ order.order_type_display }}</td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <th>Order Added</th>
+            <td>{{ order.created_on|date:"d/m/Y" }}</td>
+        </tr>
+        <tr>
+            <th>Order Updated</th>
+            <td>{{ order.updated_on|date:"d/m/Y" }}</td>
+        </tr>
+
+        {% if order.special_requirements %}
+            <tr>
+                <th>Special Requirements</th>
+                <td>{{ order.special_requirements }}</td>
+            </tr>
+        {% endif %}
+    </table>
+</div>
+
+<div class="order-block">
+    <table class="table table-condensed inner-border order-products">
+        <tr>
+            <th></th>
+            <th>Product</th>
+            <th class="order-align-center">Processed</th>
+            <th class="order-align-center">Quantity</th>
+            {% if not order.is_invoice %}<th class="order-align-right">Price</th>{% endif %}
+        </tr>
+        {% for item in order.basket.items %}
+            <tr>
+                <td>
+                    <div class="order-image-wrapper">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.default_url }}" alt="">
+                        {% else %}
+                            {% image_placeholder 'product' %}
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    {{ item.title }} in {{ item.product.primary_category }}
+                    {% if settings.stocklevel %}
+                        <br>{% if item.product.pre_order %}Pre-order{% else %}In Stock{% endif %}
+                    {% endif %}
+
+                    {% if item.sku.code %}
+                        <br>SKU: {{ item.sku.code }}
+                    {% endif %}
+
+                    {% if item.product.part_number %}
+                        <br>Part Number: {{ item.product.part_number }}
+                    {% endif %}
+
+                    {% for assignment in item.variety_assignments %}
+                        <br>{{ assignment.variety_option.variety.display_title }}: {{ assignment.variety_option.title }}{% if assignment.variety_option.text_label and assignment.variety_option.text_label_value %} &raquo;{{ assignment.variety_option.text_label_value }}&laquo;{% endif %}
+                        {% if assignment.price and not order.is_invoice %} ( {% shop_price assignment.price %} ){% endif %}
+                    {% endfor %}
+
+                    {% if item.custom_properties %}
+                        {% for property in item.custom_properties %}
+                            <br>{{ property.label }}: {{ property.value }}, {{ property.unit }}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if item.product.non_returnable %}<br>This item cannot be returned.{% endif %}
+
+                    <div class="order-barcode">
+                        {% if item.product.barcode_system or request.settings.barcode_system %}
+                            {% if item.sku.barcode or item.product.barcode %}
+                                {% if item.product.barcode_system %}
+                                    <br>{% include 'cubane/ishop/elements/order/print/order_item_barcode.html' with barcode_system=item.product.barcode_system %}
+                                {% else %}
+                                    <br>{% include 'cubane/ishop/elements/order/print/order_item_barcode.html' with barcode_system=request.settings.barcode_system %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </td>
+
+                <td class="order-align-center">
+                    {% if item.processed %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+
+                <td class="order-align-center">{{ item.quantity }}</td>
+
+                {% if not order.is_invoice %}
+                    <td class="order-align-right">
+                        {% if item.deposit_only %}
+                            <del>{% shop_price item.total_without_deposit %}</del>
+                            <br>Deposit: {% shop_price item.total %}
+                        {% else %}
+                            {% shop_price item.total %}
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        {% if order.voucher_title %}
+            <tr>
+                <th colspan="{% if not order.is_invoice %}4{% else %}3{% endif %}">Voucher - {{ order.voucher_title }}: {{ order.voucher_code }}</th>
+                <td class="order-align-right">-{{ CURRENCY }}{{ order.voucher_value }}</td>
+            </tr>
+        {% endif %}
+
+        {% if order.is_invoice %}
+            <tr>
+                <th colspan="{% if not order.is_invoice %}4{% else %}3{% endif %}">Total</th>
+                <td class="order-align-center">Invoice</td>
+            </tr>
+        {% else %}
+            <tr>
+                <th colspan="{% if not order.is_invoice %}4{% else %}3{% endif %}">
+                    Delivery
+                    {% if order.free_delivery_to %}
+                            (Free: {{ order.delivery_company }})
+                    {% elif order.is_click_and_collect %}
+                        (Click and Collect)
+                    {% else %}
+                        {% if delivery and order.delivery_option_title %}
+                            ({{ order.delivery_option_title }})
+                        {% endif %}
+                    {% endif %}
+                </th>
+                <td class="order-align-right">{% if order.delivery %}{% shop_price order.delivery %}{% else %}{{ CURRENCY }}0.00{% endif %}</td>
+            </tr>
+
+            <tr>
+                <th colspan="{% if not order.is_invoice %}4{% else %}3{% endif %}">Total</th>
+                <td class="order-align-right">{% shop_price order.total %}</td>
+            </tr>
+
+            {% if order.basket.totals.difference_between_deposit_and_full_amount %}
+                <tr>
+                    <th colspan="{% if not order.is_invoice %}4{% else %}3{% endif %}">Remaining Unpaid Balance</th>
+                    <td class="order-align-right">{% shop_price order.basket.totals.difference_between_deposit_and_full_amount %}</td>
+                </tr>
+            {% endif %}
+        {% endif %}
+    </table>
+</div>
+
+<div class="order-address">
+    <div class="order-block">
+        {% if order.click_and_collect %}
+            <h3>Collect in Store</h3>
+        {% else %}
+            <h3>Delivery Address{% if order.free_delivery_to %} (Free Delivery to {{ order.delivery_company }}){% endif %}</h3>
+        {% endif %}
+    </div>
+</div>
+<div class="order-address">
+    <div class="order-block">
+        <h3>Billing Address</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<div class="order-address">
+    {% if not order.click_and_collect %}
+        <div class="order-block">
+            <table class="table table-condensed inner-border">
+                <colgroup width="50%">
+                <tr>
+                    <th>Name</th>
+                    <td>
+                        {% if order.delivery_address.name %}
+                            {{ order.delivery_address.name }}
+                        {% else %}
+                            {{ order.billing_address_title_display }} {{ order.billing_address.first_name }} {{ order.billing_address.last_name }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Company</th>
+                    <td>{{ order.delivery_company }}</td>
+                </tr>
+                <tr>
+                    <th>Address 1</th>
+                    <td>{{ order.delivery_address1 }}</td>
+                </tr>
+                <tr>
+                    <th>Address 2</th>
+                    <td>{{ order.delivery_address2 }}</td>
+                </tr>
+                <tr>
+                    <th>Address 3</th>
+                    <td>{{ order.delivery_address3 }}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ order.delivery_city }}</td>
+                </tr>
+                <tr>
+                    <th>County</th>
+                    <td>{{ order.delivery_county }}</td>
+                </tr>
+                <tr>
+                    <th>Country</th>
+                    <td>{{ order.delivery_country.printable_name }}</td>
+                </tr>
+                <tr>
+                    <th>Postcode</th>
+                    <td>{{ order.delivery_postcode }}</td>
+                </tr>
+            </table>
+        </div>
+    {% else %}
+        <p>The order is click and collect.</p>
+    {% endif %}
+</div>
+
+
+{% if order.billing_address %}
+    <div class="order-address">
+        <div class="order-block">
+            <table class="table table-condensed inner-border">
+                <colgroup width="50%">
+                <tr>
+                    <th>Name</th>
+                    <td>{{ order.billing_address_title_display }} {{ order.billing_address.first_name }} {{ order.billing_address.last_name }}</td>
+                </tr>
+                <tr>
+                    <th>Company</td>
+                    <td>{{ order.billing_company }}</td>
+                </tr>
+                <tr>
+                    <th>Address 1</th>
+                    <td>{{ order.billing_address1 }}</td>
+                </tr>
+                <tr>
+                    <th>Address 2</th>
+                    <td>{{ order.billing_address2 }}</td>
+                </tr>
+                <tr>
+                    <th>Address 3</th>
+                    <td>{{ order.billing_address3 }}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ order.billing_city }}</td>
+                </tr>
+                <tr>
+                    <th>County</th>
+                    <td>{{ order.billing_county }}</td>
+                </tr>
+                <tr>
+                    <th>Country</th>
+                    <td>{{ order.billing_country.printable_name }}</td>
+                </tr>
+                <tr>
+                    <th>Postcode</th>
+                    <td>{{ order.billing_postcode }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endif %}
+<div class="clearfix"></div>
+
+<div class="order-block">
+    <table class="table table-bordered order-confirmation">
+        <tr>
+            <td colspan="3">Please confirm that all items have been received.</td>
+        </tr>
+        <tr>
+            <td>Customer</td>
+            <td>Staff</td>
+            <td>Date</td>
+        </tr>
+        <tr>
+            <td colspan="3">Notes</td>
+        </tr>
+        <tr>
+            <td colspan="3"><br></td>
+        </tr>
+    </table>
+</div>
+
+<p class="order-footer">{{ settings.local_address_fields|join:", " }}{% if settings.phone %} Tel: {{ settings.phone|phone_display }}{% endif %}{% if settings.secondary_phone %}, {{ settings.secondary_phone|phone_display }}{% endif %}</p>

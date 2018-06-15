@@ -1,0 +1,23 @@
+{% load form_tags %}
+
+{% if form.layout == 'flat' %}
+    {% for field in fields %}
+        {% if not field.field.widget.is_hidden %}
+            {% include 'cubane/bootstrap_mini/form/form_field.html' %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% for row in fields|fields_per_row %}
+        <div class="row-fluid">
+            {% for col in row %}
+                <div class="{% if row|length == 1 %}span12{% else %}span6{% endif %}">
+                    {% for field in col %}
+                        {% if not field.field.widget.is_hidden %}
+                            {% include 'cubane/bootstrap_mini/form/form_field.html' %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,39 @@
+<div class="order-line-items">
+    <div class="order-items">
+        <div class="row-fluid order-items-header">
+            <div class="{% if order.is_invoice %}span10{% else %}span9{% endif %} order-column-product">
+                <h4>Product</h4>
+            </div>
+            <div class="span1 order-column-processed">
+                <h4>Processed</h4>
+            </div>
+
+            <div class="span1 order-column-quantity">
+                <h4>Quantity</h4>
+            </div>
+
+            {% if not order.is_invoice %}
+                <div class="span1 order-column-price">
+                    <h4>Price</h4>
+                </div>
+            {% endif %}
+        </div>
+
+        {% for item in order.basket.items %}
+            {% include 'cubane/ishop/elements/order/print/order_item.html' %}
+        {% endfor %}
+
+        <div class="order-item order-item-new">
+            <div class="order-column-product">
+                <div class="order-item-description no-image">
+                    <div class="order-items-search">
+                        <label for="_order_items_search">Add product:</label>
+                        <input class="order-items-search-input" type="text" name="_order_items_search"/>
+                    </div>
+                    <div class="order-items-result">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

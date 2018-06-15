@@ -1,0 +1,9 @@
+{% for column in columns %}
+    {% if column.sortable or view != 'grid'  %}
+        <div class="{{ column.col_class }} cubane-listing-column{% if column.sortable %} sortable{% if column.fieldname == order_by %} active{% endif %}{% endif %}" data-name="{{ column.fieldname }}" data-reverse-order="{% if column.fieldname == order_by and reverse_order %}1{% else %}0{% endif %}" title="{{ column.title }}">
+            <div class="t-d{% if column.right_aligned %} t-d-right{% endif %}">
+                {{ column.title }}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

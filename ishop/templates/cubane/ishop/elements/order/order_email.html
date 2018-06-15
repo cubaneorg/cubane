@@ -1,0 +1,124 @@
+{% load shop_tags %}
+
+<div style="font-size: 24px;">Your Order</div>
+<br/>
+<br/>
+<table style="width: 100%;">
+    <thead>
+        <tr style="width: 100%;">
+            <td style="width: 80px;"></td>
+            <td>Title</td>
+            <td style="text-align: center; width: 60px;">Quantity</td>
+            {% if not order.is_invoice %}<td style="width: 100px; text-align: right;">Price</td>{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order_products %}
+            {% include 'cubane/ishop/elements/order/order_email_item.html' %}
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        {% if order.basket.voucher %}
+            {% if not order.is_invoice %}
+                <tr style="width: 100%;">
+                    <td>
+                        <span style="font-size: 16px;">Discount</span>
+                        <br/>
+                        {{ order.basket.voucher.title }}
+                        {% if order.basket.some_products_exempt_from_discount %}
+                            <br/>
+                            (Some products are exempt from this discount)
+                        {% endif %}
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td style="text-align: right;">
+                        <span style="font-size: 16px;">-{% shop_price order.voucher_value %}</span>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endif %}
+        {% if not order.is_invoice %}
+        <tr style="width: 100%;">
+            <td>
+                <span style="font-size: 16px;">Subtotal</span>
+                <br/>
+                {% if order.basket.is_click_and_collect %}
+                    Click and Collect
+                {% else %}
+                    Shipping
+
+                    {% if order.basket.delivery_option_or_default %}
+                        - {{ order.basket.delivery_option_or_default.title }}
+                    {% endif %}
+                    {% if order.basket.some_products_exempt_from_free_delivery %}
+                        <br/>
+                        (Some products are exempt from free delivery)
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td style="text-align: right;">
+                <span style="font-size: 16px;">{% shop_price order_totals.sub_total %}</span><br/>
+                <span>
+                    {% if order.basket.is_quote_only %}
+                        Individual Quote
+                    {% else %}{% if order.basket.can_deliver %}
+                        {% if order.basket.delivery == 0 %}Free of Charge{% else %}{% shop_price order_totals.delivery %}{% endif %}
+                    {% else %}
+                        Choose different delivery option
+                    {% endif %}{% endif %}
+                </span>
+            </td>
+        </tr>
+        <tr style="width: 100%;">
+            <td>
+                <span style="font-size: 16px;">Total</span>
+                <br/>
+                including VAT
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td style="text-align: right;">
+                <span style="font-size: 16px;">{% shop_price order_totals.total %}</span>
+            </td>
+        </tr>
+        {% endif %}
+    </tfoot>
+</table>
+
+
+<div style="font-size: 24px; margin-top: 1em; margin-bottom: 0.5em;">Billing Address</div>
+<p>
+    {% include 'cubane/ishop/elements/order/print/billing_address.html' %}
+</p>
+
+
+{% if order.delivery_address %}
+    <div style="font-size: 24px; margin-top: 1em; margin-bottom: 0.5em;">Delivery Address</div>
+    <p>
+        {% include 'cubane/ishop/elements/order/print/delivery_address.html' %}
+    </p>
+{% endif %}
+
+
+{% if order.special_requirements %}
+    <div style="font-size: 24px; margin-top: 1em; margin-bottom: 0.5em;">Special Requirements</div>
+    <p>{{ order.special_requirements }}</p>
+{% endif %}
+
+
+{% if order.status == 10 or order.status == 11 %}
+    {% if order.tracking_provider and order.tracking_code %}
+        <br/>
+        <div style="font-size: 24px; margin-top: 1em; margin-bottom: 0.5em;">Delivery Tracking Details</div>
+        <p>
+            <span>Order Tracking Provider:</span> {{ order.tracking_provider }}<br/>
+            <span>Order Tracking Code:</span> {{ order.tracking_code }}<br/>
+            {% if 'no_link' not in order.get_tracking_provider_link %}
+                <a href="{{ order.get_tracking_provider_link }}" target="_blank">Track Order</a>
+            {% endif %}
+        </p>
+    {% endif %}
+{% endif %}

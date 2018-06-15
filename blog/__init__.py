@@ -1,0 +1,3 @@
+RESOURCES = [
+    'css/blog.css'
+]

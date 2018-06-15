@@ -1,0 +1,18 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Setup delivery options for product <em>{{ product.title }}</em></h1>
+
+    {% if not delivery_options %}
+        <div class="content-panel">
+            <p>
+                No delivery options available.
+            </p><p>
+                Delivery Options can be setup in the Customise section under <a href="">Delivery Options</a>.
+            </p>
+        </div>
+    {% else %}
+        {% include 'cubane/backend/form.html' %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% load form_tags %}
+
+{% if oneline %}
+    <td>
+        {{ field }}
+    </td>
+{% else %}
+    <div class="control-group{% if field.field.required %} required{% endif %}{% if field.errors %} error{% endif %}{% if 'no-label' in field.field.widget.attrs.class %} flattened{% endif %}">
+        {% if field|widget_type == 'SectionWidget' %}
+            {% if not forloop.first %}<br/>{% endif %}
+            {{ field }}
+        {% else %}
+            {% if labels != 'False' and not 'no-label' in field.field.widget.attrs.class %}
+                <label class="control-label"{% if not field|is_captcha_widget %} for="{{ field.auto_id }}"{% endif %}>
+                    {{ field.label }}{% if not form.all_fields_are_requried and field.field.required %}<span class="required_indicator">*</span>{% endif %}
+                </label>
+            {% endif %}
+
+            {% if field|widget_type == 'CheckboxInput' %}
+                <div class="controls control-checkbox">
+                    <label class="checkbox">
+                    {{ field }}
+                    {{ field.help_text }}
+                    </label>
+                </div>
+            {% else %}
+                <div class="controls">
+                    <div class="field">{{ field }}</div>
+                    {% if field.errors %}
+                        <div class="help-inline">
+                            {% for err in field.errors %}
+                                {{ err }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {% if field.help_text %}
+                            <div class="help-block">{{ field.help_text }}</div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}

@@ -1,0 +1,78 @@
+.meta-preview {
+    font-family: arial, sans-serif;
+}
+
+.meta-preview * {
+    margin: 0;
+}
+
+.meta-preview-tab {
+    background-color: #ccc;
+    display: inline-block;
+    border-radius: 10px 10px 0 0;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 10px 10px 5px;
+}
+
+.meta-preview-tab span {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.meta-preview-address-line {
+    border: 2px solid #ccc;
+    padding: 0 5px;
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 20px;
+    position: relative;
+}
+
+.icon-circle-arrow-left {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+}
+
+.meta-preview-container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-top: 0px;
+}
+
+.meta-preview-container > * { 
+    max-width: 528px;
+}
+
+.meta-preview-container > :first-child {
+    color: #1A0DAB;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta-preview-container > :nth-child(2) {
+    color: rgb(0, 102, 33);
+    font-size: 13px;
+    line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta-preview-container > :nth-child(3){
+    color: rgb(84, 84, 84);
+    font-size: 13px;
+    line-height: 18px;
+    word-wrap: break-word;
+}

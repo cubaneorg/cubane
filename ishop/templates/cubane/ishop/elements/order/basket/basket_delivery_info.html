@@ -1,0 +1,13 @@
+{% if basket.is_click_and_collect %}
+    Click and Collect
+{% else %}
+    Shipping
+
+    {% if basket.delivery_option_or_default %}
+        - {{ basket.delivery_option_or_default.title }}
+    {% endif %}
+    {% if basket.some_products_exempt_from_free_delivery %}
+        <br/>
+        (Some products are except from free delivery)
+    {% endif %}
+{% endif %}

@@ -1,0 +1,83 @@
+{% extends 'cubane/ishop/pages/order/base.html' %}
+{% load shop_tags %}
+{% load cms_tags %}
+{% load message_tags %}
+{% load form_tags %}
+
+
+{% block meta_title %}{% meta_title 'Delivery Options | Checkout' %}{% endblock %}
+{% block title %}Checkout - Delivery Options{% endblock %}
+{% block meta %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endblock %}
+
+
+{% block frame %}
+
+<div class="checkout">
+    <div class="checkout-form">
+        {% shop_breadcrumb 'Checkout - Delivery Method' %}
+        {% flash messages %}
+
+        <form class="form form-horizontal" method="post">
+            {% auto_csrf_token %}
+
+            <div class="form-content clearfix">
+                {% if is_click_and_collect %}
+                    <div class="control-group form-section-control-group">
+                        <legend>Click and Collect:</legend>
+                    </div>
+                    <div class="delivery-option-text">
+                        Once you have purchased your item,
+                        please wait for confirmation from us,
+                        then come in store to collect it.
+                    </div>
+                {% else %}
+                    {% if choices %}
+                        <div class="control-group form-section-control-group">
+                            <legend>Please select your delivery method:</legend>
+                        </div>
+
+                        <div class="delivery-options full-width-control-groups">
+                            {% include 'cubane/form/form_fields.html' with fields='delivery_option' %}
+
+                            <div class="delivery-option-details">
+                                {% include 'cubane/ishop/elements/order/delivery_option_details.html' %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="control-group form-section-control-group">
+                            <legend>Unable to deliver to your country</legend>
+                        </div>
+
+                        <div class="control-group form-section-control-group">
+                            <p>Unfortunatly we are unable to deliver to your country.</p>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <div class="form-action">
+                    <a href="{% url 'shop.order.delivery' %}" class="btn">Return to Checkout</a>
+                </div>
+
+                {% if choices or is_click_and_collect %}
+                    <div class="form-action">
+                        <button type="submit" class="btn btn-primary"><i class="icon-white icon-shopping-cart"></i>&nbsp;Place Order</button>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+
+    <div class="checkout-basket without-voucher">
+        {% include 'cubane/ishop/elements/basket/basket.html' %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+    {% include 'cubane/ishop/elements/ga/checkout.js' with step='3' %}
+{% endblock %}

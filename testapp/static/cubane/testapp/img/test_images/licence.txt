@@ -1,0 +1,13 @@
+EXIF_orientation_samples:
+-------------------------
+
+Sample images for testing EXIF tags for detecting image orientation by
+Matt Galloway.
+http://www.galloway.me.uk/2012/01/uiimageorientation-exif-orientation-sample-images/
+
+
+Other Test Images:
+------------------
+
+The USC-SIPI Image Database
+http://sipi.usc.edu/database/

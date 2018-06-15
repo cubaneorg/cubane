@@ -1,0 +1,38 @@
+{% load form_tags %}
+<form class="{% if formstyle %}{{ formstyle }}{% else %}form-horizontal{% endif %}{% if form.is_tabbed %} form-tabbed{% endif %} {% if form.management_form %}form-management{% else %}form-standard{% endif %}" method="POST"{% if enctype %} enctype="{{ enctype }}"{% endif %}{% if form.management_form %} class="multiform"{% endif %}{% if data_message %} data-message="{{ data_message }}"{% endif %}{% if data_transition %} data-transition="{{ data_transition }}"{% endif %}{% if data_auto_reset %} data-auto-reset="{{ data_auto_reset }}"{% endif %}>
+    {% if form.management_form %}
+        {{ form.management_form }}
+    {% endif %}
+
+    {% auto_csrf_token %}
+
+    {% if form.management_form %}
+        {% include 'cubane/form/form_required_field_notice.html' %}
+
+        <div class="form-content">
+            <table class="table form-table">
+                <thead>
+                    <tr>
+                        {% for field in form.0.visible_fields %}
+                            {% if not field.field.widget.is_hidden %}
+                                <th class="form-column-{{ field.name }}">{{ field.label }}</th>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in form.forms %}
+                        <tr>
+                            {% include 'cubane/form/form.html' with oneline='True' %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% for form in form.forms %}
+                {% include 'cubane/form/form_hidden_fields.html' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include 'cubane/form/form.html' %}
+    {% endif %}

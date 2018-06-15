@@ -1,0 +1,416 @@
+/*
+ * Basket Style (backend)
+ */
+
+
+/*
+ * Basket messages
+ */
+.basket-messages {
+    background-color: #f5f5f5;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.basket-messages:blank {
+    display: none;
+}
+
+
+/*
+ * Basket items
+ */
+.basket-items {
+    margin-bottom: 15px;
+}
+
+
+/*
+ * Basket item
+ */
+.basket-item {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.basket-item:last-child {
+    border-bottom: none;
+}
+
+.basket-item-title {
+    text-decoration: none;
+    color: #2574b7;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.basket-item-image {
+    display: block;
+    width: 80px;
+    margin-right: 15px;
+}
+
+.basket-item-details {
+    flex: 10;
+}
+
+.basket-item-quantity {
+    flex: 0 0 64px;
+}
+
+.basket-item-remove {
+    flex: 0 0 30px;
+}
+
+.basket-item-price {
+    flex: 0 0 100px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+
+/*
+ * Identifiers
+ */
+.basket-item-identifier {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: "Lucida Console", Monaco, monospace;
+    letter-spacing: 3px;
+    margin-bottom: 3px;
+}
+
+
+/*
+ * Variety options
+ */
+.basket-item .variety-option {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.variety-title {
+    margin-right: 10px;
+}
+
+.variety-option-title {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+
+/*
+ * Additional item information
+ */
+.basket-item-details-info {
+    font-size: 12px;
+    line-height: 14px;
+    font-style: italic;
+}
+
+/*
+ * Processing
+ */
+.basket-item .item-processed {
+    margin-right: 20px;
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+}
+
+
+/*
+ * Quantity
+ */
+.basket-item input.quantity {
+    width: 45px;
+    height: 28px;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+    border-color: #f49e2d;
+}
+
+.basket-item-quantity-value {
+    width: 30px;
+    height: 28px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: center;
+}
+
+.basket-item-quantity .add-on {
+    width: 24px !important;
+    font-size: 22px;
+    line-height: 18px;
+    cursor: pointer;
+    margin-right: 0;
+}
+
+.basket-item-quantity .input-prepend {
+    margin-bottom: 0;
+}
+
+.basket-item-quantity .add-on:hover {
+    background-color: white;
+    color: #2574b7;
+}
+
+
+/*
+ * Remove
+ */
+.basket-item-remove-btn {
+    width: 28px;
+    height: 28px;
+    background-image: url('/static/cubane/ishop/img/basket-remove.svg');
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 60%;
+    cursor: pointer;
+}
+
+.basket-item-remove-btn:hover {
+    background-image: url('/static/cubane/ishop/img/basket-remove-hover.svg');
+}
+
+
+/*
+ * Basket add product button
+ */
+.basket-items-actions {
+    margin-bottom: 15px;
+}
+
+
+/*
+ * Voucher / Discount
+ */
+.basket-voucher {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+input.basket-voucher-input {
+    max-width: 200px !important;
+    height: 40px !important;
+    border-right: none;
+    margin-bottom: 0;
+}
+
+
+/*
+ * Delivery option
+ */
+.basket-delivery {
+    display: flex;
+    padding-top: 15px;
+    margin-bottom: 15px;
+    border-top: 1px solid #eee;
+}
+
+.basket-delivery-label {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.basket-delivery-form {
+    width: 350px;
+    text-align: right;
+}
+
+.basket-delivery-form .control-label {
+    display: none;
+}
+
+.basket-delivery-form .control-group {
+    margin-bottom: 5px;
+}
+
+.basket-delivery-form .control-group:last-child {
+    margin-bottom: 0;
+}
+
+
+/*
+ * Totals
+ */
+.basket-totals {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.basket-total-item {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.basket-total-item:last-child {
+    margin-bottom: 0;
+}
+
+.basket-total-label {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.basket-total-price {
+    width: 250px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.basket-total-info {
+    display: block;
+    font-style: italic;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.basket-total-frame {
+    display: inline-block;
+    background-color: #f5f5f5;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.calculated-price {
+    text-decoration: line-through;
+    margin-right: 20px;
+}
+
+
+/*
+ * Custom price
+ */
+.basket-custom-total {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+    padding-top: 15px;
+}
+
+input.basket-custom-total-input {
+    max-width: 200px !important;
+    height: 40px !important;
+    border-right: none;
+    margin-bottom: 0;
+    text-align: right;
+    font-size: 18px;
+}
+
+.basket-custom-total .add-on {
+    background-color: #f49e2d;
+    color: white;
+    line-height: 40px;
+    padding: 0 10px;
+    font-size: 18px;
+    margin-right: -1px;
+    z-index: 1;
+}
+
+
+/*
+ * Compact basket Style
+ */
+.basket-compact .basket-item {
+    display: block;
+    position: relative;
+}
+
+.basket-compact .basket-item:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.basket-compact .basket-item-image {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 40px;
+}
+
+.basket-compact .basket-item-title {
+    display: block;
+    padding-left: 45px;
+    margin: 0;
+    height: 40px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.basket-compact .variety-options {
+    margin: 0;
+}
+
+.basket-compact .basket-item-identifier-label,
+.basket-compact .variety-title {
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.basket-compact .basket-item-identifier,
+.basket-compact .variety-option-title {
+    font-size: 13px;
+    line-height: 14px;
+}
+
+.basket-compact .basket-item-barcode,
+.basket-compact .basket-item-processed {
+    display: none;
+}
+
+.basket-compact .basket-item-quantity,
+.basket-compact .basket-item-remove,
+.basket-compact .basket-item-price {
+    margin-top: 10px;
+    float: left;
+}
+
+.basket-compact .basket-item-price {
+    float: right;
+}
+
+.basket-compact .basket-voucher {
+    padding-top: 0;
+    margin-bottom: 0;
+}
+
+.basket-compact .basket-voucher-input,
+.basket-compact .basket-custom-total-input {
+    max-width: none !important;
+}
+
+.basket-compact .basket-voucher-input {
+    padding-left: 10px;
+}
+
+.basket-compact .basket-voucher-input {
+    border: none;
+}
+
+.basket-compact .basket-total-info {
+    font-size: 11px;
+    letter-spacing: -.5px;
+}
+
+.basket-compact .basket-delivery {
+    display: none;
+}
+
+.basket-compact .basket-empty {
+    padding: 15px 10px 0 10px;
+    color: #999;
+}

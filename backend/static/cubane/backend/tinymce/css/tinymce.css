@@ -1,0 +1,26 @@
+img {
+    max-width: 100%;
+}
+
+.mce-youtube-btn i {
+    background-size: contain;
+}
+
+/*
+ * Image alignment
+ */
+img[style~="left;"],
+img[style~="right;"] {
+    margin-top: 0.30em;
+    margin-bottom: 0.30em;
+}
+
+img[style~="left;"] {
+    float: left;
+    margin-right: 2em;
+}
+
+img[style~="right;"] {
+    float: right;
+    margin-left: 2em;
+}

@@ -1,0 +1,41 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+
+
+{% block meta_title %}Delivery Addresses{% endblock %}
+{% block title %}Delivery Addresses{% endblock %}
+
+
+{% block account_breadcrumb %}
+    {% shop_breadcrumb 'Delivery Addresses' %}
+{% endblock %}
+
+
+{% block delivery %}active{% endblock %}
+
+
+{% block content %}
+        {% if addresses %}
+            <div class="account-title">Addresses</div>
+
+            <div class="account-delivery-addresses">
+                {% for address in addresses %}
+                    <div class="account-delivery-address-container">
+                        <div class="account-delivery-address-parts">
+                            <div class="account-delivery-address">
+                                {% for part in address.get_parts %}{% if not forloop.first %}, {% endif %}{{ part }}{% endfor %}
+                            </div>
+                            <div class="account-delivery-links">
+                                <a class="account-delivery-link" href="{% url 'shop.account.delivery_address' address.pk %}"><img src="{{ STATIC_URL }}norwichcamping/img/account/edit.svg" alt="Edit Delivery Address Icon" >Edit</a>
+                                <a class="account-delivery-link" href="{% url 'shop.account.delete_delivery_address' address.pk %}"><img src="{{ STATIC_URL }}norwichcamping/img/account/delete.svg" alt="Delete Delivery Address Icon" >Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">You have no delivery addresses yet.</div>
+        {% endif %}
+
+        <a class="btn account-btn" href="{% url 'shop.account.create_delivery_address' %}">Create Delivery Address</a>
+{% endblock %}

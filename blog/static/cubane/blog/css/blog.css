@@ -1,0 +1,53 @@
+/*
+ * Cubane Blog module
+ */
+
+/*
+ * Listing
+ */
+.cubane-blog-listing-item {
+    box-sizing: border-box;
+    padding: 20px 40px;
+}
+
+.cubane-blog-listing-item:first-child {
+    padding-top: 40px;
+}
+
+.cubane-blog-listing-item:last-child {
+    padding-bottom: 40px;
+}
+
+.cubane-blog-listing-title {
+    font-size: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+
+/*
+ * Pagination
+ */
+.cubane-blog-listing-pagination-info,
+.cubane-blog-listing-pagination {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.cubane-blog-listing-pagination ul {
+    list-style: none;
+}
+
+.cubane-blog-listing-pagination ul li {
+    display: inline-block;
+    padding: 10px;
+}
+
+.cubane-blog-listing-pagination ul li:first-child {
+    padding-left: 0;
+}
+
+.cubane-blog-listing-pagination ul li:last-child {
+    padding-right: 0;
+}

@@ -1,0 +1,34 @@
+{% load media_tags %}
+
+
+{% if varieties %}
+    <div class="variety-filter-groups">
+        {% for _, v in varieties.items %}
+            <div class="variety-filter-group">
+                <div class="variety-filter-group-title">{{ v.display_title }} <img src="{{ STATIC_URL }}cubane/ishop/frontend/img/arrow-down.svg" alt="title icon"></div>
+
+                {% if v.checked > 0 %}
+                    <div class="variety-filter-clear-group">clear</div>
+                {% endif %}
+
+                <div class="variety-filter-options">
+                    {% for o in v.options %}
+                        <div class="variety-filter-option">
+                            <div class="variety-filter-option">
+                                <label class="variety-filter-option-label">
+                                    <input id="{{ o.id }}" class="variety-filter-option-check" type="checkbox" name="{{ v.arg }}" value="{{ o.value }}"{% if o.checked %} checked="checked"{% endif %}/>
+                                    <div class="variety-filter-option-title">{{ o.title }}</div>
+                                    {% if o.image %}
+                                        <div class="variety-filter-option-image">
+                                            {% image o.image %}
+                                        </div>
+                                    {% endif %}
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

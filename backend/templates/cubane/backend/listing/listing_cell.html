@@ -1,0 +1,25 @@
+{% load list_tags %}
+{% load text_tags %}
+{% load media_tags %}
+{% load backend_tags %}
+
+
+{% if forloop.first and permissions.edit_or_view %}
+    <span class="primary">
+        {% if obj|get:column.display_fieldname %}
+            {% include 'cubane/backend/listing/listing_cell_value.html' %}
+        {% else %}
+            &laquo;EMPTY&raquo;
+        {% endif %}
+    </span>
+{% else %}
+    {% if obj|get:column.display_fieldname != None %}
+        {% include 'cubane/backend/listing/listing_cell_value.html' %}
+    {% else %}
+        {% if column.bool %}
+            no
+        {% else %}
+            -
+        {% endif %}
+    {% endif %}
+{% endif %}

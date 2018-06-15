@@ -1,0 +1,7 @@
+{% if order.is_approved %}
+    <span class="order-status label label-success">{{ order.get_approval_status_display }}</span>
+{% endif %}{% if order.waits_for_approval %}
+    <span class="order-status label label-warning">{{ order.get_approval_status_display }}</span>
+{% endif %}{% if order.is_rejected_or_timeout %}
+    <span class="order-status label label-important">{{ order.get_approval_status_display }}</span>
+{% endif %}

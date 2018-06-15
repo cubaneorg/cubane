@@ -1,0 +1,18 @@
+/*
+ * Default style for map canvas (enquiry page)
+ */
+.enquiry-map-canvas,
+.map-canvas {
+    display: block;
+    width: 100%;
+    height: 400px;
+}
+
+/*
+ * We cannot apply max-width:100% inside a map canvas because it destroys
+ * certain map controls that are image based.
+ */
+.enquiry-map-canvas img,
+.map-canvas img {
+    max-width: none;
+}

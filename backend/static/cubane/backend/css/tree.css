@@ -1,0 +1,210 @@
+/*
+ * Tree
+ */
+.tree {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cubane-listing-folders-tree > .tree {
+    padding-bottom: 10px;
+}
+
+
+/*
+ * Hierarchie
+ */
+.tree-node > .tn-title {
+    padding-left: 16px;
+}
+
+.tree-node > .tree > .tree-node > .tn-title {
+    padding-left: 20px;
+}
+
+.tree-node > .tree > .tree-node > .tree > .tree-node > .tn-title {
+    padding-left: 36px;
+}
+
+.tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tn-title {
+    padding-left: 52px;
+}
+
+.tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tn-title {
+    padding-left: 68px;
+}
+
+.tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tn-title {
+    padding-left: 84px;
+}
+
+.tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tree > .tree-node > .tn-title {
+    padding-left: 100px;
+}
+
+
+/*
+ * Tree Node Title (with icon)
+ */
+.tn-title {
+    line-height: 20px;
+
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+
+    cursor: pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.tn-title-content {
+    overflow: hidden;
+    display: flex;
+    justify-content: stretch;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-right: 10px;
+}
+
+.tn-caret,
+.tn-icon {
+    color: #f49e2d;
+    fill: #f49e2d;
+}
+
+.tn-icon {
+    margin-right: 5px;
+    width: 13px;
+    padding-top: 4px;
+}
+
+.tn-icon > svg {
+    width: 13px;
+    height: 11px;
+}
+
+.tn-icon:before {
+    content: '';
+}
+
+.tn-caret,
+.tn-icon,
+.tn-title-text {
+    display: inline-block;
+    display: flex;
+    align-items: flex-start;
+}
+
+
+/*
+ * First level node with bigger icon
+ */
+.cubane-listing-folders-tree > .tree > .tree-node > .tn-title {
+    font-size: 16px;
+}
+
+.cubane-listing-folders-tree > .tree > .tree-node > .tn-title > .tn-title-content > .tn-icon {
+    width: 18px;
+}
+
+.cubane-listing-folders-tree > .tree > .tree-node > .tn-title > .tn-title-content > .tn-icon > svg {
+    width: 18px;
+    height: 15px;
+}
+
+
+/*
+ * First level node is always open and cannot be collapsed
+ */
+.cubane-listing-folders-tree > .tree > .tree-node > .tree {
+    display: block;
+}
+
+.cubane-listing-folders-tree > .tree > .tree-node > .tn-title > .tn-title-content > .tn-caret {
+    display: none;
+}
+
+
+/*
+ * Active node
+ */
+.tree-node.active > .tn-title {
+}
+
+.tree-node.active > .tn-title:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 20px;
+}
+
+
+/*
+ * Hover
+ */
+.tn-title:hover {
+    background-color: white;
+    color: #374142;
+}
+
+.tn-title:hover:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 20px;
+    background-color: none;
+}
+
+
+/*
+ * Caret
+ */
+.tn-caret {
+    position: relative;
+    top: 2px;
+    width: 10px;
+    margin-left: 0px;
+    text-align: center;
+    font-size: 18px;
+    visibility: hidden;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+    color: #666;
+}
+
+.tn-caret:hover {
+    color: #f49e2d;
+}
+
+.tree-node.with-children > .tn-title .tn-caret {
+    visibility: visible;
+}
+
+
+/*
+ * Open/close sub-tree
+ */
+.tree > .tree-node .tree {
+    display: none;
+}
+
+.tree > .tree-node.open > .tree {
+    display: block;
+}
+
+.tree > .tree-node.open > .tn-title > .tn-title-content > .tn-caret {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}

@@ -1,0 +1,9 @@
+{% if order.is_loan_success %}
+    <span class="order-status label label-success">{{ order.get_loan_status_display }}</span>
+{% endif %}
+{% if order.is_loan_fail %}
+    <span class="order-status label label-important">{{ order.get_loan_status_display }}</span>
+{% endif %}
+{% if order.is_loan_pending %}
+    <span class="order-status label label-warning">{{ order.get_loan_status_display }}</span>
+{% endif %}

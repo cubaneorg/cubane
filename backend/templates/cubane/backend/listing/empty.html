@@ -1,0 +1,31 @@
+<div class="empty-listing">
+    <div class="empty-listing-title">
+        {% if has_folders %}
+            Empty {{ folder_model_name_singular }} without any {{ model_name_plural }}.
+        {% elif related_instance_attr and related_instance_pk is None %}
+            Object not created yet.
+        {% else %}
+            No {{ model_name_plural }} available.
+        {% endif %}
+    </div>
+
+    {% if related_instance_attr and related_instance_pk is None %}
+        <div class="empty-listing-text">
+            Create this object via the <b>{{ BACKEND_DEFAULT_SAVE_AND_CONTINUE_BUTTON_LABEL }}</b> button first in order to manage related instances, such as {{ model_name_plural }}.
+        </div>
+    {% elif permissions.create %}
+        <div class="empty-listing-text">
+            {% if has_folders %}
+                Click on the button below in order to create new
+                {{ model_name_plural }} in {{ folder_model_name_singular }}
+                '{% if current_folder %}{{ current_folder }}{% else %}/{% endif %}'.
+            {% else %}
+                Click on the button below in order to create new {{ model_name_plural }}.
+            {% endif %}
+        </div>
+
+        <div class="empty-listing-actions">
+            <a class="btn cubane-listing-create{% if related_listing %} cubane-backend-open-dialog{% endif %}" href="{{ urls.create }}" accesskey="c"><i class="icon icon-plus"></i> Create</a>
+        </div>
+    {% endif %}
+</div>

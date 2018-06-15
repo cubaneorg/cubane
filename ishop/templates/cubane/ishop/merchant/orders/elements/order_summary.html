@@ -1,0 +1,93 @@
+<div class="order-summary">
+    <div class="row-fluid order-header">
+        <div class="span3">
+            <h3>
+                Date: <small>{{ order.created_on|date:"d/m/Y" }}</small>
+            </h3>
+
+            <h3>
+                Status:
+                {% include 'cubane/ishop/elements/order/print/order_status.html' %}
+            </h3>
+
+            {% if SHOP_PREAUTH and order.is_payment_confirmed %}
+                <h3>
+                    Approval Status:
+                    {% include 'cubane/ishop/elements/order/print/order_approval_status.html' %}
+                </h3>
+            {% endif %}
+
+            {% if order.finance_option %}
+                <h3>
+                    Loan Status:
+                    {% include 'cubane/ishop/elements/order/print/loan_status.html' %}
+                </h3>
+                {% if order.get_loan_status_text_display %}
+                    <p><small>{{ order.get_loan_status_text_display }}</small></p>
+                {% endif %}
+            {% endif %}
+
+            {% if order.has_payment_gateway %}
+                <h3>
+                    Payment Via:
+                    <small>{{ order.payment_gateway_display }}</small>
+                </h3>
+            {% elif order.is_invoice %}
+                <h3>
+                    Payment Via:
+                    <small>Invoice</small>
+                </h3>
+            {% endif %}
+
+            <p>
+                <a class="btn" href="{{ order.get_absolute_url }}" target="_blank">Customer Status Page</a>
+            </p><p>
+                <a class="btn print-page" href="#print-page">Print</a>
+            </p>
+            {% if order.can_cancel %}
+                <p>
+                    <a class="btn" href="{% url 'cubane.ishop.orders.cancel' %}?pk={{ order.pk }}">Cancel</a>
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="span5">
+            <h3>Customer Details / Billing{% if order.is_invoice %} (Invoice){% endif %}</h3>
+            <p>
+                {% include 'cubane/ishop/merchant/orders/billing_address.html' %}
+            </p>
+
+            <h3 class="order-contact-details">Contact</h3>
+            <p>
+                <strong>Email</strong>: {% if order.email %}<a href="mailto:{{ order.email }}">{{ order.email }}</a>{% endif %}<br />
+                <strong>Telephone</strong>: {% if order.telephone %}{{ order.telephone }}{% endif %}<br/>
+                {% if collection_method %}
+                    <strong>Collection Method</strong>: {{ collection_method }}
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="span4">
+            {% if order.click_and_collect %}
+                <h3>Click and Collect</h3>
+                The order is click and collect.
+            {% else %}
+                <h3>Delivery{% if order.is_invoice %} (Invoice){% endif %}</h3>
+                <p>
+                    {% include 'cubane/ishop/merchant/orders/delivery_address.html' %}
+                </p>
+            {% endif %}
+
+            {% if order.special_requirements %}
+                <h3>Special Requirements</h3>
+                <p>{{ order.special_requirements }}</p>
+            {% endif %}
+
+
+            {% if order.finance_option %}
+                <h3>Finance Option</h3>
+                <p>{{ order.finance_option }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

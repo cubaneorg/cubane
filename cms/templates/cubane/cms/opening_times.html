@@ -1,0 +1,24 @@
+{% spaceless %}
+    {% if settings and settings.opening_times_enabled %}
+        {% if settings.same_opening_times_for_weekdays %}
+            {% for day, start, close in settings.opening_times|slice:'1' %}
+                <p>
+                    <span class="opening_times_week">mon - fri
+                    <span class="opening_times_col">:</span>
+                    <span class="opening_times_range">{{ start|time:'H:i' }} - {{ close|time:'H:i' }}</span>
+                </p>
+            {% endfor %}
+        {% else %}
+            {% for day, start, close in settings.opening_times %}
+                {% if start and close %}
+                    {{ start.verbose_name }}
+                    <p>
+                        <span class="opening_times_day">{{ day|capfirst }}</span>
+                        <span class="opening_times_col">:</span>
+                        <span class="opening_times_range">{{ start|time:'H:i' }} - {{ close|time:'H:i' }}</span>
+                    </p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endspaceless %}

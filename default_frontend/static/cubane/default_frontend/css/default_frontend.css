@@ -1,0 +1,33 @@
+/*
+ * Print only
+ */
+.print-only {
+    display: none;
+}
+
+
+/*
+ * Clickable
+ */
+.clickable,
+[role="button"] {
+    cursor: pointer;
+}
+
+
+/*
+ * Opening times
+ */
+.opening_times_day,
+.opening_times_week {
+    text-transform: capitalize;
+} 
+
+
+/*
+ * Social links
+ */
+.automated-social-links a:hover {
+    text-decoration: none;
+    width: 100px;
+}

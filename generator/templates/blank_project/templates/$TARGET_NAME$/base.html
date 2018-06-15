@@ -1,0 +1,34 @@
+{% load resource_tags %}
+{% load cms_tags %}
+{% load media_tags %}
+{% load text_tags %}
+{% load svgicon_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% meta_title %}</title>
+        <meta name="description" content="{{ current_page.meta_description }}" />
+        <meta name="keywords" content="{{ current_page.meta_keywords }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% site_identification %}
+        {% favicons %}
+
+        {% inline_resources 'inline' 'css' %}
+        {% inline_resources 'frontend' 'css' %}
+        {% resources 'frontend' 'css' 'print' %}
+
+        {% google_analytics_universal %}
+
+        {% if is_contact_page %}
+            <script src='https://www.google.com/recaptcha/api.js'></script>
+        {% endif %}
+    </head>
+
+    <body>
+        {% block content %}{% endblock %}
+
+        {% inline_svgicons 'frontend' %}
+        {% inline_resources 'inline' 'js' %}
+        {% resources 'frontend' 'js' %}
+    </body>
+</html>

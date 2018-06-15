@@ -1,0 +1,54 @@
+{% load form_tags %}
+{% load widget_tweaks %}
+
+{% if oneline %}
+    <td>
+        {{ field }}
+    </td>
+{% else %}
+    <div class="control-group{% if field|widget_type != 'sectionwidget' %} form-group{% endif %}{% if field.field.required %} required{% endif %}{% if field.errors %} has-error{% endif %}{% if 'no-label' in field.field.widget.attrs.class %} flattened{% endif %}{% if field|widget_type == 'CheckboxInput' %} bootstrap-checkbox{% endif %}{% if field|widget_type == 'sectionwidget' %} form-section-control-group{% endif %}">
+        {% if field|widget_type == 'sectionwidget' %}
+            {% if not forloop.first %}<br/>{% endif %}
+            {{ field }}
+        {% else %}
+            {% if labels != 'False' and not 'no-label' in field.field.widget.attrs.class %}
+                <label class="control-label{% if not formstyle %} col-sm-5{% endif %}"{% if not field|is_captcha_widget %} for="{{ field.auto_id }}"{% endif %}>
+                    {{ field.label }}{% if not form.all_fields_are_requried and field.field.required %}<span class="required_indicator">*</span>{% endif %}
+                </label>
+                <div class="control-input{% if not formstyle %} col-sm-7{% endif %}">
+            {% endif %}
+
+            {% if field|widget_type == 'checkboxinput' %}
+                <div class="checkbox">
+                    <label>
+                        {{ field }}
+                        {{ field.help_text }}
+                    </label>
+                    {% if field.errors %}
+                        <p class="help-block">
+                            {% for err in field.errors %}
+                                {{ err }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="field">{{ field|add_class:"form-control" }}</div>
+                {% if field.errors %}
+                    <p class="help-block">
+                        {% for err in field.errors %}
+                            {{ err }}
+                        {% endfor %}
+                    </p>
+                {% else %}
+                    {% if field.help_text %}
+                        <p class="help-block">{{ field.help_text }}</p>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            {% if labels != 'False' and not 'no-label' in field.field.widget.attrs.class %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}

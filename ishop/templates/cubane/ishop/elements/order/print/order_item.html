@@ -1,0 +1,98 @@
+{% load media_tags %}
+{% load shop_tags %}
+
+<div class="row-fluid order-item{% if item.processed %} order-item-processed{% endif %}">
+    <div class="{% if order.is_invoice %}span10{% else %}span9{% endif %} order-column-product">
+        <div class="order-item-annotation-frame"></div>
+
+        <a class="order-item-image open-edit-dialog" href="{% url 'cubane.ishop.products.edit' %}?pk={{ item.product_id }}">
+            {% if item.product.image %}
+                {% image item.product.image 'product' item.image_attribute_url %}
+            {% else %}
+                {% image_placeholder 'product' %}
+            {% endif %}
+        </a>
+
+        <div class="order-item-description{% if not item.product.image %} no-image{% endif %}">
+            {% if item.product.barcode_system or request.settings.barcode_system %}
+                {% if item.sku.barcode or item.product.barcode %}
+                    {% if item.product.barcode_system %}
+                        {% include 'cubane/ishop/elements/order/print/order_item_barcode.html' with barcode_system=item.product.barcode_system %}
+                    {% else %}
+                        {% include 'cubane/ishop/elements/order/print/order_item_barcode.html' with barcode_system=request.settings.barcode_system %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+            <h3>
+                {% if item.product %}
+                    <a class="open-edit-dialog" href="{% url 'cubane.ishop.products.edit' %}?pk={{ item.product_id }}">{{ item.title }}</a>
+                {% else %}
+                    {{ item.title }}
+                {% endif %}
+
+                {% if item.product.primary_category %}
+                    <small>In <a class="open-edit-dialog" href="{% url 'cubane.ishop.categories.edit' %}?pk={{ item.product.primary_category.pk }}">{{ item.product.primary_category }}</a></small>
+                {% endif %}
+                {% if settings.stocklevel %}
+                    <small>{% if item.product.pre_order %}Pre-order{% else %}In Stock{% endif %}</small>
+                {% endif %}
+            </h3>
+
+            {% if item.sku.code %}
+                <div class="order-item-identifier-label">
+                    SKU: <span class="order-item-identifier">{{ item.sku.sku_or_barcode }}</span>
+                </div>
+            {% endif %}
+
+            {% if item.product.part_number %}
+                <div class="order-item-identifier-label">
+                    Part Number: <span class="order-item-identifier">{{ item.product.part_number }}</span>
+                </div>
+            {% endif %}
+
+            {% if item.variety_assignments %}
+                <div class="variety-options">
+                    {% for assignment in item.variety_assignments %}
+                        {% if order.is_invoice %}
+                            {% include 'cubane/ishop/elements/basket/variety.html' with hide_price='true' %}
+                        {% else %}
+                            {% include 'cubane/ishop/elements/basket/variety.html' %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if item.custom_properties %}
+                <div class="custom-properties">
+                    {% for property in item.custom_properties %}
+                        {% include 'cubane/ishop/elements/basket/custom_property.html' %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if item.is_non_returnable %}<div class="non-returnable-info">This item cannot be returned.</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="span1 order-column-processed">
+        <p>
+            <input class="item-processed" type="checkbox"{% if item.processed %} checked{% endif %}/>
+        </p>
+    </div>
+
+    <div class="span1 order-column-quantity">
+        <p class="align-right"><span class="quantity">{{ item.quantity }}</span></p>
+    </div>
+
+    {% if not order.is_invoice %}
+        <div class="span1 order-column-price">
+            {% if item.deposit_only %}
+                <p class="align-right"><span class="price"><del>{% shop_price item.total_without_deposit %}</del></span></p>
+                <p class="align-right"><span class="price">Deposit: {% shop_price item.total %}</span></p>
+            {% else %}
+                <p class="align-right"><span class="price">{% shop_price item.total %}</span></p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,43 @@
+{% load resource_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% favicons %}
+    {% resources 'backend' 'css' %}
+</head>
+
+<body class="login">
+    <div class="wrapper">
+        <div class="login-panels">
+            <div class="panel-client">
+                {% if has_client_logo %}
+                    <img class="client-logo" src="{{ client_logo }}"/>
+                {% else %}
+                    <div class="client-logo-text">{{ client_logo_text }}</div>
+                {% endif %}
+            </div>
+
+            <div class="panel-title">
+                <h2>Login</h2>
+            </div>
+
+            <div class="panel-content content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.CUBANE_DEFAULT_MAP_LOCATION = [0, 0];
+        window.CUBANE_SETTINGS = {};
+    </script>
+
+    {% resources 'backend' 'js' %}
+    {% block js %}{% endblock %}
+</body>
+
+</html>

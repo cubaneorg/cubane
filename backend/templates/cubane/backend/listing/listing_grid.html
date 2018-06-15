@@ -1,0 +1,135 @@
+{% load partition_tags %}
+{% load media_tags %}
+{% load time_tags %}
+{% load attribute_tags %}
+
+
+{% spaceless %}
+    {% if objects_count == 0 %}
+        {% include 'cubane/backend/listing/empty.html' %}
+    {% else %}
+        <div class="cubane-listing-grid cubane-listing-root" data-objects="{{ objects|length }}" data-objects-filtered="{{ objects_filtered }}">
+
+            <div class="cubane-listing-grid-sort-header">
+                {% include 'cubane/backend/listing/columns.html' %}
+                {% include 'cubane/backend/listing/order.html' %}
+            </div>
+
+            <div class="cubane-listing-grid-items lazy-load-container">
+                {% for obj in objects %}
+                    <div class="cubane-listing-item cubane-listing-grid-item{% if has_folders %} draggable{% endif %}{% if obj.is_image_or_preview %} cubane-listing-grid-item-image{% endif %}{% if obj.external_image_url and obj.embed_html %} cubane-listing-item-video{% endif %}{% if sortable %} sortable{% endif %}" title="{{ obj }}" data-id="{{ obj.id }}" data-image-url="{% if obj.image %}{% if obj.image.is_image_or_preview %}{{ obj.image.original_or_preview_url }}{% else %}{{ obj.image.url }}{% endif %}{% else %}{% if obj.is_image_or_preview %}{{ obj.original_or_preview_url }}{% endif %}{% endif %}" data-image-ar="{% if obj.image %} {{ obj.image.backend_orientation  }}{% else %}{% if obj.is_image %} {{ obj.backend_orientation }}{% endif %}{% endif %}">
+                        <div class="thumbnail">
+                            <div class="cubane-listing-item-selected-state"></div>
+
+                            <div class="cubane-listing-item-time">{{ obj.updated_on|get_time_from_now }}</div>
+
+                            {% if sortable and is_leaf_folder_view %}
+                                <div class="ui-sortable-handle"></div>
+                            {% endif %}
+
+                            <div class="thumbnail-image-frame">
+                                {% if obj.image or verbose_name == 'Media' and obj.is_image_or_preview %}
+                                    {% if obj.image %}
+                                        {% include 'cubane/backend/listing/listing_image.html' with image=obj.image %}
+                                    {% else %}
+                                        {% include 'cubane/backend/listing/listing_image.html' with image=obj %}
+                                    {% endif %}
+                                {% else %}
+                                    {% if obj.image_url %}
+                                        <div class="thumbnail-image" style="background-image: url('{{ obj.image_url }}');"></div>
+                                        {% if obj.is_image %}No Image{% endif %}
+                                    {% endif %}
+                                    {% if obj.external_image_url %}
+                                        <div class="thumbnail-image" style="background-image: url('{{ obj.external_image_url }}');"></div>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if not obj.is_image and verbose_name != 'Media' and not obj.external_image_url %}
+                                    <div class="cubane-listing-item-title">{{ obj.title }}</div>
+                                {% endif %}
+
+                                {% if obj.calendar_date %}
+                                    <div class="event-date">
+                                        <div class="event-day">{{ obj.calendar_date|date:"d" }}</div>
+                                        <div class="event-month">{{ obj.calendar_date|date:"N"|slice:":3" }}</div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {% if obj.is_image or obj.has_preview or model_name == 'Media' or obj.external_image_url %}
+                                <div class="thumbnail-filename primary">
+                                    <span>
+                                        <svg viewBox="0 0 23.4 22.9"><use xlink:href="#icon-image"/></svg>{{ obj }}
+                                    </span>
+                                </div>
+                            {% endif %}
+
+                            <div class="cubane-listing-item-btns-frame">
+                                <div class="cubane-listing-item-btns">
+                                    <div class="cubane-listing-item-edit">
+                                        <span class="cubane-listing-btn-frame">
+                                            <svg viewBox="0 0 12 12"><use xlink:href="#icon-edit"/></svg><span class="cubane-listing-btn-label">Edit</span>
+                                        </span>
+                                    </div>
+                                    {% if model_name == 'Media' %}
+                                        <a class="cubane-listing-item-lightbox{% if obj.embed_html %} cubane-listing-item-lightbox-video{% endif %}" href="#cms-lightbox" {% if model_name == 'Media' %}data-image-url="{{ obj.original_or_preview_url }}" data-filename="{{ obj.caption }}" data-id="{{ obj.id }}"{% else %}data-video="{% autoescape on %}{{ obj.embed_html }}{% endautoescape %}"{% endif %}>
+                                            <span class="cubane-listing-btn-frame">
+                                                <svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-enlarge"/></svg><span class="cubane-listing-btn-label">Enlarge</span>
+                                            </span>
+                                        </a>
+                                    {% elif obj.external_image_url and obj.embed_html %}
+                                        <a class="cubane-listing-item-lightbox cubane-listing-item-lightbox-video" href="#cms-lightbox" data-video="{% autoescape on %}{{ obj.embed_html }}{% endautoescape %}">
+                                            <span class="cubane-listing-btn-frame">
+                                                <svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-enlarge"/></svg><span class="cubane-listing-btn-label">Enlarge</span>
+                                            </span>
+                                        </a>
+                                    {% elif obj.external_image_url %}
+                                        <a class="cubane-listing-item-lightbox" href="#cms-lightbox" data-image-url="{{ obj.external_image_url }}">
+                                            <span class="cubane-listing-btn-frame">
+                                                <svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-enlarge"/></svg><span class="cubane-listing-btn-label">Enlarge</span>
+                                            </span>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ urls.duplicate }}?pk={{ obj.pk }}">
+                                            <span class="cubane-listing-btn-frame">
+                                                <svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-duplicate"/></svg><span class="cubane-listing-btn-label">Duplicate</span>
+                                            </span>
+                                        </a>
+
+                                        {% if obj|has_attr:"disabled" %}
+                                            {% if obj.disabled %}
+                                                <a href="{{ urls.enable }}?pk={{ obj.pk }}" class="cubane-listing-item-disable-enable" data-confirm="Enable item?">
+                                                    <span class="cubane-listing-btn-frame">
+                                                        <svg viewBox="0 0 27 27.1"><use xlink:href="#icon-enable"/></svg><span class="cubane-listing-btn-label">Enable</span>
+                                                    </span>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ urls.disable }}?pk={{ obj.pk }}" class="cubane-listing-item-disable-enable" data-confirm="Disable item?">
+                                                    <span class="cubane-listing-btn-frame">
+                                                        <svg viewBox="0 0 12.7 12.7"><use xlink:href="#icon-disable"/></svg><span class="cubane-listing-btn-label">Disable</span>
+                                                    </span>
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <a class="cubane-listing-action" href="{{ urls.delete }}" data-method="post" data-confirm="Delete item?">
+                                        <span class="cubane-listing-btn-frame">
+                                            <svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-delete"/></svg><span class="cubane-listing-btn-label">Delete</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if controls_visible %}
+        <div class="cubane-listing-grid-foot">
+            {% include 'cubane/backend/listing/listing_foot.html' %}
+        </div>
+    {% endif %}
+{% endspaceless %}

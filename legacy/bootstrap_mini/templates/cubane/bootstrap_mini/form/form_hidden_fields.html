@@ -1,0 +1,5 @@
+{% if form.hidden_fields %}
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+{% endif %}

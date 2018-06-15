@@ -1,0 +1,35 @@
+{% extends 'cubane/backend/create_edit.html' %}
+
+
+{% block title %}{% if edit %}Order {{ order.order_id }}{% else %}Create New Order{% endif %}{% endblock %}
+
+
+{% block content %}
+    {% if edit %}
+        <h2 class="page-title">Order <small><span class="identifier">{{ order.order_id }}</span></small></h2>
+        <br/>
+        <div class="content-panel">
+            {% include 'cubane/ishop/merchant/orders/order_details.html' %}
+
+            <div class="order-details-form screen-only">
+                {% if order.waits_for_approval %}
+                    <h3>Order Approval</h3>
+                    <p>This order needs to be approved. Click on <b>Approve</b> if you accept the order.</p>
+                    <div class="form-actions">
+                        <a class="btn btn-primary" href="{% url 'cubane.ishop.orders.approve' %}?pk={{ order.id }}">Approve</a>
+                        <a class="btn" href="{% url 'cubane.ishop.orders.reject' %}?pk={{ order.id }}">Reject</a>
+                    </div>
+                {% else %}
+                    {% if order.can_change_payment_status %}
+                        {% include 'cubane/backend/form.html' %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <h2 class="page-title">Create New Order</h2>
+        <div class="content-panel">
+            {% include 'cubane/backend/form.html' %}
+        </div>
+    {% endif %}
+{% endblock %}

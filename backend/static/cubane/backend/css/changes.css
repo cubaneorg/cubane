@@ -1,0 +1,28 @@
+/*
+ * ChangeLog
+ */
+.changes h3 {
+    margin-top: 30px;
+}
+
+.changes table {
+    table-layout: fixed;
+}
+
+.changes td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.changes-field-title {
+    width: 20%;
+}
+
+.changes-field-half {
+    width: 40%;
+}
+
+.changes-field-full {
+    width: 80%;
+}

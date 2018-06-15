@@ -1,0 +1,265 @@
+/*
+ * General
+ */
+.cubane-collection-items {
+    border: #f0f0f0;
+}
+
+.cubane-collection-items {
+    border-style: solid;
+    border-width: 1px;
+}
+
+.cubane-collection-items-header {
+    height: 60px;
+    padding: 15px;
+}
+
+.cubane-collection-items .cubane-listing-grid-items {
+    margin: 0;
+}
+
+.cubane-collection-items .empty-message {
+    font-size: 14px;
+    padding: 20px;
+}
+
+[class*="cubane-collection"] {
+    float: none;
+}
+
+
+/*
+ * Collection (List)
+ */
+.collection-item.cubane-listing-list {
+    height: 55px;
+    line-height: 55px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 15px;
+    background-color: white;
+}
+
+.collection-item.cubane-listing-list:last-child {
+    border-bottom: none;
+}
+
+.collection-item.cubane-listing-list .cubane-collection-item-container {
+    position: relative;
+    display: flex;
+    padding-right: 35px;
+}
+
+.collection-item.cubane-listing-list .cubane-collection-item-title {
+    flex-grow: 1;
+}
+
+.collection-item.cubane-listing-list .ui-remove {
+    width: 80px;
+    line-height: 55px;
+    cursor: pointer;
+}
+
+.collection-item.cubane-listing-list .ui-remove svg {
+    position: relative;
+    width: 12px;
+    margin-right: 3px;
+    top: 2px;
+}
+
+.collection-item.cubane-listing-list .ui-sortable-handle {
+    opacity: 1;
+    cursor: ns-resize;
+}
+
+.collection-item.cubane-listing-list.sortable-placeholder {
+    border: 1px solid #f0f0f0;
+}
+
+.cubane-collection-item-container .ui-sortable-handle {
+    display: none;
+}
+
+.cubane-collection-item-container.ui-sortable .ui-sortable-handle {
+    display: block;
+}
+
+.cubane-collection-items-container .collection-item.cubane-listing-list .cubane-collection-item-container {
+    padding-right: 0;
+}
+
+.cubane-collection-items-container.ui-sortable .collection-item.cubane-listing-list .cubane-collection-item-container {
+    padding-right: 35px;
+}
+
+
+/*
+ * Collection (Grid)
+ */
+.cubane-collection-items-container.cubane-listing-grid-items {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cubane-collection-items-header {
+    background-color: #f0f0f0;
+    border: none;
+}
+
+.cubane-collection-items .cubane-listing-grid-items {
+    position: static;
+    padding: 15px;
+    overflow-y: visible;
+}
+
+.cubane-collection-items .btn {
+    background-color: #f49e2d;
+    color: white;
+}
+
+.cubane-collection-items .btn:hover {
+    background-color: #fff;
+    color: #f49e2d;
+}
+
+.collection-item.cubane-listing-grid-item {
+    padding-bottom: calc(((25% - 15px) / 1.33330304819879) + 32px + 35px + 15px);
+}
+
+.collection-item.cubane-listing-grid-item .thumbnail {
+    padding-bottom: 35px;
+}
+
+.collection-item.cubane-listing-grid-item .thumbnail > .ui-remove {
+    height: 35px;
+    line-height: 35px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    font-size: 12px;
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.collection-item.cubane-listing-grid-item .thumbnail > .ui-remove:hover {
+    color: #f49e2d;
+}
+
+.collection-item.cubane-listing-grid-item .thumbnail > .ui-remove:hover svg {
+    fill: #f49e2d;
+}
+
+.collection-item.cubane-listing-grid-item .thumbnail > .ui-remove svg {
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+    vertical-align: middle;
+    fill: black;
+}
+
+
+/*
+ * Bulk editing
+ */
+.cubane-listing-form .cubane-collection-items {
+    border: none;
+}
+
+.cubane-listing-form .cubane-collection-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.cubane-listing-form .cubane-collection-items-header {
+    padding: 0;
+    height: auto;
+    order: 2;
+    background-color: transparent;
+}
+
+.cubane-listing-form .cubane-collection-items-container {
+    order: 1;
+    border: 1px solid #ccc;
+    margin-bottom: 1px;
+    overflow: hidden;
+}
+
+.cubane-listing-form .collection-item.cubane-listing-list {
+    height: 26px;
+    line-height: 26px;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 0 0 4px;
+}
+
+.cubane-listing-form .collection-item.cubane-listing-list:last-child {
+    border-bottom: none;
+}
+
+.cubane-listing-form .cubane-collection-item-title.primary {
+    font-size: 13px;
+    margin-right: 8px;
+    max-width: calc(100% - 28px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    cursor: default;
+}
+
+.cubane-listing-form .collection-item.cubane-listing-list .ui-remove {
+    width: 20px;
+    line-height: 14px;
+}
+
+.cubane-listing-form .collection-item.cubane-listing-list .ui-remove-label {
+    display: none;
+}
+
+.cubane-listing-form .collection-item.cubane-listing-list .ui-remove svg {
+    top: 6px;
+}
+
+.cubane-listing-form .cubane-collection-items .empty-message {
+    padding: 0 2px;
+    font-size: 13px;
+    line-height: 26px;
+    text-align: center;
+}
+
+.cubane-listing-form .cubane-collection-items .empty-message-more {
+    display: none;
+}
+
+
+/*
+ * Filter panel
+ */
+.cubane-listing-filter .cubane-collection-items-header {
+    padding: 5px;
+    height: 40px;
+}
+
+.cubane-listing-filter .cubane-collection-items .empty-message {
+    padding: 5px;
+}
+
+.cubane-listing-filter .collection-item.cubane-listing-list {
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 30px;
+    height: 30px;
+}
+
+.cubane-listing-filter .cubane-collection-items .ui-remove {
+    width: 12px;
+    line-height: 30px;
+}
+
+.cubane-listing-filter .cubane-collection-items .ui-remove-label {
+    display: none;
+}

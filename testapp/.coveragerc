@@ -1,0 +1,22 @@
+# .coveragerc to control coverage.py
+[run]
+branch = False
+omit =
+    ../bootstrap3/templatetags/widget_tweaks.py
+    ../payment/gc/*
+    ../payment/*
+    ../ishop/*
+    */tests/*
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code:
+    def __repr__
+    def __unicode__
+
+ignore_errors = False 
+skip_covered = True

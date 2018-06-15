@@ -1,0 +1,130 @@
+.. _topics/favicons:
+
+=========================
+Generating Favorite Icons
+=========================
+
+A *favicon* (short for *favorite icon*) is an image file that browsers
+associate with a particular website.
+
+In order to support a variety of desktop and mobile devices, a number of such
+icon files need to be generated in different sizes and formats.
+
+Some browsers will rely on ``/favicon.ico``, other browsers support a number of
+different images in the PNG image file format.
+
+Cubane supports a number of different favicon formats *out of the box* and
+will generate favicon files based on one image source automatically for you.
+
+
+Using Standard Favorite Icons
+-----------------------------
+
+In you base template, simply use the ``favicons`` template tag as part of the
+``resource_tags`` template library to generate the required markup for a
+number of different favicon references:
+
+.. code-block:: html+django
+
+    {% load resource_tags %}
+
+    <html>
+        <head>
+            {% favicons %}
+        </head>
+
+        ...
+    </html>
+
+The favicon references are not present in *Debug* mode and will generate HTTP
+404 response codes if a browser attempts to download a favicon image file.
+
+However, in *Production* mode, those files will have been generated
+automatically as part of the website deployment process.
+
+You can generate favicon image files manually by executing the following
+management script:
+
+.. code-block:: console
+
+    $ python manage.py create_favicons
+
+By default, the favicon image generator will use the file
+``static/img/favicon.png`` relative to your application root folder.
+
+.. tip::
+
+    For best performance, we advise using an image size of 320 by 320 pixels
+    for the ``favicon.png`` source image file.
+
+
+Changing source image file
+--------------------------
+
+The image source file that is used to generate different versions of the
+favicon is determined by the two settings variables: :settings:`FAVICON_PATH`
+and :settings:`FAVICON_FILENAME`. Together they form a path within the static
+root folder of your application.
+
+Feel free to change the path or filename as you require. The image source file
+is required to be insufficient resolution. Some favicon image formats require
+up to 310 by 310 pixels.
+
+.. note::
+
+    If the source image file does not exist, then Cubane will simply ignore the
+    fact and will deploy the website without favicon files being generated.
+    However, the website may still contain references to favicon image files in
+    various formats.
+
+
+Adding favicon image formats
+----------------------------
+
+You can customize the particular image file formats that Cubane generates by
+changing :settings:`FAVICON_PNG_SIZES` and/or :settings:`FAVICON_ICO_SIZES`.
+
+:settings:`FAVICON_PNG_SIZES` represents a list of image formats that are
+generated in the PNG image file format:
+
+.. code-block:: python
+
+    FAVICON_PNG_SIZES = [
+        {'size': '16x16', 'filename': 'favicon-16x16.png'},
+        {'size': '24x24', 'filename': 'favicon-24x24.png'},
+        {'size': '32x32', 'filename': 'favicon-32x32.png'},
+        ...
+    ]
+
+Simply add or replace this list of image sizes by declaring a particular size
+and the filename of the resulting favicon image file.
+
+The second settings variable :settings:`FAVICON_ICO_SIZES` defines the various
+image sizes that are combined into the default ``favicon.ico`` file:
+
+.. code-block:: python
+
+    FAVICON_ICO_SIZES = [
+        {'size': '16x16',   'filename': 'favicon-16x16.png'},
+        {'size': '24x24',   'filename': 'favicon-24x24.png'},
+        {'size': '32x32',   'filename': 'favicon-32x32.png'},
+        {'size': '48x48',   'filename': 'favicon-48x48.png'},
+        {'size': '64x64',   'filename': 'favicon-64x64.png'},
+        {'size': '128x128', 'filename': 'favicon-128x128.png'}
+    ]
+
+Simply reference any previously generated PNG image that should be embedded
+into one single icon file: ``favicon.ico``.
+
+
+Customizing favicon markup
+--------------------------
+
+When using the ``favicons`` template tag, Cubane will simply include the
+template file ``cubane/favicons.html``, which contains markup for a list of
+default favicon references.
+
+You can either override the template file within your application by creating
+your own ``cubane/favicons.html`` file within the static folder of your
+application or simply use your own markup to list all references to the various
+favicon image files.

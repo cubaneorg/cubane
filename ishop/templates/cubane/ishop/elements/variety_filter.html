@@ -1,0 +1,21 @@
+<div class="variety-filter-panel">
+    <div class="variety-filter-toggle">Filter</div>
+    <div class="variety-filter">
+        <div class="basket-title">Filter by:<img src="{{ STATIC_URL }}cubane/ishop/frontend/img/filter.svg" alt="filter icon" ></div>
+        {% include 'cubane/ishop/elements/variety_filter_options.html' %}
+        <div class="variety-filter-footer">
+            {% if active_varieties %}
+                <div class="variety-filter-group">
+                    <div class="variety-filter-group-title">Options to apply</div>
+                    {% for item in active_varieties %}
+                        <div class="active-variety-filter-option">
+                            <span>{{ item.group_title }}: {{ item.title }}</span>
+                            <div class="active-variety-filter-option-remove" data-id="{{ item.id }}"><img src="{{ STATIC_URL }}cubane/ishop/frontend/img/cross.svg" alt="remove icon" ></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="btn variety-filter-apply">Apply</div>
+        </div>
+    </div>
+</div>

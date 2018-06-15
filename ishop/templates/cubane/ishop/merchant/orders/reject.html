@@ -1,0 +1,22 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Reject Order <small>{{ order.order_id }}</small> and cancel payment</h1>
+    <br/>
+    <br/>
+
+    <div class="content-panel">
+        <p>
+            {% if request.client.has_brands %}
+                Once the order is rejected by all parties, the payment is aborted. If at least one party approves the order, the payment transaction is settled for the total amount of the remaining parties.
+            {% else %}
+                Once the order is rejected, the payment transaction is aborted.
+            {% endif %}
+        </p><p>
+            An email will be sent to the customer automatically.
+        </p>
+    </div>
+
+    {% include 'cubane/backend/form.html' with without_continuation=True save_label='Reject and Cancel Payment' %}
+{% endblock %}

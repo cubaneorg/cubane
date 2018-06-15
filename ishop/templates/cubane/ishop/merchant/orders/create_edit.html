@@ -1,0 +1,195 @@
+{% extends 'cubane/backend/create_edit.html' %}
+{% load shop_tags %}
+
+
+{% block content %}
+    <div class="order-header screen-only">
+        {% if not is_browse_dialog and not is_create_dialog %}
+            <h1 class="page-title">
+                {% if edit %}
+                    {% if permissions.edit or not permissions %}
+                        Edit
+                    {% else %}
+                        View
+                    {% endif %}
+                    {{ verbose_name }}
+                    '{{ object }}'
+                {% else %}
+                    Create {{ verbose_name }}
+                {% endif %}
+            </h1>
+        {% endif %}
+
+        {% if edit %}
+            <div class="order-header-items">
+                <div class="order-header-item">
+                    <div class="order-header-item-label">Created:</div>
+                    <div class="order-header-item-value">{{ order.created_on|date:"d/m/Y" }}</div>
+                </div>
+                <div class="order-header-item">
+                    <div class="order-header-item-label">Updated:</div>
+                    <div class="order-header-item-value">{{ order.updated_on|date:"d/m/Y" }}</div>
+                </div>
+                <div class="order-header-item">
+                    <div class="order-header-item-label">Status:</div>
+                    <div class="order-header-item-value">{% include 'cubane/ishop/elements/order/print/order_status.html' %}</div>
+                </div>
+                {% if SHOP_PREAUTH and order.has_approval_status %}
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">Approval Status:</div>
+                        <div class="order-header-item-value">{% include 'cubane/ishop/elements/order/print/order_approval_status.html' %}</div>
+                    </div>
+                {% endif %}
+                {% if order.finance_option %}
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">Loan Status:</div>
+                        <div class="order-header-item-value">{% include 'cubane/ishop/elements/order/print/loan_status.html' %}</div>
+                        {% if order.get_loan_status_text_display %}
+                            <div class="order-header-item-info">{{ order.get_loan_status_text_display }}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if order.has_payment_gateway %}
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">Payment:</div>
+                        <div class="order-header-item-value">
+                            {% if order.payment_confirmed_at %}
+                                {{ order.payment_confirmed_at|date:"d/m/Y" }}
+                            {% else %}
+                                Not paid
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">Payment Via:</div>
+                        <div class="order-header-item-value">{{ order.payment_gateway_display }}</div>
+                    </div>
+                    {% if order.is_backend_payment %}
+                        <div class="order-header-item">
+                            <div class="order-header-item-label">Backend Payment:</div>
+                            <div class="order-header-item-value">Yes</div>
+                        </div>
+                    {% endif %}
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">Remaining Balance:</div>
+                        <div class="order-header-item-value">
+                            {% if order.basket.totals.difference_between_deposit_and_full_amount %}
+                                Deposit:
+                            {% endif %}
+
+                            {% shop_price order.remaining_balance %}
+                            {% if order.waits_for_approval %}
+                                (reserved)
+                            {% elif order.is_approved %}
+                                (approved)
+                            {% elif order.is_rejected %}
+                                (rejected)
+                            {% endif %}
+
+                            {% if order.basket.totals.difference_between_deposit_and_full_amount %}
+                                <br/>
+                                Remaining: {% shop_price order.basket.totals.difference_between_deposit_and_full_amount %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elif order.is_invoice %}
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">Payment Via:</div>
+                        <div class="order-header-item-value">Invoice</div>
+                    </div>
+                {% endif %}
+                <div class="order-header-item">
+                    <div class="order-header-item-label">Delivery:</div>
+                    <div class="order-header-item-value">
+                        {% include 'cubane/ishop/elements/order/basket/basket_delivery_info.html' with basket=order.basket %}
+                    </div>
+                </div>
+
+                {% for property_title, property_value in order.get_order_backend_properties %}
+                    <div class="order-header-item">
+                        <div class="order-header-item-label">{{ property_title }}:</div>
+                        <div class="order-header-item-value">{{ property_value }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="order-header-actions-container">
+                <div class="order-header-actions">
+                    <a class="order-header-action btn" href="{{ order.get_absolute_url }}" target="_blank">Customer Status Page</a>
+                    <a class="order-header-action btn print-page" href="#print-page">Print</a>
+
+                    {% if order.can_cancel %}
+                        <a class="order-header-action btn" href="{% url 'cubane.ishop.orders.cancel' %}?pk={{ order.pk }}&amp;edit_order=true">Cancel</a>
+                    {% endif %}
+                </div>
+                <div class="order-header-actions">
+                    {% if order.waits_for_approval %}
+                        <div class="order-next-step">Next Step</div>
+                        <div class="order-dots">...</div>
+                        <a class="order-header-action order-header-action-steps btn" href="{% url 'cubane.ishop.orders.approve' %}?pk={{ order.id }}&amp;edit_order=true">Approve<i class="order-icon"></i></a>
+                        <a class="order-header-action order-header-action-steps btn" href="{% url 'cubane.ishop.orders.reject' %}?pk={{ order.id }}&amp;edit_order=true">Reject<i class="order-icon"></i></a>
+                        <div class="order-dots">...</div>
+                    {% else %}
+                        {% if order.status == 1 %}
+                            {% if order.can_moto %}
+                                <div class="order-next-step">Next Step</div>
+                                <div class="order-dots">...</div>
+                                <button class="order-header-action btn order-header-action-steps backend-payment-btn">{% if order.is_retry %}Retry Take Payment{% else %}Take Payment{% endif %}<i class="order-icon"></i></button>
+                                <div class="order-dots">...</div>
+                            {% endif %}
+                        {% else %}
+                            {% if order.next_status %}
+                                <div class="order-next-step">Next Step</div>
+                                <div class="order-dots">...</div>
+                                {% for status in order.next_status %}
+                                    <button class="order-header-action btn order-header-action-steps backend-next-status-btn" data-id="{{ status.0 }}">{{ status.1 }}<i class="order-icon"></i></button>
+                                    <div class="order-dots">...</div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="order-form screen-only">
+        {% include 'cubane/backend/form/form_start.html' with id='backend-order-form' %}
+            {% if not permissions or permissions.edit or permissions.create %}
+                {% if not is_browse_dialog and not is_create_dialog and not is_edit_dialog and not is_frontend_editing %}
+                    {% if order.waits_for_approval %}
+                        <div class="form-actions">
+                            <h3>Order Approval</h3>
+                            <p>This order needs to be approved. Click on <b>Approve</b> if you accept the order.</p>
+                            <a class="btn btn-primary" href="{% url 'cubane.ishop.orders.approve' %}?pk={{ order.id }}&amp;edit_order=true">Approve</a>
+                            <a class="btn" href="{% url 'cubane.ishop.orders.reject' %}?pk={{ order.id }}&amp;edit_order=true">Reject</a>
+                        </div>
+                    {% else %}
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> {{ BACKEND_DEFAULT_SAVE_BUTTON_LABEL }}</button>
+                            <button type="submit" class="btn btn-save-and-continue"><i class="icon-save"></i> {{ BACKEND_DEFAULT_SAVE_AND_CONTINUE_BUTTON_LABEL }}</button>
+
+                            {% if not is_index_dialog %}
+                                <button type="reset" class="btn btn-cancel"><i class="icon-arrow-left"></i> {{ BACKEND_DEFAULT_BACK_BUTTON_LABEL }}</button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if form.has_required_fields and form.visible_fields %}
+                    	{% if form.all_fields_are_requried %}
+    	                    {% include 'cubane/backend/form/form_all_field_notice.html' %}
+                        {% else %}
+                        	{% include 'cubane/backend/form/form_required_field_notice.html' %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </form>
+    </div>
+
+    {% if edit %}
+        <div class="order-print visible-print">
+            {% include 'cubane/ishop/elements/order/print/order_details_print.html' %}
+        </div>
+    {% endif %}
+{% endblock %}

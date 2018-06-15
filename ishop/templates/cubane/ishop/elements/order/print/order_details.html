@@ -1,0 +1,57 @@
+{% load shop_tags %}
+
+<h3 class="order-status">Status: {% include 'cubane/ishop/elements/order/print/order_status.html' %}</h3>
+
+<div class="order-details">
+    <div class="row-fluid order-header">
+        <div class="span6">
+            <div class="well">
+                <p>Billing</p>
+                {% include 'cubane/ishop/elements/order/print/billing_address.html' %}
+            </div>
+        </div>
+        <div class="span6">
+            <div class="well">
+                <p>Delivery</p>
+                {% include 'cubane/ishop/elements/order/print/delivery_address.html' %}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="order-items">
+        {% for item in order.basket.products %}
+            {% include 'cubane/ishop/elements/order/print/order_item.html' %}
+        {% endfor %}
+    </div>
+
+    <div class="order-footer">
+        {% if order.voucher_title %}
+            {% include 'cubane/ishop/elements/order/print/order_voucher.html' %}
+        {% endif %}
+
+        {% include 'cubane/ishop/elements/order/print/order_delivery.html' %}
+
+        <div class="row-fluid">
+            <div class="span10">
+                <p class="align-right"><strong>Total::</strong></p>
+            </div>
+            <div class="span2">
+                <p class="align-right"><span class="price"><strong>{% shop_price order.total %}</strong></span></p>
+            </div>
+        </div>
+
+        {% if order.basket.totals.difference_between_deposit_and_full_amount %}
+            <div class="row-fluid">
+                <div class="span11">
+                    <p class="align-right">
+                        <strong>Remaining Unpaid Balance</strong>
+                    </p>
+                </div>
+                <div class="span1">
+                    <p class="align-right"><span class="price"><strong>{% shop_price order.basket.totals.difference_between_deposit_and_full_amount %}</strong></span></p>
+                </div>
+            </div>
+        {% endif %}</
+    </div>
+</div>

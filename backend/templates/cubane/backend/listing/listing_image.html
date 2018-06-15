@@ -1,0 +1,6 @@
+{% load media_tags %}
+{% if image_url %}
+    <div class="thumbnail-image" style="background-image: url({{ image_url }})"></div>
+{% else %}
+    <div class="thumbnail-image lazy-load{% if image.is_svg %} thumbnail-image-icon{% else %}{% if image.backend_orientation_mismatch %} thumbnail-image-contain{% endif %}{% endif %}" {% background_image image %}></div>
+{% endif %}

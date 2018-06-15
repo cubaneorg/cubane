@@ -1,0 +1,27 @@
+{% load form_tags %}
+
+{% if not oneline and not required_field_notice %}
+    {% if form.has_required_fields and form.visible_fields %}
+        {% if form.all_fields_are_requried %}
+            {% shop_include 'elements/form_all_field_required.html' %}
+        {% else %}
+            {% shop_include 'elements/form_required_field_notice.html' %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+{% shop_include 'elements/form_errors.html' %}
+
+{% if form.visible_fields %}
+    {% for field in form.visible_fields %}
+        {% if not field.field.widget.is_hidden %}
+            {% shop_include 'elements/form_field.html' %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if form.hidden_fields %}
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,52 @@
+@media (max-width: 767px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    #offcanvas-nav-items {
+        -webkit-transform-origin: left;
+        -o-transform-origin: left;
+        -ms-transform-origin: left;
+        transform-origin: left;
+        -ms-transform: translate(-100%, 0); /* IE 9 */
+        -webkit-transform: translate(-100%, 0); /* Safari */
+        transform: translate(-100%, 0);
+        -webkit-transition: -webkit-transform 300ms ease-out;
+        -o-transition: -o-transform 300ms ease-out;
+        -ms-transition: -ms-transform 300ms ease-out;
+        transition: transform 300ms ease-out;
+        position: absolute;
+        right: 20%;
+        left: 0;
+    }
+
+    #offcanvas-nav-items.open {
+        -ms-transform: translate(0, 0); /* IE 9 */
+        -webkit-transform: translate(0, 0); /* Safari */
+        transform: translate(0, 0);
+    }
+
+    #offcanvas-nav-items.in-content.open {
+        -ms-transform: translate(-100%, 0); /* IE 9 */
+        -webkit-transform: translate(-100%, 0); /* Safari */
+        transform: translate(-100%, 0);
+    }
+
+    .offcanvas-content {
+        -webkit-transform-origin: left;
+        -o-transform-origin: left;
+        -ms-transform-origin: left;
+        transform-origin: left;
+        -webkit-transition: -webkit-transform 300ms ease-out;
+        -o-transition: -o-transform 300ms ease-out;
+        -ms-transition: -ms-transform 300ms ease-out;
+        transition: transform 300ms ease-out;
+    }
+
+    .offcanvas-content.open {
+        -ms-transform: translate(80%, 0); /* IE 9 */
+        -webkit-transform: translate(80%, 0); /* Safari */
+        transform: translate(80%, 0);
+    }
+}

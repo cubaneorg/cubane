@@ -1,0 +1,10 @@
+<div class="pagination-view-mode">
+    {% if objects.paginator.num_pages > 1 or objects.paginator.view_all %}
+        <label for="id_pagination_view_all">Show</label>
+        <select name="all" id="id_pagination_view_all" size="1">
+            <option value="0"{% if not objects.paginator.view_all %} selected="selected"{% endif %}>{{ objects.paginator.min_page_size }}</option>
+            <option value="1"{% if objects.paginator.view_all %} selected="selected"{% endif %}>{{ objects.paginator.max_page_size }}</option>
+        </select>
+        <label>per page</label>
+    {% endif %}
+</div>

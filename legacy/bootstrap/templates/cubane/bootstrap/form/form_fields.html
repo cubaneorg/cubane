@@ -1,0 +1,6 @@
+{% load list_tags %}
+{% for fieldname in fields|split:"," %}
+    {% if fieldname in form.fields %}
+        {% include 'cubane/bootstrap/form/form_field.html' with field=form|get:fieldname labels=labels %}
+    {% endif %}
+{% endfor %}

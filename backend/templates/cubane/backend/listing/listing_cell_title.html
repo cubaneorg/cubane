@@ -1,0 +1,29 @@
+{% spaceless %}
+    {% load list_tags %}
+    {% load text_tags %}
+    {% load backend_tags %}
+
+    {% if forloop.first and permissions.edit_or_view %}
+        {{ obj|get:column.display_fieldname|text_from_html }}
+    {% elif column.bool %}
+        {% if obj|get:column.display_fieldname %}
+            yes
+        {% else %}
+            no
+        {% endif %}
+    {% elif column.choices %}
+        {{ obj|get:column.choice_display }}
+    {% elif column.currency %}
+        {{ obj|get:column.display_fieldname|listing_format_currency }}
+    {% elif column.html %}
+        {{ obj|get:column.display_fieldname|text_from_html }}
+    {% elif column.many2many %}
+        {% for item in obj|get:column.display_fieldname|get:"all" %}
+            {{ item }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            -
+        {% endfor %}
+    {% else %}
+        {{ obj|get:column.display_fieldname }}
+    {% endif %}
+{% endspaceless %}

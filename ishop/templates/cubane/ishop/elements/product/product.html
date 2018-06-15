@@ -1,0 +1,42 @@
+{% load media_tags %}
+{% load shop_tags %}
+{% load staticfiles %}
+
+
+<div class="item item-product" data-id="{{product.id}}" data-name="{{product.title}}" data-brand="{%if product.brand_id%}{{product.brand.title}}{%endif%}" data-category="{{product.primary_category.title}}">
+    <div class="item-content">
+        <div class="item-image">
+            <a class="item-brand" href="{% url 'shop.product' product.slug product.pk %}" title="{{ product.title }}">
+                {% if product.image %}
+                    {% image product.image 'product' %}
+                {% else %}
+                    <img class="missing-product-image" src="{% static 'cubane/ishop/img/missing/product_listing.jpg' %}" alt="{{ product.title }}"/>
+                {% endif %}
+            </a>
+            {% if product.brand %}<div class="item-brand-image">{% image product.brand.image 'brand' %}</div>{% endif %}
+        </div>
+
+        <div class="item-title"><a href="{% url 'shop.product' product.slug product.pk %}" title="{{ product.title }}">{{ product.title }}</a></div>
+
+        <div class="item-details">
+            {% if product.rrp %}<div class="item-rrp">RRP <span class="price">{% shop_product_price product.rrp %}</span></div>{% endif %}
+            {% if product.previous_price %}<div class="item-previous-price">Was <span class="price">{% shop_product_price product.previous_price %}</span></div>{% endif %}
+            <div class="item-price">{% if product.previous_price %}Now {% endif %}<span class="price">{% shop_product_price product %}</span></div>
+            <div class="item-availability">
+                {% if product.is_available %}
+                    {% if product.is_pre_order %}
+                        <i class="icon icon-tick"><svg viewBox="-466 267.9 27 27.1"><use xlink:href="#icon-tick"/></svg></i> Pre-Order
+                    {% else %}
+                        <i class="icon icon-tick"><svg viewBox="-466 267.9 27 27.1"><use xlink:href="#icon-tick"/></svg></i> In Stock
+                    {% endif %}
+                {% else %}
+                    <i class="icon icon-cross"><svg viewBox="-470 271.2 19 18.8"><use xlink:href="#icon-cross"/></svg></i> In Stock
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="item-actions">
+            <a class="btn btn-view-item" href="{% url 'shop.product' product.slug product.pk %}" title="View Product {{ product.title }}">View Product</a>
+        </div>
+    </div>
+</div>

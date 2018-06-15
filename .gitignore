@@ -1,0 +1,43 @@
+# Compiled source 
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# External libraries
+.egg-info
+
+# Packages #
+*.7z
+*.dmg
+*.gz
+*.iso
+*.rar
+*.tar
+*.zip
+.idea/
+
+# Logs and databases
+*.log
+*.sqlite
+
+# OS generated files
+._*
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.*~
+*~
+
+# manage.py
+manage.py
+
+# testapp media folder
+testapp/media
+
+# documentation build folder
+doc/_build

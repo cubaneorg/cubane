@@ -1,0 +1,20 @@
+{% load media_tags %}
+
+
+<div class="item item-category">
+    <div class="item-image">
+        <a href="{% url 'shop.category' category.slug category.pk %}">
+            {% if category.image %}
+                {% image category.image %}
+            {% else %}
+                {% include 'cubane/ishop/elements/no_image_placeholder.html' %}
+            {% endif %}
+        </a>
+    </div>
+
+    <div class="item-title">
+        <a href="{% url 'shop.category' category.slug category.pk %}">
+            {{ category.title }}
+        </a>
+    </div>
+</div>

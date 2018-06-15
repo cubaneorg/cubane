@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Child Page without Page</title>
+    </head>
+
+    <body>
+        <h1>Child Page without Page</h1>
+        <h2>Preview Not Available</h2>
+
+        {% if has_parent and not has_entity_type %}
+            <p>The parent page <a href="{% url 'cubane.cms.pages.edit' %}?pk={{ parent_page.pk }}#nav-step-tab-presentation" target="_top">{{ parent_page.title }}</a> is not configured to present this child page.</p>
+            <p>To correct this problem, edit the parent page <a href="{% url 'cubane.cms.pages.edit' %}?pk={{ parent_page.pk }}#nav-step-tab-presentation" target="_top">{{ parent_page.title }}</a> and configure it to present <em>{{ entity_model_plural }}</em>.</p>
+        {% elif not has_parent %}
+            <p>This child page is currently not attached to any parent page.</p>
+            <p>To correct this problem, assign a parent page to this child page within the <em>Presentation</em> section for this page.</p>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,40 @@
+===============
+Getting started
+===============
+
+Cubane is:
+
+1. For visitors to provide the fastest and highest quality website experience
+
+2. For Owners to provide a very simple and effective way to edit content and
+
+3. For Developers to enable them to deliver the above continuously.
+
+We hope that cubane can make your life as a developer easier by providing you
+with a set of tested tools to solve common development challenges in various
+business domains.
+
+New to cubane? Walk your way through this material quickly to get up and
+running quickly.
+
+.. toctree::
+   :maxdepth: 1
+
+   introduction
+   install
+   tutorial01
+   tutorial02
+   tutorial03
+   tutorial04
+   tutorial05
+   whatsnext
+   contributing
+
+.. seealso::
+
+    Cubane is based on Python_ and Django_. If you are new to the language or
+    Django, you might want to start by getting an idea of what the language or
+    the Django framework is all about before diving into cubane.
+
+    .. _python: https://python.org/
+    .. _django: https://djangoproject.com/

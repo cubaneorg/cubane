@@ -1,0 +1,58 @@
+/*
+ * Task info style
+ */
+
+
+/*
+ * Container
+ */
+.taskinfo {
+    position: fixed;
+    z-index: 200;
+    left: 180px;
+    right: 0;
+    top: 0;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipse;
+    white-space: nowrap;
+}
+
+@media (max-width: 967px) {
+    .taskinfo {
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+    }
+
+    .taskinfo-message {
+        display: none;
+    }
+}
+
+
+/*
+ * Percentage
+ */
+.taskinfo-percent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background-color: #f49e2d;
+}
+
+
+/*
+ * Message text
+ */
+.taskinfo-message {
+    height: 30px;
+    line-height: 30px;
+    color: #666;
+}
+
+.taskinfo-message em {
+    color: #f49e2d;
+}

@@ -1,0 +1,45 @@
+.content-frame.auth-content-frame {
+    top: 0;
+    background-image: url('/static/cubane/backend/img/white-background.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.auth-content {
+    position: absolute;
+    max-width: 450px;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%S, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.auth-headline {
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 45px;
+    max-width: 1100px;
+    margin: 0 auto;
+    color: #f49e2d;
+}
+
+.auth-text {
+    color: #8a8a8b;
+    margin: 30px 0;
+    font-size: 16px;
+}
+
+.auth-content .form-content {
+    padding: 15px 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-content-frame .form-content {
+    margin-bottom: 15px !important;
+}
+
+.auth-content-frame .form-actions .btn {
+    margin-bottom: 15px;
+}

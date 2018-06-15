@@ -1,0 +1,31 @@
+{% load partition_tags %}
+
+{% if products.object_list %}
+    <div class="product-listing" data-list="{%if galist %}{{galist}}{% endif%}">
+        {% include 'cubane/ishop/elements/product/product_listing_header.html' %}
+
+        <div class="product-listing-items">
+            {% for row in products.object_list|columns:3 %}
+                <div class="product-listing-row">
+                    {% for product in row %}
+                        {% include 'cubane/ishop/elements/product/product.html' %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% include 'cubane/ishop/elements/product/product_listing_footer.html' %}
+    </div>
+{% else %}
+    {% if search %}
+        <p>Your search <strong>{{ q }}</strong> did not match any documents.</p>
+        <h3>Suggestions:</h3>
+        <ul>
+            <li>Make sure all words are spelled correctly.</li>
+            <li>Try different keywords.</li>
+            <li>Try more general keywords.</li>
+        </ul>
+    {% else %}
+        <p>There are no products in {{ category.title }}</p>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,63 @@
+{% load shop_tags %}
+{% load media_tags %}
+<tr style="width: 100%;">
+    <td>
+        <img width="100" style="width: 100px;" src="{% if item.image_attribute_url %}{% media_api_url item.image 'small' item.image_attribute_url %}{% else %}{{ item.image.small_url }}{% endif %}" alt="{{ item.image.caption }}">
+    </td>
+    <td>
+        {% if item.product %}
+            <a href="{{ item.product.get_absolute_url }}">{{ item.title }}</a>
+        {% else %}
+            <div>{{ item.title }}</div>
+        {% endif %}
+        <br>
+        {% if item.product %}
+            <small>In <a href="{{ item.product.primary_category.get_absolute_url }}">{{ item.product.primary_category }}</a></small>
+        {% endif %}
+
+        {% if item.variety_assignments %}
+            <div class="variety-options" style="margin-top: 5px;">
+                {% for assignment in item.variety_assignments %}
+                    <div class="variety-option">
+                        <span class="variety-title">{{ assignment.variety_option.variety.display_title }}:</span>
+                        <span class="variety-option-title">{{ assignment.variety_option.title }}</span>
+                        {% if assignment.variety_option.image %}
+                            <img width="32" style="display: inline-block; width: 32px;" src="{{ assignment.variety_option.image.small_url }}" alt="{{ assignment.variety_option.image.caption }}">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if item.custom_properties %}
+            <div class="custom-properties">
+                {% for property in item.custom_properties %}
+                    <div class="custom-property">
+                        <label>{{ property.label }}:</label>
+                        <span>{{ property.value }}</span>
+                        <span class="unit">{{ property.unit }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if item.is_non_returnable %}
+            <div class="non-returnable-info">This item cannot be returned.</div>
+        {% endif %}
+    </td>
+
+    <td style="text-align: center;">
+        <p class="align-right"><span class="quantity">{{ item.quantity }}</span></p>
+    </td>
+
+    {% if not order.is_invoice %}
+        <td style="text-align: right;">
+            {% if item.deposit_only %}
+                <p class="align-right"><span class="price"><del>{% shop_price item.total_without_deposit %}</del></span></p>
+                <p class="align-right"><span class="price">Deposit: {% shop_price item.total %}</span></p>
+            {% else %}
+                <p class="align-right"><span class="price">{% shop_price item.total %}</span></p>
+            {% endif %}
+        </td>
+    {% endif %}
+</tr>

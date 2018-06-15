@@ -1,0 +1,16 @@
+{% load media_tags %}
+{% spaceless %}
+    {% for obj in selector.objects %}
+        <div class="cubane-selector-item{% if obj.pk == selector.active_pk %} active{% endif %}" data-id="{{ obj.pk }}">
+            {% if obj.image %}
+                <div class="cubane-selector-item-image">
+                    {% image obj.image %}
+                </div>
+            {% endif %}
+
+            <div class="cubane-selector-item-content">
+                {{ obj }}
+            </div>
+        </div>
+    {% endfor %}
+{% endspaceless %}

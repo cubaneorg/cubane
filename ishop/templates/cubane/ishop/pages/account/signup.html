@@ -1,0 +1,37 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+{% load cms_tags %}
+{% load message_tags %}
+{% load form_tags %}
+
+{% block meta_title %}{% meta_title 'New Customer' %}{% endblock %}
+{% block title %}New Customer{% endblock %}
+
+{% block account_breadcrumb %}{% shop_breadcrumb 'New Customer' %}{% endblock %}
+
+{% block frame %}
+    <form class="form-horizontal account-form register-form focus-first" method="post">
+        {% auto_csrf_token %}
+
+        <div class="account-frame">
+            <div class="account-left">
+                {% shop_breadcrumb 'New Customer' %}
+                <div class="account-title">Your Details</div>
+                <div class="form-content">
+                    {% include 'cubane/form/form_fields.html' with fields='title, first_name, last_name, country' %}
+                </div>
+            </div>
+            <div class="account-content">
+                {% flash messages %}
+                <div class="account-title">Account Name &amp; Password</div>
+                <div class="form-content">
+                    {% include 'cubane/form/form_fields.html' with fields='email, password, password_confirm, newsletter, captcha, captcha_hash' %}
+                </div>
+                <div class="form-actions">
+                    <div><button type="reset" class="btn btn-cancel"><i class="icon-black icon-remove"></i>&nbsp;Cancel</button></div>
+                    <div><button type="submit" class="btn btn-primary"><i class="icon-white icon-user"></i>&nbsp;Signup</button></div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

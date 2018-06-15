@@ -1,0 +1,32 @@
+=========================================
+Writing your first cubane website, part 1
+=========================================
+
+This tutorial will guide you through the creation of a new website. As we
+follow the tutorial along, we will step by step incorporate new structural
+elements and features into the website.
+
+Let's start by choosing a project. Feel free to pick a theme by yourself; for
+the purpose of this tutorial, we will assume that we are tasked to build a new
+website for, let's say **The history of programming languages**.
+
+Our site shall *list* commonly used programming languages, will inform its
+visitors about the history of each language and will also offer a number of
+books for each language.
+
+We'll assume you have `cubane installed </tutorial/install>` already. You can
+tell cubane is installed and which version by running the following command:
+
+.. code-block:: console
+
+    $ cubane --version
+
+If cubane is installed, you should see the version of your installation.
+
+.. note::
+
+    If you get an error that the command ``cubane`` could not be found, then
+    cubane might not be installed.
+
+    You may also need to add the cubane bin folder to your system path in
+    order for your shell to find the ``cubane`` command.

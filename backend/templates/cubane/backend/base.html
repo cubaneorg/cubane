@@ -1,0 +1,291 @@
+{% load resource_tags %}
+{% load message_tags %}
+{% load backend_tags %}
+{% load list_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    {% favicons %}
+    {% inline_resources 'backend-inline' 'css' %}
+    {% resources 'backend' 'css' %}
+    {% resources 'backend' 'css' 'print' %}
+</head>
+
+<body class="{% if is_browse_dialog %}browse-dialog{% endif %}{% if is_create_dialog %} create-dialog{% endif %}{% if is_edit_dialog %} edit-dialog{% endif %}{% if is_dialog %} is-dialog{% endif %}{% if is_index_dialog %} index-dialog{% endif %}{% if is_frontend_editing %} frontend-editing{% endif %}{% if create_edit_page %} create-edit-page{% endif %}{% if not close_index_dialog and messages %} has-messages{% endif %}">
+    {% if not close_index_dialog %}
+        {% include "cubane/backend/icons.html" %}
+        <div class="wrapper">
+            {% if not is_browse_dialog and not is_dialog and request.user.is_staff %}
+                <div class="taskinfo">
+                    <div class="taskinfo-percent"></div>
+                    <div class="taskinfo-message"></div>
+                </div>
+
+                {% comment %}
+                 % main navigation corresponds to backend sections
+                {% endcomment %}
+                <div class="nav-container">
+                    <div class="nav-panel">
+                        <a class="cubane-logo-navbar" href="{% url 'cubane.backend.index' %}"></a>
+                        <div class="navbar main-navbar">
+                            <div class="navbar-inner">
+                                <div class="container">
+                                    <ul class="nav">
+                                        {% if DASHBOARD %}
+                                            <li{% if dashboard_widgets %} class="active"{% endif %}><a href="{% url 'cubane.backend.index' %}">Home</a></li>
+                                        {% endif %}
+
+                                        {% for section in BACKEND.sections %}
+                                            {% if section|is_visible_for:request.user and section.navigatable %}
+                                                <li{% if BACKEND.current_section == section %} class="active"{% endif %}><a href="{{ section|get_frist_visible_section_url_for:request.user }}">{{ section.title }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    <ul class="nav pull-right">
+                                        {% if cms_cache_enabled %}
+                                            <li class="cms-publish{% if cms_publish %} can-publish{% endif %}"><a href="#cms-publish" title="Publish Changes">Publish</a></li>
+                                        {% endif %}
+                                        <li class="nav-notifications"><a class="cms-notifications{% if error_messages %} error pulse{% endif %}" href="#cms-notifications" title="Notifications">Notifications <span class="badge badge-important badge-super">{{ messages|length }}</span></a></li>
+                                        <li><a href="{% url 'cubane.backend.logout' %}">Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% comment %}
+                         % sub-navigation corresponds to all sub-sections within the current
+                         % section. If any particular section has only one sub-section,
+                         % the sub-section navigation is empty, so that we do not repeat ourselves.
+                        {% endcomment %}
+                        <div class="subnav-frame">
+                            {% if frontend_link %}
+                                <a class="subnav-view-website" href="{{frontend_link }}" target="_blank">View Website</a>
+                            {% endif %}
+
+                            <div class="subnav navbar">
+                                <div class="navbar-inner">
+                                    <ul class="nav">
+                                        {% for item in BACKEND.current_section.grouped_sections %}
+                                            {% if item.grouped %}
+                                                <li class="dropdown{% if BACKEND.current_sub_section in item.sections %} active{% endif %}">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ item.title }} <b class="caret"></b></a>
+                                                    <ul class="dropdown-menu">
+                                                        {% for section in item.sections %}
+                                                            {% if section|is_visible_for:request.user %}
+                                                                <li{% if BACKEND.current_sub_section == section %} class="active"{% endif %}><a href="{{ section.get_url }}">{{ section.title }}</a></li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            {% else %}
+                                                {% if item.section|is_visible_for:request.user and item.section.navigatable %}
+                                                    <li{% if BACKEND.current_sub_section == item.section %} class="active"{% endif %}><a href="{{ item.section.get_url }}">{{ item.section.title }}</a></li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="phone-navigation">
+                            <div id="offcanvas-nav-toggle"><svg viewBox="0 0 64 64"><use xlink:href="#icon-sandwich"/></svg></div>
+                            <div class="nav" id="offcanvas-nav">
+                                <ul class="nav">
+                                    {% for section in BACKEND.sections %}
+                                        {% if section|is_visible_for:request.user and section.navigatable %}
+                                            <li{% if BACKEND.current_section == section %} class="active"{% endif %}>
+
+                                                {% if section.grouped_sections|length > 1 %}
+                                                    <div class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ section.title }}<svg viewBox="0 0 8.1 4.7"><use xlink:href="#icon-arrow-down"/></svg></a>
+                                                        <ul class="dropdown-menu">
+                                                            {% for item in section.grouped_sections %}
+                                                                {% if item.grouped %}
+                                                                    <li class="dropdown{% if BACKEND.current_sub_section in item.sections %} active{% endif %}">
+                                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ item.title }} <b class="caret"></b></a>
+                                                                        <ul class="dropdown-menu">
+                                                                            {% for section in item.sections %}
+                                                                                {% if section|is_visible_for:request.user %}
+                                                                                    <li{% if BACKEND.current_sub_section == section %} class="active"{% endif %}><a href="{{ section.get_url }}">{{ section.title }}</a></li>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </li>
+                                                                {% else %}
+                                                                    {% if item.section|is_visible_for:request.user and item.section.navigatable %}
+                                                                        <li{% if BACKEND.current_sub_section == item.section %} class="active"{% endif %}><a href="{{ item.section.get_url }}">{{ item.section.title }}</a></li>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                {% else %}
+                                                    <a href="{{ section.get_url }}">{{ section.title }}</a>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                <ul class="nav pull-right">
+                                    <li><a class="cms-notifications btn close-nav" href="#cms-notifications" title="Notifications">Notifications <span class="badge badge-important">{{ messages|length }}</span></a></li>
+                                    {% if cms_publish %}
+                                        <li><a class="cms-publish btn close-nav" href="#cms-publish" title="Publish Changes">Publish</a></li>
+                                    {% endif %}
+                                    <li><a class="btn" href="{% url 'cubane.backend.logout' %}">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="content" id="content">
+                <div class="popup-notification-container">
+                    {% if messages or form.errors %}
+                        <div class="popup-notification{% if error_messages or form.errors %} error{% endif %}">
+                            <div class="popup-notification-message">
+                                    {% if form.errors %}
+                                        There are errors with the form.
+                                    {% else %}
+                                        {% if messages|length > 1 %}
+                                            You have <em>{{ messages|length }}</em> new Notifications
+                                            {% if error_messages %}<br>{{ error_messages|length }} out of {{ messages|length }} are errors.{% endif %}
+                                        {% else %}
+                                            {% for m in messages %}{% if forloop.first %}{{ m|safe }}{% endif %}{% endfor %}
+                                        {% endif %}
+                                    {% endif %}
+                            </div>
+                            {% if messages|length == 1 and messages|get:0|get:"extra_tags" %}
+                                <div class="cubane-undo popup-notification-undo" data-change="{{ messages|get:0|get:"extra_tags" }}">Undo</div>
+                            {% endif %}
+                            <div class="popup-notification-btns">
+                                {% if messages %}
+                                    <div class="popup-notification-btn view-btn">
+                                        View
+                                    </div>
+                                {% endif %}
+                                <div class="popup-notification-btn close-btn">
+                                    Close
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <a class="cms-notifications cms-notifications-overlay{% if is_dialog and error_messages %} pulse{% endif %}" href="#cms-notifications" title="Notifications">Notifications <span class="badge badge-important badge-super">{{ messages|length }}</span></a>
+                <div class="alert-messages">
+                    <div class="alert-messages-header">
+                        <h1 class="cubane-listing-header-section-title">Notifications</h1>
+                        <button type="button" class="btn alert-messages-close-all"><i class="icon-remove"></i> Dismiss</button>
+                    </div>
+                    <div class="alert-messages-container">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                <div class="alert-icon">
+                                    {% if message.tags == 'error' %}
+                                        <svg viewBox="0 0 19 18.8"><use xlink:href="#icon-close"/></svg>
+                                    {% else %}
+                                        <svg viewBox="0 0 27 27.1"><use xlink:href="#icon-tick"/></svg>
+                                    {% endif %}
+                                </div>
+                                <div class="alter-message-container">{{ message|safe }}</div>
+                                {% if message.extra_tags %}
+                                    <div class="cubane-undo alert-undo" data-change="{{ message.extra_tags }}">Undo</div>
+                                {% endif %}
+                                <button type="button" class="close" data-dismiss="alert"><svg viewBox="0 0 13.5 13.3"><use xlink:href="#icon-delete"/></svg>Remove</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="notifications-messages-overlay"></div>
+
+                <div class="content-frame">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% inline_resources 'backend-inline' 'js' %}
+    {% javascript_urls %}
+
+    {% include 'cubane/backend/includes/settings_js.html' %}
+
+    {% resources 'backend' 'js' %}
+    {% block js %}{% endblock %}
+
+    {# -- notify frontend editing container whenever we have a browse window open #}
+    {% if is_browse_dialog %}
+        <script>
+            if ( window.top !== window ) {
+                window.top.dispatchEvent(new CustomEvent('cubane-browse'));
+            }
+        </script>
+    {% endif %}
+
+
+    {# -- close dialog window once we created an entity using the "+" button #}
+    {% if dialog_created_id %}
+        <script>
+            // propagate to parent window that we created an entity...
+            if ( window.parent !== window ) {
+                var json = {
+                    id: '{{ dialog_created_id }}',
+                    title: '{{ dialog_created_title }}'
+                };
+                window.parent.$(window.parent).trigger('cubane-listing-create', [json]);
+            }
+        </script>
+    {% endif %}
+
+
+    {# -- close dialog window once we edited an entity using an edit button that was annotated with .edit-dialog #}
+    {% if dialog_edited_id %}
+        <script>
+            // propagate to parent window that we created an entity...
+            if ( window.parent !== window ) {
+                var json = {
+                    id: '{{ dialog_edited_id }}',
+                };
+
+                window.parent.$(window.parent).trigger('cubane-listing-edit', [json]);
+            }
+        </script>
+    {% endif %}
+
+
+    {# -- frontend editing dialog saved #}
+    {% if frontend_editing_id %}
+        <script>
+            // propagate to parent window that we created an entity...
+            if (window.top !== window) {
+                if (window.parent == window.top) {
+                    // close root window
+                    window.top.dispatchEvent(new CustomEvent('cubane-data-saved'));
+                }
+                else {
+                    // close intermediate dialog window
+                    window.parent.$(window.parent).trigger('cubane-close-index-dialog');
+                }
+            }
+        </script>
+    {% endif %}
+
+
+    {# -- close dialog window once we got back to index screen within a dialog window #}
+    {% if close_index_dialog %}
+        <script>
+            // propagate to parent window that we created an entity...
+            if ( window.parent !== window ) {
+                window.parent.$(window.parent).trigger('cubane-close-index-dialog');
+            }
+        </script>
+    {% endif %}
+</body>
+
+</html>

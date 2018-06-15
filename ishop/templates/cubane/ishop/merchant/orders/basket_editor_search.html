@@ -1,0 +1,11 @@
+{% load media_tags %}
+{% load shop_tags %}
+
+{% for product in products %}
+    <div class="basket-editor-panel-listing-item" data-pk="{{ product.pk }}">
+        <div class="basket-editor-panel-listing-item-image lazy-load"{% if product.image %} {% background_image product.image 'product' %}{% else %} {% background_image_placeholder 'product' %}{% endif %}></div>
+        <div class="basket-editor-panel-listing-item-title">{{ product.title }}</div>
+    </div>
+{% empty %}
+    <div class="basket-editor-panel-empty">No Products matching the search query.</div>
+{% endfor %}

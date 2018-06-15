@@ -1,0 +1,8 @@
+{% extends '$TARGET_NAME$/base.html' %}
+{% load cms_tags %}
+
+
+{% block content %}
+    <h1>{{ current_page.title }}</h1>
+    {% slot content 1 %}
+{% endblock %}

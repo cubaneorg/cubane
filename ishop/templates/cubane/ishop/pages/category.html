@@ -1,0 +1,31 @@
+{% extends 'cubane/ishop/pages/base.html' %}
+{% load shop_tags %}
+{% load cms_tags %}
+
+{% block meta_title %}{% meta_title category %}{% endblock %}
+{% block meta_description %}{% if category.meta_description %}{{ category.meta_description }}{% endif %}{% endblock %}
+{% block keywords %}{% if category.keywords %}{{ category.keywords }}{% endif %}{% endblock %}
+{% block title %}{{ category.title }}{% endblock %}
+
+{% block frame %}
+    <div class="padder">
+        {% shop_breadcrumb category %}
+
+        {% if products %}
+            {% include 'cubane/ishop/elements/product/product_listing.html' with galist='Product Listing' %}
+        {% else %}
+            This category is empty.
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block panel %}
+    {% include 'cubane/ishop/elements/variety_filter.html' %}
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+    {% include 'cubane/ishop/elements/ga/product_listing.js' with galist='Product Listing' %}
+{% endblock %}

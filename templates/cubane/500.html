@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Oops, something went wrong.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="We are trying to keep things working here, but someone keeps throwing a monkey wrench in the works." />
+<meta name="keywords" content="awesome 500 error page" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+
+html, body {
+    background-color: #222;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica; sans-serif;
+}
+
+#gears {
+    position: absolute;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    background-color: #e9e9e9;
+    z-index: 1;
+}
+
+#content {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    top: 30px;
+    z-index: 2;
+    text-shadow: 1px 1px 0 #000000;
+}
+
+#content > h1 {
+    margin-top: 0;
+    font-size: 40px;
+}
+
+#content > p {
+    font-size: 22px;
+}
+
+#content small {
+    color: #ccc;
+}
+
+#logo {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    z-index: 2;
+}
+
+</style>
+
+</head>
+
+<body>
+    <div id="content">
+        <h1>500 - Oops, something went wrong.</h1>
+        <p>We are trying to keep things working here, but someone keeps throwing a monkey wrench in the works.</p>
+        <p><small>Please try to refresh this page at a later time, we get busy in the meantime...</p>
+    </div>
+
+    <canvas id="gears" width="0" height="0"></canvas>
+
+    <img id="logo" src="/static/cubane/backend/img/logo.png" alt="InnerShed">
+</body>
+
+<script>
+
+(function (globals){
+"use strict";
+
+
+/*
+ * Resize canvas
+ */
+var updateConvasPosition = function () {
+    var canvas = document.getElementById('gears');
+    var w = document.documentElement.clientWidth;
+    var h = document.documentElement.clientHeight;
+    var ch = 500;
+    if ( ch + 200 > h ) ch = h - 200;
+    var y = (h - ch) / 2;
+
+    canvas.setAttribute('width', w);
+    canvas.setAttribute('height', ch);
+    canvas.style.top = y + 'px';
+
+    var logo = document.getElementById('logo');
+};
+updateConvasPosition();
+window.onresize = updateConvasPosition;
+
+/*
+ * Request animation frame
+ */
+window.requestAnimFrame = (function(callback) {
+    return (
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        }
+    );
+})();
+
+
+/*
+ * Gear constructor
+ */
+var Gear = function (config) {
+    this.x = config.x;
+    this.y = config.y;
+    this.spikes = config.spikes;
+    this.radius = config.radius;
+    this.holeRadius = config.holeRadius;
+    this.innerRadius = config.innerRadius;
+    this.numTeeth = config.numTeeth;
+    this.theta = config.theta;
+    this.thetaSpeed = config.thetaSpeed / 1000;
+    this.lightColor = config.lightColor;
+    this.darkColor = config.darkColor;
+    this.clockwise = config.clockwise;
+}
+
+
+/*
+ * Gear draw method
+ */
+Gear.prototype.draw = function() {
+    var canvas = document.getElementById('gears');
+    var ctx = canvas.getContext('2d');
+    ctx.save();
+
+    // enable shadow
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 15;
+    ctx.shadowOffsetX = -4;
+    ctx.shadowOffsetY = 4;
+
+    // draw gear teeth
+    ctx.beginPath();
+    ctx.lineJoin = 'bevel';
+    var numPoints = this.numTeeth * 2;
+    for (var n = 0; n < numPoints; n++) {
+        var radius = null;
+
+        if (n % 2 == 0) {
+            radius = this.radius + 8;
+        } else {
+            radius = this.radius - 8;
+        }
+
+        var theta = this.theta;
+        theta += ((Math.PI * 2) / numPoints) * (n + 1);
+
+        var x = (radius * Math.sin(theta)) + this.x;
+        var y = (radius * Math.cos(theta)) + this.y;
+
+        if (n == 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.closePath();
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = this.darkColor;
+    ctx.stroke();
+
+    // draw gear body
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+    ctx.arc(this.x, this.y, this.holeRadius, 0, 2 * Math.PI, true);
+    var spikeWidth = Math.PI * 2 / (this.spikes * 4);
+    for ( var i = 0; i < this.spikes; i++ ) {
+        var theta = this.theta + ( ((Math.PI * 2) / this.spikes) * (i + 1) );
+        var p3x = (this.innerRadius * Math.sin(theta + spikeWidth)) + this.x;
+        var p3y = (this.innerRadius * Math.cos(theta + spikeWidth)) + this.y;
+        var p4x = (this.innerRadius * Math.sin(theta - spikeWidth)) + this.x;
+        var p4y = (this.innerRadius * Math.cos(theta - spikeWidth)) + this.y;
+
+        var offset = -Math.PI * 0.5 + Math.PI;
+
+        ctx.moveTo(p4x, p4y);
+        ctx.arc(this.x, this.y, this.holeRadius, offset - theta + spikeWidth, offset - theta - spikeWidth, true);
+        ctx.lineTo(p3x, p3y);
+    }
+    ctx.closePath();
+    var grd = ctx.createLinearGradient(this.x - 100, this.y - 100, this.x + 100, this.y + 100);
+    grd.addColorStop(0, this.lightColor);
+    grd.addColorStop(1, this.darkColor);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    // turn off shadow
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+
+    // strokes
+    // outer border
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+    ctx.closePath();
+    ctx.strokeStyle = this.darkColor;
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // middle border
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.holeRadius, 0, 2 * Math.PI, false);
+    ctx.closePath();
+    ctx.strokeStyle = this.darkColor;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // inner border
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, Math.max(0, this.innerRadius - 5), 0, 2 * Math.PI, false);
+    ctx.closePath();
+    ctx.strokeStyle = this.darkColor;
+    ctx.lineWidth = 10;
+    ctx.stroke();
+
+
+};
+
+
+var animate = function (gears, lastTime) {
+    var canvas = document.getElementById('gears');
+    var ctx = canvas.getContext('2d');
+
+    // update
+    var time = (new Date()).getTime();
+    var timeDiff = time - lastTime;
+
+    for(var i = 0; i < gears.length; i++) {
+        var gear = gears[i];
+
+        if (gears[i].clockwise) {
+            gears[i].theta -= (gear.thetaSpeed * timeDiff);
+        } else {
+            gears[i].theta += (gear.thetaSpeed * timeDiff);
+        }
+    }
+
+    // clear
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // draw
+    for (var i = 0; i < gears.length; i++) {
+        gears[i].draw(timeDiff);
+    }
+
+    // request new frame
+    requestAnimFrame(function() {
+        animate(gears, time);
+    });
+};
+
+
+/*
+ * Construct scene
+ */
+var createScene = function () {
+    var gears = [];
+
+    // small right 1
+    gears.push(new Gear({
+        x: 1640,
+        y: 460,
+        spikes: 5,
+        radius: 60,
+        holeRadius: 50,
+        innerRadius: 20,
+        numTeeth: 24,
+        theta: 1,
+        thetaSpeed: 1,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: false
+    }));
+
+    // small right 2
+    gears.push(new Gear({
+        x: 1505,
+        y: 460,
+        spikes: 5,
+        radius: 60,
+        holeRadius: 50,
+        innerRadius: 20,
+        numTeeth: 24,
+        theta: 2,
+        thetaSpeed: 1,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: true
+    }));
+
+    // small right 3
+    gears.push(new Gear({
+        x: 1370,
+        y: 460,
+        spikes: 5,
+        radius: 60,
+        holeRadius: 50,
+        innerRadius: 20,
+        numTeeth: 24,
+        theta: 0,
+        thetaSpeed: 1,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: false
+    }));
+
+    // small gear left background
+    gears.push(new Gear({
+        x: 960,
+        y: 50,
+        spikes: 3,
+        radius: 100,
+        holeRadius: 80,
+        innerRadius: 30,
+        numTeeth: 24,
+        theta: 0,
+        thetaSpeed: 0.68,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: true
+    }));
+
+    // big gear right
+    gears.push(new Gear({
+        x: 1100,
+        y: 420,
+        spikes: 5,
+        radius: 200,
+        holeRadius: 160,
+        innerRadius: 100,
+        numTeeth: 64,
+        theta: 0.25,
+        thetaSpeed: 0.25,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: true
+    }));
+
+    // big gear left
+    gears.push(new Gear({
+        x: 500,
+        y: 280,
+        spikes: 6,
+        radius: 400,
+        holeRadius: 360,
+        innerRadius: 200,
+        numTeeth: 128,
+        theta: 0,
+        thetaSpeed: 0.125,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: false
+    }));
+
+    // blue gear
+    gears.push(new Gear({
+        x: 120,
+        y: 105,
+        spikes: 5,
+        radius: 80,
+        holeRadius: 60,
+        innerRadius: 20,
+        numTeeth: 24,
+        theta: 0,
+        thetaSpeed: 1,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: false
+    }));
+
+    // red gear
+    gears.push(new Gear({
+        x: 222,
+        y: 190,
+        spikes: 5,
+        radius: 40,
+        holeRadius: 20,
+        innerRadius: 0,
+        numTeeth: 16,
+        theta: 0.14,
+        thetaSpeed: 2,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: true
+    }));
+
+    // orage gear
+    gears.push(new Gear({
+        x: 272,
+        y: 142,
+        spikes: 5,
+        radius: 18,
+        holeRadius: 10,
+        innerRadius: 7,
+        numTeeth: 10,
+        theta: 0.14,
+        thetaSpeed: 4,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: false
+    }));
+
+    // green gear
+    gears.push(new Gear({
+        x: 463,
+        y: 144,
+        spikes: 2,
+        radius: 160,
+        holeRadius: 120,
+        innerRadius: 30,
+        numTeeth: 48,
+        theta: 0,
+        thetaSpeed: 0.5,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: true
+    }));
+
+    // green gear
+    gears.push(new Gear({
+        x: 800,
+        y: 510,
+        spikes: 3,
+        radius: 320,
+        holeRadius: 280,
+        innerRadius: 200,
+        numTeeth: 64,
+        theta: 0,
+        thetaSpeed: 0.5,
+        lightColor: '#e6e6e6',
+        darkColor: '#e4e4e4',
+        clockwise: false
+    }));
+
+    return gears;
+};
+
+
+/*
+ * Main
+ */
+(function () {
+    var gears = createScene();
+    var time = (new Date()).getTime();
+    animate(gears, time);
+})();
+
+
+}(this));
+
+</script>
+
+</html>

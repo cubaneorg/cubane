@@ -1,0 +1,42 @@
+{% extends 'cubane/enquiry/mail/base.html' %}
+
+
+{% block content %}
+    <h1>Contact Information</h1>
+    <p>We received the following information from a visitor of your website:</p>
+    <table>
+        <thead>
+            <tr>
+                <th align="left" with="30%">Field</th>
+                <th align="left" width="70%">Provided Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for field in fields %}
+                <tr>
+                    <td style="vertical-align: top;">{{ field.title }}</td>
+                    <td>
+                        {% if field.list %}
+                            {% for item in field.value %}
+                                {{ item }}{% if not forloop.last %}, {% endif %}<br>
+                            {% endfor %}
+                        {% else %}
+                            {{ field.value }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+{% endblock %}
+
+
+{% block signature %}
+Regards,<br/>
+<br/>
+InnerShed Ltd.
+{% endblock %}
+
+{% block email_reason %}
+You're recieving this email because someone has used the contact us page on your website in order to send you an enquiry.
+{% endblock %}

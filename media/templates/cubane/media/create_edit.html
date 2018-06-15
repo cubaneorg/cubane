@@ -1,0 +1,58 @@
+{% extends 'cubane/backend/create_edit.html' %}
+{% load form_tags %}
+{% load media_tags %}
+
+
+{% block content %}
+    <div class="cubane-media-editor{% if is_images %} is-images{% else %} is-docuemnts{% endif %}{% if is_images and object.get_shape_names %} with-shapes{% endif %}" data-edit="{{ edit }}" data-images="{{ is_images }}">
+        <div class="cubane-media-editor-form">
+            {% with enctype='multipart/form-data' %}
+                {{ block.super }}
+            {% endwith %}
+        </div>
+
+        <div class="cubane-media-editor-container">
+            <div class="cubane-media-editor-toolbar">
+                <button class="btn cubane-media-editor-auto-detect-focal-point">Auto Detect</button>
+                <button class="btn cubane-media-editor-center-focal-point">Center</button>
+            </div>
+
+            <div class="cubane-media-editor-container-panels">
+                <div class="cubane-media-editor-shapes">
+                    {% if is_images and object.get_shape_names %}
+                        {% for shape, title, ar in object.get_shape_labels %}
+                            <div class="cubane-media-editor-shape" data-ar="{{ ar }}" title="{{ title }}">
+                                <div class="cubane-media-editor-shape-frame lazy-load-shape-{{ shape }}">
+                                    <img src="{% if object and object.pk %}{{ object.original_url }}{% endif %}" alt="">
+                                </div>
+                                <div class="cubane-media-editor-shape-title">{{ title }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="cubane-media-editor-preview">
+                    <div class="cubane-media-editor-preview-frame">
+                        <div class="cubane-media-editor-preview-frame-background"></div>
+
+                        <div class="cubane-media-editor-preview-panel">
+                            <div class="cubane-media-editor-preview-panel-frame">
+                                {% if object and object.pk %}
+                                    {% if object.is_image %}
+                                        <img src="{{ object.original_url }}" alt="">
+                                    {% else %}
+                                        <iframe src="{% url 'cubane.cms.documents.preview' %}?url={{ object.original_url }}"></iframe>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cubane-media-editor-focal-point"></div>
+                        </div>
+                    </div>
+                    <div class="cubane-media-editor-preview-images">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

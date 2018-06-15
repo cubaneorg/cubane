@@ -1,0 +1,35 @@
+.lazy-load {
+    display: block;
+    margin-bottom: -1px;   /* prevent rounding errors on lazy-load aspect ratio */
+}
+
+.lazy-load.custom-width {
+    display: inline-block;
+}
+
+.lazy-load > span {
+    display: block;
+    position: relative;
+	height: 0;
+	overflow: hidden;
+}
+
+.lazy-load > span > img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+    height: auto;
+}
+
+img, .lazy-load {
+    max-width: 100%;
+}
+
+.lazy-load svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

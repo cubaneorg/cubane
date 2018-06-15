@@ -1,0 +1,44 @@
+{% load form_tags %}
+{% load partition_tags %}
+
+<div class="filter-form">
+    {% for field in filter_form.visible_fields %}
+        <div class="control-frame{% if field|widget_type == 'SectionWidget' %} form-section-frame{% endif %}">
+            {% if field|widget_type == 'SectionWidget' %}
+                {{ field }}
+            {% else %}
+                {% if not field.field.no_label %}
+                    <label class="control-label" for="{{ field.auto_id }}">
+                        {{ field.label }}{% if not form.all_fields_are_requried and field.field.required %}<span class="required_indicator">*</span>{% endif %}
+                    </label>
+                {% endif %}
+
+                {% if field|widget_type == 'CheckboxInput' %}
+                    <div class="controls control-checkbox">
+                        <label class="checkbox">
+                        {{ field }}
+                        {{ field.help_text }}
+                        </label>
+                    </div>
+                {% else %}
+                    <div class="controls">
+                        <div class="field">{{ field }}</div>
+                        {% if field.errors %}
+                            <div class="help-inline">
+                                {% for err in field.errors %}
+                                    {{ err }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {% if field.help_text %}
+                                <div class="help-block">{{ field.help_text }}</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% include 'cubane/backend/form/form_hidden_fields.html' %}
+</div>

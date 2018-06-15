@@ -1,0 +1,7 @@
+{% if order.delivery_name %}{{ order.delivery_name }}<br/>{% endif %}
+{% if order.delivery_company %}{{ order.delivery_company }}<br/>{% endif %}
+{{ order.delivery_address1 }}<br/>
+{% if order.delivery_address2 %}{{ order.delivery_address2 }}<br/>{% endif %}
+{% if order.delivery_address3 %}{{ order.delivery_address3 }}<br/>{% endif %}
+{{ order.delivery_city }}{% if order.delivery_county %}, {{ order.delivery_county }}{% endif %}<br/>
+{{ order.delivery_postcode }} {{ order.delivery_country.printable_name }}

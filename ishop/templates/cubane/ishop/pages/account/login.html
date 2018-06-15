@@ -1,0 +1,49 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+{% load cms_tags %}
+{% load message_tags %}
+{% load form_tags %}
+
+
+{% block meta_title %}{% meta_title 'Login, New Customer' %}{% endblock %}
+{% block title %}Login, New Customer{% endblock %}
+
+
+{% block frame %}
+    <div class="account-frame">
+        <div class="account-left">
+            {% shop_breadcrumb 'Login, New Customer' %}
+            {% include 'cubane/ishop/elements/messages.html' %}
+            <h2 class="account-title">Existing Customers</h2>
+            <div>Login to your existing account.</div>
+            <form class="form-vertical account-form login-form" method="post">
+                {% auto_csrf_token %}
+
+                {% include 'cubane/form/form.html' with form=login_form %}
+                <div class="form-actions">
+                    <div><button type="submit" class="btn btn-primary" name="customer"><i class="icon-white icon-user"></i>&nbsp;Login</button></div>
+                    <div><button type="submit" class="btn btn-cancel password-forgotten" name="password_forgotten"><i class="icon-black icon-lock"></i>&nbsp;Request New Password</button></div>
+                    <script>
+                        document.querySelector('.password-forgotten').addEventListener('click', function() {
+                            document.querySelector('#id_customer-password').required = false;
+                        });
+                    </script>
+                </div>
+            </form>
+        </div>
+
+        <div class="account-content">
+            {% flash messages %}
+            <h2 class="account-title">New Customer</h2>
+            <div>Register for a new account.</div>
+            <form class="form-vertical account-form login-form new-customer-form" method="post">
+                {% auto_csrf_token %}
+
+                {% include 'cubane/form/form.html' with form=guest_form %}
+                <div class="form-actions">
+                    <div><button type="submit" class="btn btn-primary" name="guest"><i class="icon-white icon-user"></i>&nbsp;Create New Account</button></div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

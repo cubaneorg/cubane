@@ -1,0 +1,41 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+
+
+{% block meta_title %}Welcome, {{ user.full_name }}{% endblock %}
+{% block title %}Welcome, {{ user.full_name }}{% endblock %}
+
+
+{% block account_breadcrumb %}
+    {% shop_breadcrumb 'Dashboard' %}
+{% endblock %}
+
+
+{% block dashboard %}active{% endblock %}
+
+
+{% block content %}
+    <div class="account-title">Dashboard</div>
+    <div class="account-details">
+        <div class="account-dashboard-details-name"><span>Name:</span> {{ request.user.first_name }} {{ request.user.last_name }}</div>
+        <div class="account-dashboard-details-email"><span>Email:</span> {{ request.user.email }}</div>
+        <div class="account-action"><a href="{% url 'shop.account.details' %}">Edit Details</a></div>
+    </div>
+    <div class="account-title">Recent Processing Orders</div>
+    <div class="account-details">
+        {% include 'cubane/ishop/elements/account/orders.html' %}
+        <div class="account-action"><a href="{% url 'shop.account.orders' 'processing' %}">View All Orders</a></div>
+    </div>
+
+    <div class="account-title">Delivery Address</div>
+    <div class="account-details">
+        {% if address %}
+            <div class="account-dashboard-address">
+                {% for line in address.get_parts %}
+                    <div>{{ line }},</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="account-action"><a href="{% url 'shop.account.delivery' %}">Edit Delivery Address</a></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'cubane/backend/base.html' %}
+{% load form_tags %}
+
+
+{% block content %}
+    <form class="form form-horizontal" method="POST" enctype="multipart/form-data">
+        <div class="form-content">
+            <p>
+                You are about to upload a data file as a Comma-Seperated-Values (CSV) file.
+            </p><p>
+                Please choose the encoding the CSV file is encoded in. The encoding may depend on your operating
+                system and the region of the world you live in. Most software packages, like Microsoft Excel will
+                allow you to specify a specific encoding when export data as a CSV file.
+            </p><p>
+                Please find below some examples based on Western Europe:
+            </p>
+
+            {% include 'cubane/backend/includes/encodings.html' %}
+
+            {% include 'cubane/backend/form/form_fields.html' with fields='csvfile, encoding' %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-white icon-upload"></i> Upload CSV File...</button>
+        </div>
+    </form>
+{% endblock %}

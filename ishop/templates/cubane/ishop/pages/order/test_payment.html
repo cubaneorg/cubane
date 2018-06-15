@@ -1,0 +1,101 @@
+{% extends 'cubane/ishop/pages/order/base.html' %}
+{% load shop_tags %}
+{% load form_tags %}
+
+
+{% block meta_title %}InnerShed Test Payment Gateway | {{ request.settings.name }}}{% endblock %}
+{% block title %}InnerShed Test Payment Gateway{% endblock %}
+{% block meta %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endblock %}
+
+
+{% block breadcrumb %}
+    {% shop_breadcrumb 'InnerShed Test Payment Gateway' %}
+{% endblock %}
+
+
+{% block frame %}
+    <div class="checkout">
+        <div class="checkout-form">
+            <form method="POST" action="{{ post_url }}">
+                {% auto_csrf_token %}
+
+                <div class="form-content clearfix">
+                    <div class="status-form-title">
+                        <div class="control-group form-section-control-group">
+                            <legend>Confirm Payment</legend>
+                        </div>
+                    </div>
+                    <div class="status-title">
+                        Simulated Online Payment
+                    </div>
+                    <div class="status-text">
+                        Click on one of the buttons below in order to simulate the corresponding result
+                        when processing an online paymnet (simulated for testing purposes).
+                    </div>
+                </div>
+
+                <input type="hidden" name="transaction_id" id="transaction_id" value="{{ order.transaction_id }}" />
+
+                <div class="form-actions">
+                    <div class="form-action col3">
+                        <button type="submit" name="status" value="ERROR" class="btn">Indicate Error</button>
+                    </div>
+
+                    <div class="form-action col3">
+                        <button type="submit" name="status" value="DECLINED" class="btn">Decline Payment</button>
+                    </div>
+
+                    <div class="form-action col3">
+                        <div id="checkout">
+                            <button type="submit" name="status" value="CONFIRMED" class="btn btn-primary">Confirm Payment</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="checkout-basket">
+            <table class="payment-table">
+                <tr><th colspan="2" class="table-section">Order and Payment Details</th></tr>
+                <tr><th>Order ID</th><td>{{ order.order_id }}</td></tr>
+                <tr><th>Status</th><td>{{ order.get_status_display }}</td></tr>
+                <tr><th>Transaction ID</th><td>{{ order.transaction_id }}</td></tr>
+                <tr><th>Deferred Payment</th><td>{{ details.preauth|yesno }}</td></tr>
+                <tr><th>Click and Collect</th><td>{{ order.click_and_collect|yesno }}</td></tr>
+                <tr><th>Delivery Quote</th><td>{{ order.delivery_quote|yesno }}</td></tr>
+                <tr><th>Finance Option</th><td>{{ order.finance_option }}</td></tr>
+
+                <tr><th colspan="2" class="table-section">Billing</th></tr>
+                <tr><th>Title</th><td>{{ order.billing_address_title_display }}</td></tr>
+                <tr><th>First Name</th><td>{{ order.billing_address.first_name }}</td></tr>
+                <tr><th>Last Name</th><td>{{ order.billing_address.last_name }}</td></tr>
+                <tr><th>Address1</th><td>{{ order.billing_address.address1 }}</td></tr>
+                <tr><th>Address2</th><td>{{ order.billing_address.address2 }}</td></tr>
+                <tr><th>Address3</th><td>{{ order.billing_address.address3 }}</td></tr>
+                <tr><th>City</th><td>{{ order.billing_address.city }}</td></tr>
+                <tr><th>County</th><td>{{ order.billing_address.county }}</td></tr>
+                <tr><th>Postcode</th><td>{{ order.billing_address.postcode }}</td></tr>
+                <tr><th>Country</th><td>{{ order.billing_address.country.printable_name }}</td></tr>
+
+                <tr><th colspan="2" class="table-section">Delivery</th></tr>
+                {% if order.delivery_address.name %}<tr><th>Name</th><td>{{ order.delivery_address.name }}</td></tr>{% endif %}
+                <tr><th>Address1</th><td>{{ order.delivery_address.address1 }}</td></tr>
+                <tr><th>Address2</th><td>{{ order.delivery_address.address2 }}</td></tr>
+                <tr><th>Address3</th><td>{{ order.delivery_address.address3 }}</td></tr>
+                <tr><th>City</th><td>{{ order.delivery_address.city }}</td></tr>
+                <tr><th>County</th><td>{{ order.delivery_address.county }}</td></tr>
+                <tr><th>Postcode</th><td>{{ order.delivery_address.postcode }}</td></tr>
+                <tr><th>Country</th><td>{{ order.delivery_address.country.printable_name }}</td></tr>
+
+                <tr><th colspan="2" class="table-section">Total</th></tr>
+                <tr><th>Sub Total</th><td>{{ CURRENCY }}{{ order.sub_total }}</td></tr>
+                <tr><th>Delivery</th><td>{{ CURRENCY }}{{ order.delivery }}</td></tr>
+                <tr><th>TOTAL</th><td><strong>{{ CURRENCY }}{{ order.total }}</strong></td></tr>
+            </table>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

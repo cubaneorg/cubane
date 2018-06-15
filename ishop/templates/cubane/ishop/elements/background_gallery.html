@@ -1,0 +1,13 @@
+{% if frontpages %}
+    {% for frontpage in frontpages %}
+        <div class="bg-gallery-item fade" data-logo="{{ frontpage.logo_color }}" data-x="100" data-y="-300" data-width="1920" data-height="1080" style="background-image: url({{ frontpage.header_image.attachments.header_image.url }});">
+            {% if frontpage.link %}
+                <a href="{{ frontpage.link }}" target="_blank" class="home-advertisement">{{ frontpage.title }}</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    {% if page %}
+        <div class="bg-gallery-item fade" data-logo="white" data-x="100" data-y="-300" data-width="1920" data-height="1080" style="background-image: url({{ CLIENT_MEDIA_URL }}shop/images/contact/tb_contact1.jpg);"></div>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,22 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Approve Order <small>{{ order.order_id }}</small> and settle payment</h1>
+    <br/>
+    <br/>
+
+    <div class="content-panel">
+        <p>
+            {% if request.client.has_brands %}
+                Once the order is approved by all parties, the payment is settled and the order can be processed.
+            {% else %}
+                Once the order is approved, the payment transaction is settled and the order can be processed.
+            {% endif %}
+        </p><p>
+            An email will be sent to the customer automatically.
+        </p>
+    </div>
+
+    {% include 'cubane/backend/form.html' with without_continuation=True save_label='Approve and Settle Payment' %}
+{% endblock %}

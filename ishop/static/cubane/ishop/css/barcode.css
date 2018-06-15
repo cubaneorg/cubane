@@ -1,0 +1,29 @@
+/*
+ * Barcodes on product details page (backend).
+ */
+.cubane-product-barcode {
+    position: absolute;
+    right: 30px;
+    top: -20px;
+    width: 150px;
+}
+
+.cubane-product-barcode > svg {
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .cubane-product-barcode {
+        position: static;
+    }
+}
+
+
+/*
+ * Barcode on order page
+ */
+.cubane-order-item-barcode {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

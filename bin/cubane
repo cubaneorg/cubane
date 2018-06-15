@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+# coding=UTF-8
+from __future__ import unicode_literals
+from cubane import VERSION
+from cubane.generator import generate_from_template
+import os
+import sys
+import argparse
+
+
+def get_argument_parser():
+    """
+    Construct argument parser.
+    """
+    parser = argparse.ArgumentParser(description='Perform cubane utility tasks, such as creating a new cubane project from a template.')
+
+    parser.add_argument(
+        '--create',
+        nargs=3,
+        metavar=('name', 'domain-name', 'admin-email'),
+        help='Create a new cubane project with given name in the current working directory.'
+    )
+
+    parser.add_argument(
+        '--scan',
+        nargs=1,
+        metavar=('folder', ),
+        help='Scan current or given folder for cubane-based websites.'
+    )
+
+    parser.add_argument(
+        '--version',
+        action='store_true',
+        help='Show the installed version of cubane.'
+    )
+
+    return parser
+
+
+def run_action(args):
+    """
+    Execute main script action according to given arguments.
+    """
+    if args.create:
+        _create(args.create[0], args.create[1], args.create[2])
+    elif args.scan:
+        _scan(args.scan[0])
+    elif args.version:
+        _version()
+
+
+def _create(name, domain_name, admin_email):
+    """
+    Create a new cubane project
+    """
+    success = generate_from_template('blank_project', name, domain_name, admin_email)
+
+    if success:
+        print 'New project created: %s.' % name
+
+
+def _scan(folder):
+    """
+    Scan given folder for cubane-based websites.
+    """
+    from scan import scan_sites
+    scan_sites(folder)
+
+
+def _version():
+    """
+    Present the version of cubane.
+    """
+    print 'cubane version %s' % '.'.join([unicode(v) for v in VERSION])
+
+
+#
+# Main
+#
+if __name__ == "__main__":
+    parser = get_argument_parser()
+    args = parser.parse_args()
+
+    if len(sys.argv) == 1:
+        parser.print_help()
+    else:
+        run_action(args)

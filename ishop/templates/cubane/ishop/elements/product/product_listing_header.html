@@ -1,0 +1,12 @@
+{% load list_tags %}
+<div class="product-listing-header">
+    <div class="product-listing-header-category-name">{% if listing_title %}{{ listing_title }}{% else %}{{ category.title }}{% endif %}</div>
+    <div class="product-listing-header-form">
+        <form method="GET">
+            <label for="{{ order_by_form|get:'sort_by'|get:"auto_id" }}">Sort By</label>
+            {{ order_by_form|get:'sort_by' }}
+        </form>
+
+        {% include 'cubane/ishop/elements/paginator_viewmode.html' with objects=products base=category.get_absolute_url %}
+    </div>
+</div>

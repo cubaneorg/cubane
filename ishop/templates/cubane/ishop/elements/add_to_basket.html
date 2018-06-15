@@ -1,0 +1,35 @@
+{% load shop_tags %}
+
+
+<form action="{{ post_url }}" class="form-vertical add-to-basket" method="post">
+    {% include 'cubane/form/form.html' with required_field_notice='False' %}
+    <div class="row-fluid product-price-and-button">
+        <div class="span6">
+            {% if product.rrp %}<div class="item-rrp">RRP <span class="price">{% shop_product_price product.rrp %}</span></div>{% endif %}
+            {% if product.previous_price %}<div class="item-previous-price">Was <span class="price">{% shop_product_price product.previous_price %}</span></div>{% endif %}
+            {% include 'cubane/ishop/elements/basket/basket_price.html' %}
+        </div>
+        <div class="span6">
+            <button type="submit" class="btn btn-primary btn-add-to-basket">Add To Basket</button>
+        </div>
+    </div>
+
+    {% if product.pre_order and product.deposit %}
+        <p>Pay a {% shop_product_price product.deposit %} deposit today to Pre-Order this item. We will contact you to take the remainder as soon as it arrives in stock.</p>
+    {% elif not product.loan_exempt %}
+        <p>Finance is available for this product.</p>
+    {% endif %}
+
+    {% if previous_price %}
+        {% if product.previous_price %}
+            <div class="phone-hide">
+                <h3 class="prev-price">was</h3><del class="prev-price">{% shop_previous_price product %}</del>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        window.CUBANE_VARIETY_OPTION_IDS = {{ form.variety_option_ids|safe }};
+    </script>
+</form>
+<div class="clear"></div>

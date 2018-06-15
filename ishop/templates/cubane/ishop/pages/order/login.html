@@ -1,0 +1,52 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+{% load cms_tags %}
+{% load form_tags %}
+
+{% block meta_title %}{% meta_title 'Login, New Customer' %}{% endblock %}
+{% block title %}Login, New Customer{% endblock %}
+
+
+{% block breadcrumb %}{% endblock %}
+
+
+{% block frame %}
+    <div class="account-frame">
+        <div class="account-left">
+            {% include 'cubane/ishop/elements/messages.html' %}
+            {% shop_breadcrumb 'Login, New Customer' %}
+            <div class="well login-box">
+                <h2 class="account-title">Existing Customers</h2>
+                <form class="form-vertical account-form login-form" method="post">
+                    {% auto_csrf_token %}
+                    <div>Quick checkout for registered customers.</div>
+                    {% include 'cubane/form/form.html' with form=login_form %}
+                    <div class="form-actions">
+                        <div><button type="submit" class="btn btn-primary" name="customer"><i class="icon-white icon-shopping-cart"></i>&nbsp;Quick Checkout</button></div>
+                        <div><button type="submit" class="btn btn-cancel" name="password_forgotten"><i class="icon-black icon-lock"></i>&nbsp;Request New Password</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="account-content">
+            <div class="well login-box">
+                <h2 class="account-title">New Customers</h2>
+                <form class="form-vertical account-form login-form new-customer-form" method="post">
+                    {% auto_csrf_token %}
+                    <div>For new shoppers or those that don't want to register for an account.</div>
+                    {% include 'cubane/form/form.html' with form=guest_form %}
+                    <div class="form-actions">
+                        <div><button type="submit" class="btn btn-primary" name="guest"><i class="icon-white icon-shopping-cart"></i>&nbsp;Guest Checkout</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+    {% include 'cubane/ishop/elements/ga/checkout.js' with step='1' %}
+{% endblock %}

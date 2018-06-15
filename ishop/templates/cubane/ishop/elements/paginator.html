@@ -1,0 +1,47 @@
+<div class="pagination">
+    {% if objects.paginator.num_pages > 1 %}
+        <ul>
+            {% if objects.has_previous %}
+                {% if objects.previous_page_number == 1 and base %}
+                    <li><a href="{{ base }}?all={% if objects.paginator.ishop_view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}"><i class="icon icon-arrow-left"><svg viewBox="0 0 99.1 99.1"><use xlink:href="#icon-arrow-left"/></svg></i></a></li>
+                {% else %}
+                    <li><a href="{{ base }}?page={{ objects.previous_page_number }}&all={% if objects.paginator.ishop_view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}"><i class="icon icon-arrow-left"><svg viewBox="0 0 99.1 99.1"><use xlink:href="#icon-arrow-left"/></svg></i></a></li>
+                {% endif %}
+            {% else %}
+                <li class="disabled"><a href="#"><i class="icon icon-arrow-left"><svg viewBox="0 0 99.1 99.1"><use xlink:href="#icon-arrow-left"/></svg></i></a></li>
+            {% endif %}
+
+            {% if 1 not in objects.paginator.range %}
+                <li><a href="{{ base }}?page=1&all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}">1</a></li>
+                <li><a href="#" class="disabled">...</a></li>
+            {% endif %}
+
+            {% for p in objects.paginator.range %}
+                {% if p == 1 and base %}
+                    {% if p == objects.number %}
+                    <li class="active"><a href="{{ base }}?all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}">{{ p }}</a></li>
+                    {% else %}
+                    <li><a href="{{ base }}?all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}">{{ p }}</a></li>
+                    {% endif %}
+                {% else %}
+                    {% if p == objects.number %}
+                    <li class="active"><a href="{{ base }}?page={{ p }}&all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}">{{ p }}</a></li>
+                    {% else %}
+                    <li><a href="{{ base }}?page={{ p }}&all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}">{{ p }}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if objects.paginator.num_pages not in objects.paginator.range %}
+                <li><a href="#" class="disabled">...</a></li>
+                <li><a href="{{ base }}?page={{ objects.paginator.num_pages }}&all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}">{{ objects.paginator.num_pages }}</a></li>
+            {% endif %}
+
+            {% if objects.has_next %}
+                <li><a href="{{ base }}?page={{ objects.next_page_number }}&all={% if objects.paginator.view_all %}1{% else %}0{% endif %}{% if variety_filter %}&{{ variety_filter }}{% endif %}{% if order_by %}&o={{ order_by }}{% endif %}{% if q %}&q={{ q }}{% endif %}"><i class="icon icon-arrow-right"><svg viewBox="0 0 99.1 99.1"><use xlink:href="#icon-arrow-right"/></svg></i></a></li>
+            {% else %}
+                <li class="disabled"><a href="#"><i class="icon icon-arrow-right"><svg viewBox="0 0 99.1 99.1"><use xlink:href="#icon-arrow-right"/></svg></i></a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</div>

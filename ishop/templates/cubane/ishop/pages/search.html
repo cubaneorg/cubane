@@ -1,0 +1,31 @@
+{% extends 'cubane/ishop/pages/base.html' %}
+{% load shop_tags %}
+{% load cms_tags %}
+
+
+{% block meta_title %}{% meta_title meta_title %}{% endblock %}
+
+
+{% block frame %}
+    <div class="padder">
+        {% shop_breadcrumb 'Search' %}
+
+        {% if products %}
+            {% include 'cubane/ishop/elements/product/product_listing.html' with listing_title='Search Result' galist='Search Result' %}
+        {% else %}
+            <h1>Search Result</h1>
+            <p>No items found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+{% block panel %}
+    {% include 'cubane/ishop/elements/variety_filter.html' %}
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+    {% include 'cubane/ishop/elements/ga/product_listing.js' with galist='Search Result' %}
+{% endblock %}

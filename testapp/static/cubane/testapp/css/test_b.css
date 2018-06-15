@@ -1,0 +1,25 @@
+
+
+/*
+ * Test to see if import rules are collected and then relocated to the very top
+ * of the resulting css file (minified).
+ */
+@import url(/static/testapp/css/empty.css);
+
+
+/*
+ * Test css resource file for testing resource minification.
+ * See /cubane/lib/tests/minify.py
+ */
+h1 {
+    font-size: 24px;
+}
+
+/* import rule with single quotes */
+@import url('/static/testapp/css/foo.css');
+
+/* import rule with double quotes */
+@import url("/static/testapp/css/bar.css");
+
+/* import rule without url() */
+@import '/static/testapp/css/foobar.css';

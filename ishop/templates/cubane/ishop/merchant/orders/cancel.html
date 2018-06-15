@@ -1,0 +1,21 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Cancel Order <small>{{ order.order_id }}</small> and cancel payment or loan application</h1>
+    <br/>
+    <br/>
+
+    <div class="content-panel">
+        <p>
+            Once the order is rejected, any pending payment transaction are
+            canceled if your payment or loan application provider supports this
+            functionality.
+        </p><p>
+            An email will be sent to the customer automatically, which includes
+            your cancellation message as given below.
+        </p>
+    </div>
+
+    {% include 'cubane/backend/form.html' with without_continuation=True save_label='Cancel Order' %}
+{% endblock %}

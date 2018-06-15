@@ -1,0 +1,7 @@
+{% if sortable and is_leaf_folder_view %}
+    <div class="cubane-listing-seq-column cubane-listing-column sortable{% if order_by == 'seq' %} active{% endif %}" data-name="seq">
+        <div class="t-d">
+            Order <span class="btn cubane-listing-seq-apply" disabled>Apply</span>
+        </div>
+    </div>
+{% endif %}

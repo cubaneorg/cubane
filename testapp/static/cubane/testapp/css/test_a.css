@@ -1,0 +1,10 @@
+
+
+/*
+ * Test css resource file for testing resource minification.
+ * See /cubane/lib/tests/minify.py
+ */
+body {
+    background-color: red;
+}
+

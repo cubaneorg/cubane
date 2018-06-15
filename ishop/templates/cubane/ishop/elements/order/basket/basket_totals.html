@@ -1,0 +1,93 @@
+{% load shop_tags %}
+
+
+<div class="basket-totals">
+    {% if not basket.is_invoice %}
+        <div class="basket-total-item">
+            <div class="basket-total-label">
+                Subtotal
+                <span class="basket-total-info">
+                    {% include 'cubane/ishop/elements/order/basket/basket_delivery_info.html' %}
+                </span>
+            </div>
+            <div class="basket-total-price">
+                {% shop_price basket.sub_total %}
+                <span class="basket-total-info">
+                    {% if basket.is_quote_only %}
+                        Individual Quote
+                    {% else %}{% if basket.can_deliver %}
+                        {% if basket.delivery == 0 %}Free of Charge{% else %}{% shop_price basket.delivery %}{% endif %}
+                    {% else %}
+                        Choose different delivery option
+                    {% endif %}{% endif %}
+                </span>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if basket.voucher %}
+        <div class="basket-total-item">
+            <div class="basket-total-label">
+                Discount
+                <span class="basket-total-info">
+                    {{ basket.voucher.title }}: {{ basket.voucher.code }}
+                    {% if basket.some_products_exempt_from_discount %}
+                        <br/>
+                        (Some products are exempt from this discount)
+                    {% endif %}
+                </span>
+            </div>
+            <div class="basket-total-price">-{% shop_price basket.discount_value %}</div>
+        </div>
+    {% endif %}
+
+    {% if not basket.is_invoice %}
+        <div class="basket-total-item">
+            <div class="basket-total-label">
+                Total
+                <span class="basket-total-info">including VAT</span>
+            </div>
+            <div class="basket-total-price">
+                <div class="basket-total-frame">
+                    {% if basket.custom_total %}
+                        <span class="calculated-price">{% shop_price basket.calculated_total %}</span>
+                    {% endif %}
+                    <span class="total-price">{% shop_price basket.total %}</span>
+                </div>
+            </div>
+        </div>
+
+        {% if not basket.is_frozen %}
+            <div class="basket-custom-total">
+                <span class="add-on">{% currency_symbol %}</span>
+                <input type="text" name="custom-total" class="basket-custom-total-input" placeholder="Custom Total" value="{% if basket.custom_total %}{{ basket.custom_total }}{% endif %}" />
+                <button type="submit" class="btn">Update</button>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="basket-total-item">
+            <div class="basket-total-label">
+                Total
+            </div>
+            <div class="basket-total-price">
+                <div class="basket-total-frame">
+                    Invoice
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if basket.totals.difference_between_deposit_and_full_amount %}
+        <div class="basket-total-item">
+            <div class="basket-total-label">
+                Remaining Unpaid Balance
+                <span class="basket-total-info">including VAT</span>
+            </div>
+            <div class="basket-total-price">
+                <div class="basket-total-frame">
+                    {% shop_price basket.totals.difference_between_deposit_and_full_amount %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

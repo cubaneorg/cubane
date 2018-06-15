@@ -1,0 +1,21 @@
+{% if order.delivery_name %}{{ order.delivery_name }}<br/>{% endif %}
+{% if order.delivery_company %}{{ order.delivery_company }}<br/>{% endif %}
+{% if order.delivery_address1 %}{{ order.delivery_address1 }}<br/>{% endif %}
+{% if order.delivery_address2 %}{{ order.delivery_address2 }}<br/>{% endif %}
+{% if order.delivery_address3 %}{{ order.delivery_address3 }}<br/>{% endif %}
+
+{% if order.delivery_city or order.delivery_county %}
+    {% if order.delivery_city and order.delivery_county %}
+        {{ order.delivery_city }}, {{ order.delivery_county }}
+    {% elif order.delivery_city %}
+        {{ order.delivery_city }}
+    {% else %}
+        {{ order.delivery_county }}
+    {% endif %}
+    <br/>
+{% endif %}
+{% if order.delivery_postcode or order.delivery_country %}
+    {% if order.delivery_postcode %}{{ order.delivery_postcode }}{% endif %}
+    {% if order.delivery_country %}{{ order.delivery_country.printable_name }}{% endif %}
+    <br/>
+{% endif %}

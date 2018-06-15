@@ -1,0 +1,179 @@
+/* Montserrat 100 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Montserrat Thin'), local('Montserrat-Thin'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-100-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-100-normal.woff') format('woff');
+}
+
+/* Montserrat 100 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 100;
+    src: local('Montserrat Thin Italic'), local('Montserrat-ThinItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-100-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-100-italic.woff') format('woff');
+}
+
+/* Montserrat 200 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 200;
+    src: local('Montserrat ExtraLight'), local('Montserrat-ExtraLight'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-200-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-200-normal.woff') format('woff');
+}
+
+/* Montserrat 200 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 200;
+    src: local('Montserrat ExtraLight Italic'), local('Montserrat-ExtraLightItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-200-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-200-italic.woff') format('woff');
+}
+
+/* Montserrat 300 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Montserrat Light'), local('Montserrat-Light'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-300-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-300-normal.woff') format('woff');
+}
+
+/* Montserrat 300 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 300;
+    src: local('Montserrat Light Italic'), local('Montserrat-LightItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-300-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-300-italic.woff') format('woff');
+}
+
+/* Montserrat 400 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Montserrat Regular'), local('Montserrat-Regular'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-400-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-400-normal.woff') format('woff');
+}
+
+/* Montserrat 400 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Montserrat Italic'), local('Montserrat-Italic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-400-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-400-italic.woff') format('woff');
+}
+
+/* Montserrat 500 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Montserrat Medium'), local('Montserrat-Medium'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-500-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-500-normal.woff') format('woff');
+}
+
+/* Montserrat 500 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 500;
+    src: local('Montserrat Medium Italic'), local('Montserrat-MediumItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-500-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-500-italic.woff') format('woff');
+}
+
+/* Montserrat 600 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-600-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-600-normal.woff') format('woff');
+}
+
+/* Montserrat 600 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 600;
+    src: local('Montserrat SemiBold Italic'), local('Montserrat-SemiBoldItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-600-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-600-italic.woff') format('woff');
+}
+
+/* Montserrat 700 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Montserrat Bold'), local('Montserrat-Bold'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-700-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-700-normal.woff') format('woff');
+}
+
+/* Montserrat 700 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 700;
+    src: local('Montserrat Bold Italic'), local('Montserrat-BoldItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-700-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-700-italic.woff') format('woff');
+}
+
+/* Montserrat 800 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 800;
+    src: local('Montserrat ExtraBold'), local('Montserrat-ExtraBold'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-800-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-800-normal.woff') format('woff');
+}
+
+/* Montserrat 800 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 800;
+    src: local('Montserrat ExtraBold Italic'), local('Montserrat-ExtraBoldItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-800-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-800-italic.woff') format('woff');
+}
+
+/* Montserrat 900 normal latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 900;
+    src: local('Montserrat Black'), local('Montserrat-Black'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-900-normal.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-900-normal.woff') format('woff');
+}
+
+/* Montserrat 900 italic latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: italic;
+    font-weight: 900;
+    src: local('Montserrat Black Italic'), local('Montserrat-BlackItalic'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-900-italic.woff2') format('woff2'),
+         url('/static/cubane/backend/fonts/montserrat/montserrat-v10-900-italic.woff') format('woff');
+}

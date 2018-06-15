@@ -1,0 +1,126 @@
+{% load media_tags %}
+{% load shop_tags %}
+
+
+<div class="basket-item{% if item.processed %} basket-item-processed{% endif %}">
+    <div class="basket-item-annotation-frame"></div>
+
+    {% if item.product %}
+        <a class="basket-item-image open-edit-dialog" href="{% url 'cubane.ishop.products.edit' %}?pk={{ item.product_id }}" tabindex="-1">
+    {% else %}
+        <div class="basket-item-image">
+    {% endif %}
+        {% if item.image %}
+            {% image item.image 'product' item.image_attribute_url %}
+        {% elif item. %}
+            {% image_placeholder 'product' %}
+        {% endif %}
+    {% if item.product %}
+        </a>
+    {% else %}
+        </div>
+    {% endif %}
+
+    <div class="basket-item-details">
+        {% if item.product %}
+            <a class="basket-item-title open-edit-dialog" href="{% url 'cubane.ishop.products.edit' %}?pk={{ item.product_id }}" tabindex="-1">{{ item.title }}</a>
+        {% else %}
+            <div class="basket-item-title">{{ item.title }}</div>
+        {% endif %}
+
+        {% if item.product.primary_category %}
+            <small>In <a class="open-edit-dialog" href="{% url 'cubane.ishop.categories.edit' %}?pk={{ item.product.primary_category.pk }}">{{ item.product.primary_category }}</a></small>
+        {% endif %}
+
+        {% if item.sku %}
+            <div class="basket-item-identifier-label">
+                SKU: <span class="basket-item-identifier">{{ item.sku.sku_or_barcode }}</span>
+            </div>
+        {% endif %}
+
+        {% if item.part_number %}
+            <div class="basket-item-identifier-label">
+                Part Number: <span class="basket-item-identifier">{{ item.part_number }}</span>
+            </div>
+        {% endif %}
+
+        {% if item.variety_assignments %}
+            <div class="variety-options">
+                {% for assignment in item.variety_assignments %}
+                    {% include 'cubane/ishop/elements/order/basket/basket_variety.html' %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if item.custom_properties %}
+            <div class="custom-properties">
+                {% for property in item.custom_properties %}
+                    {% include 'cubane/ishop/elements/order/basket/custom_property.html' %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if item.is_non_returnable %}
+            <div class="basket-item-details-info">This item cannot be returned.</div>
+        {% endif %}
+
+        {% if item.is_collection_only %}
+            <div class="basket-item-details-info">This item must be collected.</div>
+        {% endif %}
+
+        {% if item.is_pre_order %}
+            <div class="basket-item-details-info">This item is pre-order.</div>
+        {% endif %}
+
+        {% if item.is_exempt_from_free_delivery %}
+            <div class="basket-item-details-info">This item is exempt from free delivery.</div>
+        {% endif %}
+
+        {% if item.is_exempt_from_discount %}
+            <div class="basket-item-details-info">This item is exempt from discounts.</div>
+        {% endif %}
+    </div>
+
+    {% if item.product.barcode_system or request.settings.barcode_system %}
+        {% if item.sku.barcode or item.product.barcode %}
+            {% if item.product.barcode_system %}
+                {% include 'cubane/ishop/elements/order/basket/basket_item_barcode.html' with barcode_system=item.product.barcode_system %}
+            {% else %}
+                {% include 'cubane/ishop/elements/order/basket/basket_item_barcode.html' with barcode_system=request.settings.barcode_system %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    <div class="basket-item-processed">
+        <input class="item-processed" name="processed_{{ item.hash }}" type="checkbox" {% if item.processed %} checked{% endif %}/>
+    </div>
+
+    {% if basket.is_frozen %}
+        <div class="basket-item-quantity">
+            <div class="basket-item-quantity-value">{{ item.quantity }}</div>
+        </div>
+    {% else %}
+        <div class="basket-item-quantity">
+            <div class="input-prepend">
+                <span role="button" class="add-on quantity-minus">-</span>
+                <input type="text" class="quantity input-mini" name="qty_{{ item.hash }}" value="{{ item.quantity }}" size="4" maxlength="4" />
+                <span class="quantity-readonly">{{ item.quantity }}</span>
+                <span role="button" class="add-on quantity-plus">+</span>
+            </div>
+        </div>
+
+        <div class="basket-item-remove">
+            <div role="button" class="basket-item-remove-btn"></div>
+        </div>
+    {% endif %}
+
+    {% if not basket.is_invoice %}
+        <div class="basket-item-price">
+            {% if item.deposit_only %}
+                <del>{% shop_price item.total_without_deposit %}</del><p>Deposit: {% shop_price item.total %}</p>
+            {% else %}
+                {% shop_price item.total %}
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

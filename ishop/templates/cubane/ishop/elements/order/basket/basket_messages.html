@@ -1,0 +1,9 @@
+{% load shop_tags %}
+
+{% if basket.backend_messages %}
+    <div class="basket-messages">
+        {% for message in basket.backend_messages %}
+            <div class="basket-message">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}

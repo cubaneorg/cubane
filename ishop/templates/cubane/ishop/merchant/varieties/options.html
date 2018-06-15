@@ -1,0 +1,22 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Edit Variety Options for <em>{{ variety.title }}</em></h1>
+
+    {% if import_form %}
+        <div class="cubane-variety-options-inport">
+            <form class="form-horizontal" method="GET">
+                <div class="form-content">
+                    <input type="hidden" name="pk" value="{{ variety.pk }}"/>
+                    {% include 'cubane/backend/form/form_field.html' with field=import_form.import_variety %}
+                    <button id="cubane-btn-variety-options-import" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    <div class="cubane-variety-options{% if kit_builder and variety.layer %} with-layer-color-option{% endif %}" style="display: none;" data-url="{% url 'cubane.ishop.varieties.update_seq' variety.id %}" data-currency="{{ CURRENCY }}">
+        {% include 'cubane/backend/form.html' %}
+    </div>
+{% endblock %}

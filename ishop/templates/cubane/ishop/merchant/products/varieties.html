@@ -1,0 +1,78 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Product Varieties <small>for <em>{{ product.title }}</em></small></h1>
+    <div class="content-panel">
+        {% if product.sku_enabled %}
+            <div class="alert laert-warning">
+                Some Varieties are depending on SKU numbers and will not appear on this screen. Use the SKU screen instead.
+            </div>
+        {% endif %}
+
+        {% if assigned %}
+            <h2>Assigned Varieties</h2>
+            <div class="table-frame">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th width="200">Title</th>
+                            <th>Assigned Options</th>
+                            <th width="150">Type</th>
+                            <th width="190">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in assigned %}
+                            <tr>
+                                <td>{{ v.title }}</td>
+                                <td>{{ v.assigned_options_display }}</td>
+                                <td>{{ v.get_style_display }}</td>
+                                <td width="120">
+                                    <a class="btn btn-mini btn-primary" href="{% url 'cubane.ishop.products.varieties.edit' product.id v.id %}?index-dialog=true"><i class="icon-white icon-edit"></i> edit</a>
+                                    <a class="btn btn-mini btn-danger post-confirm" data-confirm="Remove variety <em>{{ v.title }}</em> from product <em>{{ product.title }}</em>?" href="{% url 'cubane.ishop.products.varieties.delete' product.id v.id %}?index-dialog=true"><i class="icon-white icon-trash"></i> unassign</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if unassigned %}
+            <h2>Available Varieties <small>(currently unassigned)</small></h2>
+            <div class="table-frame">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th width="200">Title</th>
+                            <th>Options</th>
+                            <th width="150">Type</th>
+                            <th width="190">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in unassigned %}
+                            <tr>
+                                <td>{{ v.title }}</td>
+                                <td>{{ v.get_options_excerpt_display }}</td>
+                                <td>{{ v.get_style_display }}</td>
+                                <td width="70">
+                                    <a class="btn btn-mini btn-primary" href="{% url 'cubane.ishop.products.varieties.edit' product.id v.id %}?index-dialog=true"><i class="icon-white icon-plus"></i> assign</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if not assigned and not unassigned %}
+            <p>No Varieties available yet. Create new Varieties within the <a href="{% url 'cubane.ishop.varieties.index' %}">Variety Section</a>.</p>
+        {% endif %}
+
+        <div class="form-actions">
+            <a class="btn btn-primary" href="{{ ok_url }}">Ok</a>
+        </div>
+    </div>
+{% endblock %}

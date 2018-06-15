@@ -1,0 +1,361 @@
+/*
+ * Embedded forms
+ */
+.control-group.error input,
+.control-group.error select,
+.control-group.error textarea {
+    border-color: #ccc;
+    color: #000;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.control-group.error .input-prepend .add-on,
+.control-group.error .input-append .add-on {
+    color: #fff;
+    background-color: #f49e2d;
+    border-color: #f49e2d;
+}
+
+.control-group.error > .controls > .field > input,
+.control-group.error > .controls > .field > select,
+.control-group.error > .controls > .field > textarea,
+.control-group.error > .controls > .field > .input-prepend > input,
+.control-group.error > .controls > .field > .input-append > input {
+    border-color: #b94a48;
+    color: #B94A44;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.control-group.error > .controls > .field > .input-prepend > .add-on,
+.control-group.error > .controls > .field > .input-append > .add-on {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #b94a48;
+}
+
+
+/*
+ * Embedded form container
+ */
+.embed-forms {
+    border: 1px solid #f0f0f0;
+}
+
+.embed-forms-container.embedded-line-items {
+    display: flex;
+}
+
+.embed-forms-container.embedded-line-items .embedded-line-items {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.embed-forms-container.embedded-line-items .embed-forms-body {
+    width: 100%;
+}
+
+.embed-forms-container {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.embed-forms-container.embedded-line-items .embed-forms-header {
+    display: none;
+}
+
+.embed-forms-container.embedded-line-items .control-label {
+    display: block;
+}
+
+.embed-forms-container.embedded-line-items .control-group-charity {
+    flex: 0 0 80%;
+}
+
+.embed-forms-container.embedded-line-items .control-group-total {
+    flex: 0 0 20%;
+}
+
+.embed-forms-container.embedded-line-items  .embed-forms {
+    border: none;
+}
+
+.embed-forms-container .control-group-_donors {
+    padding-left: 80px;
+    padding-right: 80px;
+    background: #d2cdc8;
+    padding: 20px 80px 30px;
+}
+
+.embed-forms-container.embedded-line-items .embed-forms-container .embed-forms-header {
+    display: table-header-group;
+}
+
+.embed-forms-container.embedded-line-items .embed-forms-container .control-label {
+    display: none;
+}
+
+
+
+@media only screen and (max-width: 1200px) {
+    .embed-forms-container.embedded-line-items .embed-forms-container .embed-forms-header {
+        display: none;
+    }
+
+    .embed-forms-container.embedded-line-items .embed-forms-container .control-label {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .embed-forms-container .control-group-_donors {
+        padding: 20px;
+    }
+
+    .embed-forms-container.embedded-line-items .controls {
+        width: 100%;
+    }
+
+    .embed-forms-container.embedded-line-items .control-group-charity {
+        flex: 0 0 70%;
+    }
+
+    .embed-forms-container.embedded-line-items .control-group-total {
+        flex: 0 0 30%;
+    }
+}
+
+
+/*
+ * Line Items
+ */
+.embed-form .control-label {
+    display: none;
+}
+
+.invoice-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+.embed-forms-header-column-total {
+    width: 150px;
+}
+
+.embed-forms-header-column-vat {
+    width: 200px;
+}
+
+
+/*
+ * Total
+ */
+.embed-forms-total {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/*
+ * Header
+ */
+.embed-forms-header {
+    display: table-header-group;
+}
+
+.embed-forms-header-columns {
+    display: table-row;
+}
+
+.embed-forms-header-column {
+    display: table-cell;
+    padding: 15px;
+}
+
+
+/*
+ * Body
+ */
+.embed-forms-body {
+    display: table-row-group;
+}
+
+.embed-form {
+    display: table-row;
+    background-color: #f0f0f0;
+}
+
+.embed-form:nth-child(2n) {
+    background-color: #fefefe;
+}
+
+.embed-form-field {
+    display: table-cell;
+    padding: 10px 15px;
+    margin-bottom: 0 !important;
+}
+
+
+/*
+ * Embedded form footer
+ */
+.embed-forms-footer {
+    background-color: #f0f0f0;
+    border-top: 2px solid #ccc;
+}
+
+.embed-forms-footer-columns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.embed-forms-footer-summary {
+    width: 400px;
+    max-width: 100%;
+}
+
+.embed-forms-footer-column {
+    padding: 15px;
+}
+
+
+/*
+ * Embedded form template
+ */
+.embed-form-template {
+    display: none !important;
+}
+
+
+/*
+ * Embedded form fields (widgets)
+ */
+.embed-form-field input[type="text"],
+.embed-form-field input[type="email"],
+.embed-form-field input[type="url"],
+.embed-form-field textarea,
+.embed-form-field .uneditable-input {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.embed-form-field .input-prepend,
+.embed-form-field .input-append {
+    display: flex;
+    margin-bottom: 0 !important;
+}
+
+.embed-form-field .cubane-backend-browse {
+    display: flex;
+}
+
+.embed-form-field .cubane-backend-browse-select,
+.embed-form-field .cubane-backend-browse-button,
+.embed-form-field .cubane-backend-browse-add-button {
+    float: none;
+    margin-bottom: 0;
+}
+
+.embed-form-field .cubane-backend-browse-select {
+    flex: 1;
+    min-width: 0;
+}
+
+.embed-form-field .cubane-backend-browse-select select,
+.embed-form-field .cubane-backend-browse-select .select2container {
+    width: 100%;
+}
+
+.embed-form-field .control-group-visibility-rule-hidden {
+    display: block;
+    visibility: hidden;
+}
+
+
+/*
+ * Postcode lookup
+ */
+.embed-form .postcode-lookup {
+    margin-right: -1px;
+}
+
+.embed-form .postcode-lookup-group {
+    display: table-cell;
+    border-top: none;
+    border-bottom: none;
+    padding: 10px 15px;
+    background-color: transparent;
+}
+
+.embed-form .postcode-lookup-button {
+    position: static;
+}
+
+.embed-form .postcode-lookup-group .field {
+    position: relative;
+    display: flex;
+}
+
+.embed-form .postcode-lookup-select {
+    position: absolute;
+    top: 28px;
+    z-index: 90;
+}
+
+
+/*
+ * Remove button
+ */
+.embed-forms-header-column-ui-remove {
+    width: 110px;
+}
+
+.embed-form .ui-remove {
+    display: table-cell;
+    width: 110px;
+    padding: 10px 15px;
+    line-height: 28px;
+    cursor: pointer;
+}
+
+.embed-form .ui-remove svg {
+    position: relative;
+    width: 12px;
+    margin-right: 3px;
+    top: 2px;
+}
+
+
+/*
+ * Sortable
+ */
+.embed-forms-header-column-ui-sortable-handle {
+    width: 30px;
+}
+
+.embed-forms .sortable-spacer {
+    height: 48px;
+}
+
+.embed-form .ui-sortable-handle {
+    display: table-cell;
+    position: relative;
+    right: 0;
+    opacity: 1;
+    cursor: ns-resize;
+    width: 30px;
+    height: 48px;
+}
+
+.embed-form.sortable-placeholder {
+    display: table;
+    table-layout: fixed;
+}

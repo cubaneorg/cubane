@@ -1,0 +1,29 @@
+{% load resource_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% resources 'backend' 'css' %}
+</head>
+
+<body class="body-plain">
+    <div class="wrapper">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <div class="plain-footer">
+            <a class="plain-footer-python" href="https://www.python.org/" title="Python" target="_blank">Python</a>
+            <a class="plain-footer-django" href="https://www.djangoproject.com/" title="Django" target="_blank">Django</a>
+            <a class="plain-footer-github" href="https://www.github.com/" title="GitHub" target="_blank">GitHub</a>
+        </div>
+    </div>
+
+    {% resources 'backend' 'js' %}
+    {% block js %}{% endblock %}
+</body>
+
+</html>

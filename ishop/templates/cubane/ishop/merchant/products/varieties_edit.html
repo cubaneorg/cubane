@@ -1,0 +1,23 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var varietyController = new ishop.VarietyOptionController('{{ CURRENCY }}');
+
+            $(document).unload(function() {
+                varietyController.dispose();
+                varietyController = null;
+            });
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    <h1 class="page-title">Edit Product Varieties <em>{{ variety.title }}</em> <small>for <em>{{ product.title }}</em></small></h1>
+    <div class="cubane-variety-option-assignments">
+        {% include 'cubane/backend/form.html' %}
+    </div>
+{% endblock %}

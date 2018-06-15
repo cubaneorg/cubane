@@ -1,0 +1,168 @@
+{% extends 'cubane/ishop/pages/order/base.html' %}
+{% load shop_tags %}
+{% load form_tags %}
+{% load cms_tags %}
+{% load message_tags %}
+{% load form_tags %}
+
+
+{% block meta_title %}{% meta_title 'Checkout' %}{% endblock %}
+{% block title %}Checkout{% endblock %}
+{% block meta %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        DELIVERY_ADDRESSES = {{ delivery_addresses|safe }};
+    </script>
+{% endblock %}
+
+
+{% block frame %}
+
+<div class="checkout">
+    <div class="checkout-form{% if basket.is_collection_only %} collection-only{% endif %}{% if basket.is_available_for_loan%} checkout-loan-available{% endif %}">
+        {% shop_breadcrumb 'Checkout' %}
+        {% flash messages %}
+
+        <form class="form form-horizontal" method="post">
+            {% auto_csrf_token %}
+
+            <div class="form-content clearfix">
+                <div class="control-group form-section-control-group">
+                    <legend>Customer Information</legend>
+                </div>
+
+                <div class="full-width-control-groups">
+                    {% include 'cubane/form/form_fields.html' with fields='email' %}
+                </div>
+                {% include 'cubane/form/form_fields.html' with fields='title, first_name, last_name, telephone' %}
+
+
+                <div class="control-group form-section-control-group">
+                    <legend>Billing Address</legend>
+                </div>
+
+                {% if is_postcode_lookup %}
+                    <div class="full-width-control-groups">
+                        {% include 'cubane/form/form_fields.html' with fields='postcode_lookup' %}
+                    </div>
+                {% endif %}
+
+                {% include 'cubane/form/form_fields.html' with fields='company, address1, address2, address3, city, country, county, postcode' %}
+
+                <div class="full-width-control-groups">
+                    {% include 'cubane/form/form_fields.html' with fields='update_profile' %}
+                </div>
+
+                <div class="control-group form-section-control-group">
+                    <legend>Delivery Address</legend>
+                </div>
+
+                <div class="full-width-control-groups no-label">
+                    {% include 'cubane/form/form_fields.html' with fields='deliver_to' %}
+                </div>
+
+                {% if basket.is_collection_only %}
+                    <div class="collection-only-items col-sm-12">
+                        <div class="collection-only-items-text">We cannot deliver your order because the following item(s) are only available for click and collect:</div>
+                        <div class="collection-only-items">
+                            {% for item in basket.click_and_collect_items %}
+                                {% include 'cubane/ishop/elements/basket/basket_item.html' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="checkout-delivery-address clearfix">
+                    {% if is_postcode_lookup %}
+                        <div class="full-width-control-groups">
+                            {% include 'cubane/form/form_fields.html' with fields='delivery_postcode_lookup' %}
+                        </div>
+                    {% endif %}
+
+                    {% include 'cubane/form/form_fields.html' with fields='delivery_name, delivery_company, delivery_address1, delivery_address2, delivery_address3, delivery_city, delivery_country, delivery_county, delivery_postcode' %}
+                </div>
+
+                <div class="checkout-loan">
+                    <div class="control-group form-section-control-group">
+                        <legend>Finance Option</legend>
+                    </div>
+                    <div class="full-width-control-groups">
+                        {% include 'cubane/form/form_fields.html' with fields='finance_option' %}
+                    </div>
+                    <div class="full-width-control-groups loan-deposit">
+                        {% include 'cubane/form/form_fields.html' with fields='loan_deposit' %}
+                        <p class="loan-deposit-text"></p>
+                    </div>
+                </div>
+                <script>
+                    function loanDeliveryAddress() {
+                        if (document.querySelector('#id_finance_option').value == '') {
+                            document.querySelector('#id_deliver_to li:last-child').style.display = 'list-item';
+                        } else {
+                            document.querySelector('.checkout-delivery-address').style.display = 'none';
+                            if (document.querySelector('#id_deliver_to li:last-child input').checked) {
+                                document.querySelector('#id_deliver_to li:nth-child(2) input').checked = true;
+                            }
+                            document.querySelector('#id_deliver_to li:last-child').style.display = 'none';
+                        }
+                    }
+
+                    document.querySelector('#id_finance_option').addEventListener('change', loanDeliveryAddress);
+                    loanDeliveryAddress();
+                </script>
+
+                {% if basket.can_have_free_delivery_to %}
+                    <div class="without-label free-delivery-to">
+                        <small>Free delivery to {{ basket.get_free_delivery_to }} is available for this order. Please enter your Free Delivery Code below:</small>
+                        {% include 'cubane/form/form_fields.html' with fields='delivery_name, delivery_code' %}
+                    </div>
+                {% endif %}
+
+                <div class="control-group form-section-control-group">
+                    <legend>Requirements</legend>
+                </div>
+
+                <div class="full-width-control-groups">
+                    {% include 'cubane/form/form_fields.html' with fields='special_req, survey' %}
+                </div>
+
+                <div class="full-width-control-groups">
+                    {% include 'cubane/form/form_fields.html' with fields='newsletter' %}
+                </div>
+
+                <div class="full-width-control-groups">
+                    {% if form.fields.discount %}
+                        {% include 'cubane/form/form_fields.html' with fields='_discount' %}
+                    {% endif %}
+
+                    {% include 'cubane/form/form_fields.html' with fields='signup, password, password_confirm' %}
+
+                    {% if request.client.has_terms %}
+                        {% include 'cubane/form/form_fields.html' with fields='_terms, terms' %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="form-action">
+                    <a href="/" class="btn">Continue Shopping</a>
+                </div>
+                <div class="form-action">
+                    <button type="submit" class="btn btn-primary">Continue to Shipping Method</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="checkout-basket">
+        {% include 'cubane/ishop/elements/basket/basket.html' %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block ga %}
+    {{ block.super }}
+    {% include 'cubane/ishop/elements/ga/checkout.js' with step='2' %}
+{% endblock %}

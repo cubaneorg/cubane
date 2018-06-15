@@ -1,0 +1,24 @@
+{% if settings %}{% spaceless %}
+    <div class="automated-social-links">
+        {% for name, link in settings.social_links %}
+            {% if link %}
+                {% if name == 'skype' %}
+                    <a href="skype:{{ link }}?call">
+                        <img src="{{ STATIC_URL }}cubane/default_frontend/img/{{ name }}.svg" alt="{{ name }}">
+                    </a>
+                {% else %}
+                    <a href="{{ link }}" target="_blank">
+                        {% if name == 'blogger' %}{% include 'cubane/cms/social/blogger.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'facebook' %}{% include 'cubane/cms/social/facebook.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'google_plus' %}{% include 'cubane/cms/social/google_plus.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'linkedin' %}{% include 'cubane/cms/social/linkedin.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'twitter' %}{% include 'cubane/cms/social/twitter.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'instagram' %}{% include 'cubane/cms/social/instagram.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'youtube' %}{% include 'cubane/cms/social/youtube.html' with social_id=social_id %}{% endif %}
+                        {% if name == 'pinterest' %}{% include 'cubane/cms/social/pinterest.html' with social_id=social_id %}{% endif %}
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endspaceless %}{% endif %}

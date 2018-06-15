@@ -1,0 +1,34 @@
+/*
+ * Page preview
+ */
+.page-preview-frame {
+    border: 1px solid #9e9e9e;
+}
+
+.page-preview {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*
+ * Active editor state
+ */
+.active-editor {
+}
+
+.inactive-editor {
+    display: none;
+}
+
+.create-dialog .multi-upload-btn {
+    display: none;
+}
+
+.multi-upload-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}

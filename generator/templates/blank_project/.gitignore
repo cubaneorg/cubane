@@ -1,0 +1,40 @@
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.rar
+*.tar
+*.zip
+
+# Logs, video files and databases
+*.log
+*.sqlite
+*.mp4
+*.ogv
+*.webm
+*.sql
+
+# OS generated files
+.DS_Store*
+.ehthumbs.db
+*.swp
+Thumbs.db
+._*
+*.*~
+
+# project-specific files and folders
+manage.py
+settings/dev.py
+/media/
+/private/
+log/

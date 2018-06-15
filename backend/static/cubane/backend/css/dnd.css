@@ -1,0 +1,72 @@
+/*
+ * Draggable
+ */
+.draggable.drag-in-progress {
+    opacity: 0.25;
+}
+
+
+/*
+ * Placeholder
+ */
+.dnd-placeholder {
+    display: none;
+    position: absolute;
+    min-width: 140px;
+    max-width: 240px;
+    margin-top: -80px;
+    padding: 0 15px;
+
+    -webkit-box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.2);
+    z-index: 500;
+}
+
+.browse-dialog .dnd-placeholder {
+    margin-top: 0px;
+}
+
+.dnd-placeholder.active {
+    display: inline-block;
+}
+
+.dnd-placeholder-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+    height: 40px;
+    line-height: 40px;
+}
+
+.dnd-placeholder-count {
+    display: none;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    background-color: #A94442;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+
+.dnd-placeholder.multiple > .dnd-placeholder-count {
+    display: block;
+}
+
+
+/*
+ * Drop target
+ */
+.drop-target {
+    outline-offset: -2px;
+    outline-width: 2px;
+    outline-style: solid;
+}

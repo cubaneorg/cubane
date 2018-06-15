@@ -1,0 +1,32 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <h1 class="page-title">Products the variety <em>{{ variety.title }}</em> is assigned to</h1>
+    <br/>
+    <br/>
+
+    <div class="content-panel">
+        <p>The variety <em>{{ variety.title }} is currently assigned to the following products:</p>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Frontend</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td><a href="{% url 'cubane.ishop.products.edit' %}?pk={{ product.pk }}" target="_blank">{{ product.title }}</a></td>
+                        <td><a href="{{ product.get_absolute_url }}" target="_blank">View</a></td>
+                        <td><a href="{% url 'cubane.ishop.categories.edit' %}?pk={{ product.primary_category.pk }}" target="_blank">{{ product.primary_category.title }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% include 'cubane/backend/form.html' with without_save=True without_continuation=True %}
+{% endblock %}

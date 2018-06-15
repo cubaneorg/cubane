@@ -1,0 +1,23 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <div class="logout-panel panel">
+        <div class="pre-publish">
+            <h1>Before you go...</h1>
+            <p>You made changes to the website. Would you like to publish your changes right now?</p>
+            <p>Publishing makes your website go <b>faster</b>.</p>
+            <p class="inprint">(The system will automatically publish your changes once in a while if you do not publish right now)</p>
+        </div>
+        <div class="post-publish">
+            <h1>Up to date</h1>
+            <p>All your changes have been published.</p>
+            <p class="publish-msg"></p>
+        </div>
+
+        <div class="actions">
+            <a class="btn btn-large btn-primary cms-publish" href="#cms-publish" title="Publish Changes"><i class="icon icon-refresh"></i> Publish</a>
+            <a class="btn btn-large" href="?force=1" title="Logout Now">Logout</a>
+        </div>
+    </div>
+{% endblock %}

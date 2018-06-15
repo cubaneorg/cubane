@@ -1,0 +1,34 @@
+{% load shop_tags %}
+
+
+<form action="{{ post_url }}" class="form-vertical add-to-basket" method="post">
+    {% include 'cubane/form/form.html' with required_field_notice='False' %}
+
+    <div class="add-to-basket-product-prices">
+        <div class="product-price">
+            <span class="price">{% shop_product_price product %}</span>
+        </div>
+
+        {% if product.previous_price %}<div class="item-previous-price"><span class="price-label">Was</span> <span class="price">{% shop_product_price product.previous_price %}</span></div>{% endif %}
+
+        {% if product.rrp %}<div class="item-rrp"><span class="price-label">RRP</span> <span class="price">{% shop_product_price product.rrp %}</span></div>{% endif %}
+    </div>
+
+    <div class="add-to-basket-form-actions">
+        <button type="submit" class="btn btn-primary btn-add-to-basket">Add To Basket</button>
+    </div>
+
+    {% if product.pre_order and product.deposit or not product.loan_exempt %}
+        <div class="add-to-basket-product-messages">
+            {% if product.pre_order and product.deposit %}
+                <div class="add-to-basket-product-message">Pay a {% shop_product_price product.deposit %} deposit today to Pre-Order this item. We will contact you to take the remainder as soon as it arrives in stock.</div>
+            {% elif settings.SHOP_LOAN_ENABLED and not product.loan_exempt %}
+                <div class="add-to-basket-product-message">Finance is available for this product.</div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <script>
+        window.CUBANE_VARIETY_OPTION_IDS = {{ form.variety_option_ids|safe }};
+    </script>
+</form>

@@ -1,0 +1,28 @@
+<div class="delivery-option-description col-sm-12">
+    {% if delivery_option.description %}{{ delivery_option.description|safe }}{% endif %}
+</div>
+
+<div class="delivery-option-free-delivery col-sm-12">
+    {% if delivery_option.total_display %}
+        <div class="basket-totals">
+            <div class="basket-total-item">
+                <div class="basket-total-label">
+                    Delivery Charge
+                    
+                    {% if delivery_option.free_delivery %}
+                        <span class="basket-total-info">
+                            Free Delivery for orders exceeding {{ delivery_option.free_delivery_threshold_display|safe }}.
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="basket-total-price">
+                    {% if delivery_option.is_quote_only %}
+                        Quote
+                    {% else %}
+                        {{ delivery_option.total_display|safe }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

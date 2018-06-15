@@ -1,0 +1,19 @@
+{% extends 'cubane/ishop/pages/order/base.html' %}
+{% load shop_tags %}
+
+
+{% block meta %}<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">{% endblock %}
+
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ CLIENT_MEDIA_URL }}shop/css/shipping_notes.css?_={{REVISION}}" media="screen">
+{% endblock %}
+
+
+{% block content %}
+    <div class="shipping-logo-container clearfix"><img src="{{ CLIENT_MEDIA_URL }}shop/images/print-logo.png" alt="" class="hidden-logo"></div>
+    <h2 class="page-title">Order <strong><span class="identifier">{{ order.order_id }}</span></strong></h2>
+
+    {% include 'cubane/ishop/elements/order/order_details_shipping.html' %}
+{% endblock %}

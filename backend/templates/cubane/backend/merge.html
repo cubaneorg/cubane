@@ -1,0 +1,47 @@
+{% extends 'cubane/backend/base.html' %}
+
+{% block content %}
+    <h1 class="page-title">Merge {{ verbose_name_plural }}</h1>
+
+    <div class="content-panel">
+        {% if errors %}
+            <div class="alert alert-error">
+                <div class="alert-icon"><svg viewBox="0 0 19 18.8"><use xlink:href="#icon-close"/></svg></div>
+                <div class="alter-message-container">
+                    There are some conflicts regarding this merge operation.
+                    If you confirm, some data may be lost. Please refer to the
+                    <em>Conflict Information</em> as below for more information.
+                </div>
+            </div>
+        {% endif %}
+
+        <p>The following {{ verbose_name_plural }} will be combined with <strong>{{ target }}</strong>:</p>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th width="200">{{ verbose_name_plural }}</th>
+                    <th>Conflict Information</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in sources %}
+                    <tr>
+                        <td>{{ v }}</td>
+                        <td>{{ v.merge_error_message }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p>
+            Please <em>confirm</em> that you would like to combine all selected {{ verbose_name_plural }}.<br/>
+            <strong>This step cannot be reversed back automatically.</strong>
+        </p>
+    </div>
+
+    {% if errors %}
+        {% include 'cubane/backend/form.html' with without_continuation=True save_label='Confirm and merge (Ignoring errors)' %}
+    {% else %}
+        {% include 'cubane/backend/form.html' with without_continuation=True save_label='Confirm and merge' %}
+    {% endif %}
+{% endblock %}

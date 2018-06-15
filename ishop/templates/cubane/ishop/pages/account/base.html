@@ -1,0 +1,32 @@
+{% extends 'cubane/ishop/pages/base.html' %}
+{% load message_tags %}
+
+
+{% block frame %}
+    <div class="account-frame">
+        <div class="account-left">
+            {% block account_breadcrumb %}{% endblock %}
+            <ul class="nav nav-account">
+                <li><a href="{% url 'shop.account.index' %}" class="{% block dashboard %}{% endblock %}">Dashboard</a></li>
+
+                <li class="nav-header">My Account</li>
+                <li><a href="{% url 'shop.account.details' %}" class="{% block details %}{% endblock %}">Personal Details</a></li>
+                <li><a href="{% url 'shop.account.billing' %}" class="{% block billing %}{% endblock %}">Billing Address</a></li>
+                <li><a href="{% url 'shop.account.delivery' %}" class="{% block delivery %}{% endblock %}">Delivery Addresses</a></li>
+                <li><a href="{% url 'shop.account.password' %}" class="{% block password %}{% endblock %}">Change Password</a></li>
+
+                <li class="nav-header">Orders</li>
+                <li><a href="{% url 'shop.account.orders' 'processing' %}" class="{% block processing_orders %}{% endblock %}">Processing Orders</a></li>
+                <li><a href="{% url 'shop.account.orders' 'complete' %}" class="{% block complete_orders %}{% endblock %}">Complete Orders</a></li>
+
+                <li class="nav-header">Logout</li>
+                <li><a href="{% url 'shop.account.logout' %}" class="logout{% block logout %}{% endblock %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="account-content">
+            {% flash messages %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,317 @@
+/*
+ * File Input
+ */
+.cubane-file-upload {
+    text-align: center;
+    padding: 20px;
+    outline: 2px dashed #f49e2d;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    margin-bottom: 5px;
+}
+
+.cubane-file-upload.hover {
+    background-color: #666;
+}
+
+.cubane-file-upload-icon {
+    width: 100%;
+    height: 50px;
+    fill: #374142;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.cubane-file-upload input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.cubane-file-label {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.cubane-file-upload label {
+    max-width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+}
+
+
+/*
+ * Media Editor Layout
+ */
+.cubane-media-editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    border-top: 1px solid #333;
+}
+
+.cubane-media-editor-form {
+    position: relative;
+    width: 50%;
+}
+
+.cubane-media-editor-form .form-content {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    padding-top: 5px;
+    padding-right: 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.cubane-media-editor-form .form-actions {
+    position: absolute!important;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+}
+
+.cubane-media-editor-container {
+    position: relative;
+    width: 50%;
+}
+
+.cubane-media-editor-container-panels {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+}
+
+.cubane-media-editor.is-images .cubane-media-editor-container-panels {
+    top: 35px;
+}
+
+.cubane-media-editor.is-documents .cubane-media-editor-toolbar {
+    display: none;
+}
+
+.cubane-media-editor-preview {
+    width: 100%;
+}
+
+
+/*
+ * Shapes
+ */
+.cubane-media-editor-shapes {
+    display: none;
+    background-color: #555;
+    border-left: 1px solid #333;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.cubane-media-editor-shapes img {
+    filter: grayscale(50%);
+}
+
+.cubane-media-editor-shapes img:hover {
+    filter: grayscale(0%);
+}
+
+.cubane-media-editor-shape {
+    border-bottom: 1px solid #333;
+}
+
+.cubane-media-editor-shape-frame {
+    position: relative;
+    overflow: hidden;
+    height: 0;
+}
+
+.cubane-media-editor-shape-frame img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: initial;
+}
+
+.cubane-media-editor-shape-title {
+    background-color: rgba(255, 255, 255, .2);
+    padding: 2px;
+    color: white;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cubane-media-editor.with-shapes .cubane-media-editor-form {
+    width: 40%;
+}
+
+.cubane-media-editor.with-shapes .cubane-media-editor-container {
+    width: 60%;
+}
+
+.cubane-media-editor.with-shapes .cubane-media-editor-shapes {
+    display: block;
+    width: 30%;
+}
+
+.cubane-media-editor.with-shapes .cubane-media-editor-preview {
+    width: 70%;
+}
+
+
+/*
+ * Preview Editor
+ */
+.cubane-media-editor-preview {
+    position: relative;
+    background-color: #444;
+    border-left: 1px solid #333;
+}
+
+.cubane-media-editor-preview-frame,
+.cubane-media-editor-preview-panel,
+.cubane-media-editor-preview-frame-background,
+.cubane-media-editor-preview-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.cubane-media-editor.is-documents .cubane-media-editor-preview-panel,
+.cubane-media-editor.is-documents .cubane-media-editor-preview-panel-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.cubane-media-editor.is-images .cubane-media-editor-preview-panel,
+.cubane-media-editor.is-images .cubane-media-editor-preview-panel-frame {
+    position: relative;
+}
+
+.cubane-media-editor-preview-panel iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.cubane-media-editor-preview-panel img {
+    width: 100%;
+}
+
+.cubane-media-editor-preview-frame {
+    overflow: hidden;
+}
+
+.cubane-media-editor.is-images .cubane-media-editor-preview-frame-background {
+    background-image: url('/static/cubane/backend/img/thumbnail-background.png');
+    background-repeat: repeat;
+    opacity: 0.1;
+}
+
+.cubane-media-editor-focal-point {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border: 1px solid rgba(56, 64, 64, .75);
+    background-color: rgba(244, 158, 45, .5);
+}
+
+.cubane-media-editor-focal-point.active {
+    display: block;
+}
+
+
+/*
+ * Preview Image Toggle
+ */
+.cubane-media-editor-preview-images {
+    display: none;
+}
+
+.cubane-media-editor.multiple .cubane-media-editor-preview-frame {
+    display: none;
+}
+
+.cubane-media-editor.multiple .cubane-media-editor-preview-images {
+    display: flex;
+}
+
+
+/*
+ * Preview images (multiple images)
+ */
+.cubane-media-editor-preview-images {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.cubane-media-editor-preview-image {
+    width: calc(100% / 3);
+    height: 275px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+.cubane-media-editor.with-shapes.multiple .cubane-media-editor-shapes {
+    display: none;
+}
+
+.cubane-media-editor.with-shapes.multiple .cubane-media-editor-preview {
+    width: 100%;
+}
+
+.cubane-media-editor.with-shapes.multiple .cubane-media-editor-toolbar {
+    display: none;
+}
+
+.cubane-media-editor.with-shapes.multiple .cubane-media-editor-container-panels {
+    top: 0;
+}
+
+
+/*
+ * Toolbar
+ */
+.cubane-media-editor-toolbar {
+    padding: 2px;
+    height: 35px;
+    background-color: #555;
+    border-bottom: 1px solid #333;
+}

@@ -1,0 +1,18 @@
+{% if not permissions or permissions.edit or permissions.create %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{% if not no_form_icons %}{% if icon %}<i class="icon-white {{ icon }}"></i> {% else %}<i class="icon-white icon-ok"></i>{% endif %} {% endif %}{% if submit %}{{ submit }}{% else %}Save{% endif %}</button>
+        {% if not no_form_cancel %}
+        <button type="reset" class="btn">{% if not no_form_icons %}<i class="icon icon-remove"></i> {% endif %}Cancel</button>
+        {% endif %}
+
+        {% if not oneline and labels != 'False' %}
+            {% if form.has_required_fields and form.visible_fields %}
+            	{% if form.all_fields_are_requried %}
+			        {% include 'cubane/bootstrap/form/form_all_field_notice.html' %}
+		        {% else %}
+                	{% include 'cubane/bootstrap/form/form_required_field_notice.html' %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}

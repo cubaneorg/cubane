@@ -1,0 +1,9 @@
+<section class="meta-preview">
+    <h1 class="meta-preview-tab"><span data-watch-field="_meta_title">{% if title or meta_title %}{% if meta_title %}{{ meta_title }}{% else %}{{ title }}{% endif %}{% else %}&lt;Page Title&gt;{% endif %}</span></h1>
+    <p class="meta-preview-address-line">{{url|safe}} <i class="icon-circle-arrow-left"></i></p>
+    <div class="meta-preview-container">
+        <p><span data-watch-field="_meta_title">{% if title or meta_title %}{% if meta_title %}{{ meta_title }}{% else %}{{ title }}{% endif %}{% else %}&lt;Page Title&gt;{% endif %}</span></p>
+        <p>{{url|safe}}</p>
+        <p><span data-watch-field="_meta_description">{% if meta_description %}{{ meta_description }}{% else %}&lt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ornare ligula ut aliquet accumsan. Morbi faucibus lectus libero, nec condimentum ligula aliquam ut. Duis fringilla massa ac arcu fermentum, at ullamcorper mi placerat. Nam eros augue.&gt;{% endif %}</p>
+    </div>
+</section>

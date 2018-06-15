@@ -1,0 +1,80 @@
+{% load text_tags %}
+<div class="dashboard-container">
+    <div class="dashboard-wrapper">
+        <div class="dashboard{% if dashboard_messages %} with-welcome-message{% endif %}">
+            <div class="dashboard-message-container">
+                {% if dashboard_messages %}
+
+                            {% for message in dashboard_messages %}
+                                <div class="dashboard-welcome-message{% if forloop.first %} active{% endif %}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+
+                {% endif %}
+
+                {% if welcome_message %}
+                    <div class="dashboard-user-welcome-message">
+                        {{ welcome_message }}
+                    </div>
+                {% endif %}
+
+
+                <div class="dashboard-add-widget-toolbar">
+                    {% include 'cubane/backend/form/form_fields.html' with form=add_widget_form fields='widgets' %}
+                    <button class="btn btn-primary">Add</button>
+                </div>
+            </div>
+            <div class="dashboard-widgets">
+                {% for widget in dashboard_widgets %}
+                    {% include 'cubane/backend/dashboard/widget.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="dashboard-tech-support">
+            {% if provided_by.logo or provided_by.name %}
+
+                <div class="dashboard-tech-support-column">
+                    {% if provided_by.name %}
+                        <div class="dashboard-tech-support-image"></div>
+                    {% endif %}
+                    <div>
+                        {% if provided_by.contact_name %}
+                            <h2>Tech Support</h2>
+                             <div class="dashboard-provided-by-contact-name">Your project manager is <strong>{{ provided_by.contact_name }}</strong></div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="dashboard-tech-support-column">
+                    {% if provided_by.contact_email or provided_by.contact_phone %}
+                    {% endif %}
+
+                    {% if provided_by.contact_email %}
+                         <div class="dashboard-provided-by-contact-email">
+                             Email: <a href="mailto:{{ provided_by.contact_email }}">{{ provided_by.contact_email }}</a>
+                         </div>
+                    {% endif %}
+
+                    {% if provided_by.contact_phone %}
+                         <div class="dashboard-provided-by-contact-phone">
+                             Phone: <a href="tel:{{ provided_by.contact_phone|phone_number }}">{{ provided_by.contact_phone|phone_display }}</a>
+                         </div>
+                    {% endif %}
+               </div>
+               <div class="dashboard-tech-support-column">
+                   {% if provided_by.logo %}
+                       <img src="{{ provided_by.logo }}" alt="{{ provicded_by.name }}">
+                   {% endif %}
+                   <div class="dashboard-provided-by-title">Provided By {{ provided_by.name }}</div>
+
+
+               </div>
+            {% endif %}
+        </div>
+
+        <div class="dashboard-copyright">
+            <a href="https://www.cubane.org/" title="Cubane" target="_blank">&copy; Cubane</a> Version {{ version }} provided by <a href="https://www.innershed.com/" title="InnerShed Ltd." target="_blank">InnerShed Ltd.</a>
+        </div>

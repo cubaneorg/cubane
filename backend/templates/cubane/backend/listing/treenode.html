@@ -1,0 +1,20 @@
+<li class="tree-node{% if node.children %} with-children{% endif %}{% if node.id in folder_ids %} active{% endif %}{% if node.is_open_folder %} open{% endif %}" data-id="{{ node.id }}">
+    <div class="tn-title dropable draggable">
+        <div class="tn-title-content">
+            <div class="tn-caret icon icon-caret-right"></div>
+            <div class="tn-icon icon icon-folder-close">
+                <svg viewBox="0 0 18 14.8"><use xlink:href="#icon-folder"/></svg>
+            </div>
+            <div class="tn-title-text">{% if node.title == '/' %}/{% else %}{{ node }}{% endif %}</div>
+        </div>
+    </div>
+    {% if node.children %}
+        <ul class="tree">
+            {% for child in node.children %}
+                {% with node=child node_template_name='cubane/backend/listing/treenode.html' %}
+                    {% include node_template_name %}
+                {% endwith %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

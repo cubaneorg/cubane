@@ -1,0 +1,1949 @@
+/*
+ * Data listing header
+ */
+.cubane-listing-header,
+.cubane-listing-filter,
+.cubane-listing-content {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cubane-listing-content.panel {
+    -webkit-user-select: all;
+    -khtml-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+}
+
+.cubane-listing .t-columns .t-d {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #374142;
+}
+
+.cubane-listing .t-head .t-d {
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 30px;
+}
+
+.t-row.cubane-listing-item {
+    background-color: white;
+    border: 1px solid #e6e6e6;
+    cursor: pointer;
+    height: 58px;
+    line-height: 58px;
+    margin-bottom: 13px;
+    margin: 0 40px 13px;
+    padding: 0 15px;
+    overflow: hidden;
+}
+
+.t-row.has-image .t-columns > div:last-child .t-d {
+    padding: 0;
+}
+
+.t-row.cubane-listing-item.has-image [class*="t-col"] {
+    min-height: 100px;
+}
+
+.t-row.cubane-listing-item.cubane-listing-item-compact.has-image [class*="t-col"] {
+    min-height: 50px;
+}
+
+.cubane-listing .t-body .t-row.selected {
+    -webkit-box-shadow: 0px 2px 7px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 2px 7px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 2px 7px 0px rgba(0,0,0,0.3);
+}
+
+.cubane-listing .selected .t-columns .t-d {
+    color: #f49e2d;
+}
+
+.cubane-listing .ui-move-handle {
+    cursor: move;
+    color: #ccc;
+}
+
+.cubane-listing-item:hover .ui-move-handle {
+    color: #666;
+}
+
+.cubane-listing input[type="checkbox"] {
+    margin: 0;
+}
+
+.cubane-listing .search-query.error {
+    border-color: rgb(185, 74, 72);
+    color: rgb(185, 74, 72);
+}
+
+
+/*
+ * Listing header
+ */
+.cubane-listing-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 19px 40px;
+    height: 70px;
+}
+
+.with-folders .cubane-listing-header {
+    left: 180px;
+}
+
+.with-filter .cubane-listing-header {
+    right: 240px;
+}
+
+.cubane-listing-header-content {
+    height: 42px;
+    line-height: 40px;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.cubane-listing-edit,
+.cubane-listing-create,
+.cubane-listing-duplicate,
+.cubane-listing-action {
+    display: inline;
+}
+
+.cubane-listing-header-content svg {
+    width: 15px;
+    height: 15px;
+    max-width: 15px;
+    margin-right: 3px;
+    vertical-align: middle;
+    fill: #f49e2d;
+}
+
+.cubane-listing-header-content .disabled svg {
+    fill: black;
+}
+
+.cubane-listing-header-content .btn {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    background-color: transparent;
+    color: #f49e2d;
+    font-weight: 400;
+    border: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    vertical-align: top;
+}
+
+.cubane-listing-header-toolbar .btn {
+    font-size: 14px;
+    text-transform: none;
+    font-weight: 400;
+}
+
+.cubane-listing-header-content .btn-primary {
+    height: 28px;
+    line-height: 28px;
+    vertical-align: middle;
+}
+
+.cubane-listing-header-content .btn.disabled,
+.cubane-listing-header-content .btn.disabled:focus,
+.cubane-listing-header-content .btn.disabled:active,
+.cubane-listing-header-content .btn.disabled:hover {
+    background-color: transparent !important;
+    color: black;
+}
+
+.cubane-listing-header-content .btn:hover,
+.cubane-listing-header-content .btn:active,
+.cubane-listing-header-content .btn:focus {
+    color: #f49e2d;
+}
+
+.cubane-listing-header-section-title {
+    display: inline-block;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+    margin-right: 34px;
+    height: 42px;
+    color: #374142;
+    vertical-align: top;
+    white-space: nowrap;
+    max-width: 360px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+.cubane-listing-header-toolbar {
+    display: inline-block;
+}
+
+.cubane-listing-header-save-changes-toolbar {
+    display: none;
+}
+
+.edit-mode .cubane-listing-header-toolbar {
+    display: none;
+}
+
+.edit-mode .cubane-listing-header-save-changes-toolbar {
+    display: inline-block;
+}
+
+.browse-dialog .cubane-listing-header {
+    left: 0;
+    top: 0;
+}
+
+.browse-dialog .with-folders .cubane-listing-header {
+    left: 179px;
+}
+
+.cubane-listing-header-title {
+    position: absolute;
+    right: 15px;
+    top: 0;
+    color: #777;
+    font-size: 15px;
+    line-height: 59px;
+    height: 59px;
+}
+
+.cubane-listing-header form {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*
+ * cubane listing nav actions
+ */
+.cubane-listing-nav-actions {
+    position: absolute;
+    height: 40px;
+    line-height: 40px;
+    top: 18px;
+    bottom: 0;
+    right: 40px;
+    background-color: white;
+}
+
+.cubane-listing-nav-actions .ui-listing-filter-reset {
+    display: none;
+}
+
+.cubane-listing-nav-actions .ui-listing-filter-reset.filtered {
+    display: inline-block;
+}
+
+.cubane-listing-view {
+    top: 0;
+    height: 26px;
+    line-height: 26px;
+    margin-right: 10px;
+}
+
+.cubane-listing-header .cubane-listing-view .btn {
+    height: 26px;
+    line-height: 26px;
+    color: black;
+}
+
+.cubane-listing-view .btn,
+.cubane-listing-view .btn.active {
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.cubane-listing-view .btn.active,
+.cubane-listing-view .btn:hover {
+    color: #f49e2d;
+}
+
+.cubane-listing-header-content .btn.cubane-listing-filter-toggle {
+    color: #fff;
+    background-color: #f49e2d;
+    border: 1px solid #d38826;
+}
+
+.cubane-listing-header-content .btn.cubane-listing-filter-toggle:hover {
+    background-color: white;
+    color: #2574b7;
+}
+
+
+/*
+ * Fullscreen listing content
+ */
+.cubane-listing-content-frame {
+    position: absolute;
+    top: 73px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.browse-dialog .cubane-listing-content-frame {
+    top: 100px;
+    left: 0;
+}
+
+.cubane-listing-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 40px;
+}
+
+.cubane-listing-content.panel {
+    margin: 0;
+    padding: 0;
+    top: 15px;
+}
+
+.cubane-listing .t.t-scrollable .t-body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    top: 40px;
+    bottom: 39px;
+}
+
+.cubane-listing .t.t-scrollable .t-foot {
+    border-top: 1px solid #e6e6e6;
+    margin: 0 40px;
+}
+
+
+/*
+ * Listing content panel for arbitary content within listing container
+ */
+.cubane-listing-panel {
+    padding: 0 40px;
+}
+
+
+/*
+ * Empty listing
+ */
+.empty-listing {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.empty-listing-title {
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 45px;
+    max-width: 1100px;
+    margin: 0 auto;
+    color: #374142;
+}
+
+.empty-listing-text {
+    color: #8a8a8b;
+    margin: 30px 0;
+    font-size: 16px;
+}
+
+.empty-listing-actions {
+    margin: 30px 0;
+}
+
+
+/*
+ * Sortable table items
+ */
+.ui-sortable-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -15px;
+    width: 45px;
+    background-image: url(/static/cubane/backend/img/dot-background.svg);
+    background-repeat: repeat;
+    background-size: 4.8px 4.8px;
+    cursor: default;
+    z-index: 20;
+    opacity: .3;
+}
+
+.ui-sortable-handle:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url(/static/cubane/backend/img/drag.svg);
+    background-repeat: no-repeat;
+    background-size: 18px 18px;
+    background-position: 50% 50%;
+    z-index: 30;
+}
+
+.cubane-listing-can-sort .ui-sortable-handle {
+    opacity: 1;
+    cursor: ns-resize;
+}
+
+.cubane-listing-can-sort .cubane-listing-grid-item .ui-sortable-handle {
+    cursor: all-scroll;
+}
+
+.t-row.cubane-listing-item.has-image .ui-sortable-handle {
+    height: 100px;
+}
+
+.t-row.cubane-listing-item.cubane-listing-item-compact.has-image .ui-sortable-handle {
+    height: 50px;
+}
+
+
+/*
+ * View Obj Link
+ */
+.cubane-listing-item-view-obj {
+    padding: 0 5px;
+    text-align: center;
+    width: 60px;
+    position: absolute;
+    right: 30px;
+    top: 0;
+    bottom: 0;
+}
+
+.cubane-listing-item-view-obj a {
+    font-size: 12px;
+    font-weight: 500;
+    color: #f49e2d;
+}
+
+
+/*
+ * Sortable column header
+ */
+.cubane-listing-column.sortable .t-d {
+    cursor: pointer;
+    background-repeat: no-repeat;
+}
+
+.cubane-listing-column.sortable:hover .t-d {
+    background-color: #f5f5f5;
+}
+
+.cubane-listing-column.sortable.active .t-d {
+    color: #f49e2d;
+}
+
+
+/*
+ * Sortable column icon
+ */
+.cubane-listing-column.sortable .t-d {
+    background-repeat: no-repeat;
+    background-size: 10px 16px;
+    background-position: 5px 50%;
+}
+
+.cubane-listing-column.sortable.active .t-d {
+    padding-left: 20px;
+    background-image: url('/static/cubane/backend/img/sorting-down.svg');
+}
+
+.cubane-listing-column.sortable.active[data-reverse-order="1"] .t-d {
+    background-image: url('/static/cubane/backend/img/sorting-up.svg');
+}
+
+
+/*
+ * Sequence header
+ */
+.cubane-listing-seq-column {
+    position: absolute;
+    right: -20px;
+    top: 0;
+    width: 120px;
+    text-align: right;
+}
+
+.cubane-listing-seq-column .t-d {
+    padding: 0 5px;
+}
+
+.cubane-listing-seq-column .btn {
+    height: 20px;
+    line-height: 12px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 5px;
+    margin-top: -3px;
+}
+
+
+/*
+ * Data listing
+ */
+.cubane-listing-item.selected .cubane-listing-item-selected-state,
+.cubane-listing-item.selected:hover .cubane-listing-item-selected-state {
+    border-color: #f49e2d;
+    background-color: #f49e2d;
+}
+
+.cubane-listing-item.selected .cubane-listing-item-time,
+.cubane-listing-item.selected:hover .cubane-listing-item-time {
+    color: #f49e2d;
+}
+
+.cubane-listing-item-selected-state {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    border-radius: 20px;
+    border: 2px solid #f49e2d;
+    background-color: #fff;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+
+.cubane-listing .t-d {
+    cursor: default;
+}
+
+.t.t-scrollable .t-head input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none;
+    border: 2px solid #e6e6e6;
+    border-radius: 20px;
+    width: 16px;
+    height: 16px;
+}
+
+.t.t-scrollable .t-head input[type="checkbox"]:checked {
+    border-color: #f49e2d;
+    background-color: #f49e2d;
+}
+
+
+/*
+ * Listing item with image
+ */
+.t-row.cubane-listing-item.has-image {
+    height: 100px;
+    line-height: 80px;
+}
+
+.cubane-listing .has-image .t-body .t-columns,
+.cubane-listing .has-image .t-head .t-columns {
+    right: 160px;
+}
+
+.cubane-listing-item.edit-form {
+    position: relative;
+}
+
+.cubane-listing-item .thumbnail-image-frame {
+    position: absolute;
+    display: block;
+    right: -15px;
+    top: 0;
+    bottom: 0;
+    width: 140px;
+    text-align: center;
+    background: url('/static/cubane/backend/img/thumbnail-background.png');
+}
+
+.cubane-listing-item.sortable .thumbnail-image-frame {
+    right: 30px;
+}
+
+.cubane-listing-item .thumbnail-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.cubane-listing-item .thumbnail-image.thumbnail-image-icon {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background-size: contain;
+}
+
+.cubane-listing-item .thumbnail-image.thumbnail-image-contain {
+    background-size: contain;
+}
+
+
+/*
+ * Listing item with embed code (video)
+ */
+.cubane-listing-item-video .thumbnail-image:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    opacity: 0.8;
+    background-image: url(/static/icanbea/icons/play.svg);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cubane-listing-item-compact.cubane-listing-item-video .thumbnail-image:after {
+    width: 20px;
+    height: 20px;
+}
+
+
+/*
+ * Listing item shortcut actions
+ */
+.cubane-listing-item.with-shortcut-actions,
+.cubane-listing-item.with-shortcut-actions .ui-sortable-handle {
+    height: 70px;
+}
+
+.item-shortcut-actions {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    height: 15px;
+    line-height: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.cubane-listing .has-image .item-shortcut-actions {
+    bottom: 8px;
+}
+
+.cubane-shortcut-action {
+    display: inline-block;
+    margin-right: 20px;
+    color: #8c8c8c;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.cubane-shortcut-action:hover {
+    text-decoration: underline;
+    color: #4c4c4c;
+}
+
+
+/*
+ * Listing loading
+ */
+.cubane-listing.loading .cubane-listing-content-frame:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 100px;
+    height: 100px;
+    background-image: url('/static/cubane/backend/img/loading.svg');
+    background-repeat: no-repeat;
+    background-position: 50% 25%;
+    background-size: 100px 100px;
+}
+
+.cubane-listing.loading .cubane-listing-content .t-body,
+.cubane-listing.loading .cubane-listing-content.grid-view {
+    opacity: 0.3;
+}
+
+
+/*
+ * Compact listing presentation
+ */
+.t-row.cubane-listing-item.cubane-listing-item-compact {
+    line-height: 30px;
+    height: 30px;
+}
+
+.cubane-listing-item-compact [class*="t-col"],
+.cubane-listing-item.cubane-listing-item-compact.with-shortcut-actions,
+.cubane-listing-item.cubane-listing-item-compact.with-shortcut-actions .ui-sortable-handle {
+    height: 30px;
+    min-height: 30px;
+}
+
+.cubane-listing-item.cubane-listing-item-compact .item-shortcut-actions {
+    display: none;
+}
+
+.t-row.cubane-listing-item.cubane-listing-item-compact {
+    margin-bottom: -1px;
+}
+
+.t-row.cubane-listing-item.cubane-listing-item-compact.selected {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background-color: #f9f9f9;
+}
+
+.cubane-listing-item.cubane-listing-item-compact .ui-sortable-handle:after {
+    background-size: 14px 14px;
+}
+
+
+/*
+ * Compact listing presentation with image preview
+ */
+.t-row.cubane-listing-item.cubane-listing-item-compact.has-image,
+.t-row.cubane-listing-item.cubane-listing-item-compact.has-image [class*="t-col"],
+.t-row.cubane-listing-item.cubane-listing-item-compact.has-image.with-shortcut-actions,
+.t-row.cubane-listing-item.cubane-listing-item-compact.has-image.with-shortcut-actions .ui-sortable-handle {
+    height: 50px;
+    line-height: 50px;
+}
+
+
+/*
+ * Edit Form Listing (in-place bulk editing)
+ */
+.edit-mode .cubane-listing-column .t-d,
+.edit-mode .cubane-listing-column:hover .t-d {
+    cursor: default;
+    opacity: 0.7;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+}
+
+.edit-mode .t-columns {
+    position: static;
+}
+
+.edit-mode .t-columns .t-d {
+    line-height: 28px;
+}
+
+.edit-mode .t.t-scrollable .t-head .t-row {
+    padding: 0;
+}
+
+.edit-mode .t-row.cubane-listing-item {
+    border-color: transparent;
+    margin-bottom: 3px;
+    padding: 3px 0;
+    height: 38px;
+    min-height: 38px;
+    vertical-align: top;
+}
+
+.edit-mode .has-image .t-row.cubane-listing-item {
+    padding-right: 130px;
+}
+
+.edit-mode .t-row.cubane-listing-item .btn {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 3px 6px;
+}
+
+.edit-mode .cubane-listing-item.error,
+.edit-mode .t-row.cubane-listing-item.edit-mode-editing {
+    height: auto;
+    overflow-y: visible;
+}
+
+.edit-mode .cubane-listing-item.error .t-columns .t-d,
+.edit-mode .t-row.cubane-listing-item.edit-mode-editing .t-columns .t-d {
+    overflow-y: visible;
+}
+
+.edit-mode .t-row.cubane-listing-item.edit-mode-changed,
+.edit-mode .t-row.cubane-listing-item.edit-mode-editing {
+    background-color: #f0f0f0;
+}
+
+.edit-mode .t-row.cubane-listing-item.error {
+    border: 1px solid #b94a48;
+}
+
+.edit-mode .cubane-listing-item [class*="t-col"] {
+    min-height: inherit !important;
+}
+
+.cubane-listing-item.edit-form label:not(.checkbox) {
+    display: none;
+}
+
+.cubane-listing-item.edit-form label.checkbox input[type="checkbox"] {
+    margin-left: 0;
+}
+
+.cubane-listing-item.edit-form select,
+.cubane-listing-item.edit-form input {
+    display: block;
+    width: 100%;
+}
+
+.cubane-listing-item.edit-form .controls.control-checkbox {
+    padding-top: 3px;
+}
+
+.cubane-listing-item.edit-form label.checkbox {
+    padding: 0;
+    margin: 0;
+}
+
+.cubane-listing-item.edit-form.error label.checkbox {
+    white-space: normal;
+}
+
+.cubane-listing-item.edit-form input[type="checkbox"] {
+    display: inline-block;
+    width: 20px;
+    margin-right: 5px;
+}
+
+.cubane-listing-item.edit-form .checkbox-label {
+    display: none;
+}
+
+.cubane-listing-item.edit-form.error .checkbox-label {
+    display: inline;
+}
+
+.cubane-listing-item.edit-form .help-block {
+    display: none;
+    line-height: 1.25em;
+    font-size: 11px;
+    margin: 0;
+}
+
+.cubane-listing-item.edit-form.error .help-block,
+.cubane-listing-item.edit-mode-editing .help-block {
+    display: block;
+    white-space: normal;
+}
+
+.cubane-listing-item.edit-form select,
+.cubane-listing-item.edit-form textarea,
+.cubane-listing-item.edit-form input,
+.cubane-listing-item.edit-form .control-group,
+.cubane-listing-item.edit-form .uneditable-input,
+.cubane-listing-item.edit-form .input-append,
+.cubane-listing-item.edit-form .input-prepend {
+    margin-bottom: 0;
+}
+
+.cubane-listing-item.edit-form .input-append,
+.cubane-listing-item.edit-form .input-prepend {
+    display: inline-flex;
+    line-height: 28px;
+    width: 100%;
+}
+
+/* select2 */
+.cubane-listing-item.edit-form .select-tags + .select2 {
+    min-width: 100%;
+}
+
+.cubane-listing-item.edit-form .select2-selection--multiple {
+    box-sizing: border-box;
+    border-color: #ccc;
+    height: 28px;
+    min-height: 28px;
+    overflow: hidden;
+}
+
+.cubane-listing-item.edit-form.error .select2-selection--multiple,
+.cubane-listing-item.edit-mode-editing .select2-selection--multiple {
+    height: auto;
+    overflow: visible;
+}
+
+.cubane-listing-item.edit-form .select2-selection__choice {
+    margin-top: 2px;
+}
+
+/* textarea */
+.cubane-listing-item.edit-form textarea {
+    box-sizing: border-box;
+    height: 28px;
+    min-height: 28px;
+}
+
+.cubane-listing-item.edit-form.error textarea,
+.cubane-listing-item.edit-mode-editing textarea {
+    height: auto;
+}
+
+
+/*
+ * Grid
+ */
+
+
+/*
+ * Grid Header
+ */
+.cubane-listing-grid-sort-header {
+    display: flex;
+}
+
+.cubane-listing-grid-sort-header .t-columns,
+.cubane-listing-grid-sort-header .t-d,
+.cubane-listing-grid-sort-header [class*="t-col"] {
+    height: 30px;
+    min-height: 30px;
+    line-height: 30px;
+}
+
+.cubane-listing-grid-sort-header > .cubane-listing-column {
+    flex-basis: 0;
+}
+
+.cubane-listing-grid-sort-header > .cubane-listing-column > .t-d {
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.cubane-listing-grid-sort-header > .cubane-listing-seq-column {
+    position: static;
+    width: auto;
+}
+
+
+/*
+ * Grid Item Container
+ */
+.cubane-listing-grid-items {
+    position: absolute;
+    left: 25px;
+    right: 25px;
+    top: 25px;
+    bottom: 30px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cubane-listing-grid-foot {
+    border-top: 1px solid rgb(221, 221, 221);
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    bottom: 0;
+}
+
+.cubane-listing-grid:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+
+/*
+ * Grid item
+ */
+.cubane-listing-grid-item {
+    position: relative;
+    display: block;
+    height: 0;
+    padding-bottom: calc(((25% - 15px) / 1.33330304819879) + 33px + 50px + 15px);
+    float: left;
+    width: 25%;
+    cursor: pointer;
+}
+
+.cubane-listing-grid-item-image {
+    padding-bottom: calc(((25% - 15px) / 1.33330304819879) + 33px + 50px + 15px);
+}
+
+@media (max-width: 767px) {
+    .cubane-listing-grid-item {
+        padding-bottom: calc(((100% - 15px) / 1.33330304819879) + 33px + 15px);
+    }
+
+    .cubane-listing-grid-item {
+        width: 100%;
+    }
+
+    .collection-item.cubane-listing-grid-item {
+        padding-bottom: calc(((100% - 15px) / 1.33330304819879) + 32px + 35px + 15px)!important;
+    }
+}
+
+.cubane-listing-grid-item .thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 15px;
+    background-color: white;
+    border: 1px solid #efeff0;
+    padding: 0;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+
+.cubane-listing-grid-item .thumbnail > .ui-remove {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+    line-height: 20px;
+    text-align: center;
+    color: #ccc;
+}
+
+/* sortable handle */
+.cubane-listing-grid-item .ui-sortable-handle {
+    position absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    background-color: rgba(255, 255, 255, .9);
+}
+
+/* time since last mod. */
+.cubane-listing-item-time {
+    font-size: 10px;
+    line-height: 15px;
+    font-weight: 600;
+    position: absolute;
+    right: 25px;
+    top: 0;
+    z-index: 20;
+    color: #f49e2d;
+    background-color: rgba(255, 255, 255, .9);
+    padding: 0 8px;
+}
+
+.cubane-listing-grid-item .thumbnail > .ui-remove:hover {
+    color: #333;
+}
+
+
+/*
+ * Listing item image
+ */
+.cubane-listing-grid-item .thumbnail-image-frame {
+    position: relative;
+    height: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 75%;
+    text-align: center;
+    background: url('/static/cubane/backend/img/thumbnail-background.png');
+}
+
+.cubane-listing-grid-item .thumbnail-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.cubane-listing-grid-item .thumbnail-image.thumbnail-image-icon {
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background-size: contain;
+}
+
+.cubane-listing-grid-item .thumbnail-image.thumbnail-image-contain {
+    background-size: contain;
+}
+
+
+/*
+ * Listing Annotations
+ */
+.cubane-listing-annotation-frame {
+    position: absolute;
+    top: 0px;
+    left: -15px;
+    width: 3px;
+    bottom: -10px;
+    background-color: transparent;
+}
+
+.cubane-listing-annotation-success .cubane-listing-annotation-frame {
+    background-color: #468847;
+}
+
+.cubane-listing-annotation-warning .cubane-listing-annotation-frame {
+    background-color: #f89406;
+}
+
+.cubane-listing-annotation-progress .cubane-listing-annotation-frame {
+    background-color: #aacc2f;
+}
+
+.cubane-listing-annotation-error .cubane-listing-annotation-frame {
+    background-color: #b94a48;
+}
+
+
+/*
+ * Label colours matching listing annotations
+ */
+.label.label-success {
+    background-color: #468847;
+}
+
+.label.label-warning {
+    background-color: #f89406;
+}
+
+.label.label-progress {
+    background-color: #aacc2f;
+}
+
+.label.label-error {
+    background-color: #b94a48;
+}
+
+
+/*
+ * Selected item state
+ */
+.cubane-listing-grid-item .cubane-listing-item-selected-state {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 20;
+}
+
+.cubane-listing-item-title {
+    position: absolute;
+    display: block;
+    left: 0;
+    right: 0;
+    font-size: 16px;
+    font-weight: 200;
+    color: #f49e2d;
+    background-color: rgba(255, 255, 255, 0.85);
+    top: 50%;
+    padding: 8px;
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+}
+
+.cubane-listing-item-btns-frame {
+    display: block;
+    background-color: #f0f0f0;
+}
+
+.cubane-listing-item-btns {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.cubane-listing-item-btns a,
+.cubane-listing-item-edit {
+    display: table-cell;
+    width: 33.3333333333333333%;
+    padding: 0;
+    margin: 0;
+    background-color: #f0f0f0;
+    line-height: 50px;
+    height: 50px;
+    font-size: 12px;
+    text-align: center;
+    color: black;
+}
+
+.cubane-listing-btn-frame {
+    overflow: hidden;
+    display: block;
+    height: 50px;
+    padding: 0 5px;
+    border-right: 1px solid #e6e6e6;
+}
+
+.cubane-listing-item-btns a:last-child .cubane-listing-btn-frame,
+.cubane-listing-item-btns > div:last-child .cubane-listing-btn-frame {
+    border-right: none;
+}
+
+.cubane-listing-item-btns a:hover,
+.cubane-listing-item-btns > div:hover {
+    text-decoration: none;
+    color: #f49e2d;
+}
+
+.cubane-listing-item-btns a:hover svg,
+.cubane-listing-item-btns > div:hover svg {
+    fill: #f49e2d;
+}
+
+.cubane-listing-item-btns svg {
+    max-width: 15px;
+    vertical-align: middle;
+    fill: black;
+}
+
+.cubane-listing-btn-label {
+    margin-left: 8px;
+}
+
+.cubane-listing-item.selected .thumbnail {
+    border-color: #c8c8c8;
+    -webkit-box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 7px 0px rgba(0,0,0,0.3);
+}
+
+.cubane-listing-item .primary {
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    color: #374142;
+}
+
+.cubane-listing-item-compact .primary {
+    font-size: 14px;
+}
+
+.cubane-listing-item .primary:hover {
+    text-decoration: underline;
+}
+
+.cubane-listing-grid-item .thumbnail-filename {
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 4px;
+    background-color: black;
+}
+
+.cubane-listing-grid-item .thumbnail-filename:hover {
+    text-decoration: none;
+}
+
+.cubane-listing-grid-item .thumbnail-filename svg {
+    fill: #fff;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.cubane-listing-grid-item .thumbnail-filename span {
+    display: block;
+    margin-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cubane-listing-grid-item.selected,
+.cubane-listing-grid-item.selected:hover {
+    background-color: white;
+}
+
+.cubane-listing-grid-item.selected .thumbnail-filename {
+    color: white;
+}
+
+.cubane-listing-grid-item:hover {
+    text-decoration: none !important;
+}
+
+.cubane-cms-lightbox-overlay {
+    cursor: pointer;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 110;
+}
+
+.cubane-cms-lightbox {
+    display: none;
+    /*
+    background-color: #fff;
+    position: fixed;
+    z-index: 120;
+    max-width: 80%;
+    max-height: 80%;
+    min-width: 400px;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    */
+}
+
+.cubane-cms-lightbox.open {
+    display: block;
+}
+
+.cubane-cms-lightbox-items {
+    background-color: #fff;
+    position: fixed;
+    z-index: 120;
+    max-width: 80%;
+    max-height: 80%;
+    min-width: 400px;
+    left: 50%;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border: 10px solid white;
+}
+
+.cubane-cms-lightbox-item {
+
+}
+
+.cubane-cms-lightbox-filename {
+    line-height: 40px;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 55px;
+    height: 40px;
+    line-height: 30px;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    color: black;
+}
+
+.cubane-cms-lightbox-filename svg {
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+    margin-right: 15px;
+    vertical-align: middle;
+    fill: black;
+}
+
+.cubane-cms-lightbox-close.btn {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #fff;
+    float: right;
+    padding: 10px;
+    width: 55px;
+    height: 48px;
+    line-height: 40px;
+    border: none;
+    border-left: 1px solid #f4f2f2;
+}
+
+.cubane-cms-lightbox-close.btn svg {
+    height: 20px;
+    width: 20px;
+    fill: #f49e2d;
+}
+
+.cubane-cms-lightbox-arrow-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.cubane-cms-lightbox-arrow {
+    cursor: pointer;
+    position: absolute;
+    left: 5%;
+    top: calc(50% + 15px);
+    -ms-transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    z-index: 120;
+    filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, .7));
+}
+
+.cubane-cms-lightbox.open.single-image .cubane-cms-lightbox-arrow {
+    display: none;
+}
+
+.cubane-cms-lightbox-next {
+    right: 5%;
+    left: auto;
+}
+
+.cubane-cms-lightbox-arrow svg {
+    height: 45px;
+    width: 25px;
+    fill: #fff;
+}
+
+.cubane-cms-lightbox-item-img img {
+    width: 100%;
+}
+
+
+/*
+ * Grid calendar overlay
+ */
+.cubane-listing-grid-items .event-date {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+.event-date {
+    display: block;
+    width: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.event-day {
+    display: block;
+    padding: 5px;
+    border: 1px solid #d3d3d3;
+    color: #9c9e9b;
+    font-size: 20px;
+    line-height: 20px;
+    background: #fbfbfb;
+    background: -moz-linear-gradient(top,  #fbfbfb 0%, #e6e3ea 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbfbfb), color-stop(100%,#e6e3ea));
+    background: -webkit-linear-gradient(top,  #fbfbfb 0%,#e6e3ea 100%);
+    background: -o-linear-gradient(top,  #fbfbfb 0%,#e6e3ea 100%);
+    background: -ms-linear-gradient(top,  #fbfbfb 0%,#e6e3ea 100%);
+    background: linear-gradient(to bottom,  #fbfbfb 0%,#e6e3ea 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbfbfb', endColorstr='#e6e3ea',GradientType=0 );
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.2);
+}
+
+.event-month {
+    display: block;
+    padding: 5px;
+    color: white;
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: uppercase;
+    background: #d60201;
+    background: -moz-linear-gradient(top,  #d60201 0%, #7e0902 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d60201), color-stop(100%,#7e0902));
+    background: -webkit-linear-gradient(top,  #d60201 0%,#7e0902 100%);
+    background: -o-linear-gradient(top,  #d60201 0%,#7e0902 100%);
+    background: -ms-linear-gradient(top,  #d60201 0%,#7e0902 100%);
+    background: linear-gradient(to bottom,  #d60201 0%,#7e0902 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d60201', endColorstr='#7e0902',GradientType=0 );
+    -webkit-border-bottom-right-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -moz-border-radius-bottomright: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.5);
+}
+
+
+/*
+ * Filter form
+ */
+.cubane-listing-filter {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 240px;
+    z-index: 2;
+    background-color: #384040;
+    color: white;
+}
+
+.cubane-listing.with-filter .cubane-listing-filter {
+    display: block;
+}
+
+.cubane-listing.with-filter .cubane-listing-content-frame {
+    right: 240px;
+}
+
+.cubane-listing-filter-form {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 0 15px 15px 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cubane-listing-filter .control-frame {
+    margin-bottom: 10px;
+}
+
+.cubane-listing-filter form,
+.cubane-listing-filter label,
+.cubane-listing-filter input,
+.cubane-listing-filter textarea,
+.cubane-listing-filter select {
+    margin: 0;
+}
+
+.cubane-listing-filter form {
+    padding: 0;
+}
+
+.cubane-listing-filter input,
+.cubane-listing-filter textarea {
+    padding: 0 5px;
+    width: 100%;
+}
+
+.cubane-listing-filter textarea {
+    max-height: 120px;
+    padding: 2px 5px;
+}
+
+.cubane-listing-filter label.checkbox,
+.cubane-listing-filter label.radio {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-top: 0 !important;
+}
+
+.cubane-listing-filter li label {
+    display: flex;
+    align-items: center;
+    height: auto;
+	margin-right: 5px;
+}
+
+.cubane-listing-filter input[type="checkbox"],
+.cubane-listing-filter input[type="radio"] {
+    padding: 0;
+	vertical-align: top;
+	width: 20px;
+    margin-right: 10px;
+}
+
+.cubane-listing-filter select {
+    padding: 0;
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 22px 0 5px;
+}
+
+.cubane-listing-filter label {
+    font-size: 12px;
+    font-style: italic;
+    height: 20px;
+    color: white !important;
+    padding: 0 !important;
+}
+
+.cubane-listing-filter-form ul {
+    padding: 0;
+    margin: 0;
+}
+
+.cubane-listing-filter-form li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.cubane-listing-filter-form li input[type="radio"] {
+    margin-right: 3px;
+}
+
+.cubane-listing-filter .row-fluid {
+    margin-bottom: 6px;
+}
+
+.cubane-listing-filter-form-objects-filtered {
+    display: none;
+    font-size: 11px;
+}
+
+.cubane-listing-filter-form-objects-filtered.filtered {
+    display: inline-block;
+}
+
+/* sections */
+.cubane-listing-filter-form .form-section {
+    color: white;
+    margin-bottom: 0;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    line-height: 20px;
+}
+
+.cubane-listing-filter-form .control-frame.form-section-frame {
+    margin-top: 20px;
+}
+
+.cubane-listing-filter-form .control-frame.form-section-frame:first-child {
+    margin-top: 0;
+}
+
+.cubane-listing-filter-form .control-frame.form-section-frame + .control-frame.form-section-frame  {
+    display: none;
+}
+
+/* submit buttons */
+.cubane-listing-filter-actions .btn {
+    margin-bottom: 5px;
+}
+
+/* input-prepend and input append */
+.cubane-listing-filter .input-prepend,
+.cubane-listing-filter .input-append {
+    display: flex;
+}
+
+.cubane-listing-filter .input-prepend > .add-on,
+.cubane-listing-filter .input-append > .add-on {
+    float: none;
+    min-width: inherit;
+    min-width: -webkit-min-content;
+}
+
+.cubane-listing-filter .input-prepend > input,
+.cubane-listing-filter .input-append > input {
+    float: none;
+    flex-grow: 1;
+}
+
+.cubane-listing-filter .cubane-listing-filter-actions {
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    padding-top: 20px;
+    margin-top: 20px;
+    margin-left: -15px;
+    margin-right: -15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cubane-listing-filter .cubane-listing-filter-actions > .btn {
+    flex: 1;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+
+/*
+ * Listing Selector
+ */
+.cubane-selector {
+    position: fixed;
+    top: 80px;
+    bottom: 0;
+    left: 30px;
+    width: 300px;
+}
+
+.cubane-listing.with-selector .cubane-listing-header,
+.cubane-listing.with-selector .cubane-listing-content-frame {
+    left: 300px;
+}
+
+.browse-dialog .cubane-selector {
+    left: 2px;
+    top: 0;
+}
+
+.cubane-selector-header {
+    padding: 15px;
+    height: 28px;
+    background-color: rgb(241, 241, 241);
+    border-right: 1px solid rgb(235, 235, 235);
+    border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+.cubane-selector-header input {
+    width: 260px;
+}
+
+.cubane-selector-list {
+    position: absolute;
+    top: 59px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-color: #222;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cubane-selector-item {
+    color: white;
+    padding: 5px 10px;
+    border-bottom: 1px solid #121212;
+    border-top: 1px solid #393939;
+    cursor: pointer;
+}
+
+.cubane-selector-item:first-child {
+    border-top: 1px solid transparent;
+}
+
+.cubane-selector-item:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+.cubane-selector-item-image {
+    width: 60px;
+    max-height: 42px;
+    float: left;
+    margin-right: 10px;
+    margin-top: 3px;
+    padding: 0 0 1px 0;
+    outline: 1px solid #494949;
+    border: 1px solid #121212;
+    overflow: hidden;
+}
+
+.cubane-selector-item.active .cubane-selector-item-image {
+    outline: 1px solid #121212;
+    border: 1px solid white;
+}
+
+.cubane-selector-item-content {
+    height: 50px;
+    line-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cubane-selector-item:first-child {
+    border-top: 1px solid transparent;
+}
+
+.cubane-selector-item:hover,
+.cubane-selector-item:focus,
+.cubane-selector-item:active {
+    background-color: #303030;
+}
+
+.cubane-selector-item.active {
+    color: black;
+    background-color: white;
+}
+
+
+/*
+ * Pagination
+ */
+.cubane-listing-message {
+    font-size: 12px;
+}
+
+.cubane-listing-message .t-d {
+    padding: 0;
+    line-height: 28px;
+    font-weight: 200;
+}
+
+.cubane-listing-pagination {
+    display: inline-block;
+    margin: 0 0 0 20px;
+}
+
+.cubane-listing-pagination ul > li > a,
+.cubane-listing-pagination ul > li > span {
+    float: none;
+    display: inline-block;
+    padding: 1px 4px;
+    color: #f49e2d;
+    background-color: #fff;
+    border-color: #f49e2d;
+}
+
+.pagination ul > li > a:hover,
+.pagination ul > li > a:focus,
+.pagination ul > .active > a,
+.pagination ul > .active > span {
+    background-color: #f49e2d;
+    color: #fff;
+}
+
+
+/*
+ * Folders Frame
+ */
+.cubane-listing-folders {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    bottom: 0;
+    width: 180px;
+    box-sizing: border-box;
+}
+
+.cubane-listing.with-folders .cubane-listing-folders {
+    -ms-transform: translate(0px, 0);
+    -webkit-transform: translate(0px, 0);
+    transform: translate(0px, 0);
+}
+
+.cubane-listing.with-folders .cubane-listing-content-frame {
+    left: 180px;
+}
+
+
+/*
+ * Folders Frame Style
+ */
+.cubane-listing-folders {
+    background-color: #384040;
+    box-sizing: border-box;
+    padding: 0 15px 15px 15px;
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1),inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1),inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+    border-right: 1px solid #EBEBEB;
+}
+
+
+/*
+ * Folders Header
+ */
+.cubane-listing-folders-header .cubane-backend-browse-add-button {
+    float: none;
+}
+
+.cubane-listing-folders-header .btn {
+    display: block;
+    font-size: 12px;
+}
+
+
+/*
+ * Folders Resize Handle
+ */
+.cubane-listing-resize-panel-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 10px;
+    background-color: transparent;
+    cursor: col-resize;
+    z-index: 20;
+    box-sizing: border-box;
+}
+
+.cubane-listing-resize-panel-handle:hover {
+    border-right: 3px solid #f49e2d;
+}
+
+.cubane-listing-resize-panel-handle.left {
+    right: auto;
+    left: 0;
+}
+
+.cubane-listing-resize-panel-handle.left:hover {
+    border-left: 3px solid #f49e2d;
+    border-right: none;
+}
+
+
+/*
+ * Folders (scrollable)
+ */
+.cubane-listing-folders-tree {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cubane-listing-folders.with-header .cubane-listing-folders-tree {
+    top: 50px;
+}
+
+
+/*
+ * Lightbox gallery
+ */
+.mfp-image-holder .mfp-content {
+    max-width: 60% !important;
+}

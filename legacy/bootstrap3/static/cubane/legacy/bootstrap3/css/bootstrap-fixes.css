@@ -1,0 +1,28 @@
+/*
+ * Inside a google map canvas we cannot have max-width: 100%, since this
+ * destroys any map controls.
+ */
+.map-canvas img {
+    max-width: none;
+}
+
+
+/*
+ * Form section headlines (this is usually a legend, but we cannot use the 
+ * legend tag everywhere).
+ */
+.form-section {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 40px;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.form-content {
+    max-width: 1200px;
+}

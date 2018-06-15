@@ -1,0 +1,10 @@
+<div class="basket-delivery">
+    <div class="basket-delivery-label">Delivery</div>
+    <div class="basket-delivery-form">
+        {% if not basket.is_frozen %}
+            {% include 'cubane/backend/form/form_fields.html' with form=basket.delivery_option_form fields='delivery_option' %}
+        {% endif %}
+
+        {% include 'cubane/backend/form/form_fields.html' with form=basket.delivery_option_form fields='click_and_collect' %}
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{% extends 'cubane/cms/child_pages/base.html' %}
+{% load partition_tags %}
+{% load format_tags %}
+{% load media_tags %}
+
+{% block listing %}
+    <div class="cubane-blog-listing">
+        {% for child in child_pages %}
+            <div class="cubane-blog-listing-item row-fluid">
+                {% if child.image %}
+                    <div class="cubane-blog-listing-item-image span4">
+                        {% image child.image %}
+                    </div>
+                    <div class="cubane-blog-listing-item-content span8">
+                {% else %}
+                    <div class="cubane-blog-listing-item-content">
+                {% endif %}
+                    <div class="cubane-blog-listing-title">
+                        {{ child.title }}
+                    </div>
+
+                    <div class="cubane-blog-listing-excerpt">
+                        {{ child.excerpt }}
+                        <span class="cubane-blog-listing-readmore"><a href="{{ child.url }}">Read More</a></span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

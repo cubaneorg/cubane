@@ -1,0 +1,1 @@
+from cubane.blog.tests.models import *

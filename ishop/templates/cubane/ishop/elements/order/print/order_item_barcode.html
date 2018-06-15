@@ -1,0 +1,9 @@
+{% load barcode_tags %}
+
+<div class="cubane-order-item-barcode">
+    {% if item.sku.barcode %}
+        {% barcode_image barcode_system item.sku.barcode %}
+    {% else %}
+        {% barcode_image barcode_system item.product.barcode %}
+    {% endif %}
+</div>

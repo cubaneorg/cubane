@@ -1,0 +1,42 @@
+/*
+ * Plain pages, for example welcome page
+ */
+.body-plain {
+    background-image: url(/static/cubane/backend/img/black-background.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.body-plain .content {
+    padding: 10% 25px 25px 25px;
+    text-align: center;
+}
+
+.plain-section {
+    margin-bottom: 50px;
+}
+
+.plain-logo {
+    width: 112px;
+}
+
+.plain-footer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.plain-footer > a {
+    display: block;
+    width: 100px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50% 50%;
+    text-indent: -99999px;
+    margin: 0 25px;
+}
+
+.plain-footer-python { background-image: url(/static/cubane/backend/img/logos/python.svg); }
+.plain-footer-django { background-image: url(/static/cubane/backend/img/logos/django.svg); }
+.plain-footer-github { background-image: url(/static/cubane/backend/img/logos/github.svg); }

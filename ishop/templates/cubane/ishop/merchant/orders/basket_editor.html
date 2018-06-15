@@ -1,0 +1,22 @@
+{% extends 'cubane/backend/base.html' %}
+
+
+{% block content %}
+    <div class="basket-editor" data-prefix="{{ basket.prefix }}">
+        <div class="basket-editor-search">
+            <input type="text" name="q" class="basket-editor-search-input" autocomplete="off" placeholder="Product title, barcode, part number or SKU..."/>
+        </div>
+
+        <div class="basket-editor-panels">
+            <div class="basket-editor-panel basket-editor-panel-listing lazy-load-container">
+            </div>
+
+            <div class="basket-editor-panel basket-editor-panel-product lazy-load-container">
+            </div>
+
+            <div class="basket-editor-panel basket-editor-panel-basket basket-panel loaded basket-compact lazy-load-container">
+                {% include 'cubane/ishop/elements/order/basket/basket.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

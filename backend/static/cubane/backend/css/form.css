@@ -1,0 +1,902 @@
+/*
+ * Forms
+ */
+form ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 5px;
+}
+
+form .field-limit {
+    font-style: italic;
+    font-size: 12px;
+    color: black;
+}
+
+form .field-limit-too-many {
+    color: #b94a48;
+}
+
+form .help-block {
+    font-style: italic;
+    font-size: 12px;
+    color: black;
+}
+
+form .help-inline {
+    display: block !important;
+}
+
+form .error .help-block {
+    display: none;
+}
+
+form {
+    padding: 0;
+}
+
+.content form .form-actions {
+    padding: 15px 40px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 20px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+}
+
+.content form .form-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 20px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+}
+
+.login-form .form-actions {
+    background-color: transparent!important;
+    border-top: none!important;
+}
+
+.login-form .form-actions {
+    text-align: left!important;
+    position: relative!important;
+}
+
+.btn-save-and-continue {
+	margin-left: 10px;
+}
+
+.form-actions {
+    background-color: transparent;
+    border-top: none;
+}
+
+.content form .form-actions .btn-cancel {
+	background: #fff;
+	color: #2574b7;
+	float: left;
+	border: 2px solid #f49e2d;
+}
+
+.content form .form-actions .btn-cancel:hover {
+	color: #fff;
+	background: #f49e2d;
+}
+
+
+
+form.disabled .control-group {
+    opacity: .7;
+}
+
+.form-section {
+    font-weight: 300;
+    color: black;
+    border: none;
+}
+
+.form-section {
+    margin-top: 0;
+}
+
+.tab-pane > .row-fluid {
+    border-top: 1px solid #e5e5e5;
+    padding-top: 10px;
+}
+
+.form-horizontal .controls {
+    margin-left: 130px;
+}
+
+.embed-form .controls {
+    margin-left: 0px !important;
+}
+
+.controls.control-checkbox {
+    padding-top: 5px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+    width: 120px;
+    color: black;
+}
+
+/* checkbox labels are clickable, but white space should not be clickable */
+.form-horizontal label.checkbox {
+    display: inline-block;
+}
+
+
+/*
+ * Visibility rules
+ */
+.control-group-visibility-rule-hidden:not(.embed-form-field) {
+    display: none !important;
+}
+
+.control-group-visibility-rule-hidden.embed-form-field > .controls {
+    display: none !important;
+}
+
+
+/*
+ * In general, all backend forms should be wider in size
+ * (wider as the default bootstrap width)
+ */
+.content-frame input[type="text"],
+.content-frame input[type="email"],
+.content-frame input[type="url"],
+.content-frame textarea,
+.content-frame .uneditable-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.content-frame input[type="text"],
+.content-frame .uneditable-input {
+    height: 28px;
+    line-height: 18px;
+}
+
+.listing-search {
+    width: 150px !important;
+    height: 28px !important;
+    line-height: 28px !important;
+}
+
+
+/*
+ * Single fullscreen form
+ */
+.content form {
+    margin: 0;
+}
+
+.content .form-content {
+    margin: 20px 40px 0 40px;
+    margin-bottom: 100px;
+}
+
+.content .form-actions {
+    margin: 0;
+}
+
+
+/*
+ * Login form
+ */
+.login-form .form-content {
+    margin: 0;
+}
+
+
+/*
+ * Form actions should not have an indent to the left, since we are trying to
+ * maximise the usage of space. Some form elelemts may spawn the entire with
+ * anyway and we may have a tabbed form.
+ */
+.form-horizontal .form-actions {
+    padding-left: inherit;
+}
+
+
+/*
+ * Form legend, e.g. *Fields are required
+ */
+.form-legend {
+    font-size: 12px;
+    margin-top: 6px;
+    font-style: italic;
+}
+
+
+/*
+ * Flattened form groups (e.g. tinymce, where we want to maximise the space that
+ * is available for any given textarea/tinymce.
+ */
+.control-group.flattened .control-label {
+    float: inherit;
+    width: inherit;
+    text-align: inherit;
+}
+
+.control-group.flattened .controls {
+    margin-left: inherit;
+}
+
+
+/*
+ * Fixed issue, where tinymce container is 100% + 2 pixels (too large),
+ * in particular when embedded into 2-column layout.
+ */
+.mce-tinymce.mce-container {
+    width: calc(100% - 2px) !important;
+}
+
+
+/*
+ * Tabbed forms
+ */
+form .nav-tabs .badge {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18px;
+    right: 0;
+    font-size: 10px;
+    text-align: center;
+    line-height: 14px;
+    padding: 1px 3px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 10px;
+}
+
+
+/*
+ *  Full width input field
+ */
+.full-width {
+    width: 95%;
+    width: calc(100% - 15px);
+}
+
+
+/*
+ * Larger select-multiple
+ */
+select[multiple] {
+    height: 280px;
+    width: 95%;
+    width: 100%;
+}
+
+
+/*
+ * Backend select and browse button
+ */
+.cubane-backend-browse-select,
+.cubane-backend-browse-button,
+.cubane-backend-browse-add-button {
+    float: left;
+}
+
+.cubane-backend-browse-select {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    min-width: 200px;
+}
+
+.cubane-listing-filter .cubane-backend-browse-select {
+    min-width: 0;
+}
+
+.cubane-backend-browse-button {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.cubane-listing-filter .cubane-backend-browse-select {
+    margin-right: 0;
+    float: none;
+}
+
+
+/*
+ * Add on button (button next to form input field)
+ */
+.field.with-addon-button {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.field.with-addon-button input,
+.field.with-addon-button textarea,
+.field.with-addon-button .uneditable-input {
+    width: 206px;
+}
+
+.field-addon {
+    margin-right: 10px;
+}
+
+
+/*
+ * Field with additional items horizontally arranged within
+ */
+.field-row {
+    display: flex;
+}
+
+.field-row > * {
+    margin-left: 20px;
+}
+
+.field-row > :first-child {
+    margin-left: 0;
+}
+
+.field-row button {
+    height: 28px;
+}
+
+
+/*
+ * Fields excluded from filter form
+ */
+.cubane-listing-filter-form .field-exclude-filter {
+    display: none;
+}
+
+
+/*
+ * Browse thumbnail
+ */
+.cubane-backend-browse-thumbnail {
+    position: relative;
+    width: 300px;
+    padding-right: 55px;
+}
+
+.cubane-backend-browse-thumbnail-remove,
+.cubane-backend-browse-thumbnail-enlarge,
+.cubane-backend-browse-thumbnail-edit,
+.cubane-backend-browse-thumbnail-upload {
+    display: none;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.cubane-backend-browse-thumbnail-remove {
+    bottom: 5px;
+    right: 30px;
+}
+
+.cubane-backend-browse-thumbnail-enlarge {
+    top: 40px;
+    right: 30px;
+}
+
+.cubane-backend-browse-thumbnail-edit {
+    top: 5px;
+    right: 0;
+}
+
+.cubane-backend-browse-thumbnail-upload {
+    top: 5px;
+    right: 30px;
+}
+
+.cubane-backend-browse-thumbnail-remove > svg,
+.cubane-backend-browse-thumbnail-enlarge > svg,
+.cubane-backend-browse-thumbnail-edit > svg,
+.cubane-backend-browse-thumbnail-upload > svg {
+    width: 100%;
+    height: 100%;
+    fill: #f49e2d;
+}
+
+.cubane-backend-browse-thumbnail-remove:hover > svg,
+.cubane-backend-browse-thumbnail-enlarge:hover > svg,
+.cubane-backend-browse-thumbnail-edit:hover > svg,
+.cubane-backend-browse-thumbnail-upload:hover > svg {
+    fill: #2574b7;
+}
+
+.cubane-backend-browse-thumbnail.with-image:hover > .cubane-backend-browse-thumbnail-remove,
+.cubane-backend-browse-thumbnail.with-image:hover > .cubane-backend-browse-thumbnail-enlarge,
+.cubane-backend-browse-thumbnail.with-image:hover > .cubane-backend-browse-thumbnail-edit,
+.cubane-backend-browse-thumbnail:hover > .cubane-backend-browse-thumbnail-upload {
+    display: block;
+}
+
+.cubane-backend-browse-thumbnail-image {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    outline: 1px solid #f0f0f0;
+    border: 3px solid white;
+    background: transparent;
+    background-image: url('/static/cubane/backend/img/thumbnail-background.png');
+    background-repeat: repeat;
+    cursor: pointer;
+    overflow: hidden;
+    min-height: 95px;
+}
+
+.cubane-backend-browse-thumbnail-image > .lazy-load,
+.cubane-backend-browse-thumbnail-image > img {
+    flex: 1;
+}
+
+.cubane-backend-browse-thumbnail .cubane-backend-browse-thumbnail-image:after {
+    content:'Choose Image';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 30px;
+    font-size: 25px;
+    text-align: center;
+    padding: 20px;
+    color: black;
+    transform: translate(0, -50%);
+}
+
+.cubane-backend-browse-thumbnail.with-image .cubane-backend-browse-thumbnail-image:after {
+    display: none;
+}
+
+.cubane-backend-browse-thumbnail.with-image .cubane-backend-browse-thumbnail-image:hover:after {
+    display: block;
+    color: white;
+    text-shadow: 0 0 1px #000000;
+}
+
+.cubane-backend-browse-thumbnail-image:hover img {
+    filter: grayscale(.3) sepia(.1) brightness(.8);
+}
+
+
+/*
+ * Browse thumbnail (table)
+ */
+table .cubane-backend-browse-thumbnail {
+    width: calc(65px + 20px);
+    height: 50px;
+    padding-right: 18px;
+}
+
+table .cubane-backend-browse-thumbnail-image {
+    height: 50px;
+    padding: 0;
+    min-height: 40px;
+}
+
+table .cubane-backend-browse-thumbnail .cubane-backend-browse-thumbnail-image:after {
+    font-size: 12px;
+    padding: 1px;
+    right: 20px;
+}
+
+table .cubane-backend-browse-thumbnail-remove,
+table .cubane-backend-browse-thumbnail-enlarge,
+table .cubane-backend-browse-thumbnail-upload {
+    width: 15px;
+    height: 15px;
+}
+
+table .cubane-backend-browse-thumbnail.with-image .cubane-backend-browse-thumbnail-upload {
+    display: none;
+}
+
+table .cubane-backend-browse-thumbnail-enlarge {
+    top: 3px;
+}
+
+table .cubane-backend-browse-thumbnail-remove {
+    bottom: 3px;
+}
+
+
+
+/*
+ * Select2
+ */
+.select-tags {
+    display: none;
+}
+
+.select-tags + .select2 {
+    min-width: 240px;
+}
+
+.cubane-listing-filter .select-tags + .select2 {
+    width: 100% !important;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container.select2-container--open {
+    z-index: 50;
+}
+
+.select2-container--default .select2-selection,
+.select2-dropdown {
+    border-radius: 0;
+}
+
+.select2-container--default .select2-search--inline .select2-search__field {
+    margin: 0;
+    padding: 0;
+}
+
+select.select-tags {
+    visibility: hidden;
+}
+
+select.select-tags.select2-hidden-accessible {
+    visibility: visible;
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/*
+ * Input
+ */
+input[type="text"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+    border-radius: 0;
+    color: black;
+}
+
+select,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+    height: 28px;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+select {
+    line-height: 28px;
+    padding: 0 6px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(/static/cubane/backend/img/select-arrow.svg);
+    background-repeat: no-repeat;
+    background-size: 12px 17px;
+    background-position: right 5px center;
+    background-origin: border-box;
+    padding-right: 30px;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.input-append {
+    white-space: normal;
+}
+
+.form-horizontal .input-append {
+    display: flex;
+}
+
+.input-append .add-on,
+.input-append .add-on:last-child,
+.input-prepend .add-on,
+.input-prepend .add-on:first-child,
+.input-prepend .btn:first-child {
+    height: 28px;
+    border-radius: 0;
+    text-shadow: none;
+    color: #fff;
+    background-color: #f49e2d;
+    border-color: #f49e2d;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(/static/cubane/backend/img/checkbox.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+}
+
+label.checkbox input[type="checkbox"] {
+    margin-left: -25px;
+}
+
+label.checkbox {
+    padding-left: 25px;
+}
+
+input[type="checkbox"]:checked {
+    background-image: url(/static/cubane/backend/img/checkbox-checked.svg);
+    background-repeat: no-repeat;
+}
+
+input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(/static/cubane/backend/img/radio.svg);
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+    margin-right: 5px;
+}
+
+input[type="radio"],
+input[type="radio"]:hover,
+input[type="radio"]:active,
+input[type="radio"]:focus {
+    outline: none;
+}
+
+input[type="radio"]:checked {
+    background-image: url(/static/cubane/backend/img/radio-checked.svg);
+}
+
+
+.active-editor iframe {
+    min-height: 120px;
+}
+
+
+/*
+ * Checkbox / Radio
+ */
+.controls > .radio:first-child,
+.controls > .checkbox:first-child {
+    padding-top: 0;
+}
+
+
+/*
+ * Radio select
+ */
+.control-group.radio-select .field ul {
+    display: flex;
+    list-style-type: none;
+}
+
+.control-group.radio-select .field li {
+    margin-right: 15px;
+}
+
+.control-group.radio-select .field label {
+    display: inline-block;
+}
+
+.control-group.radio-select .field input {
+    width: 24px;
+    margin-right: 0;
+}
+
+
+/*
+ * Rich error text content, help text or alert message.
+ */
+.help-inline table,
+.alert table {
+    margin: 5px -10px;
+}
+
+.help-inline table.full-with,
+.alert table.full-with {
+    width: calc(100% - 20px);
+    table-layout: fixed;
+}
+
+.help-inline table.small-content td,
+.help-inline table.small-content th,
+.alert table.small-content td,
+.alert table.small-content th {
+    font-size: 12px;
+    line-height: 1.25em;
+}
+
+.help-inline table th,
+.help-inline table td,
+.alert table th,
+.alert table td {
+    text-align: left;
+    padding: 2px 10px;
+}
+
+
+/*
+ * Date Field
+ */
+.date-field .add-on {
+    cursor: pointer;
+}
+
+
+/*
+ * Time Field
+ */
+.time-field .add-on {
+    cursor: pointer;
+}
+
+.bootstrap-timepicker-widget .glyphicon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 100%;
+    height: 18px;
+}
+
+.bootstrap-timepicker-widget .glyphicon-chevron-up {
+    background-image: url('/static/cubane/backend/img/time-up.svg');
+}
+
+.bootstrap-timepicker-widget .glyphicon-chevron-down {
+    background-image: url('/static/cubane/backend/img/time-dn.svg');
+}
+
+.bootstrap-timepicker-widget table td a {
+    width: 40px !important;
+    height: 30px !important;
+    padding: 4px 2px !important;
+}
+
+.bootstrap-timepicker-widget table td input {
+    width: 36px !important;
+}
+
+
+/*
+ * Button group
+ */
+.btn-group {
+    position: relative;
+    top: -1px;
+    line-height: 30px;
+    height: 30px;
+}
+
+.btn-group:hover {
+    outline: 1px solid #f0f0f0;
+}
+
+.cubane-listing-header .btn-group > .btn {
+    height: 30px;
+    line-height: 30px;
+}
+
+.btn-group > .btn + .dropdown-toggle {
+    border-left: 1px solid #f0f0f0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    height: 30px !important;
+    vertical-align: middle;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+}
+
+.btn-group > .btn + .dropdown-toggle .caret {
+    margin-top: 13px;
+}
+
+.dropdown-menu {
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+}
+
+.dropdown-menu a.disabled {
+    opacity: 0.3;
+}
+
+.dropdown-menu li {
+    background-color: white;
+    border-left: 30px solid #f0f0f0;
+}
+
+.dropdown-menu li:hover {
+    border-left-color: #f49e2d;
+}
+
+.dropdown-menu li:hover svg {
+    fill: white;
+}
+
+.dropdown-menu a {
+    display: block;
+    position: relative;
+    padding-left: 5px !important;
+}
+
+.dropdown-menu a > .icon,
+.dropdown-menu a > svg {
+    position: absolute;
+    top: 6px;
+    left: -21px;
+}
+
+.dropdown-menu a > svg {
+    left: -23px;
+}
+
+
+/*
+ * Condensed presentation
+ */
+.form-content-condensed select {
+    width: 100%;
+}

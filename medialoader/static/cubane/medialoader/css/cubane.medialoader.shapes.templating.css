@@ -1,0 +1,43 @@
+/*
+ * Generate aspect-ratio style for each image shape
+ */
+{% for shape in shapes %}
+    .lazy-load-shape-{{ shape.name }} {
+        padding-bottom: {{ shape.ratio_percent }}%;
+    }
+{% endfor %}
+
+
+/*
+ * Generate aspect-ratio style for art directions
+ */
+
+
+{% for direction_name, directives in image_art_direction.items %}
+    /* art direction: {{ direction_name }} */
+    {% for minw, maxw, shape, ratio_percent in directives %}
+        {% if minw == -1 and maxw == -1 %}
+            .lazy-load-shape-{{ direction_name }} {
+                padding-bottom: {{ ratio_percent }}%; /* shape: {{ shape }} */
+            }
+        {% else %}{% if minw == -1 %}
+            @media (max-width: {{ maxw }}px) {
+                .lazy-load-shape-{{ direction_name }} {
+                    padding-bottom: {{ ratio_percent }}%; /* shape: {{ shape }} */
+                }
+            }
+        {% else %}{% if maxw == -1 %}
+            @media (min-width: {{ minw }}px) {
+                .lazy-load-shape-{{ direction_name }} {
+                    padding-bottom: {{ ratio_percent }}%; /* shape: {{ shape }} */
+                }
+            }
+        {% else %}
+            @media (min-width: {{ minw }}px) and (max-width: {{ maxw }}px) {
+                .lazy-load-shape-{{ direction_name }} {
+                    padding-bottom: {{ ratio_percent }}%; /* shape: {{ shape }} */
+                }
+            }
+        {% endif %}{% endif %}{% endif %}
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,84 @@
+/*
+ * Related listing
+ */
+.related-listing {
+    min-height: 400px;
+    position: relative;
+}
+
+.related-listing .cubane-listing-header,
+.related-listing .cubane-listing-content {
+    padding: 0;
+}
+
+.related-listing .cubane-listing-nav-actions {
+    top: 0;
+    right: 0;
+}
+
+.related-listing .cubane-listing-content-frame {
+    top: 70px;
+}
+
+.related-listing .t.t-scrollable .t-head .t-row {
+    margin: 0;
+}
+
+.related-listing .t.t-scrollable .t-head,
+.related-listing .t-row.cubane-listing-item,
+.related-listing .t.t-scrollable .t-foot {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+@media (max-width: 979px) {
+    .related-listing .t.t-scrollable .t-head,
+    .related-listing .t-row.cubane-listing-item,
+    .related-listing .t.t-scrollable .t-foot {
+
+    }
+}
+
+
+/*
+ * Grid
+ */
+.related-listing .cubane-listing-grid-items {
+    left: 0;
+    right: 0;
+}
+
+.related-listing .cubane-listing-grid-foot {
+    left: 0;
+    right: 0;
+}
+
+
+/*
+ * Related listing with expanded filter
+ */
+.related-listing.with-filter .cubane-listing-nav-actions {
+    right: 20px;
+}
+
+.related-listing.with-filter .t.t-scrollable .t-head .t-row,
+.related-listing.with-filter .t-row.cubane-listing-item,
+.related-listing.with-filter .t.t-scrollable .t-foot {
+    margin-right: 20px !important;
+}
+
+.related-listing.with-filter .cubane-listing-grid-items {
+    right: 5px;
+}
+
+.related-listing.with-filter .cubane-listing-grid-foot {
+    right: 20px;
+}
+
+
+/*
+ * Related listing filter panel
+ */
+.related-listing .cubane-listing-filter-form {
+    padding: 15px;
+}

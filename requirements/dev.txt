@@ -1,0 +1,7 @@
+-r common.txt
+
+django-coverage==1.2.4
+mock==2.0.0
+undecorated==0.2.0
+freezegun==0.3.8
+radon==1.4.2

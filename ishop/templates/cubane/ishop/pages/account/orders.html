@@ -1,0 +1,30 @@
+{% extends 'cubane/ishop/pages/account/base.html' %}
+{% load shop_tags %}
+
+
+{% block meta_title %}{{ status.capitalize }} Orders{% endblock %}
+{% block title %}{{ status.capitalize }} Orders{% endblock %}
+
+
+{% block account_breadcrumb %}
+    {% shop_breadcrumb 'Orders' %}
+{% endblock %}
+
+
+{% block processing_orders %}{% if status == 'processing' %}active{% endif %}{% endblock %}
+{% block complete_orders %}{% if not status == 'processing' %}active{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="account-title">{% if status == 'processing' %}Processing{% else %}Complete{% endif %} Orders</div>
+    {% if status == 'processing' %}
+        <div class="alert alert-info">
+            Your orders will be listed here until being shipped, they will then be moved to
+            <a href="{% url 'shop.account.orders' 'complete' %}">complete orders</a>.
+        </div>
+    {% endif %}
+    {% if orders %}
+        {% include 'cubane/ishop/elements/account/orders.html' %}
+    {% else %}
+        <div class="alert alert-info">You have no {{ status }} orders.</div>
+    {% endif %}
+{% endblock %}

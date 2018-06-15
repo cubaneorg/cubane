@@ -1,0 +1,201 @@
+/*
+ * Default ishop-related backend style
+ */
+.order-item-identifier-label {
+    line-height: 14px;
+    margin-bottom: 6px;
+    color: #999;
+}
+
+.order-item-identifier {
+    margin-top: 10px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-family: "Lucida Console", Monaco, monospace;
+    color: #333;
+}
+
+.variety-options {
+    margin-top: 10px;
+}
+
+.order-item-image {
+    width: 200px;
+}
+
+.variety-image {
+    width: 32px;
+    vertical-align: middle;
+}
+
+.content-panel .form-content {
+    margin: 20px 0;
+}
+
+.content-panel form .form-actions {
+    padding: 15px 0;
+}
+
+.screen-only {
+    margin-bottom: 20px;
+}
+
+
+/*
+ * Order
+ */
+.order-details h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    line-height: 1.25em;
+}
+
+.order-details .span2,
+.order-details .span1 {
+    text-align: right;
+}
+
+.order-items-header {
+    border-bottom: 1px solid #8c8c8c;
+    margin-bottom: 20px;
+}
+
+.order-item-image {
+    float: left;
+    width: 100px;
+}
+
+.order-item-description {
+    position: relative;
+    float: right;
+    padding-left: 20px;
+    width: calc(100% - 100px);
+    padding-right: 165px;
+}
+
+.order-item-description .non-returnable-info {
+    color: #8c8c8c;
+    margin-top: 5px;
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.order-item-description h3 {
+    font-size: 16px;
+    line-height: 1.25em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.order-item-description h3 small {
+    display: block;
+    margin-top: 10px;
+}
+
+.order-item {
+    position: relative;
+    border-bottom: 1px solid #8c8c8c;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    min-height: 100px;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.order-item .variety-option > div {
+    display: inline-block;
+}
+
+.order-item .variety-title {
+    color: #555;
+}
+
+.order-item .variety-option-title,
+.order-item .variety-option-label-text {
+    color: black;
+}
+
+.order-item .variety-option-label-text-data {
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.order-footer .row-fluid {
+    border-bottom: 1px solid #8c8c8c;
+    line-height: 30px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.order-footer .row-fluid:first-child {
+    border-top: 1px solid #8c8c8c;
+    padding-top: 10px;
+}
+
+.order-footer .row-fluid p {
+    margin: 0;
+}
+
+
+/*
+ * Order Item Annnotation
+ */
+.order-column-product {
+    position: relative;
+    padding-left: 20px;
+}
+
+.order-item .order-item-annotation-frame {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 5px;
+    background-color: transparent;
+}
+
+.order-item.order-item-processed .order-item-annotation-frame {
+    background-color: #468847;
+}
+
+
+/*
+ * Basket Item Annnotation
+ */
+.basket-item {
+    position: relative;
+}
+
+.basket-item .basket-item-annotation-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.basket-item.basket-item-processed .basket-item-annotation-frame {
+    background-color: #468847;
+}
+
+
+/*
+ * Order messages
+ */
+.order-message {
+    margin-bottom: 20px;
+}
+
+
+/*
+ * Varieties
+ */
+td > .ui-sortable-handle {
+    position: relative;
+    height: 45px;
+}

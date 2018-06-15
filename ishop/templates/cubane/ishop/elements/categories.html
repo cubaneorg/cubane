@@ -1,0 +1,14 @@
+{% load partition_tags %}
+
+
+<div class="category-listing">
+    {% for row in categories|columns:3 %}
+        <div class="row-fluid">
+            {% for category in row %}
+                <div class="span4">
+                    {% include 'cubane/ishop/elements/category.html' %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

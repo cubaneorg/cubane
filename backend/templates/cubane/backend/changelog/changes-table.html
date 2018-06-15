@@ -1,0 +1,18 @@
+<table class="table table-condensed changes">
+    <thead>
+        <tr>
+            <th class="changes-field-title">Name</th>
+            {% if record.action == 'edit' %}<th class="changes-field-half">Previous Value</th>{% endif %}
+            <th>{% if record.action == ' edit' %}New {% endif %}Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for field in record.fields %}
+            <tr>
+                <td class="changes-field-title">{{ field.n }}</td>
+                {% if record.action == 'edit' %}<td class="changes-field-half">{{ field.b }}</td>{% endif %}
+                <td>{{ field.a }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

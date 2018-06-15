@@ -1,0 +1,14 @@
+#!/bin/sh
+if [ "$1" = "full" ]
+then
+  echo "Running full test suite. Please Wait..."
+  export DEV_TEST_FULL=1
+else
+  echo "Run full test with ./test full. This test suite will NOT cover all tests but runs significantly faster than running the full suite."
+fi
+
+find . -name \*.pyc -delete
+coverage run --source='../' manage.py test cubane
+coverage report -m
+coverage erase
+export DEV_TEST_FULL

@@ -1,0 +1,38 @@
+<div class="t-row cubane-listing-message">
+    <div class="t-d">
+        {% if objects|length == 0 %}
+            {% if q %}
+                The search term '{{ q }}' did not match any {{ verbose_name_plural }}. Please try a more general search term.
+            {% else %}
+                No <i>{{ verbose_name_plural }}</i> available.
+                {% if permissions.create %}
+                    Click on <i>Create</i> in order to create a new <i>{{ verbose_name }}</i>.
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% if objects_total == 0 %}No{% else %}{{ objects_total }}{% endif %}
+            {% if objects_total == 1 %}{{ verbose_name }}{% else %}{{ verbose_name_plural }}{% endif %}
+            available.
+        {% endif %}
+
+        {% if objects_filtered > 0 %}
+            <span class="label label-important">
+                {{ objects_filtered }} {% if objects_filtered == 1 %}{{ verbose_name }}{% else %}{{ verbose_name_plural }}{% endif %} not visible due to filter.
+            </span>
+            &nbsp;
+            <a class="btn btn-mini btn-danger ui-listing-filter-reset" href="#clear-filter">Clear Filter</a>
+        {% endif %}
+
+        {% if objects_pages > 1 %}
+            <div class="pagination cubane-listing-pagination">
+                Pages:&nbsp;
+                <ul>
+                    {% for p in objects_pages_list %}
+                        <li{% if p == objects_page %} class="active"{% endif %} data-page="{{ p }}"><a href="#page-{{ p }}">{{ p }}</a></li>
+                    {% endfor %}
+                    <li{% if objects_page == 'all' %} class="active"{% endif %} data-page="all"><a href="#page-all">All</a></li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>

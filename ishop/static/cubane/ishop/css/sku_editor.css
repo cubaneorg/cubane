@@ -1,0 +1,188 @@
+/*
+ * Style for SKU editor for editing Varieties and SKU records.
+ */
+
+
+/*
+ * Headline
+ */
+.sku-editor-screen .page-title {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/*
+ * Columns
+ */
+.sku-editor-container {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 0;
+    bottom: 60px;
+    display: flex;
+    justify-content: stretch;
+}
+
+
+.sku-editor-varieties-frame {
+    position: relative;
+    order: 2;
+    flex: 0 0 300px;
+}
+
+.sku-editor-options-container {
+    position: relative;
+    order: 1;
+    flex: 1;
+    margin-top: 80px;
+}
+
+
+/*
+ * Varity selection (tags)
+ */
+.sku-editor-varieties-frame {
+    border-left: 1px solid #f0f0f0;
+}
+
+.sku-editor-varieties-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;    
+    padding: 0 20px 20px 20px;
+    margin-top: 88px;
+}
+
+.sku-editor-variety {
+    margin-bottom: 10px;
+}
+
+.sku-editor-variety-title {
+    font-size: 14px;
+}
+
+.sku-editor-variety .select2-container {
+    width: 100% !important;
+}
+
+.sku-editor-variety .select-tags + .select2 {
+    min-width: 0;
+}
+
+
+/*
+ * SKU records
+ */
+.sku-editor-options {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+.sku-editor-option {
+    border-bottom: 1px solid #f0f0f0;
+    padding-top: 10px;
+    opacity: .5;
+}
+
+.sku-editor-option:last-child {
+    border-bottom: none;
+}
+
+.sku-editor-option.sku-enabled {
+    opacity: 1;
+}
+
+.sku-editor-option label {
+}
+
+.sku-editor-option-items {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.sku-editor-option-items > .control-group {
+    display: table-cell;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.sku-editor-option-items > .control-group:first-child {
+    padding-left: 0;
+}
+
+.sku-editor-option-items > .control-group:last-child {
+    padding-right: 0;
+}
+
+.sku-editor-option-hidden {
+    display: none;
+}
+
+.sku-editor-option-variety em {
+    color: #e8308a;
+    font-style: normal;
+}
+
+
+/*
+ * Empty Message
+ */
+.sku-editor-empty-message { 
+    display: block;
+}
+
+.sku-editor-options-container .sku-editor-empty-message {
+    display: none;
+}
+
+.sku-editor-options-container.empty .sku-editor-empty-message {
+    display: block;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+
+/*
+ * SKU record columns
+ */
+.sku-editor-option-items > .control-group.field-enabled {
+    width: 70px;
+}
+
+.sku-editor-option-items > .control-group.field-price {
+    width: 120px;
+}
+
+.sku-editor-option-items > .control-group.field-price input {
+    width: 75px;
+}
+
+.sku-editor-option-items > .control-group.field-stocklevel {
+    width: 90px;
+}
+
+.sku-editor-option-items > .control-group.field-stocklevel input {
+    text-align: right;
+    float: right;
+    width: 50px;
+}
+
+
+/*
+ * Form actions
+ */
+.sku-editor .form-actions {
+    margin-top: 10px;
+}

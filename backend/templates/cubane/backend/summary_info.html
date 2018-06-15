@@ -1,0 +1,17 @@
+<div class="summary-items" data-instance-pk="{{ object.pk }}" data-fetch-url="{{ urls.summary_info }}">
+    <button class="btn-summary-items">Show Summary Details</button>
+    <div class="summary-items-frame">
+        {% for label, value in object_summary_items %}
+            <div class="summary-item">
+                <div class="summary-item-label">{{ label }}</div>
+                <div class="summary-item-value">
+                    {% if value %}
+                        {{ value|safe }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

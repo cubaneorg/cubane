@@ -1,0 +1,12 @@
+.captcha div,
+.captcha {
+    max-width: 100%;
+}
+
+.captcha {
+    height: 64px !important;
+}
+
+.captcha div {
+    background-size: 100% 8px;
+}

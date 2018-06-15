@@ -1,0 +1,15 @@
+{% extends 'cubane/backend/create_edit.html' %}
+{% load form_tags %}
+
+
+{% block content %}
+    <h1 class="page-title">Share <small><em>{{ media.caption }}</em></small></h1>
+    <div class="content-panel" id="cubane-share-media-panel" data-base-url="{{ base_url }}">
+        {% include 'cubane/backend/form/form_start.html' %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><i class="icon-white icon-ok"></i> <span id="id_share_btn_text">Share</span></button>
+                <button id="id_copy_link" class="btn"><i class="icon icon-copy"></i> Share and Copy Link</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

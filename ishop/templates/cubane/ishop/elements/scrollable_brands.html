@@ -1,0 +1,10 @@
+{% for brand in brands %}
+    {% if brand.is_brand %}
+        <div class="scroll-item brand-scroll-item">
+            <a href="{% if coming_soon %}#{% else %}{% url shop.brand brand.slug %}{% endif %}" title="{{ brand.title }}">
+                <img src="{{ brand.image.attachments.menu.url }}" alt="{{ brand.title }}"/>
+            </a>
+        </div>
+    {% endif %}
+{% endfor %}
+

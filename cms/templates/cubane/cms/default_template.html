@@ -1,0 +1,46 @@
+{% load resource_tags %}
+{% load cms_tags %}
+{% load media_tags %}
+<html>
+
+<head>
+    <title>{{ current_page.meta_title }}</title>
+    <meta name="description" content="{{ current_page.meta_description }}" />
+    <meta name="keywords" content="{{ current_page.meta_keywords }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% inline_resources 'inline' 'css' %}
+    {% resources 'frontend' 'css' %}
+</head>
+
+<body>
+    <header>
+        {% if nav.header %}
+            <ul>
+            {% for item in nav.header %}
+                <li{% if item.active %} class="active"{% endif %}><a href="{{ item.url }}">{{ item.title }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </header>
+
+    <div id="content">
+        {% slot 'content' %}
+        
+        {% child_pages %}        
+    </div>
+    
+    <footer>
+        {% if nav.footer %}
+            <ul>
+            {% for item in nav.footer %}
+                <li{% if item.active %} class="active"{% endif %}><a href="{{ item.url }}">{{ item.title }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </footer>
+    
+    {% inline_resources 'inline' 'js' %}
+    {% resources 'frontend' 'js' %}
+</body>
+
+</html>

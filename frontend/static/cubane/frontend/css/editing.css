@@ -1,0 +1,145 @@
+/*
+ * Panel
+ */
+.cubane-frontend-panel {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 140px;
+    height: 80px;
+    background-color: #374142;
+    padding: 15px;
+    z-index: 100001;
+}
+
+
+/*
+ * Main edit button
+ */
+.cubane-frontend-edit-button {
+    display: block;
+    font-size: 22px;
+    line-height: 50px;
+    height: 50px;
+    width: 100%;
+    padding: 0 10px 0 40px;
+    background-image: url('/static/cubane/frontend/img/edit-button.svg');
+    background-repeat: no-repeat;
+    background-size: 26px 26px;
+    background-position: center left 10px;
+}
+
+.cubane-frontend-edit-button:hover {
+    background-image: url('/static/cubane/frontend/img/edit-button-active.svg');
+}
+
+.cubane-frontend-edit-mode-enabled .cubane-frontend-edit-button {
+    background-color: #fff;
+    color: #2574b7;
+    background-image: url('/static/cubane/frontend/img/edit-button-active.svg');
+}
+
+
+/*
+ * Editiable slots
+ */
+.cubane-frontend-slot {
+    position: absolute;
+    border: 1px dashed rgba(238, 155, 59, .7);
+    cursor: pointer;
+    min-height: 30px;
+    z-index: 99999;
+}
+
+.cubane-frontend-slot:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/static/cubane/frontend/img/slotbg.png');
+    background-repeat: repeat;
+    opacity: .4;
+    z-index: 1;
+}
+
+.cubane-frontend-slot-pull-x:before {
+    left: 5px;
+    right: 5px;
+}
+
+.cubane-frontend-slot-pull-y:before {
+    top: 5px;
+    bottom: 5px;
+}
+
+.cubane-frontend-slot:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/static/cubane/frontend/img/edit.svg');
+    background-repeat: no-repeat;
+    background-position: top 10px right 10px;
+    background-size: 24px 24px;
+    opacity: .7;
+    z-index: 2;
+}
+
+.cubane-frontend-slot-help-text {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .7);
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.25em;
+    padding: 2px 6px;
+    color: #2574b7;
+    text-shadow: 1px 1px white;
+    z-index: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transform: translate(-50%, 0);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cubane-frontend-slot:hover {
+    border: 1px dashed rgba(238, 155, 59, 1);
+}
+
+.cubane-frontend-slot:hover:before {
+    opacity: .2;
+}
+
+.cubane-frontend-slot:hover:after {
+    opacity: 1;
+}
+
+
+/*
+ * Editable area should have at least one pixel in size, otherwise we
+ * might end up not considering it as a valid slot...
+ */
+.cubane-frontend-edit-mode-enabled [edit] {
+    min-width: 1px;
+    min-height: 30px;
+}
+
+
+/*
+ * Allow even empty elements to occupy a bit of space, so that slots do not
+ * end up being stacked on top of each other...
+ */
+.cubane-frontend-slot-element {
+    min-height: 30px;
+}

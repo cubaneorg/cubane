@@ -1,0 +1,35 @@
+{% extends 'cubane/backend/create_edit.html' %}
+{% load form_tags %}
+{% load barcode_tags %}
+
+
+{% block content %}
+    {% if not is_browse_dialog and not is_create_dialog and not is_edit_dialog %}
+        <h1 class="page-title">
+            {% if edit %}
+                {% if permissions.edit or not permissions %}
+                    Edit
+                {% else %}
+                    View
+                {% endif %}
+                {{ verbose_name }}
+                '{{ object }}'
+            {% else %}
+                Create {{ verbose_name }}
+            {% endif %}
+        </h1>
+        {% if object.barcode_system or settings.barcode_system %}
+            {% if object.barcode %}
+                <div class="cubane-product-barcode">
+                    {% if object.barcode_system %}
+                        {% barcode_image object.barcode_system object.barcode %}
+                    {% else %}
+                        {% barcode_image settings.barcode_system object.barcode %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% include 'cubane/backend/form.html' %}
+{% endblock %}

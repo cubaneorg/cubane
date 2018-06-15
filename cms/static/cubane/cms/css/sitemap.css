@@ -1,0 +1,131 @@
+/*
+ * Tree structure
+ */
+.cubane-sitemap {
+    margin-top: 20px;
+}
+
+.cubane-sitemap ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+/*
+ * Open/Closed states
+ */
+.cubane-sitemap li.open > ul {
+    display: block;
+}
+
+.cubane-sitemap li.closed > ul {
+    display: none;
+}
+
+
+/*
+ * Title row
+ */
+.cubane-sitemap .sitemap-row,
+.cubane-sitemap .sitemap-row-header {
+    display: table;
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: -1px;
+}
+
+.cubane-sitemap .sitemap-row > span,
+.cubane-sitemap .sitemap-row-header > span {
+    display: table-cell;
+    padding: 4px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 1px solid #e6e6e6;
+}
+
+.cubane-sitemap .sitemap-row-header > span {
+    font-weight: bold;
+}
+
+
+/*
+ * Indentation
+ */
+.cubane-sitemap ul ul > li > .sitemap-row > span:first-child { padding-left: 20px; }
+.cubane-sitemap ul ul ul > li > .sitemap-row > span:first-child { padding-left: 40px; }
+.cubane-sitemap ul ul ul ul > li > .sitemap-row > span:first-child { padding-left: 60px; }
+.cubane-sitemap ul ul ul ul ul > li > .sitemap-row > span:first-child { padding-left: 80px; }
+.cubane-sitemap ul ul ul ul ul ul > li > .sitemap-row > span:first-child { padding-left: 100px; }
+.cubane-sitemap ul ul ul ul ul ul ul > li > .sitemap-row > span:first-child { padding-left: 120px; }
+
+
+/*
+ * Caret
+ */
+.sitemap-caret {
+    display: inline-block;
+    width: 10px;
+    margin-right: 5px;
+    font-size: 18px;
+    visibility: hidden;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+    color: #8C8C8C;
+}
+
+.cubane-sitemap li.has-children > .sitemap-row .sitemap-caret {
+    visibility: visible;
+}
+
+.cubane-sitemap li.open > .sitemap-row .sitemap-caret {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+
+/*
+ * Title column
+ */
+span.sitemap-title {
+    width: 40%;
+    cursor: pointer;
+}
+
+.sitemap-row-header span.sitemap-title {
+    padding-left: 25px;
+}
+
+
+/*
+ * Edit and View columns
+ */
+span.sitemap-edit,
+span.sitemap-view {
+    width: 50px;
+}
+
+span.sitemap-edit a,
+span.sitemap-view a {
+    color: #f49e2d;
+}
+
+
+/*
+ * Not navigatable rows should have less attention
+ */
+.cubane-sitemap li.not-navigatable > .sitemap-row > span {
+    opacity: 0.5;
+}
+
+
+/*
+ * Mouse-over highlight
+ */
+.cubane-sitemap li:hover > .sitemap-row {
+    background-color: #eCeCeC;
+}

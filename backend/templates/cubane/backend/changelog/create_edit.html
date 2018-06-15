@@ -1,0 +1,44 @@
+{% extends 'cubane/backend/base.html' %}
+
+{% block content %}
+    <h1 class="page-title">{{ changes.title|safe }}</h1>
+
+    <div class="content-panel changes">
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <td class="changes-field-title">Title:</td>
+                    <td class="changes-field-full">{{ changes.title|safe }}</td>
+                </tr>
+                <tr>
+                    <td class="changes-field-title">User:</td>
+                    <td class="changes-field-full">{% if changes.user %}{{ changes.user }}{% else %}Unknown User{% endif %}</td>
+                </tr>
+                </tr>
+                    <td class="changes-field-title">Date:</td>
+                    <td class="changes-field-full">{{ changes.created_on }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if not related %}
+            {% include 'cubane/backend/changelog/changes-table.html' with record=changes %}
+        {% endif %}
+
+        {% if related %}
+            <h3>Actions</h3>
+            <ol>
+                {% for record in related %}
+                    <li><a href="#record-{{ record.pk }}">{{ record.title }}</a></li>
+                {% endfor %}
+            </ol>
+
+            {% for record in related %}
+                <h3 id="record-{{ record.pk }}">{{ record.title }}</h3>
+                {% include 'cubane/backend/changelog/changes-table.html' %}
+            {% endfor %}
+        {% endif %}
+
+        {% include 'cubane/backend/form.html' with save_label="OK" without_continuation=True %}
+    </div>
+{% endblock %}

@@ -1,0 +1,2424 @@
+.. _topics/settings:
+.. module:: cubane.settings
+
+========
+Settings
+========
+
+Cubane provides a helper method for setting up its default setting environment.
+You can simply call :func:`~cubane.settings.default_env` from within your
+project's settings file in order to setup all default settings for Cubane. Of
+course, you can then change those defaults to specific values you require.
+
+
+
+
+.. _topics/settings/default_settings:
+
+Default Settings
+================
+
+The default settings helper has been designed to allow you to setup all common
+application settings to get you up and running quickly. Place the following
+code in your settings.py:
+
+.. code-block:: python
+
+    from cubane.settings import default_env
+    env = default_env(
+        __name__,
+        'my-website-domain.com'
+    )
+
+And that's it. You can now overwrite particular settings to your requirements.
+By default, Cubane will setup the database name to match the domain name, which
+would be ``my_website_domain_com``. Please note that hyphen and dot characters
+have been replaced with underscore characters automatically.
+
+.. note::
+
+    The default database engine used by Cubane is PostgreSQL
+    (``django.db.backends.postgresql_psycopg2``). The settings variable
+    :settings:`DATABASES` is setup automatically to reflect PostgreSQL with the
+    default database name as described above.
+
+    If you like to use a different database engine altogether, you need to
+    setup :settings:`DATABASES` by yourself manually.
+
+The full signature of the :func:`~cubane.settings.default_env` method is given
+below. We will walk through the arguments that can be passed to
+:func:`~cubane.settings.default_env` in the following.
+
+.. function:: default_env(module_name, domain_name, admin_email, db_name=None, test=None, debug=None, debug_toolbar=False, high_res_images=False, image_credits=False, pull_host=None, pull_sudo=None, csrf=False, ssl=False)
+
+    Applies a set of default settings for the given settings module.
+
+``module_name``
+
+    The ``module_name`` argument is the first argument and is *required*. In
+    order for Cubane to setup default settings, it needs to know the settings
+    module to which settings are applied. When calling
+    :func:`~cubane.settings.default_env` from within your application settings
+    file, you would usually pass in ``__name__`` to identify the settings
+    module.
+
+``domain_name``
+
+    The ``domain_name`` argument is the second argument and is *required*.
+    Cubane will construct all internal website links based on the given domain
+    name. It will also derive the name of the database from the given domain
+    name unless the ``db_name`` argument (optional) is given. The name of the
+    database is equivalent to the domain name, where hyphen and dot characters
+    have been replaced with underscore characters.
+
+``admin_email``
+
+    The ``admin_email`` argument is the third argument and is *required*.
+    Cubane will setup the default administrator of the website with the email
+    address provided. The default logging mechanism will send crash reports via
+    email to this email address in *Production* mode.
+
+``db_name``
+
+    Optional. Cubane will derive the database from the domain name if this
+    argument is *not* given. However -- if provided -- the database name is
+    configured to the given name.
+
+``test``
+
+    Optional. By default None. If set to ``True``, then Cubane will setup
+    itself to run under unit test. By default, Cubane will determine
+    automatically whether it is running under test or not.
+
+``debug``
+
+    Optional. By default None. If set to ``True``, Cubane will run in *Debug*
+    mode and the settings variable :settings:`DEBUG` will be set to ``True``.
+    If set to ``False``, then Cubane will run in *Production* mode and the
+    settings variable :settings:`DEBUG` is set to ``False``.
+
+    By default, Cubane will determine if it runs in *Production* or *Debug*
+    mode automatically by evaluating the environment variable ``DEV_MODE``. If
+    it is set to ``1``, then *Debug* mode is assumed; otherwise *Production*
+    mode.
+
+``debug_toolbar``
+
+    Optional. By default ``False``. If set to ``True``, then Cubane will
+    automatically load the `Django Debug Toolbar
+    <https://django-debug-toolbar.readthedocs.io/en/stable/>`_. If you use this
+    argument, you may have to install additional packages. Please refer to the
+    documentation of Django Debug Toolbar for more information.
+
+``high_res_images``
+
+    Optional. By default ``False``. If set to ``True``, then Cubane will extend
+    the default set of image sizes by two *high-resolution* image sizes.
+
+    .. seealso::
+
+        Please refer to the :settings:`IMAGE_SIZES` settings variable for more
+        information.
+
+``pull_host``
+
+    Optional. By default None. If set, the ``pull_host`` argument declares the
+    hostname of the production server from which the deployed website's data
+    (including database and media data) can be *pulled* from by using Cubane's
+    pull mechanism. By default, the host is determined by the domain name.
+
+``pull_sudo``
+
+    Optional. By default None. If set, the ``pull_sudo`` argument declares the
+    username of the account that is used for hosting the website on a
+    production system. By default, the username is assumed to be identical with
+    the domain name.
+
+``csrf``
+
+    Optional. By default ``False``. If the ``csrf`` argument is set to
+    ``True``, Cubane and the Cubane backend system are configured to use
+    `Django's Cross Site Request Forgery Protection Mechanism (CSRF)
+    <https://docs.djangoproject.com/en/1.10/ref/csrf/>`_.
+
+    Enabling ``csrf`` will automatically setup the correct middleware for
+    :settings:`MIDDLEWARE_CLASSES`.
+
+``ssl``
+
+    Optional. By default ``False``. If the ``ssl`` argument is set to ``True``,
+    the Cubane frontend and backend systems are configured to run in *HTTPS*
+    mode. All internal URLs and redirects will be based on *HTTPS* rather than
+    *HTTP*.
+
+    Enabling ``ssl`` will automatically setup an additional middleware for
+    :settings:`MIDDLEWARE_CLASSES`, which makes sure that internal redirect
+    responses will automatically include ``https``.
+
+
+
+
+.. _topics/settings/installed_apps:
+
+Installed Apps
+==============
+
+When using the :func:`~cubane.settings.default_env` helper function to setup
+the default settings environment for Cubane, a settings environment object is
+returned.
+
+.. class:: cubane.settings.SettingWrapper
+
+    The settings environment object allows for further manipulation of the
+    settings environment, for example, it allows you to add installed apps.
+
+.. method:: add_apps(self, apps=None)
+
+    Adds the given list of Django apps to the list of installed apps in the
+    correct order, so that certain order constraints are maintained.
+
+``apps``
+
+    List of Django apps to be added to the list of installed apps.
+
+.. note::
+
+    It is important that ``django.contrib.staticfiles`` is loaded *after*
+    ``cubane``, because Cubane changes certain aspects of the ``runserver``
+    management command. Those overwrite would be invalidated by
+    ``staticfiles``, if the order is reversed.
+
+    The :meth:`add_apps()` method of the settings environment object will take
+    care of this for you automatically.
+
+Let's consider a code example:
+
+.. code-block:: python
+
+    from cubane.settings import default_env
+    env = default_env(
+        __name__,
+        'my-website-domain.com'
+    )
+
+    ...
+
+    env.add_apps([
+        'cubane',
+        'cubane.backend',
+        'cubane.fonts',
+        'cubane.svgicons',
+        'myApp'
+    ])
+
+First, a default setting environment is created and returned by
+:func:`~cubane.settings.default_env`. Then we use the settings environment
+object to install additional Django apps.
+
+.. method:: add_apps(self, apps=None)
+
+    Adds the given list of Django apps to the list of installed apps in the
+    correct order, so that certain order constraints are maintained.
+
+``apps``
+
+    List of Django apps to be added to the list of installed apps.
+
+
+
+
+.. _topics/settings/template_context_processors:
+
+Setup Template Context Processors
+=================================
+
+Cubane will setup a default configuration for :settings:`TEMPLATES`
+automatically with a default set of template context processors.
+
+The settings environment object provides a helper method for adding additional
+template context processors conveniently:
+
+.. method:: add_template_context_processors(self, template_context_processors)
+
+    Adds the given list of Django template context processors to the list of
+    installed context processors for the default template setup.
+
+``template_context_processors``
+
+    List of template context processors to be added to the default template
+    settings.
+
+.. note::
+
+    You may not be able to use this helper method if your template setup
+    differs from the one Cubane is setting up by default.
+
+
+
+
+.. _topics/settings/system_settings:
+
+System Settings
+===============
+
+The following settings control various aspects of the Cubane platform in
+general and are not necessarily tied to one specific aspect of the platform or
+refer to standard Django settings variables.
+
+
+.. settings:: DEBUG
+
+``DEBUG``
+
+    Set by Cubane based on the ``debug`` argument of the
+    :func:`~cubane.settings.default_env` helper function. If no such argument
+    is given, Cubane will determine *Debug* mode based on the present of the
+    environment variable ``DEV_MODE``. If ``DEV_MODE`` is equal to ``1``, then
+    :settings:`DEBUG` is set to ``True``, otherwise *Production* mode is
+    assumed and :settings:`DEBUG` is set to ``False``.
+
+
+.. settings:: DATABASES
+
+``DATABASES``
+
+    Cubane will setup a default database configuration based on PostgreSQL,
+    where the name of the database is derived from the given domain name.
+    Hyphens and dot characters are replaced with underscore characters. If a
+    specific database name is given, then such database name is used instead.
+
+    .. code-block:: python
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': '<db_name>'
+            }
+        }
+
+
+.. settings:: INSTALLED_APPS
+
+``INSTALLED_APPS``
+
+    By default, Cubane will setup :settings:`INSTALLED_APPS` with a list of
+    apps that are required by Cubane.
+
+    .. code-block:: python
+
+        INSTALLED_APPS = (
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.sitemaps',
+            'django.contrib.staticfiles'
+        )
+
+    .. note::
+
+        You can use the :func:`add_apps` settings environment method to add
+        additional apps conveniently. However, you can also simply add your
+        own apps to :settings:`INSTALLED_APPS` or overwrite the list entirely.
+
+        It is important that ``django.contrib.staticfiles`` is loaded *after*
+        ``cubane`` as described within the :ref:`Installed Apps
+        <topics/settings/installed_apps>` section. The :func:`add_apps`
+        settings environment method will take care of this automatically.
+
+
+.. settings:: MIDDLEWARE_CLASSES
+
+``MIDDLEWARE_CLASSES``
+
+    By default, Cubane will load a number of default middleware classes
+    automatically. This set of middleware is important to Cubane and -- in
+    particular -- Cubane's backend system.
+
+    Feels free to add your own middleware as you require. This list is simply a
+    default list of middleware that Cubane's
+    :func:`~cubane.settings.default_env` settings helper function will setup
+    automatically:
+
+    .. code-block:: python
+
+        MIDDLEWARE_CLASSES = (
+            'django.middleware.common.CommonMiddleware',
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'cubane.middleware.SettingsMiddleware',
+        )
+
+    .. note::
+
+        When passing ``True`` for the ``csrf`` argument to the
+        :func:`~cubane.settings.default_env` settings helper function, then one
+        additional middleware is added to the beginning of the list of
+        middleware:
+
+        .. code-block:: python
+
+            MIDDLEWARE_CLASSES = (
+                'django.middleware.csrf.CsrfViewMiddleware',
+            ) + MIDDLEWARE_CLASSES
+
+        Likewise, when passing ``True`` for the ``ssl`` argument to the
+        :func:`~cubane.settings.default_env` settings helper function, then one
+        additional middleware is added to the end of the list of middleware:
+
+        .. code-block:: python
+
+            MIDDLEWARE_CLASSES += (
+                'cubane.middleware.SSLResponseRedirectMiddleware',
+            )
+
+        Finally, when passing ``True`` for the ``debug_toolbar`` argument to
+        the :func:`~cubane.settings.default_env` settings helper function, then
+        one additional middleware is added to the beginning of the list of
+        middleware:
+
+        .. code-block:: python
+
+            MIDDLEWARE_CLASSES = (
+                'debug_toolbar.middleware.DebugToolbarMiddleware',
+            ) + MIDDLEWARE_CLASSES
+
+
+.. settings:: TEMPLATES
+
+``TEMPLATES``
+
+    Cubane will setup templates automatically to use the Django template system.
+
+    The base path for templates is set to ``templates/`` relative to your
+    project's base folder.
+
+    The following list of context processors are loaded:
+
+    .. code-block:: python
+
+        [
+            'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.media',
+            'django.template.context_processors.request',
+            'django.contrib.messages.context_processors.messages',
+            'cubane.context_processors.config',
+            'cubane.context_processors.backend'
+        ]
+
+    .. seealso::
+
+        You can use the :meth:`add_template_context_processors` method of the
+        settings environment object in order to add additional template
+        context processors conveniently.
+
+    Finally, the following template loaders are setup by default:
+
+    .. code-block:: python
+
+        [
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader'
+        ]
+
+    .. note::
+
+        In *Production* mode, the template loader system is setup using Django's
+        template cache loader instead:
+
+        .. code-block:: python
+
+            [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader'
+                ])
+            ]
+
+
+.. settings:: APPEND_SLASH
+
+``APPEND_SLASH``
+
+    Django can redirect automatically by adding a missing slash to the end of
+    the current URL if the current URL would otherwise result into an HTTP 404
+    response. This mechanism is used by Cubane by default and has an impact in
+    how Cubane constructs URLs in general.
+
+    .. code-block:: python
+
+        APPEND_SLASH = True
+
+
+.. settings:: PREPEND_WWW
+
+``PREPEND_WWW``
+
+    Django can redirect automatically by adding a missing ``www`` sub-domain to
+    the current URL. This mechanism is used by Cubane in *Production* mode and
+    has an impact on how Cubane constructs URLs in general.
+
+    .. code-block:: python
+
+        PREPEND_WWW = not DEBUG
+
+
+.. settings:: LOGGING
+
+``LOGGING``
+
+    Django provides a sophisticated logging mechanism. By default, Cubane will
+    setup your website to send an email to all administrators on any error
+    condition if the system is running in *Production* mode.
+
+    .. code-block:: python
+
+        LOGGING = {
+            'version': 1,
+            'disable_existing_loggers': False,
+            'filters': {
+                'require_debug_false': {
+                    '()': 'django.utils.log.RequireDebugFalse'
+                }
+            },
+            'handlers': {
+                'mail_admins': {
+                    'level': 'ERROR',
+                    'filters': ['require_debug_false'],
+                    'class': 'django.utils.log.AdminEmailHandler'
+                }
+            },
+            'loggers': {
+                'django.request': {
+                    'handlers': ['mail_admins'],
+                    'level': 'ERROR',
+                    'propagate': True,
+                },
+            }
+        }
+
+    .. note::
+
+        Cubane will set up one administrator for your website automatically by
+        using the email address provided via the ``admin_email`` argument of
+        the :func:`~cubane.settings.default_env` settings helper function.
+
+
+.. settings:: HANDLER_404
+
+``HANDLER_404``
+
+    Cubane declares a default view handler for presenting an HTTP 404 page:
+
+    .. code-block:: python
+
+        HANDLER_404 = 'cubane.default_views.custom404'
+
+    The default HTTP 404 view handler will present a Cubane-specific default
+    page in the case the document was not found (404).
+
+    If the CMS system is used then a particular CMS page is configured to be
+    used for the purpose of presenting content to visitors in case of the HTTP
+    404 status code.
+
+
+.. settings:: HANDLER_500
+
+``HANDLER_500``
+
+    Cubane declares a default view handler for presenting an HTTP 500 page:
+
+    .. code-block:: python
+
+        HANDLER_500 = 'cubane.default_views.custom500'
+
+    The default HTTP 500 view handler will present a Cubane-specific default
+    page in the case that the system raises an error.
+
+
+.. settings:: CUBANE_PULL
+
+``CUBANE_PULL``
+
+    Cubane provides a mechanism by which a deployed website's content including
+    the database and uploaded media assets can be downloaded to a development
+    environment in order to replicate the exact circumstances of a deployed
+    website.
+
+    By default, Cubane will set up the pull mechanism based on the database
+    name, the domain name and other arguments such as ``pull_host`` and
+    ``pull_sudo`` of the :func:`~cubane.settings.default_env` settings helper
+    function automatically.
+
+    .. seealso::
+
+        Please refer to the :ref:`Pulling Production Data <topics/pull>` section
+        for more information on how to configure and use the *pull* mechanism.
+
+
+
+
+.. _topics/settings/base_path_settings:
+
+Cubane Base Path Settings
+=========================
+
+The following settings define some base paths that are relevant for Cubane. All
+paths are derived automatically when using the
+:func:`~cubane.settings.default_env` settings helper function.
+
+
+.. settings:: CUBANE_PATH
+
+``CUBANE_PATH``
+
+    The absolute full path to the Cubane package that is used. By default,
+    Cubane will determine this path automatically.
+
+
+.. settings:: BASE_PATH
+
+``BASE_PATH``
+
+    The absolute full path to the application package for your application that
+    is using Cubane. By default, Cubane will determine this path automatically.
+
+
+.. settings:: PUBLIC_HTML_ROOT
+
+``PUBLIC_HTML_ROOT``
+
+    The absolute path of the website's ``public_html`` folder, which contains
+    all static media assets as well as cached data as part of Cubane's cache
+    system in *Production* mode.
+
+    By default, the ``public_html`` folder is assumed to be two levels below
+    the application's execution folder:
+
+    .. code-block:: none
+
+        <home-folder>/
+            app/
+                cubane/
+                myAppRootFolder/
+            public_html/
+                static/
+                media/
+                cache/
+
+    If you applications execution folder is ``myAppRootFolder``, then we assume
+    that the ``public_html`` folder is two levels below as outlined in the
+    example above.
+
+    You can read more about this particular layout within the :ref:`Deploying
+    Cubane <topics/deploy>` section.
+
+
+.. settings:: CACHE_ROOT
+
+``CACHE_ROOT``
+
+    The absolute folder where Cubane's cache system will generate full page
+    cache data for the website. Once a cached version of a page has been
+    generated, it is assumed that such file is accessible through the web
+    server.
+
+    By default, Cubane will set the :settings:`CACHE_ROOT` folder to be
+    ``/cache/`` relative to the ``public_html`` folder for the website (See
+    :settings:`PUBLIC_HTML_ROOT`).
+
+
+
+
+.. _topics/settings/timezone_settings:
+
+Timezone, Language and Formatting Settings
+==========================================
+
+The default settings helper :func:`~cubane.settings.default_env` will set up a
+number of Django's settings variables for timezone, language, and formatting.
+You can change those to your requirements.
+
+In addition, Cubane provides a few date and time-related settings variables,
+such as :settings:`STR_DATE_FORMAT` as well.
+
+
+.. settings:: TIME_ZONE
+
+``TIME_ZONE``
+
+    The default time zone for a new Cubane setup is *Europe/London*:
+
+    .. code-block:: python
+
+        TIME_ZONE = 'Europe/London'
+
+
+.. settings:: LANGUAGE_CODE
+
+``LANGUAGE_CODE``
+
+    The default language code for a new Cubane setup is *British English*:
+
+    .. code-block:: python
+
+        LANGUAGE_CODE = 'en-GB'
+
+
+.. settings:: USE_I18N
+
+``USE_I18N``
+
+    Django's internationalization is turned off by default:
+
+    .. code-block:: python
+
+        USE_I18N = False
+
+
+.. settings:: DATE_FORMAT
+
+``DATE_FORMAT``
+
+    The default date format for a new Cubane setup is *dd/mm/YYYY*, for example
+    *24/01/2017*:
+
+    .. code-block:: python
+
+        DATE_FORMAT = 'd/m/Y'
+
+
+.. settings:: TIME_FORMAT
+
+``TIME_FORMAT``
+
+    The default time format for a new Cubane setup is *P*, for example, *4
+    p.m.*:
+
+    .. code-block:: python
+
+        TIME_FORMAT = 'P'
+
+
+.. settings:: DATETIME_FORMAT
+
+``DATETIME_FORMAT``
+
+    The default format for a timestamp for a new Cubane setup is *dd/mm/YYYY
+    HH:MM*, for example, *24/01/2017 07:49*:
+
+    .. code-block:: python
+
+        DATETIME_FORMAT = 'd/m/Y H:i'
+
+
+.. settings:: DATE_INPUT_FORMATS
+
+``DATE_INPUT_FORMATS``
+
+    Cubane set up a number of default date input patterns when parsing dates:
+
+    .. code-block:: python
+
+        DATE_INPUT_FORMATS = (
+            '%Y-%m-%d',   # 2006-10-25s
+            '%d/%m/%Y',   # 25/10/2006
+            '%d/%m/%y',   # 25/10/06
+            '%d-%b-%y',   # 30-Dec-06
+        )
+
+
+.. settings:: DATETIME_INPUT_FORMATS
+
+``DATETIME_INPUT_FORMATS``
+
+    Cubane setups a number of default timestamp input patterns when parsing
+    timestamps:
+
+    .. code-block:: python
+
+        DATETIME_INPUT_FORMATS = (
+            '%Y-%m-%dT%H:%M',        # '2010-10-10T10:15'
+            '%d/%m/%Y %H:%M:%S',     # '25/10/2006 14:30:59'
+            '%d/%m/%Y %H:%M:%S.%f',  # '25/10/2006 14:30:59.000200'
+            '%d/%m/%Y %H:%M',        # '25/10/2006 14:30'
+            '%d/%m/%Y',              # '25/10/2006'
+            '%d/%m/%y %H:%M:%S',     # '25/10/06 14:30:59'
+            '%d/%m/%y %H:%M:%S.%f',  # '25/10/06 14:30:59.000200'
+            '%d/%m/%y %H:%M',        # '25/10/06 14:30'
+            '%d/%m/%y',              # '25/10/06'
+        )
+
+
+.. settings:: STR_DATE_FORMAT
+
+``STR_DATE_FORMAT``
+
+    Whenever Cubane generates specific files, such as exporting data within
+    Cubane's backend system as CSV files, the generated filename may contain
+    information about the date and time when the file was generated.
+
+    The date and time format used within those filenames is determined by
+    :settings:`STR_DATE_FORMAT`. By default, the current date is used in the
+    format *dd/mm/YYYY*, e.g. *24/01/2017*:
+
+    .. code-block:: python
+
+        STR_DATE_FORMAT = '%d_%m_%Y'
+
+
+
+
+.. _topics/settings/backend_settings:
+
+Backend Settings
+================
+
+The following settings control various aspect of Cubane's backend system. You
+can read more about Cubane's backend system within the :ref:`Backend System
+<topics/backend>` section.
+
+
+.. settings:: CUBANE_BACKEND_PERMISSIONS
+
+``CUBANE_BACKEND_PERMISSIONS``
+
+    Cubane's backend system tests if the current user has permission to execute
+    certain actions in the system. Generally, a specific view may declare that
+    a create action is not available, to begin with.
+
+    However -- in addition -- the Cubane backend system can also verify
+    permissions on a per user basis. Therefore a set of users may have a
+    specific permission to edit a certain type of entity in the system; others
+    may not have such permission.
+
+    By default, Cubane will *not* enforce permissions on a per-user basis:
+
+    .. code-block:: python
+
+        CUBANE_BACKEND_PERMISSIONS = False
+
+    However, you can enable such permissions to take effect by setting
+    :settings:`CUBANE_BACKEND_PERMISSIONS` to ``True``.
+
+
+.. settings:: CUBANE_BACKEND_MEDIA
+
+``CUBANE_BACKEND_MEDIA``
+
+    Cubane's backend system required Cubane's media component and will present
+    a section within the backend for managing media assets by default.
+
+    .. code-block:: python
+
+        CUBANE_BACKEND_MEDIA = True
+
+    If you do not require media assets to be managed within the backend system,
+    you can turn the media gallery off by setting
+    :settings:`CUBANE_BACKEND_MEDIA` to ``False``.
+
+
+.. settings:: CLIENT_LOGO
+
+``CLIENT_LOGO``
+
+    Cubane's backend system will present an image on the login page that is
+    meant to represent the logo of the website's business or owner.
+
+    By default, the image is resolved by the path ``img/client-logo.png`` by
+    using Django's ``staticfiles`` resolution mechanism.
+
+    .. code-block:: python
+
+        CLIENT_LOGO = 'client-logo.png'
+
+    If no file is available, then the name of the website as configured by the
+    website's CMS settings are used.
+
+    If no such name is available, then the domain name as specified through
+    the ``domain_name`` argument of the :func:`~cubane.settings.default_env`
+    function is used instead.
+
+
+.. settings:: MAX_LISTING_COLUMNS
+
+``MAX_LISTING_COLUMNS``
+
+    Defines the maximum number of columns for table-based views within Cubane's
+    backend system.
+
+    By default, the maximum number of full columns in the backend is limited to
+    six:
+
+    .. code-block:: python
+
+        MAX_LISTING_COLUMNS = 6
+
+    .. note::
+
+        Cubane's backend system may present certain columns as *half* columns,
+        which means that Cubane's backend system may present up to 12 *half*
+        columns.
+
+
+.. _topics/settings/auth_settings:
+
+Authentication Settings
+=======================
+
+Cubane is using Django's default authentication system for user authentication
+for the backend system as well as the frontend if required.
+
+
+.. settings:: AUTHENTICATION_BACKENDS
+
+``AUTHENTICATION_BACKENDS``
+
+    Django's default user authentication backend is
+    ``django.contrib.auth.backends.ModelBackend``, which authenticates user
+    accounts via their username and password.
+
+    By default, Cubane adds an additional authentication backend that allows
+    users to be authenticated via their email address and password as well.
+
+    .. code-block:: python
+
+        AUTHENTICATION_BACKENDS = (
+            'django.contrib.auth.backends.ModelBackend',
+            'cubane.backends.EmailAuthBackend',
+        )
+
+
+.. _topics/settings/static_assets_settings:
+
+Static Assets Settings
+======================
+
+Cubane is using Django's ``staticfiles`` app for managing static media assets.
+The settings helper function :func:`~cubane.settings.default_env` will set up a
+number of settings variables regarding static media assets automatically, so
+you do not have to.
+
+You can read more about how Django manages static files by referring to the
+`Managing static files
+<https://docs.djangoproject.com/en/1.10/howto/static-files/>`_ section of the
+Django documentation.
+
+
+.. settings:: STATIC_URL
+
+``STATIC_URL``
+
+    The ``STATIC_URL`` settings variable declares the relative URL path to
+    static media. Cubane will set this by default to ``/static/``:
+
+    .. code-block:: python
+
+        STATIC_URL = '/static/'
+
+
+.. settings:: STATIC_ROOT
+
+``STATIC_ROOT``
+
+    The absolute path where static media assets are stored. By default, Cubane
+    will set this path to ``/static/`` relative to the ``public_html`` folder
+    (See :settings:`PUBLIC_HTML_ROOT`).
+
+
+.. settings:: STATICFILES_DIRS
+
+``STATICFILES_DIRS``
+
+    List of absolute paths to where Django will look for additional static
+    media assets that are not bound to a particular app. Cubane sets this
+    settings variable to point to the ``/static/`` folder relative to the base
+    path of the application.
+
+    .. code-block:: python
+
+        STATICFILES_DIRS = (
+            os.path.join(m.BASE_PATH, 'static'),
+        )
+
+
+.. settings:: RESOURCES
+
+``RESOURCES``
+
+    The :settings:`RESOURCES` settings variable declares a number of resource
+    buckets. All resources from each app listed per bucket are then combined
+    and minified for each resource type.
+
+    By default, Cubane declares an empty set of resources:
+
+    .. code-block:: python
+
+        RESOURCES = {}
+
+    You need to declare your own resources in your application's settings file.
+
+    .. seealso::
+
+        Please refer to the :ref:`Declaring Resource Buckets
+        <topics/resources/declaring_resource_buckets>` section for more
+        information on how to declare resource buckets.
+
+
+.. settings:: CSS_MEDIA
+
+``CSS_MEDIA``
+
+    When using Cubane's resource system, Cubane allows for different CSS media
+    types. The :settings:`CSS_MEDIA` settings variable defines a list of
+    allowed CSS media types.
+
+    By default, Cubane understands the two CSS media types ``screen`` and
+    ``print``:
+
+    .. code-block:: python
+
+        CSS_MEDIA = ['screen', 'print']
+
+
+.. settings:: REQUIRE_JS
+
+``REQUIRE_JS``
+
+    Cubane can compile `RequireJS <http://requirejs.org/>`_ based javascript
+    sources. RequireJS is a Javascript file and module loader.
+
+    The :settings:`REQUIRE_JS` settings variable declares a list of javascript
+    sources that are using RequireJS.
+
+    By default, no RequireJS sources are setup:
+
+    .. code-block:: python
+
+        REQUIRE_JS = []
+
+    .. seealso::
+
+        Please refer to the :ref:` <topics/resources/requirejs>` section for
+        more information on how to use RequireJS in your project.
+
+
+
+
+.. _topics/settings/favicon_settings:
+
+Favicon Settings
+================
+
+Cubane can generate a number of different favicon versions based on one input
+image. There are a number of settings variables that control the way favorite
+icons are generated.
+
+..seealso::
+
+    Please refer to the :ref:`Generating Favorite Icons <topics/favicons>`
+    section for more information on working with favorite icons.
+
+
+.. settings:: FAVICON_PATH
+
+``FAVICON_PATH``
+
+    Declares the path to the source image that is used to generate different
+    versions of the favorite icons automatically. This path is used together
+    with :settings:`FAVICON_FILENAME` to construct a path. This path is then
+    resolved by using Django's ``staticfiles`` resolution mechanism.
+
+    By default, a relative path ``img`` is used:
+
+    .. code-block:: python
+
+        FAVICON_PATH = 'img'
+
+    Therefore you would place the source image for generating favorite icon
+    versions into your static folder, for example ``static/img/favicon.png``.
+
+
+.. settings:: FAVICON_FILENAME
+
+``FAVICON_FILENAME``
+
+    Declares the filename of the source image file that is used to generate
+    different versions of the favorite icons automatically. The filename is
+    used together with :settings:`FAVICON_PATH` to construct a path. This path
+    is then resolved by using Django's ``staticfiles`` resolution mechanism.
+
+    By default, the filename is set to ``favicon.png``:
+
+    .. code-block:: python
+
+        FAVICON_FILENAME = 'favicon.png'
+
+    Therefore you would place the source image for generating favorite icon
+    versions into your static folder, for example ``static/img/favicon.png``.
+
+
+.. settings:: FAVICON_PNG_SIZES
+
+``FAVICON_PNG_SIZES``
+
+    Defines a list of different icon sizes for generating favorite icons
+    automatically based on the image file format ``png``.
+
+    When deploying a website with Cubane, the system will use this information
+    to generate different image versions in different sizes based on one input
+    image.
+
+    By default, the following sizes are generated for ``png`` files:
+
+    .. code-block:: python
+
+        FAVICON_PNG_SIZES = [
+            {'size': '16x16',   'filename': 'favicon-16x16.png'},
+            {'size': '24x24',   'filename': 'favicon-24x24.png'},
+            {'size': '32x32',   'filename': 'favicon-32x32.png'},
+            {'size': '48x48',   'filename': 'favicon-48x48.png'},
+            {'size': '57x57',   'filename': 'favicon-57x57.png'},
+            {'size': '60x60',   'filename': 'favicon-60x60.png'},
+            {'size': '64x64',   'filename': 'favicon-64x64.png'},
+            {'size': '70x70',   'filename': 'favicon-70x70.png'},
+            {'size': '72x72',   'filename': 'favicon-72x72.png'},
+            {'size': '76x76',   'filename': 'favicon-76x76.png'},
+            {'size': '96x96',   'filename': 'favicon-96x96.png'},
+            {'size': '114x114', 'filename': 'favicon-114x114.png'},
+            {'size': '120x120', 'filename': 'favicon-120x120.png'},
+            {'size': '128x128', 'filename': 'favicon-128x128.png'},
+            {'size': '144x144', 'filename': 'favicon-144x144.png'},
+            {'size': '150x150', 'filename': 'favicon-150x150.png'},
+            {'size': '152x152', 'filename': 'favicon-152x152.png'},
+            {'size': '196x196', 'filename': 'favicon-196x196.png'},
+            {'size': '310x150', 'filename': 'favicon-310x150.png'},
+            {'size': '310x310', 'filename': 'favicon-310x310.png'}
+        ]
+
+
+.. settings:: FAVICON_ICO_SIZES
+
+``FAVICON_ICO_SIZES``
+
+    Defines a list of different icon sizes for generating favorite icons
+    automatically based on the image file format ``ico``.
+
+    When deploying a website with Cubane, the system will use this information
+    to generate different image versions in different sizes based on one input
+    image.
+
+    By default, the following sizes are generated for ``ico`` files:
+
+    .. code-block:: python
+
+        FAVICON_ICO_SIZES = [
+            {'size': '16x16',   'filename': 'favicon-16x16.png'},
+            {'size': '24x24',   'filename': 'favicon-24x24.png'},
+            {'size': '32x32',   'filename': 'favicon-32x32.png'},
+            {'size': '48x48',   'filename': 'favicon-48x48.png'},
+            {'size': '64x64',   'filename': 'favicon-64x64.png'},
+            {'size': '128x128', 'filename': 'favicon-128x128.png'}
+        ]
+
+
+
+
+.. _topics/settings/media_settings:
+
+Media Settings
+==============
+
+Cubane provides a number of ways to work with Media. Please read more about
+Media in general within the :ref:`Working with Media <topics/media>` section.
+The following settings control various aspects of Cubane's media pipeline:
+
+
+.. settings:: MEDIA_ROOT
+
+``MEDIA_ROOT``
+
+    The absolute path to the folder containing user-uploaded content. In
+    *Debug* mode, :settings:`MEDIA_ROOT` is set to a folder ``/media/``
+    relative to the base path of your application.
+
+    In *Production* mode, :settings:`MEDIA_ROOT` is set to a folder ``/media/``
+    relative to the public_html folder :settings:`PUBLIC_HTML_ROOT`.
+
+
+.. settings:: MEDIA_URL
+
+``MEDIA_URL``
+
+    The :settings:`MEDIA_URL` settings variable defines the prefix for the URL
+    to media assets, which is set to ``media/`` by default:
+
+    .. code-block:: python
+
+        MEDIA_URL = 'media/'
+
+
+.. settings:: MEDIA_API_URL
+
+``MEDIA_API_URL``
+
+    The media API is introduced by Cubane to serve user-uploaded assets not
+    directly through the web server in *Production* mode, but through the
+    entire python/Django/Cubane pipeline in order to pre-process media assets
+    before they are served to clients.
+
+    By default, :settings:`MEDIA_API_URL` is set to ``media-api/``:
+
+    .. code-block:: python
+
+        MEDIA_API_URL = 'media-api/'
+
+    .. seealso::
+
+        You can find more information on the media API within the :ref:`Media
+        API URLs <topics/media/media_api_urls>` section.
+
+
+.. settings:: MINIFY_CMD_JS
+
+``MINIFY_CMD_JS``
+
+    The command line that is executed in order to compress Javascript
+    resources. The Javascript source is piped into the process on the standard
+    input channel and the (compressed) result is read from the standard output
+    channel of the process. By default Google's Closure compiler is used for
+    compressing Javascript sources.
+
+
+.. settings:: MINIFY_CMD_CSS
+
+``MINIFY_CMD_CSS``
+
+    The command line that is executed in order to compress CSS resources. The
+    CSS source is piped into the process on the standard input channel and the
+    (compressed) result is read from the standard output channel of the
+    process. By default Yahoo's YUI Compressor is used for compressing CSS
+    sources.
+
+    .. note::
+
+        The YUI library is no longer actively maintained and we will change the
+        default dependency to the YUI Compressor eventually.
+
+
+.. settings:: IMAGE_SIZES
+
+``IMAGE_SIZES``
+
+    Cubane's media system can generate responsive image versions in different
+    resolution, so that the correct image can be delivered to the correct
+    client based on physical device properties, such as resolution.
+
+    The following (named) image sizes are supported by Cubane:
+
+    - ``xx-small``
+    - ``x-small``
+    - ``small``
+    - ``medium``
+    - ``large``
+    - ``x-large``
+
+    Optionally this list can be extended by:
+
+    - ``xx-large``
+    - ``xxx-large``
+
+    The settings variable :settings:`IMAGE_SIZES` declares a list of image
+    sizes that are used by your application alongside the corresponding width
+    (in pixels) for each of them. You may define a subset of all supported
+    image sizes but you cannot invent new image sizes.
+
+    .. code-block:: python
+
+        IMAGE_SIZES = {
+            'xx-small':  50,
+            'x-small':  160,
+            'small':    320,
+            'medium':   640,
+            'large':    900,
+            'x-large': 1200
+        }
+
+    .. note:
+
+        If the argument ``high_res_images`` for the
+        :func:`~cubane.settings.default_env` function is set to True, then two
+        additional image sizes are used by default:
+
+        .. code-block:: python
+
+            IMAGE_SIZES.update({
+                'xx-large':  1600,
+                'xxx-large': 2400
+            }
+
+    Those default image sizes are somewhat arbitrary and in most cases you
+    would want to adjust those values depending on your specific requirements
+    for optimal performance.
+
+    .. seealso::
+
+        You can read more about responsive image versions within the
+        :ref:`Responsive Image Sizes <topics/media/responsive_image_sizes>`
+        section.
+
+
+.. settings:: DEFAULT_IMAGE_SIZE
+
+``DEFAULT_IMAGE_SIZE``
+
+    In order to support a default version for response image sizes (see
+    :settings:`IMAGE_SIZES`), a default image size is defined via
+    :settings:`DEFAULT_IMAGE_SIZE`.
+
+    Please refer to :settings:`IMAGE_SIZES` for a list of all supported image
+    sizes.
+
+    The :settings:`DEFAULT_IMAGE_SIZE` declares the default size which is used
+    for clients that are not interested in downloading a responsive image based
+    on client properties, such as resolution.
+
+    By default, Cubane is using the ``x-large`` image version as the default
+    image version:
+
+    .. code-block:: python
+
+        DEFAULT_IMAGE_SIZE = 'x-large'
+
+    .. seealso::
+
+        You can read more about responsive image versions within the
+        :ref:`Responsive Image Sizes <topics/media/responsive_image_sizes>`
+        section.
+
+
+.. settings:: CMS_EDITOR_DEFAULT_IMAGE_SIZE
+
+``CMS_EDITOR_DEFAULT_IMAGE_SIZE``
+
+    When working with images within Cubane's content management editor, a
+    default image version is used that is not necessarily depending on
+    properties of the device, such as screen resolution.
+
+    Of course, this is only for the purpose of the editor. When presenting a
+    page to the general public, the full responsive image machinery is used
+    instead.
+
+    By default, Cubane is using the ``x-large`` image size for this purpose:
+
+    .. code-block:: python
+
+        CMS_EDITOR_DEFAULT_IMAGE_SIZE = 'x-large'
+
+
+.. settings:: DISABLE_DEVICE_RATIO
+
+``DISABLE_DEVICE_RATIO``
+
+    By default, ``cubane.medialoader`` will take the device pixel ratio into
+    consideration when determining the actual image resultion that is required
+    when loading an image on the website. Some devices may have a
+    high-resolution display, where the device pixel ratio is greater than one.
+
+    .. code-block:: python
+
+        DISABLE_DEVICE_RATIO = False
+
+    You can ignore the device pixel ratio, by setting
+    :settings:`DISABLE_DEVICE_RATIO` to ``True``.
+
+
+.. settings:: IMAGE_COMPRESSION_QUALITY
+
+``IMAGE_COMPRESSION_QUALITY``
+
+    The default compression level for jpeg images as an integer. Whenever
+    Cubane saves a jpeg image, then the given jpeg compression is used to
+    compress the image. The compression level only applies to jpeg images has
+    no effect on any other image file format.
+
+    .. code-block:: python
+
+        IMAGE_COMPRESSION_QUALITY = 85
+
+    .. note::
+
+        Cubane may apply a lower compression level as specified under some
+        circumstances, for example for very low-resolution image versions or if
+        the image source is a jpeg and the compression level of that file is
+        estimated to be lower than the default compression level.
+
+        Further, the original image that is uploaded might be resized (and
+        subsequently compressed again) if the original image is too large (See
+        :settings:`IMG_MAX_WIDTH`). In this case, the highest possible
+        compression quality is used and :settings:`IMAGE_COMPRESSION_QUALITY`
+        is ignored.
+
+
+.. settings:: IMG_MAX_WIDTH
+
+``IMG_MAX_WIDTH``
+
+    The maximum width for any original image that is uploaded in pixels. When
+    uploading media assets using Cubane's media system, any original image may
+    be resized if the width of the original image is larger than the maximum
+    width as specified by :settings:`IMG_MAX_WIDTH`.
+
+    By default, the maximum image width is 2,400 pixels:
+
+    .. code-block:: python
+
+        IMG_MAX_WIDTH = 2400
+
+    This process exists in order to keep uploaded media assets to a certain
+    maximum size and preventing storing original images that are too large.
+    Also, the processing time for resizing and generating different image
+    version based on the original image is greatly improved if the original
+    image size is reduced.
+
+    .. note::
+
+        You can turn off this behavior by setting :settings:`IMG_MAX_WIDTH` to
+        ``None``.
+
+
+    .. seealso::
+
+        For more information on Cubane's maximum image size, please refer to
+        the :ref:`Maximum Image Width <topics/media/max_image_width>` section.
+
+
+.. settings:: IMAGE_SHAPES
+
+``IMAGE_SHAPES``
+
+    Cubane can manage a set of distinct image shapes. Whenever an image is
+    referenced within a template, for example, a shape can be specified. Then
+    Cubane's media system will render the particular image in a specific shape
+    as specified.
+
+    A shape is ultimately a specific aspect ratio for an image and Cubane will
+    crop uploaded media assets to match all shapes specified automatically.
+
+    By default, no image shapes are specified:
+
+    .. code-block:: python
+
+        IMAGE_SHAPES = {}
+
+    .. seealso::
+
+        Please refer to the :ref:`Image Shapes <topics/media/image_shapes>`
+        section for more information on image shapes and how to declare and use
+        them.
+
+
+.. settings:: DEFAULT_IMAGE_SHAPE
+
+``DEFAULT_IMAGE_SHAPE``
+
+    Cubane's image shapes are declared via :settings:`IMAGE_SHAPES`. In
+    addition, the general image shape ``original`` is reserved in order to
+    refer to the actual image aspect ratio of the image as it has been uploaded.
+
+    Whenever an image is requested, where the target image shape is not further
+    specified, then Cubane will simply return the image in the shape as
+    specified by :settings:`DEFAULT_IMAGE_SHAPE`. By default, this is the
+    ``original`` shape, which means that the image shape is the actual shape of
+    the image as it has been uploaded.
+
+    .. code-block:: python
+
+        DEFAULT_IMAGE_SHAPE = 'original'
+
+
+.. settings:: IMAGE_ART_DIRECTION
+
+``IMAGE_ART_DIRECTION``
+
+    Cubane can use different shapes for different devices dynamically based on
+    properties if the screen for example. This process is called *Art
+    Direction* and can greatly improve the visual quality of your website.
+
+    By default, *art direction* is not configured:
+
+    .. code-block:: python
+
+        IMAGE_ART_DIRECTION = {}
+
+    .. seealso::
+
+        You can find more information on how to use art direction within the
+        :ref:`Art Direction <topics/media/art_direction>` section.
+
+
+.. settings:: IMAGE_CREDITS
+
+``IMAGE_CREDITS``
+
+    For some applications, you way want to store some additional credit
+    information with each uploaded media asset. You can enable image credits by
+    setting :settings:`IMAGE_CREDITS` to ``True``.
+
+    By default, Cubane will not store or maintain image credits information:
+
+    .. code-block:: python
+
+        IMAGE_CREDITS = False
+
+
+.. settings:: IMAGE_EXTRA_TITLE
+
+``IMAGE_EXTRA_TITLE``
+
+    For some application, you may require additional meta information about
+    uploaded media assets, such as an additional title or description. You can
+    enable this functionality by setting :settings:`IMAGE_EXTRA_TITLE` to
+    ``True``.
+
+    By default, Cubane will not store or maintain an extra image title:
+
+    .. code-block:: python
+
+        IMAGE_EXTRA_TITLE = False
+
+
+.. settings:: FILE_UPLOAD_HANDLERS
+
+``FILE_UPLOAD_HANDLERS``
+
+    Cubane will setup your website to use temporary files when uploading media
+    assets:
+
+    .. code-block:: python
+
+        FILE_UPLOAD_HANDLERS = (
+            'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+        )
+
+
+
+
+.. _topics/settings/font_settings:
+
+Font Settings
+=============
+
+Cubane's font system allows for custom web fonts to be integrated into your
+applications very easily. There are a few settings variables that control the
+integration. You can read more about Cubane's font system within the
+:ref:`Working with Fonts <topics/fonts>` section.
+
+
+.. settings:: CUBANE_FONT_ROOT
+
+``CUBANE_FONT_ROOT``
+
+    The absolute path to a folder that will be used to store font files.
+    Cubane's font system will create a sub-folder within
+    :settings:`CUBANE_FONT_ROOT` for each font that is used.
+
+    By default, :settings:`CUBANE_FONT_ROOT` is set to ``/fonts/`` relative to
+    the media root folder :settings:`MEDIA_ROOT`.
+
+    .. seealso::
+
+        You can read more about Cubane's font caching mechanism within the
+        :ref:`Font Cache <topics/fonts/cache>` section.
+
+
+.. settings:: CUBANE_FONT_BACKENDS
+
+``CUBANE_FONT_BACKENDS``
+
+    Cubane's font system has the concept of *font backends*. A font backend is
+    responsible for finding and downloading a font by its name from an external
+    source. Multiple font backends can be setup to be used as font sources
+    simultaneously.
+
+    By default, Cubane provides and set up one default font backend, which is
+    based on the `google-webfonts-helper
+    <https://google-webfonts-helper.herokuapp.com/fonts>`_ by Mario Ranftl:
+
+    .. code-block:: python
+
+        CUBANE_FONT_BACKENDS = [
+            'cubane.fonts.backends.GoogleFontsBackend',
+        ]
+
+    .. seealso::
+
+        You can read more about Cubane's font backend mechanism within the
+        :ref:`Font Backends <topics/fonts/backends>` section.
+
+
+
+
+.. _topics/settings/cms_settings:
+
+CMS Settings
+============
+
+Cubane's Content Management Component is controlled by the following settings.
+Please read more about Cubane's CMS system within the :ref:`Content Management
+<topics/cms>` section.
+
+
+.. settings:: CMS
+
+``CMS``
+
+    When using Cubane's content management system (CMS), you need to derive
+    your own class from :class:`cubane.cms.views.CMS`. The base class
+    implementation provides a number of core services for Cubane's CMS
+    component and gives your application the opportunity to overwrite specific
+    aspects of the system as required.
+
+    In your application settings, you would need to declare to Cubane what the
+    CMS class implementation is. You do this by declaring the :settings:`CMS`
+    settings variable to a string that reflects the full python path and the
+    name of your class that derives from the CMS base class
+    :class:`cubane.cms.views.CMS`.
+
+    By default, the :settings:`CMS` settings variable is *not* set and you're
+    application will *not* start if :settings:`CMS` remains unset (assuming the
+    CMS component is used).
+
+    Let's assume that you've declared your CMS class in the python module
+    ``myApp.views`` and the derived class is named ``MyAppCMS``, then you
+    would declare the :settings:`CMS` settings variable in the following way:
+
+    .. code-block:: python
+
+        CMS = 'myApp.views.MyAppCMS'
+
+    .. seealso::
+
+        Please refer to the :ref:`Content Management <topics/cms>` section for
+        further information on Cubane's content management system.
+
+
+.. settings:: CMS_SETTINGS_MODEL
+
+``CMS_SETTINGS_MODEL``
+
+    Cubane's content management system (CMS) requires a database model to store
+    application setting. Those settings can typically be changed by website
+    owners or content authors.
+
+    You have to derive your own class from the base model class
+    :class:`cubane.cms.models.SettingsBase`. The base model class is defined as
+    an abstract Django model class.
+
+    Deriving from :class:`cubane.cms.models.SettingsBase` gives you the
+    opportunity to add your own application settings as required.
+
+    In your application settings, you would need to declare to Cubane what the
+    settings model class implementation is. You do this by declaring the
+    :settings:`CMS_SETTINGS_MODEL` settings variable to a string that reflects
+    the full python path and the name of your class that derives from the
+    settings model base class :class:`cubane.cms.models.SettingsBase`.
+
+    By default, the :settings:`CMS_SETTINGS_MODEL` settings variable is *not*
+    set and your application will *not* start if :settings:`CMS_SETTINGS_MODEL`
+    remains unset (assuming the CMS component is used).
+
+    Let's assume that you've declared your settings model class in the python
+    module ``myApp.models`` and the derived class is named ``Settings``, then
+    you would declare the :settings:`CMS_SETTINGS_MODEL` settings variable in
+    the following way:
+
+    .. code-block:: python
+
+        CMS_SETTINGS_MODEL = 'myApp.models.Settings'
+
+    .. seealso::
+
+        Please refer to the :ref:`Content Management <topics/cms>` section for
+        further information on Cubane's content management system.
+
+
+.. settings:: CMS_PAGE_MODEL
+
+``CMS_PAGE_MODEL``
+
+    Cubane's content management system (CMS) requires a database model to
+    represent basic CMS pages. By default, Cubane's CMS system is configured to
+    use the model class :class:`cubane.cms.models.Page` which is ready to go
+    and suitable for most basic needs.
+
+    However, if you ever wish to extend Cubane's page model in the future or
+    you have specific requirements that would require you to add custom fields
+    for every page then you can also derive your own class from
+    :class:`cubane.cms.models.PageAbstract` instead.
+
+    If you derive your own class, then you need to declare to Cubane what the
+    page model class implementation is within your application settings.
+    You do this by declaring the :settings:`CMS_PAGE_MODEL`
+    settings variable to a string that reflects the full python path and the
+    name of your class that derives from the abstract page model class
+    :class:`cubane.cms.models.PageAbstract`.
+
+    By default, the :settings:`CMS_PAGE_MODEL` settings variable is *not* set.
+    However, you do not necessarily use your own page model, in which case the
+    default page model :class:`cubane.cms.models.Page` is used instead.
+
+    .. tip::
+
+        We advise deriving your own class in any case so that you *could*
+        extend the page model later in the process if you ever needed to.
+        Declaring your own page model later in the process with existing data
+        already on production system tends to be much more difficult.
+
+    Let's assume that you've declared your page model class in the python
+    module ``myApp.models`` and the derived class is named ``CustomPage``, then
+    you would declare the :settings:`CMS_PAGE_MODEL` settings variable in the
+    following way:
+
+    .. code-block:: python
+
+        CMS_PAGE_MODEL = 'myApp.models.CustomPage'
+
+    .. seealso::
+
+        Please refer to the :ref:`Content Management <topics/cms>` section for
+        further information on Cubane's content management system.
+
+
+.. settings:: CMS_NAVIGATION
+
+``CMS_NAVIGATION``
+
+    Cubane's content management system has a concept for *navigation*. A
+    navigation is a set of navigable targets, such as pages. Multiple
+    navigations can be set up, for example, you may define a navigation for the
+    main header navigation of the website and one for the footer.
+
+    The :settings:`CMS_NAVIGATION` settings variable declares a list of known
+    navigation areas and assigns a unique name to each of them. The list is
+    constructed out of tuples, where the first component is the unique name of
+    the navigation area and the second element is the name of the area as it is
+    displayed within the backend system for example. Structurally
+    :settings:`CMS_NAVIGATION` is similarly constructed as Django's form field
+    choices.
+
+    .. code-block:: python
+
+        CMS_NAVIGATION = (
+            ('header', 'Header'),
+            ('footer', 'Footer')
+        )
+
+    By default, Cubane will set up two navigation areas for you automatically,
+    a header navigation and a footer navigation.
+
+
+.. settings:: CMS_NAVIGATION_RELATED_FIELDS
+
+``CMS_NAVIGATION_RELATED_FIELDS``
+
+    When Cubane loads the navigation for a website, you can easily control how
+    related data (such as images for example) are fetched at the same time. By
+    default, Cubane will load related images for each navigable target as part
+    of the navigation:
+
+    .. code-block:: python
+
+        CMS_NAVIGATION_RELATED_FIELDS = ['image']
+
+    .. note::
+
+        Related fields must exist and is applied for loading items derived from
+        :class:`~cubane.cms.models.PageAbstract`.
+
+
+.. settings:: CMS_NAVIGATION_INCLUDE_CHILD_PAGES
+
+``CMS_NAVIGATION_INCLUDE_CHILD_PAGES``
+
+    Cubane's CMS system provides the concept for modeling child pages that may
+    be attached to certain pages, like blog posts, projects or services. The
+    navigation system can load child pages as part of the navigation, if
+    ``CMS_NAVIGATION_INCLUDE_CHILD_PAGES`` is set to ``True``; however by
+    default child pages are not loaded as part of the navigation.
+
+    .. code-block:: python
+
+        CMS_NAVIGATION_INCLUDE_CHILD_PAGES = False
+
+
+.. settings:: CMS_TEMPLATES
+
+``CMS_TEMPLATES``
+
+    Cubane's CMS system allows for multiple page templates. A template can be
+    chosen by content authors on a per-page basis if required. In our
+    experience, the fewer templates authors can choose from the better.
+    However, sometimes you simply need to provide multiple arrangements for
+    your content, in which case you can define multiple page templates as a
+    list of tuples.
+
+    The first element declares the relative path to the template file that is
+    used to render the page while the second element gives a name of the
+    template that is displayed to content authors to choose from.
+
+    By default, Cubane will provide a standard template like the code example
+    below. In most cases, you would want to replace the default settings to
+    declare your own templates.
+
+    .. code-block:: python
+
+        CMS_TEMPLATES = [
+            ('cubane/cms/default_template.html', 'Default Template')
+        ]
+
+
+.. settings:: CMS_SLOTNAMES
+
+``CMS_SLOTNAMES``
+
+    Cubane's CMS system organizes editable content in content slots. Each slot
+    is an area of a page that content authors can fill with arbitrary content.
+
+    Simply declare a list of unique names for your slots. Not all page
+    templates may use all slots, but every slot is used by any template must
+    be declared through the :settings:`CMS_SLOTNAMES` settings variable.
+
+    By default, Cubane declares only one slot with the name ``content``:
+
+    .. code-block:: python
+
+        CMS_SLOTNAMES = ['content']
+
+
+.. settings:: CMS_DEFAULT_SLOTNAME
+
+``CMS_DEFAULT_SLOTNAME``
+
+    When presenting multiple slots for any given page within Cubane's backend
+    system, one slot is activated by default. Content authors can then use the
+    content editor as part of the system to write content for the active slot.
+
+    The settings variable :settings:`CMS_DEFAULT_SLOTNAME` gives the unique
+    name of the slot that is activated by default when editing a page within
+    the backend system.
+
+    If :settings:`CMS_DEFAULT_SLOTNAME` is set to None, then the first slot on
+    the page (in *DOM* order) is activated automatically.
+
+    By default, the slot with the name ``content`` is activated automatically:
+
+    .. code-block:: python
+
+        CMS_DEFAULT_SLOTNAME = 'content'
+
+
+.. settings:: CMS_RENDER_SLOT_CONTAINER
+
+``CMS_RENDER_SLOT_CONTAINER``
+
+    When rendering the content for any given slot, the system will simply
+    render the content for the given slot when using the ``slot`` template tag.
+
+    However, if the settings variable :settings:`CMS_RENDER_SLOT_CONTAINER` is
+    set to ``True``, then Cubane will wrap any slot content with a container
+    element in the following way:
+
+    .. code-block:: html
+
+        <div class="cms-slot-container">
+            ... slot content ...
+        </div>
+
+    By default, Cubane will *not* wrap slot content automatically.
+
+    .. code-block:: python
+
+        CMS_RENDER_SLOT_CONTAINER = False
+
+    .. note::
+
+        When rendering content in preview mode, Cubane will automatically wrap
+        slot content by using the following markup:
+
+        .. code-block:: html
+
+            <div class="cms-slot" data-slotname="content">
+                ... slot content ...
+            </div>
+
+        This is independent of the :settings:`CMS_RENDER_SLOT_CONTAINER`
+        variable; therefore when rendering slot content in preview mode with
+        :settings:`CMS_RENDER_SLOT_CONTAINER` set to ``True``, slot content is
+        actually wrapped twice:
+
+        .. code-block:: html
+
+            <div class="cms-slot" data-slotname="content">
+                <div class="cms-slot-container">
+                    ... slot content ...
+                </div>
+            </div>
+
+
+.. settings:: CMS_EXCERPT_LENGTH
+
+``CMS_EXCERPT_LENGTH``
+
+    Cubane's CMS system can present brief excerpt text for content items, such
+    as pages or child pages. The settings variable
+    :settings:`CMS_EXCERPT_LENGTH` defines the maximum number of characters
+    that is used to present excerpt text before it is truncated with *...*.
+
+    This maximum character limit is imposed on custom excerpt text provided by
+    content authors and automatically generated excerpt text alike.
+
+    By default, the maximum amount of characters for any excerpt text is 60
+    characters:
+
+    .. code-block:: python
+
+        CMS_EXCERPT_LENGTH = 60
+
+
+.. settings:: CMS_NO_AUTO_EXCERPT
+
+``CMS_NO_AUTO_EXCERPT``
+
+    Cubane's CMS system can generate a brief excerpt for each content item,
+    such as a page or child page automatically based on the actual content of
+    the page assigned to slots.
+
+    By default, an excerpt text is provided by content authors. If no excerpt
+    text has been provided, it is generated automatically unless the settings
+    variable :settings:`CMS_NO_AUTO_EXCERPT` is set to ``True``.
+
+    By default, the settings variable :settings:`CMS_NO_AUTO_EXCERPT` is set to
+    ``False`` and missing excerpt text is generated automatically:
+
+    .. code-block:: python
+
+        CMS_NO_AUTO_EXCERPT = False
+
+
+.. settings:: CMS_TEST_SPF
+
+``CMS_TEST_SPF``
+
+    The Sender Policy Framework (SPF) is a simple validation system to detect
+    email spoofing. Mail Exchangers can check that incoming mail from a domain
+    name comes from a host authorized by the domain name system. See more
+    information on the `Sender Policy Framework on Wikipedia
+    <https://en.wikipedia.org/wiki/Sender_Policy_Framework>`_.
+
+    Most websites need to send an email. Perhaps your website provides a simple
+    inquiry form or even offers products for sale. In order to help you to
+    setup and verify the correct present of SPF for your website, Cubane will
+    automatically check that SPF is verified whenever you change the settings
+    of your website within the Cubane's backend system (this is usually where
+    to setup email details for the website).
+
+    When saving settings in *Debug* mode, Cubane will generate an error message
+    regarding SPF but will allow you to save the settings. In *Production* mode
+    however, Cubane will not accept changes to settings if the SPF validation
+    does not succeed or no SPF record is in place, to begin with.
+
+    You can turn SPF validation off by setting :settings:`CMS_TEST_SPF` to
+    ``False``. However, SPF validation is turned on by default:
+
+    .. code-block:: python
+
+        CMS_TEST_SPF = True
+
+
+.. settings:: CMS_BACKEND_SITEMAP
+
+``CMS_BACKEND_SITEMAP``
+
+    Cubane's backend system can present a sitemap-like structural view of all
+    your content within the backend. This feature is currently still in
+    development and is turned off by default:
+
+    .. code-block:: python
+
+        CMS_BACKEND_SITEMAP = False
+
+    You can turn this feature on by setting :settings:`CMS_BACKEND_SITEMAP` to
+    ``True``.
+
+
+.. settings:: CMS_ADV_EDITOR_PLUGINS
+
+``CMS_ADV_EDITOR_PLUGINS``
+
+    By default, Cubane's content editor is restricted to regular editing
+    functionality only, which does not include visual aspects such as colors.
+    In our experience, content authors should not be concerned about visual
+    aspects of the site, they should only be concerned about the content itself.
+
+    .. code-block:: python
+
+        CMS_ADV_EDITOR_PLUGINS = False
+
+    However, if you require additional capabilities, such as access to color
+    options within Cubane's backend system for editing content, then you can
+    enable this functionality by setting :settings:`CMS_ADV_EDITOR_PLUGINS` to
+    ``True``.
+
+
+.. settings:: CACHE_ENABLED
+
+``CACHE_ENABLED``
+
+    Cubane's CMS system provides a full page cache system that will speed up
+    page loads drastically. Cubane's cache system is designed by bypass the
+    executing of WSGI, python, and Django all together for most of a website's
+    content.
+
+    The cache system is enabled by default:
+
+    .. code-block:: python
+
+        CACHE_ENABLED = True
+
+
+.. settings:: PAGE_HIERARCHY
+
+``PAGE_HIERARCHY``
+
+    By default, Cubane allows for a flat list of pages to be created. Each page
+    may declare a list of child pages of a certain type, such as blog post or
+    service, but there is no *real* hierarchy of pages involved.
+
+    Cubane can support arbitrarily nested pages. Such hierarchy can then be
+    used for example to drive the navigation structure of the website or to
+    generate a list of *nested* sections for any given page. To enable support
+    for nested page hierarchies, set the :settings:`PAGE_HIERARCHY` settings
+    variable to ``True``.
+
+    However, by default page hierarchies are *not* enabled:
+
+    .. code-block:: python
+
+        PAGE_HIERARCHY = False
+
+
+
+
+.. _topics/settings/enquiry_settings:
+
+Enquiry Settings
+================
+
+Cubane's Enquiry system (in combination with it's content management component)
+can present contact forms and send rich HTML emails based on content controlled
+by content authors.
+
+Please read more about Cubane's enquiry system within the :ref:`Enquiry Forms
+<topics/enquiry>` section.
+
+
+.. settings:: ENQUIRY_MODEL
+
+``ENQUIRY_MODEL``
+
+    The enquiry system stores enquiry messages in a data model and makes
+    enquiries accessible within Cubane's backend system.
+
+    Additional meta data may be managed this way, such as information about
+    actions are taken etc.
+
+    Because enquiries can be very specific to each business needs, you need to
+    derive your own enquiry data model from
+    :class:`cubane.enquiry.models.EnquiryBase`.
+
+    .. tip::
+
+        We would advise to keep the amount of information that your customers
+        would need to enter into an enquiry form as low as possible. There
+        appears to be a direct relationship between the complexity of an
+        enquiry form and the resulting conversion rate for successful enquiries.
+
+        Generally speaking: Increasing the complexity has a negative impact on
+        the conversion rate.
+
+    In your application settings, you need to declare what your specific
+    enquiry data model class is by declaring the python path and name of your
+    class as a string.
+
+    Let's assume that you've declared your enquiry model class in the python
+    module ``myApp.models`` and the derived class is named ``Enquiry``, then
+    you would declare the :settings:`ENQUIRY_MODEL` settings variable in the
+    following way:
+
+    .. code-block:: python
+
+        ENQUIRY_MODEL = 'myApp.models.Enquiry'
+
+    .. seealso::
+
+        Please refer to the :ref:`Enquiry Forms <topics/enquiry>` section for
+        further information on Cubane's enquiry system.
+
+
+.. settings:: ENQUIRY_CLIENT_TEMPLATE
+
+``ENQUIRY_CLIENT_TEMPLATE``
+
+    Cubane's enquiry system may send two emails on every successful enquiry:
+    One email is sent to the customer to acknowledge the reception of the
+    enquiry; the second is send to a dedicated email address that you decide in
+    order to notify you about the enquiry.
+
+    While the template for rendering the email content for the first email is
+    controlled through Cubane's CMS system, the template that is used for the
+    second email is controlled in your application setting.
+
+    Simply declare the path to any Django template file in your application
+    settings file, for example:
+
+    .. code-block:: python
+
+        ENQUIRY_CLIENT_TEMPLATE = 'myApp/mail/enquiry_client.html'
+
+    .. seealso::
+
+        Please refer to the :ref:`Enquiry Forms <topics/enquiry>` section for
+        further information on Cubane's enquiry system.
+
+
+.. _topics/settings/google_analytics_settings:
+
+Google Analytics
+================
+
+Cubane can integrate with `Google Analytics
+<https://developers.google.com/analytics/>`_ out of the box. The google
+analytics key is usually configured within Cubane's backend system (settings).
+
+
+.. settings:: DEBUG_GOOGLE_ANALYTICS
+
+``DEBUG_GOOGLE_ANALYTICS``
+
+    Cubane provides various template tags for including Google Analytics within
+    your website. All template tags require a valid Google Analytics Key to
+    connect your website with a specific Google Analytics account.
+
+    In *Production* mode, this key is usually configured in your website's CMS
+    settings. In *Debug* mode, however, you may not want to *pollute* your
+    production analytics account with development traffic.
+
+    Therefore, Cubane will not inject the Google Analytics key in *Debug* mode
+    under any circumstances. The key is simply left empty. However, if you wish
+    to use a specific Google Analytics key in *Debug* mode, for example, to
+    test various aspects of your custom Google Analytics integration, then you
+    can set this key up by setting :settings:`DEBUG_GOOGLE_ANALYTICS`
+    equivalently.
+
+    By default, :settings:`DEBUG_GOOGLE_ANALYTICS` is set to None, which
+    indicates that the system will not use any Google Analytics key at all.
+
+    .. code-block:: python
+
+        DEBUG_GOOGLE_ANALYTICS = None
+
+
+.. settings:: CUBANE_GOOGLE_ANALYTICS_ASYNC
+
+``CUBANE_GOOGLE_ANALYTICS_ASYNC``
+
+    By default, Cubane will generate markup for loading the Google Analytics
+    client API code in the default way, which is synchronous:
+
+    .. code-block:: python
+
+        CUBANE_GOOGLE_ANALYTICS_ASYNC = False
+
+    You can load the Google Analytics client API asynchronously by setting
+    :settings:`CUBANE_GOOGLE_ANALYTICS_ASYNC` to ``True``.
+
+
+
+
+.. _topics/settings/google_maps_settings:
+
+Google Maps
+===========
+
+Cubane can integrate with the `Google Maps API
+<https://developers.google.com/maps/>`_ out of the box. You simply need to tell
+Cubane about the Google Map API key to use.
+
+
+.. settings:: CUBANE_GOOGLE_MAP_API_KEY
+
+``CUBANE_GOOGLE_MAP_API_KEY``
+
+    The google map API key to use for integrating with the Google Map API.
+    Please refer to the `Google Map API Documentation
+    <https://developers.google.com/maps/documentation/javascript/get-api-key>`_
+    for more information about how to receive a Google Map API key.
+
+    By default, the Google Map API key is not defined and you may not be able
+    to use the Google Map API:
+
+    .. code-block:: python
+
+        CUBANE_GOOGLE_MAP_API_KEY = ''
+
+
+.. settings:: DEFAULT_MAP_LOCATION
+
+``DEFAULT_MAP_LOCATION``
+
+    When integrating the Google Map API, the backend system may present a
+    google map control that allows your authors and website owners to declare a
+    geographic position by moving a marker on a map or by searching for places.
+
+    The default geographic location that is used for the initial marker
+    position and the center position of the map is derived from
+    :settings:`DEFAULT_MAP_LOCATION`.
+
+    By default, Cubane sets the following geographic location, which reflects
+    Norwich, United Kingdom -- The place where Cubane has been developed.
+
+    .. code-block:: python
+
+        DEFAULT_MAP_LOCATION = [52.6370209, 1.2996577]
+
+
+
+
+.. _topics/settings/pagination_settings:
+
+Pagination Settings
+===================
+
+Cubane provides a default implementation for pagination of items, for example,
+blog posts. The following settings variable control the default settings for
+pagination.
+
+
+.. settings:: DEFAULT_PAGE_SIZE
+
+``DEFAULT_PAGE_SIZE``
+
+    Defines the default number of items per page if no other CMS configuration
+    has been provided.
+
+    By default, the number of items per page is ten:
+
+    .. code-block:: python
+
+        DEFAULT_PAGE_SIZE = 10
+
+
+.. settings:: DEFAULT_MIN_PAGE_SIZE
+
+``DEFAULT_MIN_PAGE_SIZE``
+
+    Declares the default minimum number of items per page. Visitors can switch
+    between the minimum and maximum number of items when using the pagination
+    system to either show a limited number of items with a small page size or
+    (usually) a very large number of items at once.
+
+    Usually, the minimum number of items is identical to the default page size:
+
+    .. code-block:: python
+
+        DEFAULT_MIN_PAGE_SIZE = 10
+
+
+.. settings:: DEFAULT_MAX_PAGE_SIZE
+
+``DEFAULT_MAX_PAGE_SIZE``
+
+    Defines the default maximum number of items per page. Visitors can switch
+    between the minimum and maximum number of items when using the pagination
+    system to either show a limited number of items with a small page size or
+    (usually) a very large number of items at once.
+
+    By the default, the maximum number of items per page when switching to a
+    large page size is declared as 100 items per page.
+
+    .. code-block:: python
+
+        DEFAULT_MAX_PAGE_SIZE = 100
+
+
+
+
+.. _topics/settings/captcha_settings:
+
+Captcha Settings
+================
+
+Cubane can use a number of captcha implementations to be used for an enquiry
+form or used by yourself directly if needed.
+
+
+.. settings:: CAPTCHA
+
+``CAPTCHA``
+
+     Declares the type of captcha to use. By default, Cubane will not use any
+     captcha by setting :settings:`CAPTCHA` to ``None``.
+
+     .. code-block:: python
+
+         CAPTCHA = None
+
+    Currently, only Google's reCaptcha is supported. Please find more
+    information about `Google's reCaptcha
+    <https://www.google.com/recaptcha/intro/index.html>`_. Possible values for
+    :settings:`CAPTCHA` are:
+
+    .. list-table:: List of valid values for :settings:`CAPTCHA` settings variable.
+        :widths: 2 5
+        :header-rows: 1
+
+        * - Value
+          - Description
+        * - ``new_recaptcha``
+          - Google's reCaptcha
+        * - ``recaptcha``
+          - Google's previous version of reCaptcha (deprecated)
+
+
+.. settings:: CAPTCHA_SITE_KEY
+
+``CAPTCHA_SITE_KEY``
+
+    The site key for using Google's reCaptcha. Please sign up with `Google's
+    reCaptcha <https://www.google.com/recaptcha/intro/index.html>`_ in order to
+    receive a site key.
+
+
+.. settings:: CAPTCHA_SECRET_KEY
+
+``CAPTCHA_SECRET_KEY``
+
+    The secret captcha key for using Google's reCaptcha. Please sign up with
+    `Google's reCaptcha <https://www.google.com/recaptcha/intro/index.html>`_
+    in order to receive a secret key.
+
+
+
+
+.. _topics/settings/email_settings:
+
+Email Settings
+==============
+
+Cubane and Django can send emails on crash reports. Also, Cubane will send
+emails for other reasons, for example when using the built-in contact form. A
+number of configuration options are set by :func:`~cubane.settings.default_env`
+automatically, so you do not have to necessarily set those up.
+
+
+.. settings:: EMAIL_SUBJECT_PREFIX
+
+``EMAIL_SUBJECT_PREFIX``
+
+    The default email subject prefix, which is used by Django whenever an email
+    is send to administrators or site managers is configured to include the
+    domain name of your website:
+
+    .. code-block:: python
+
+        EMAIL_SUBJECT_PREFIX = '[%s] ' % domain_name
+
+    ``domain_name`` refers to the ``domain_name`` argument of the
+    :func:`~cubane.settings.default_env` settings helper function.
+
+
+.. settings:: EMAIL_BACKEND
+
+``EMAIL_BACKEND``
+
+    When in *Debug* mode, the email backend is set to
+    ``django.core.mail.backends.console.EmailBackend`` in order to prevent
+    emails being send to real email accounts. This email backend will print
+    emails on the console instead, rather than actually sending emails out:
+
+    .. code-block:: python
+
+        if DEBUG:
+            EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+    In *Test* mode, :settings:`EMAIL_BACKEND` is set to
+    ``django.core.mail.backends.locmem.EmailBackend`` instead, which will keep
+    outgoing emails in local memory. This allows tests to inspect outgoing
+    emails while under unit test:
+
+    .. code-block:: python
+
+        if TEST:
+            EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
+
+
+
+.. _topics/settings/test_settings:
+
+Test Settings
+=============
+
+A few settings variables are concerned about testing Cubane. By default, the
+settings helper function :func:`~cubane.settings.default_env` will determine
+automatically if the system is under test and will set the corresponding
+settings variables accordingly.
+
+You can read more about testing Cubane within the :ref:`Testing Cubane
+<topics/test>` section.
+
+
+.. settings:: TEST
+
+``TEST``
+
+    Cubane will set :settings:`TEST`` to ``True`` or ``False`` automatically
+    based on command line arguments that invoked Cubane to begin with, unless
+    the ``test`` argument of the :func:`~cubane.settings.default_env` helper
+    function has been set explicitly.
+
+    .. note::
+
+        Cubane will disable Django migrations if the system is under test.
+
+
+.. settings:: TEST_FULL
+
+``TEST_FULL``
+
+    When running under test, we distinguish two test modes: *Full Testing* and
+    *Fast Testing*. In *Full Testing* mode, all unit tests are executed within
+    the system using the default database driver for PostgreSQL. On an average
+    machine this process may take a few minutes, usually less than three
+    minutes.
+
+    In contrast to *Full Testing*, in *Fast Testing* mode Cubane will only
+    execute a subset of unit tests (about 90 percent of them). In particular
+    slow tests are skipped. Further, the default database driver for *Fast
+    Testing* mode is SqlLite, which tends to be a lot faster than PostgreSQL.
+
+    By default, :settings:`TEST_FULL` is set to ``False``, unless the
+    environment variable :settings:`DEV_TEST_FULL` is set to ``1``.
+
+    .. note::
+
+        Cubane provides two shell scripts to execute unit tests for Cubane:
+        ``test`` will simply execute the default tests in *Fast Testing* mode,
+        while ``test full`` will set the corresponding environment variables to
+        put Cubane into *Full Testing* mode.
+
+        Please refer to the :ref:`Testing Cubane <topics/test>` section for
+        more information on testing Cubane.

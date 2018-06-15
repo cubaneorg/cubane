@@ -1,0 +1,26 @@
+{% if form.visible_fields %}
+    <div class="form-content">
+        {% if form.is_tabbed %}
+            {% include 'cubane/bootstrap_mini/form/form_header.html' %}
+            <div class="tab">
+                <ul class="nav nav-tabs">
+                    {% for tab in form.tabs %}
+                        <li><a href="#tab-{{ tab.slug }}" data-toggle="tab">{{ tab.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content">
+                    {% for tab in form.tabs %}
+                        <div class="tab-pane fade" id="tab-{{ tab.slug }}">
+                            {% include 'cubane/bootstrap_mini/form/form_content.html' with fields=tab.fields %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            {% include 'cubane/bootstrap_mini/form/form_header.html' %}
+            {% include 'cubane/bootstrap_mini/form/form_content.html' with fields=form.visible_fields %}
+        {% endif %}
+    </div>
+{% endif %}
+
+{% include 'cubane/bootstrap_mini/form/form_hidden_fields.html' %}

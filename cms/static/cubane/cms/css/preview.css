@@ -1,0 +1,46 @@
+.cms-slot { 
+    position: relative;
+    min-height: 50px;
+    margin: 0;
+    padding: 0;
+    outline: 1px dotted #b94a48;
+    *zoom: 1;
+}
+
+.cms-slot:before {
+    content: attr(data-slotname);
+    position: absolute;
+    top: -9px;
+    right: 5px;
+    float: right;
+    display: block;
+    background-color: white;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 5px;
+    color: #999;
+}
+
+.cms-slot.active:before {
+    color: black;
+}
+
+.cms-slot:after {
+  display: table;
+  line-height: 0;
+  content: '';
+}
+
+.cms-slot:after {
+  clear: both;
+}
+
+.cms-slot:hover {
+    outline: 2px dashed #b94a48;
+    cursor: pointer;
+}
+
+.cms-slot.active {
+    outline: 2px dashed #b94a48;
+    cursor: pointer;
+}

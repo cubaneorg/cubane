@@ -1,0 +1,51 @@
+{% extends 'cubane/backend/base.html' %}
+{% load form_tags %}
+
+
+{% block title %}
+    {% if edit %}
+        {% if permissions.edit or not permissions %}
+            Edit
+        {% else %}
+            View
+        {% endif %}
+        {{ verbose_name }}
+        '{{ object }}'
+    {% else %}
+        Create {{ verbose_name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if not is_browse_dialog and not is_create_dialog %}
+        <h1 class="page-title">
+            {% if edit %}
+                {% if permissions.edit or not permissions %}
+                    Edit
+                {% else %}
+                    View
+                {% endif %}
+                {{ verbose_name }}
+                '{{ object }}'
+            {% else %}
+                Create {{ verbose_name }}
+            {% endif %}
+        </h1>
+    {% endif %}
+
+    {% if edit and object_summary_items %}
+        {% include 'cubane/backend/summary_info.html' %}
+    {% endif %}
+
+    {% include 'cubane/backend/form.html' %}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script>
+        if (window.parent !== window.top) {
+            window.parent.$(window.parent).trigger('cubane-listing-create-form');
+        }
+    </script>
+{% endblock %}

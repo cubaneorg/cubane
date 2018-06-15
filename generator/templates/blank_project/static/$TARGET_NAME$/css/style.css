@@ -1,0 +1,10 @@
+/*
+ * Defautl website style (Please replace with your own style)
+ * You can add additional css files to your __init__.py file
+ * if you like to split your style up. By default, we load a standard css reset
+ * as well.
+ */
+body {
+    font-family: 'OpenSans', sans-serif;
+    padding: 20px;
+}

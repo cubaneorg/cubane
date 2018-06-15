@@ -1,0 +1,55 @@
+.postcode-lookup-button {
+    position: absolute;
+    right: 1px;
+    background-color: #f49e2d;
+    color: #fff;
+    border: 1px solid #d38826;
+    border-radius: 0;
+    font-size: 12.5px;
+    font-weight: 600;
+    display: inline-block;
+    line-height: 26px;
+    background-image: url(/static/cubane/backend/img/address-lookup.svg);
+    padding: 0 12px 0 28px;
+    background-repeat: no-repeat;
+    background-size: 13px;
+    background-position: 8px center;
+    font-size: 12.5px;
+    text-transform: uppercase;
+}
+
+.postcode-lookup-button:hover {
+    color: #2574b7;
+    background-color: #fff;
+    background-image: url(/static/cubane/backend/img/address-lookup-hover.svg);
+    outline: none;
+}
+
+.postcode-lookup-select option {
+    padding: 7px 5px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.postcode-lookup-group {
+    padding: 15px;
+    background: #f2f2f2;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.postcode-lookup-group .postcode-lookup-button {
+    right: 15px;
+    height: 28px;
+}
+
+.postcode-lookup-group .controls {
+    flex: 0 1 100%;
+    margin-left: 10px;
+}
+
+
+.postcode-lookup-group .control-label {
+    width: 128px;
+}

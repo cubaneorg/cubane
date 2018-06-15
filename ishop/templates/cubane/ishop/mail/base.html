@@ -1,0 +1,143 @@
+{% extends 'cubane/enquiry/mail/base.html' %}
+{% load cms_tags %}
+
+
+{% block email_reason %}
+    You're recieving this email because you bought products form our website.
+    We're sending this email to customers in order to notify them about order details.
+    You may receive a new email for every change regarding your order.
+{% endblock %}
+
+
+{% block content %}
+    {% if preview %}Dear Customer's Name<br>{% endif %}
+    {% if preview %}<br>Text will be inserted here based on the email's subject.<br>{% endif %}
+
+    {% if password_reset %}
+        Dear {{customer.full_name}}<br>
+        <br>
+        A new password has been requested for your account.<br>
+        Your new account details are:<br>
+        <br>
+        Username: {% if preview %}Customer's Username{% endif %} {{ customer.email }}<br>
+        Password: {% if preview %}New Password{% endif %} {{ password_plaintext }}<br>
+        <br>
+        Please use the following link to log into your account:<br>
+        <br>
+        <a href="{{ login_url }}" style="word-break: break-all;">{{ login_url }}</a>
+        <br>
+    {% endif %}
+
+    {% if order_cancelled %}
+        Dear {{order.full_name}},<br>
+        <br>
+        Your order {{ order.order_id }} on {{ settings.name }} has been cancelled.<br>
+        <br>
+        {% if order.cancel_msg %}The following reason was given: {{ order.cancel_msg }}<br>{% endif %}
+        <br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+    {% endif %}
+
+    {% if order_settled %}
+        Dear {{order.full_name}},<br>
+        <br>
+        Your payment {{ order.order_id }} on {{ settings.name }} has been processed, which means that your order is currently being completed and being prepared for shipping.<br>
+        <br>
+        Please check the status page (link provided below).<br>
+        Your credit card has been charged with {{ CURRENCY }}{{ order.total }}.<br>
+        <br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+    {% endif %}
+
+    {% if order_status %}
+        Dear {{order.full_name}},<br>
+        <br>
+        Your order {{ order.order_id }} has been updated.<br>
+        <br>
+        <hr>
+        Status: {{ order.get_status_display }}<br>
+        <hr><br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+        For more information, please click on the following link or copy and paste<br>
+        the link into the address bar of your browser:<br>
+        <br>
+        <a href="{{ order_url }}" style="word-break: break-all;">{{ order_url }}</a>
+        <br>
+    {% endif %}
+
+    {% if order_approved %}
+        Dear {{order.full_name}},<br>
+        <br>
+        Your order {{ order.order_id }} on {{ settings.name }} has been approved<br>
+        <br>
+        Your selected payment method has been charged and your order will be processed.<br>
+        <br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+    {% endif %}
+
+    {% if order_rejected %}
+        Dear {{order.full_name}},<br>
+        <br>
+        Your order {{ order.order_id }} on {{ settings.name }} has been rejected.<br>
+        <br>
+        {% if order.reject_msg %}The following reason was given: {{ order.reject_msg }}<br>{% endif %}
+        <br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+    {% endif %}
+
+    {% if order_client %}
+        Dear {{settings.name}},<br>
+        <br>
+        The order {{ order.order_id }} on {{ settings.name }} has been placed.<br>
+        <br>
+        <hr><br>
+        Total:    {{ CURRENCY }}{% if order.partial %}{{ order.multipart_total }}{% else %}{{ order.total }}{% endif %}<br>
+        Name:     {{ order.full_name }}<br>
+        Email:    {{ order.email }}<br>
+        <hr><br>
+        For more information, please click on the following link or copy and paste<br>
+        the link into the address bar of your browser:<br>
+        <br>
+        <a href="{{ backend_order_url }}" style="word-break: break-all;">{{ backend_order_url }}</a><br>
+        <br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+    {% endif %}
+
+    {% if order_customer %}
+        Dear {{order.full_name}},<br>
+        <br>
+        Your order {{ order.order_id }} on {{ settings.name }} has been placed.<br>
+        <br>
+        {% if order.basket.is_collection_only %}
+            Due to one or more items in the order being Click and Collect only, please wait until you receive a confirmation email to come and collect your order from store.
+            <br>
+            <br>
+        {% elif order.basket.is_click_and_collect %}
+            Your order is for collection, please wait until you receive a confirmation email to come and collect your order from store.
+            <br>
+            <br>
+        {% endif %}
+        {% if order.basket.has_pre_order_item and not order.basket.is_click_and_collect %}
+        Due to an item in the basket being Pre-order only, the delivery may take longer than expected.
+        <br>
+        <br>
+        {% endif %}
+        For more information, please click on the following link or copy and paste<br>
+        the link into the address bar of your browser:<br>
+        <br>
+        <a href="{{ order_url }}" style="word-break: break-all;">{{ order_url }}</a><br>
+        <br>
+        {% include 'cubane/ishop/elements/order/order_email.html' %}
+        <br>
+    {% endif %}
+
+    <br>
+
+    {% slot 'content' %}
+{% endblock %}
