@@ -53,7 +53,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Cubane'
-copyright = u'2017, Cubane.org'
+copyright = u'2018, Cubane.org'
 author = u'Cubane.org and contributors'
 
 # The version info for the project you're documenting, acts as replacement for

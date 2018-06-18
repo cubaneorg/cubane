@@ -579,7 +579,7 @@ def form_unicode(form):
 def form_to_dict(form):
     """
     Return a dictionary-representation of this form and its fields
-    that can easily be representated as JSON.
+    that can easily be represented as JSON.
     """
     return [{
         'name': name,

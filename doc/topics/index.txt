@@ -17,7 +17,7 @@ follow up on more and more details based on things discussed before.
     svgicons
     media
     settings
-    backend
+    backend/index
     cms
     enquiry
     cache

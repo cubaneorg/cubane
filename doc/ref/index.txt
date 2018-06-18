@@ -5,4 +5,7 @@ Cubane Reference
 .. toctree::
     :maxdepth: 1
 
-    media_model
+    BaseForm
+    BaseFormMixin
+    BaseModelForm
+    Media

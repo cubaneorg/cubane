@@ -1,0 +1,463 @@
+.. _topics/backend/backend_views:
+
+=============
+Backend Views
+=============
+
+
+
+
+.. _topics/backend/sections:
+
+Backend Sections
+================
+
+Cubane's backend system is using a strict two-level hierarchy for its
+navigation system. The first level of navigation usually correlates to a
+specific area of interest, such as content items, settings, media assets,
+enquiries or accounts. Each section is represented by a backend section, each
+can have multiple sub-sections.
+
+For example, the content management system is creating a backend section called
+``Content`` and then creates a separate sub-section for each content type that
+is used by the system, such as ``Page``, ``Case Studies`` or ``Projects``.
+
+Most of Cubane's sub-systems, such as Cubane's CMS system will automatically
+populate various sections based on model classes declared by your application.
+However, you may create your own backend sections in order to add your own
+functionality to the backend.
+
+In the following example, we will add a new section to the backend system which
+shall manage books. In order to install a backend section within the backend
+system, declare the following function in your app's ``__init__.py`` file:
+
+.. code-block:: python
+
+    def install_backend(backend):
+        from myApp.backend import BookShopBackendSection
+        backend.register_section(BookShopBackendSection())
+
+Of course you would need to create your own implementation for a backend
+section first. In the example above, we implemented our backend section
+``MyBackendSection`` in the file ``myApp.backend.py`` in the following way:
+
+.. code-block:: python
+
+    from cubane.backend.views import BackendSection
+
+    class BookShopBackendSection(BackendSection):
+        title = 'Book Shop'
+        sections = [
+            BooksBackendSection(),
+            ...
+        ]
+
+The ``title`` field declares the visual name of the section as it is presented
+within the backend system, which is ``Book Shop`` in our case.
+
+.. note::
+
+    We placed our implementation for ``BookShopBackendSection`` in the file
+    ``backend.py`` for arbitrary reasons. There is no strict requirement on
+    where your implementation and extensions for the backend system should live.
+
+Next, we declare a list of sub-sections to be listed within the ``Book Shop``
+section, which is ``BooksBackendSection``, which is implemented in a very
+similar way to the ``Book Shop`` section itself:
+
+.. code-block:: python
+
+    class BooksBackendSection(BackendSection):
+        title = 'Books'
+        view = BookView
+
+The main difference is that the sub-section does not declare any further
+sub-sections but declares a view instead. A view is a class that has been
+derived from :class:`cubane.views.View`. In most cases you would want to derive
+your view class from :class:`cubane.views.ModelView` since it provides a lot of
+model-related management capabilities with it, such as listing, searching and
+filtering records as well as the usual create, edit and delete actions.
+
+However, we will start by looking at it's base class first, which is
+:class:`cubane.views.View`:
+
+
+
+
+.. _topics/backend/view:
+
+View
+====
+
+A :class:`~cubane.views.View` encapsulates django's url patterns (which you
+would usually declare within a ``urls.py`` file) together with view handlers
+(which would usually go into a separate ``views.py`` file). Let's look at an
+example first:
+
+.. code-block:: python
+
+    from django.shortcuts import get_object_or_404, render
+    from cubane.views import View, view, view_url
+    from models import Book
+
+    class BookView(View):
+        patterns = [
+            view_url(r'books/',             'index'),
+            view_url(r'books/(?P<pk>\d+)/', 'book')
+        ]
+
+        @view(require_GET)
+        def index(self, request):
+            return render(request, 'index.html', {
+                'books': Book.objects.all()
+            })
+
+        @view(require_GET)
+        def book(self, request, pk):
+            book = get_object_or_404(Book, pk=pk)
+            return render(request, 'book.html', {
+                'book': book
+            })
+
+You declare url patterns via the ``patterns`` field, which is a list of url
+patterns very similar to how you would declare url patterns within a
+``urls.py`` file: The first argument to :func:`~cubane.views.view_url` declares
+the regular expression of the url pattern, the second argument gives the name
+of the view handler as the name of any method of the same class as a string.
+
+Other than that, the implementation behaves in exactly the same way as a
+regular django view handler. You can add decorators, but you need to use the
+:func:`~cubane.views.view` function in order to do so as shown in the code
+example above.
+
+The benefit from combining multiple endpoints into a :class:`~cubane.views.View`
+is that more complex views can be build by deriving from an already existing
+view.
+
+You can use a view fully independently of Cubane's backend system (which is why
+it is not bundled within the namespace ``cubane.backend``), but the concept of
+a :class:`~cubane.views.View` was originally created in order to facilitate
+Cubane's backend system to begin with.
+
+You can hook up any number of views within your ``urls.py`` file in the
+following way:
+
+.. code-block:: python
+
+    from django.conf.urls import url, include
+    from views import BookView
+
+    books = BooksView()
+
+    urlpatterns = [
+        url(r'^books/', include(books.urls))
+    ]
+
+
+A view may implement *before* and *after* actions. These are code
+implementations that are executed *before* or *after* any other view handler
+method of the :class:`~cubane.views.View` is executed:
+
+.. code-block:: python
+
+    class BookView(View):
+        def before(self, request, handler):
+            print('before')
+
+
+        def after(self, request, handler, response):
+            print('after')
+
+
+        def index(request):
+            print('index')
+
+
+If you executed the index method of the view, then you should see the following
+debug output in your console window:
+
+.. parsed-literal::
+
+    before
+    index
+    after
+
+Which represents the order in which those method are executed by the system.
+Before any view handler method is executed, the ``before`` method is executed.
+Then the actual view handler method is executed (in this case ``index``) and
+finally after the view handler method returned, the ``after`` method is
+executed.
+
+The ``handler`` method refers to the actual view handler method that is
+currently executed. The ``response`` argument of the ``after`` method refers to
+the response object that has been returned by executing the view handler method.
+
+Both methods, ``before`` and ``after`` may return a response object, in which
+case the response of the entire request is the response that was returned. If
+nothing is returned (``None``), then the system will simply return the result
+of the view handler, which is usually the result of rendering a template.
+
+If the ``before`` handler returns a response object, then the actual view
+handler method is never executed.
+
+The ``after`` method may return a response object, in which case the returned
+response object replaces any response that was previously returned by the view
+handler method.
+
+
+
+
+.. _topics/backend/template_view:
+
+Template View
+=============
+
+The previous example defined a :class:`~cubane.views.View` class for presenting
+books. Each view handler was using Django's :func:`~django.shortcuts.render`
+method for rendering a template. Cubane provides a simple decorator for
+rendering a template via a decorator:
+
+.. code-block:: python
+
+    from django.shortcuts import get_object_or_404, render
+    from cubane.views import View, view, view_url
+    from cubane.decorators import template
+    from models import Book
+
+    class BookView(View):
+        patterns = [
+            view_url(r'books/',             'index'),
+            view_url(r'books/(?P<pk>\d+)/', 'book')
+        ]
+
+        @view(require_GET)
+        @view(template('index.html'))
+        def index(self, request):
+            return {
+                'books': Book.objects.all()
+            }
+
+        @view(require_GET)
+        @view(template('book.html'))
+        def book(self, request, pk):
+            book = get_object_or_404(Book, pk=pk)
+            return {
+                'book': book
+            }
+
+By using the :func:`~cubane.decorators.template` decorator, we can specify the
+template that is used to render any particular view in a more declarative way.
+The view simply returns the template context as a dictionary which then becomes
+the template context when rendering the corresponding template file.
+
+Please note how the name of the view method (for example ``index``) correlates
+with the name of the template file (``index.html``). This is on purpose for
+this example, but there is no rule that this has to be this way; neither the
+less, this is very common practice when declaring view handlers.
+
+For this reason, Cubane provides a :class:`cubane.views.TemplateView` class
+that is internally derived from :class:`cubane.views.View` and makes use of the
+commonly found correlation between the method name and the name of the template
+file:
+
+.. code-block:: python
+
+    from django.shortcuts import get_object_or_404, render
+    from cubane.views import TemplateView, view, view_url
+    from models import Book
+
+    class BookView(TemplateView):
+        patterns = [
+            view_url(r'books/',             'index'),
+            view_url(r'books/(?P<pk>\d+)/', 'book')
+        ]
+
+        @view(require_GET)
+        def index(self, request):
+            return {
+                'books': Book.objects.all()
+            }
+
+        @view(require_GET)
+        def book(self, request, pk):
+            book = get_object_or_404(Book, pk=pk)
+            return {
+                'book': book
+            }
+
+This example demonstrates the use of a :class:`cubane.views.TemplateView`. By
+deriving the class from :class:`~cubane.views.TemplateView` instead of
+:class:`~cubane.views.View`, the system will automatically render the template
+file which name is derived from the corresponding method name.
+
+Because the name of the index method is ``index``, the system will
+automatically render the template ``index.html``.
+
+You may want to prefix all templates with a specific path, which can be declared
+in the following way:
+
+.. code-block:: python
+
+    class BookView(TemplateView):
+        template_path = 'myApp/books/'
+
+        ...
+
+``template_path`` declares the path to the template files that are used by the
+:class:`~cubane.views.TemplateView` class. In this example, the index method
+would render to template ``myApp/books/index.html``.
+
+Internally this behavior is implemented by overriding the ``after`` method of
+the :class:`~cubane.views.View` class. If you happened to override the ``after``
+method as well, please make sure to call the derived implementation in order to
+keep the default behavior of the :class:`~cubane.views.TemplateView`, if this
+is what you wanted:
+
+.. code-block:: python
+
+    class BookView(TemplateView):
+        def after(self, request, handler, response):
+            # TODO: Insert your code here for example
+            return super(BookView, self).after(request, handler, response)
+
+The :class:`~cubane.views.TemplateView` class also provides a mechanism to
+inject specific render context information for every request:
+
+.. code-block:: python
+
+    class BookView(TemplateView):
+        context = {
+            'page_title': 'Books'
+        }
+
+When rendering any view handler method of the ``BookView`` class, the template
+context declared as ``context`` is always part of the resulting template
+context that is used to render a template.
+
+Be aware that the context will override any template information that is
+returned by a view handler method. If the ``index`` method would return a
+dictionary containing ``page_title``, then such value would always be
+overridden by the general context that has been declared for the entire
+template view class.
+
+
+
+
+.. _topics/backend/api_view:
+
+API View
+========
+
+Sometimes a set of view handlers are concerned about generating JSON responses.
+We can imagine a JSON-based service endpoint that is concerned about books,
+where each view handler will return JSON-encoded data.
+
+For these circumstances, Cubane provides the class
+:class:`~cubane.views.ApiView` which will exactly provided this functionality
+as the next example demonstrates:
+
+.. code-block:: python
+
+    from django.shortcuts import get_object_or_404, render
+    from cubane.views import ApiView, view, view_url
+    from models import Book
+
+    class BookApiView(ApiView):
+        patterns = [
+            view_url(r'books/',             'index'),
+            view_url(r'books/(?P<pk>\d+)/', 'book')
+        ]
+
+        @view(require_GET)
+        def index(self, request):
+            return {
+                'books': Book.objects.all()
+            }
+
+        @view(require_GET)
+        def book(self, request, pk):
+            book = get_object_or_404(Book, pk=pk)
+            return {
+                'book': book
+            }
+
+The only difference from the previous example is the fact that we derived from
+:class:`~cubane.views.ApiView` and not from
+:class:`~cubane.views.TemplateView`.
+
+While :class:`~cubane.views.TemplateView` will render a particular template
+file, :class:`~cubane.views.ApiView` will simply take the result returned from
+a view handler method and encodes it into JSON. Encoded JSON is then packed
+into an HTTP response object with the content encoding ``text/javascript``.
+
+
+
+
+.. _topics/backend/model_view:
+
+Model View
+==========
+
+A :class:`~cubane.views.ModelView` is derived from
+:class:`~cubane.views.TemplateView` and forms the basis for most views as part
+of the backend system.
+
+A model view provides a wast amount of functionality for a particular model:
+
+- Multi-column listing of model instances
+- Create, Update, Duplicate, Delete
+- Sequential Ordering
+- Sorting, Searching and Filtering
+- Folders and Drag'n Drop
+
+Let's look at a simply example, where we derive our own class from
+:class:`~cubane.views.ModelView` in order to provide backend functionality for
+managing books:
+
+.. code-block:: python
+
+    from cubane.backend.views import BackendSection
+    from cubane.views import ModelView
+    from models import Book
+
+    class BookView(ModelView):
+        template_path = 'cubane/backend/'
+        model = Book
+
+    class BooksBackendSection(BackendSection):
+        title = 'Books'
+        view = BookView
+
+    class BookShopBackendSection(BackendSection):
+        title = 'Book Shop'
+        sections = [
+            BooksBackendSection()
+        ]
+
+The example above links all parts together: It declares a new top-level backend
+section ``BookShopBackendSection`` with the name ``Book Shop`` that contains
+one sub-section ``BooksBackendSection`` with the name ``Books`` which then
+presents a model view ``BookView`` which operates on the ``Book`` model.
+
+.. note::
+
+    For most entities you do not necessarily have to declare this structure by
+    yourself. For example, if you derived any models from
+    :class:`cubane.cms.models.Entity` then Cubane's CMS component will
+    automatically generate appropriate backend views for you.
+
+Of course the presentation and functionality of a
+:class:`~cubane.views.ModelView` can be customized and extended. This section
+will provide more information on extending the :class:`~cubane.views.ModelView`
+itself.
+
+However, the behavior of a :class:`~cubane.views.ModelView` is also driven by
+the model itself, since under most circumstances we are not involved in
+customizing the :class:`~cubane.views.ModelView` directly.
+
+.. seealso::
+
+    Please refer to the :ref:`Model View Options
+    <topics/backend/model_view_options>` section for more information on how to
+    control the presentation of a :class:`~cubane.views.ModelView` by declaring
+    backend-specific options through the corresponding model class.
