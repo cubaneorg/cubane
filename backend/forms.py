@@ -17,6 +17,7 @@ from cubane.lib.tree import TreeBuilder, TreeModelChoiceIterator
 from cubane.lib.parse import parse_int
 from cubane.lib.queryset import MaterializedQuerySet
 from cubane.lib.model import get_listing_option, dict_to_model, get_fields
+from cubane.lib.widget import build_attrs
 from cubane.media.templatetags.media_tags import render_image
 from cubane.media.templatetags.media_tags import render_background_image_attr
 from cubane.media.models import Media
@@ -413,7 +414,7 @@ class ModelSelectMultiple(widgets.CheckboxSelectMultiple):
         if value is None: value = []
         value = filter(lambda v: v is not None, [parse_int(v, None) for v in value])
 
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = build_attrs(attrs, name=name)
         str_values = set([force_text(v) for v in value])
 
         output = [

@@ -20,6 +20,7 @@ from cubane.lib.tree import TreeModelChoiceIterator
 from cubane.lib.queryset import MaterializedQuerySet
 from cubane.lib.libjson import to_json
 from cubane.lib.model import collect_meta_list, collect_meta_dict
+from cubane.lib.widget import build_attrs
 from django.utils.encoding import force_text
 from cubane.lib.email_validator import validate_email, EmailNotValidError
 from django.core.validators import EmailValidator
@@ -61,7 +62,7 @@ class DateInput(forms.widgets.TextInput):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        final_attrs = build_attrs(attrs, type=self.input_type, name=name)
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
             final_attrs['value'] = force_text(self._format_value(value))
@@ -78,7 +79,7 @@ class TimeInput(forms.widgets.Input):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        final_attrs = build_attrs(attrs, type=self.input_type, name=name)
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
             final_attrs['value'] = force_text(self._format_value(value))
@@ -129,7 +130,7 @@ class ColorInput(forms.widgets.Input):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        final_attrs = build_attrs(attrs, type=self.input_type, name=name)
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
             final_attrs['value'] = force_text(self._format_value(value))
@@ -183,7 +184,7 @@ class UrlInput(BootstrapTextInput):
 
 class SectionWidget(forms.Widget):
     def render(self, name, value, attrs=None):
-        final_attrs = self.build_attrs(attrs)
+        final_attrs = build_attrs(attrs)
         help_text = final_attrs.get('help_text', None)
         if help_text == '': help_text = None
         help = '<div class="form-section-help">%s</div>' % help_text if help_text != None else ''
@@ -226,7 +227,7 @@ class LocationMapWidget(forms.Widget):
         if 'data-lng' not in attrs: attrs['data-lng'] = 'id_lng'
         if 'data-zoom' not in attrs: attrs['data-zoom'] = 'id_zoom'
 
-        final_attrs = self.build_attrs(attrs)
+        final_attrs = build_attrs(attrs)
         return format_html('<div{0}></div>', flatatt(final_attrs))
 
 

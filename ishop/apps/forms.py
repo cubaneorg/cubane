@@ -12,6 +12,7 @@ from django.utils.html import escape, conditional_escape
 from cubane.ishop.models import Variety
 from cubane.media.templatetags.media_tags import render_image
 from cubane.forms import BaseForm as CubaneBaseForm
+from cubane.lib.widget import build_attrs
 from itertools import chain
 
 
@@ -52,7 +53,7 @@ class VarietySelectWidget(forms.Widget):
         if self._variety.layer:
             attrs['data-layer'] = self._variety.layer
 
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = build_attrs(attrs, name=name)
         output = []
 
         if self._appended_content:
@@ -60,14 +61,14 @@ class VarietySelectWidget(forms.Widget):
 
         if self._variety.style == Variety.STYLE_SELECT:
             output.append('<select%s>' % flatatt(final_attrs))
-            
+
             options = self.render_options(shop, self._assignments, [value])
             if options: output.append(options)
             output.append('</select>')
         else:
             with_image = self._variety.style == Variety.STYLE_LIST_WITH_IMAGE
             attrs['class'] += ' select-list' + (' select-list-image' if with_image else ' select-list-plain')
-            final_attrs = self.build_attrs(attrs, name=name)
+            final_attrs = build_attrs(attrs, name=name)
 
             output.append('<div%s">' % flatatt(final_attrs))
             options = self.render_list_options(shop, self._assignments, [value], with_image)
