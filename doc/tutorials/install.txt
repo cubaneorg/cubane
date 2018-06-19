@@ -11,8 +11,8 @@ Requirements
 
 Cubane requires the following main components:
 
-- Python 2.7+
-- Django 1.10+
+- Python 2.7
+- Django 1.11
 
 .. seealso::
 
@@ -56,7 +56,7 @@ pip_, which is the recommended way to install python packages:
 
 .. code-block:: console
 
-    $ pip install Django==1.10
+    $ pip install Django==1.11
 
 If you don't have ``pip`` installed, the easiest way is to use the `standalone
 pip installer`_. However, your distribution might already provide pip out of
@@ -81,11 +81,12 @@ the Python prompt, try to import Django:
 
     >>> import django
     >>> print(django.get_version())
-    1.10
+    1.11.13
 
 .. note::
 
-    Please make sure that the version of Django is ``1.10``.
+    Please make sure that the version of Django is the latest version of the
+    ``1.11.x`` branch.
 
 
 Installing Cubane
