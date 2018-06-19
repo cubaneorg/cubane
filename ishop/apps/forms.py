@@ -53,7 +53,7 @@ class VarietySelectWidget(forms.Widget):
         if self._variety.layer:
             attrs['data-layer'] = self._variety.layer
 
-        final_attrs = build_attrs(attrs, name=name)
+        final_attrs = build_attrs(self.attrs, attrs, name=name)
         output = []
 
         if self._appended_content:
@@ -68,7 +68,7 @@ class VarietySelectWidget(forms.Widget):
         else:
             with_image = self._variety.style == Variety.STYLE_LIST_WITH_IMAGE
             attrs['class'] += ' select-list' + (' select-list-image' if with_image else ' select-list-plain')
-            final_attrs = build_attrs(attrs, name=name)
+            final_attrs = build_attrs(self.attrs, attrs, name=name)
 
             output.append('<div%s">' % flatatt(final_attrs))
             options = self.render_list_options(shop, self._assignments, [value], with_image)

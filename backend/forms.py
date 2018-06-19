@@ -414,7 +414,7 @@ class ModelSelectMultiple(widgets.CheckboxSelectMultiple):
         if value is None: value = []
         value = filter(lambda v: v is not None, [parse_int(v, None) for v in value])
 
-        final_attrs = build_attrs(attrs, name=name)
+        final_attrs = build_attrs(self.attrs, attrs, name=name)
         str_values = set([force_text(v) for v in value])
 
         output = [
