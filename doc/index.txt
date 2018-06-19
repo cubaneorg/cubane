@@ -2,10 +2,29 @@
 Cubane Documentation
 ====================
 
+The cubane documentation is organised into the following sections. You may want
+to get right into the code by following the tutorials or deep dive into
+individual topics:
+
+* :doc:`Getting Started </tutorials/index>` gives you a quick introduction to
+  cubane and what it is all about. Start here if want to find out what cubane
+  is actually for. We take you by the hand through a series of step by step
+  walkthroughs and tutorials.
+
+* :doc:`Topic guides </topics/index>` discuss key topics and concepts at a
+  high level and provide useful background information and explanation.
+
+* Looking for specific information? Try the :ref:`genindex`, :ref:`modindex` or
+  the `detailed table of contents`.
+
+* :doc:`Reference guides </ref/index>` contain a technical reference for APIs and
+  other aspects of Cubane. They describe how it works and how to use it but
+  assume that you have a basic understanding of key concepts.
+
+
 .. toctree::
    :maxdepth: 4
 
-   overview
    tutorials/index
    topics/index
    ref/index

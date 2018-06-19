@@ -2,10 +2,6 @@
 Introduction
 ============
 
-Cubane will not make you build great websites by itself, but it can certainly
-help you to build performant websites fast by offering common design patterns
-for common cases.
-
 Cubane is written in python_ and is based on the Django_ web framework. Cubane
 adds additional concepts that will help you to build websites even faster.
 
@@ -17,8 +13,7 @@ Website Performance
 ===================
 
 An increasingly significant part of a great website experience is performance,
-which is not necessarily related to server response time alone. Modern websites
-have to do a lot of things just to get into the 'green zone'.
+which is not necessarily related to server response time alone.
 
 We have to merge and minify resources, lazy-load images and background images.
 We use art direction to change the shape of images based on device properties.
@@ -69,11 +64,17 @@ different use cases to organise your content. It's up to you to pick one or a
 combination of those concepts that best fits your project.
 
 
-The cubane philosophy
+The Cubane philosophy
 =====================
 
 Building websites that deliver a great user experience for visitors and content
 editors alike - but are also high performant at the same time - is a complex
-task; To do it continuously on deadlines is really only possible if you have a
-set of tools that get you at least close to the target from the outset, every
-time.
+task; To do it continuously on a deadline is really only possible if you have a
+set of tools that get you there - at leats halfway.
+
+
+What's Next
+===========
+
+Now that you know what Cubane is about, how about trying to :doc:`install
+</tutorials/install>` it?

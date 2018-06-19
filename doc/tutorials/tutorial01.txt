@@ -2,7 +2,7 @@
 Writing your first cubane website, part 1
 =========================================
 
-This tutorial will guide you through the creation of a new website. As we
+This tutorial guides you through the creation of a new website. As we
 follow the tutorial along, we will step by step incorporate new structural
 elements and features into the website.
 
@@ -14,8 +14,8 @@ Our site shall *list* commonly used programming languages, will inform its
 visitors about the history of each language and will also offer a number of
 books for each language.
 
-We'll assume you have `cubane installed </tutorial/install>` already. You can
-tell cubane is installed and which version by running the following command:
+We'll assume you have :doc:`cubane installed </tutorials/install>` already. You can
+tell if Cubane is installed and which version by running the following command:
 
 .. code-block:: console
 

@@ -1,67 +1,24 @@
 # Introduction
 
-Cubane will not make you build great websites by itself, but it can certainly
-help you to build performant websites fast by offering common design patterns
-for common cases.
+Cubane is:
+
+* For visitors to provide a fast and high-quality website experience
+
+* For owners and staff members to provide a very simple and effective way to
+  edit content and business data and
+
+* For developers to enable them to deliver the above continuously without
+  redeveloping key parts over and over again.
+
+We hope that Cubane can make your life as a developer easier by providing you
+with a set of tested tools to solve common development challenges in various
+business domains.
 
 Cubane is written in python and is based on the Django web framework. Cubane
-adds additional concepts that will help you to build websites even faster.
-
-Website Performance An increasingly significant part of a great website
-experience is performance, which is not necessarily related to server response
-time alone. Modern websites have to do a lot of things just to get into the
-‘green zone’.
-
-We have to merge and minify resources, lazy-load images and background images.
-We use art direction to change the shape of images based on device properties.
-We also commonly use custom web fonts and of course, we are using SVG icon sets.
-
-We are also concerned about prioritising (and perhaps inlining) all content and
-assets for ‘above the fold’ content. Other resources are loaded asynchronously.
-As a consequence, we have to split our assets into several ‘buckets’ to merge
-and minify them individually.
-
-Finally, we cache everything; or we use static site generators so that we have
-the best possible server response time by avoiding any server-side computation.
-
-Cubane provides the infrastructure for those things so that you don’t have to
-deal with them on a regular basis.
-
-# Content Organisation
-
-We face a variety of different challenges when working on website projects:
-Some websites require a simple page structure; others organise content
-hierarchically.
-
-Sometimes we work with collections of things, most commonly with posts but also
-with business-specific concepts, for example boats, courses, treatments and
-services.
-
-We also have to deal with related items that do not necessarily have their own
-navigable page but certainly contribute to a page’s content. Representing them
-as individual things makes it easy for content creators to create or edit them
-or simply to change the order in which they appear. Common things we face
-repeatedly are partners, accreditations, testimonials, FAQ items etc.
-
-Sometimes websites require a strict hierarchical structure such as nested
-pages, categories, folders or departments.
-
-In other cases, we need a very flexible hierarchy - one in which items can
-appear in multiple places within the hierarchy based on context - such as
-places to visit, things to do, experiences to have or simply great things to
-eat.
-
-We may also need to sell things so that we need to represent categories,
-products, a shopping basket and a checkout process.
-
-Cubane supports a set of organisational structures that support all those
-different use cases to organise your content. It’s up to you to pick one or a
-combination of those concepts that best fits your project.
-
-# The cubane philosophy
+adds additional concepts that will help you to build websites and backend
+systems even faster.
 
 Building websites that deliver a great user experience for visitors and content
 editors alike - but are also high performant at the same time - is a complex
-task; To do it continuously on deadlines is really only possible if you have a
-set of tools that get you at least close to the target from the outset, every
-time.
+task; To do it continuously on a deadline is really only possible if you have a
+set of tools that get you there - at least halfway.

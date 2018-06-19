@@ -2,12 +2,8 @@
 Quick install guide
 ===================
 
-Cubane is easy to install for most unix/linux based platforms including Mac OS.
+Cubane is easy to install for most Unix/Linux based platforms including Mac OS.
 Windows is currently not supported.
-
-We have a :doc:`complete installation guide </topics/install>` that covers all
-corner cases of the installation process; this quick installation guide should
-give you a working cubane installation in most cases.
 
 
 Requirements
@@ -19,16 +15,16 @@ Cubane requires the following main components:
 - Django 1.10+
 
 .. seealso::
-    
-    Please also compare the python requirements for different Django_ versions.
-    
+
+    Please also compare the Python requirements for different Django_ versions.
+
     .. _django: https://docs.djangoproject.com/en/1.10/faq/install/#faq-python-version-support
 
 
 Install Python
 ==============
 
-Cubane is written in the python programming language; therefore we need to make
+Cubane is written in the Python programming language; therefore we need to make
 sure that we have python up and running first.
 
 Get the latest version of Python 2.7+ at https://www.python.org/download/ or
@@ -60,7 +56,7 @@ pip_, which is the recommended way to install python packages:
 
 .. code-block:: console
 
-    $ pip install Django
+    $ pip install Django==1.10
 
 If you don't have ``pip`` installed, the easiest way is to use the `standalone
 pip installer`_. However, your distribution might already provide pip out of
@@ -75,7 +71,7 @@ the box.
 .. _official documentation for installing django: https://docs.djangoproject.com/en/1.10/intro/install/
 
 
-Verifying Django 
+Verifying Django
 ================
 
 To verify that Django is available, type ``python`` from your shell. Then at
@@ -87,7 +83,9 @@ the Python prompt, try to import Django:
     >>> print(django.get_version())
     1.10
 
-You may have another version of Django installed.
+.. note::
+
+    Please make sure that the version of Django is ``1.10``.
 
 
 Installing Cubane
@@ -100,11 +98,11 @@ After installing Django, you can easily install cubane via pip by typing:
     $ pip install cubane
 
 
-Verifying cubane
+Verifying Cubane
 ================
 
-To verify that cubane is available, type ``python`` from your shell. At the
-Python prompt, try to import cubane:
+To verify that Cubane is available, type ``python`` from your shell. At the
+Python prompt, try to import Cubane:
 
 .. parsed-literal::
 
@@ -116,5 +114,5 @@ Python prompt, try to import cubane:
 What's Next
 ===========
 
-You've installed Python, Django and cubane successfully. You can now `move onto
-the tutorial <tutorials/tutorial01>`.
+You've installed Python, Django and Cubane successfully. You can now :doc:`move onto
+the tutorial </tutorials/tutorial01>`.

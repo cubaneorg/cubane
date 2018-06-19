@@ -4,18 +4,29 @@ Getting started
 
 Cubane is:
 
-1. For visitors to provide the fastest and highest quality website experience
+* For visitors to provide a fast and high-quality website experience
 
-2. For Owners to provide a very simple and effective way to edit content and
+* For owners and staff members to provide a very simple and effective way to
+  edit content and business data and
 
-3. For Developers to enable them to deliver the above continuously.
+* For developers to enable them to deliver the above continuously without
+  redeveloping key parts over and over again.
 
-We hope that cubane can make your life as a developer easier by providing you
+We hope that Cubane can make your life as a developer easier by providing you
 with a set of tested tools to solve common development challenges in various
 business domains.
 
-New to cubane? Walk your way through this material quickly to get up and
-running quickly.
+Cubane is written in python and is based on the Django web framework. Cubane
+adds additional concepts that will help you to build websites and backend
+systems even faster.
+
+Building websites that deliver a great user experience for visitors and content
+editors alike - but are also high performant at the same time - is a complex
+task; To do it continuously on a deadline is really only possible if you have a
+set of tools that get you there - at least halfway.
+
+New to Cubane? Walk your way through this tutorial to get up and running
+quickly.
 
 .. toctree::
    :maxdepth: 1
@@ -32,9 +43,10 @@ running quickly.
 
 .. seealso::
 
-    Cubane is based on Python_ and Django_. If you are new to the language or
-    Django, you might want to start by getting an idea of what the language or
-    the Django framework is all about before diving into cubane.
+    Cubane is based on Python_ and Django_. If you are new to Python (the
+    language) or Django (the framework), you might want to start by getting an
+    idea of what the language or the Django framework is all about before
+    diving into Cubane.
 
     .. _python: https://python.org/
     .. _django: https://djangoproject.com/
