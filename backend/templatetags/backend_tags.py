@@ -31,7 +31,7 @@ def assert_user(filter_name, user):
 class ListingNode(template.Node):
     def render(self, context):
         t = get_template('cubane/backend/listing/listing.html')
-        return t.render(context)
+        return t.render(context.flatten())
 
 
 @register.tag('listing')

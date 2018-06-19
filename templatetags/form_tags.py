@@ -33,7 +33,7 @@ class FormNode(template.Node):
             'enctype': enctype
         }
         with context.push(**d):
-            return t.render(context)
+            return t.render(context.flatten())
 
 
 class FilterFormNode(FormNode):

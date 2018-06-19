@@ -1798,7 +1798,7 @@ class CMS(View):
                         return replacement(request, c)
                     elif template:
                         c.update(m.groupdict())
-                        return template.render(c)
+                        return template.render(c.flatten())
                     else:
                         return replacement
 
