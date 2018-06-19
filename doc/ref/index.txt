@@ -8,4 +8,9 @@ Cubane Reference
     BaseForm
     BaseFormMixin
     BaseModelForm
+    BrowseField
+    BrowseSelect
+    BrowseSelectThumbnail
+    BrowseThumbnailField
+    FormInputLimit
     Media

@@ -198,7 +198,7 @@ The ``BookForm`` from previous examples may be declared in the following way:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -228,7 +228,7 @@ following way:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -276,7 +276,7 @@ existing tabs or new tabs are introduced as the following example demonstrates:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class ExtendedBookForm(BookForm):
@@ -360,7 +360,7 @@ example demonstrates:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -400,7 +400,7 @@ example demonstrates:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -432,7 +432,7 @@ When using non-tabbed forms, form fields and sections can be declared via the
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -459,7 +459,7 @@ can be declared by using a pipe (``|``) character:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -495,7 +495,7 @@ among those columns evenly like in the following example:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -520,7 +520,7 @@ should not be presented as columns then a flat layout can be specified instead:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -549,7 +549,7 @@ the name of the section.
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -584,7 +584,7 @@ form before it is being used:
 .. code-block:: python
 
     from cubane.forms import BaseModelForm
-    from models import Books
+    from models import Book
 
 
     class BookForm(BaseModelForm):
@@ -620,3 +620,303 @@ particular after form fields have been removed.
 
     Please refer to :class:`BaseFormMixin` for more information about form
     utility methods.
+
+
+
+
+.. _topics/backend/form_field_validation:
+
+Form Field Validation
+=====================
+
+Cubane provides the helper method :meth:`FormBaseMixin.field_error` when
+raising form validation errors for a particular form field - in particular when
+validating multiple form fields at once.
+
+Usually ValidationError exception is raised within a clean method that is
+specific to a particular form field. However, when validating form data by
+overriding the generic clean method of the form then ValidationError cannot be
+raised. Instead, the :meth:`FormBaseMixin.field_error` can be used to trigger a
+form field specific validation error message:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+
+
+        def clean(self):
+            d = super(BookForm, self).clean()
+
+            recommended = d.get('recommended')
+            rrp = d.get('rrp')
+
+            if recommended and not rrp:
+                self.field_error('rrp', 'This field is required for recommended books.')
+
+            return d
+
+
+
+
+.. _topics/backend/form_browse:
+
+Form Browse
+===========
+
+When referring to other entities in the form of ForeignKey, then the
+corresponding form field is usually a drop down field listing all related model
+instances to choose from.
+
+In order to integrate this better into Cubane, such ModelChoiceField can be
+extended to use a widget that allows to *browse* for model instances by
+attaching a *browse* button next to the drop down field.
+
+The :class:`BrowseSelect` widget can be used in the following way:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelect
+    from models import Book, Author
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            widgets = {
+                'author': BrowseSelect(model=Author)
+            }
+
+For image-based models that are derived from :class:`Media`, the alternative
+widget :class:`BrowseSelectThumbnail` can provide a better experience since it
+renders a thumbnail preview of the image that is being selected:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelectThumbnail
+    from cubane.media.models import Media
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            widgets = {
+                'cover_image': BrowseSelectThumbnail(model=Media)
+            }
+
+.. seealso::
+
+    In addition to those widgets, form field implementation are also provided
+    via :class:`BrowseField` and :class:`BrowseThumbnailField`.
+
+
+
+
+.. _topics/backend/form_visibility_rules:
+
+Form Visibility Rules
+=====================
+
+Form visibility rules allow for conditional-based control of the visibility of
+one or more form fields. For example, Only if a certain tick box is ticked,
+additional fields may be presented and required.
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility(field='recommended', value=True, visible=[
+                    'rrp',
+                    'recommended_since'
+                ], required=[
+                    'rrp'
+                ]),
+            ]
+
+In this example, the fields ``rrp`` and ``recommended_since`` are both only
+visible if the field ``recommended`` is ``True`` (e.g. checked). Assuming that
+the field ``rrp`` is not mandetory by default, it is required in the case that
+the field ``recommended`` is ``True``.
+
+Form visibility can also be nested and linked like in the following example:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility(field='recommended', value=True, visible=[
+                    'rrp',
+                    'recommended_since'
+                ], required=[
+                    'rrp'
+                ]),
+                FormVisibility(field='rrp', compare='>', value=0, visible=[
+                    'recommended_since'
+                ])
+            ]
+
+Here, the field ``recommended_since`` is only visible if the field
+``recommended`` is ``True`` *and* the field ``rrp`` is *greater than* ``0``.
+
+Form visibility can also have multiple predicates, in which case the
+constructor of :class:`FormVisibility` takes a list of
+:class:`FormVisibilityPredicate` instances:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility([
+                    FormVisibilityPredicate(field='recommended', value=True),
+                    FormVisibilityPredicate(field='price', compare='>', value=0)
+                ], visible=[
+                    'rrp'
+                ])
+            ]
+
+In this example, the field ``rrp`` is only visible if the field ``recommended``
+is ``True`` *and* the field ``price`` is *greater than* ``0``.
+
+
+
+
+.. _topics/backend/form_blueprint_rules:
+
+Form Blueprint Rules
+====================
+
+A blueprint is based around the idea of auto-completing parts of a form by
+choosing from a list of possible options. For example, a invoice system for a
+book store may allow us to create line items by choosing a book. Form fields
+such as description, tax and price are then pre-populated based on data that is
+associated with the ebook record that has been chosen.
+
+A blueprint does exactly that and is only applicable for related model
+instances, usually represented as foreign keys in the model and model choice
+fields in the form.
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelect
+    from models import Book, LineItem
+
+
+    class LineItemForm(BaseModelForm):
+        class Meta:
+            model = LineItem
+            fields = '__all__'
+            widgets = {
+                'book': BrowseSelect(model=Book)
+            }
+            blueprints = {
+                'book': [
+                    'description',
+                    'tax',
+                    'price'
+                ]
+            }
+
+We assume that the model ``LineItem`` has a foreign key field to the ``Book``
+model via the property ``book``. Therefore the corresponding model form will
+have a model choice field form with the same name. We also provide a browse
+field widget to make choosing a book convenient.
+
+The blueprint rule is based on the field ``book``. Whenever it changes, the
+fields ``description``, ``tax`` and ``price`` from the chosen book instance are
+fetched and then copied over to the corresponding form fields of the line item
+form.
+
+Multiple blueprint rules for multiple form fields can be expressed in a similar
+way. Also, one or multiple form fields can be pre-populated this way.
+
+Sometimes, the form field of the related model instance is not matching up the
+field of the hosting form perfectly, in this case an actual assignment can be
+described in the following way:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelect
+    from models import Book, LineItem
+
+
+    class LineItemForm(BaseModelForm):
+        class Meta:
+            model = LineItem
+            fields = '__all__'
+            widgets = {
+                'book': BrowseSelect(model=Book)
+            }
+            blueprints = {
+                'book': [
+                    'item_description = description',
+                    'item_tax = tax',
+                    'item_price = price'
+                ]
+            }
+
+Here we assume that all relevant fields of the ``LineItem`` model are prefixed
+with ``item_``, which is why we expressed the blueprint rules as assignments.
+
+
+
+
+.. _topics/backend/form_limit_rules:
+
+Form Limit Rules
+================
+
+Form limitation rules are designed to give interactive feedback about form
+field limitations as the user is typing. For example, we assume that a form
+field has a recommended max. character length of ``120`` characters, then a
+form limitation rule can help presenting this information to users:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm, FormInputLimit
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            limits = {
+                'title': FormInputLimit(120)
+            }
+
+A :class:`FormInputLimit` describes a max. character limit for a form field -
+in this case for the field ``title``.

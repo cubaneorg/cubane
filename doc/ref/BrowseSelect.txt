@@ -1,0 +1,9 @@
+===================
+Class: BrowseSelect
+===================
+
+
+.. class:: BrowseSelect
+
+    Widget that provides a default select drop down box for selecting entities,
+    but also provides a *Browse* button to browse for entities.

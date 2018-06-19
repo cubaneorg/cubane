@@ -1,0 +1,9 @@
+=====================
+Class: FormInputLimit
+=====================
+
+
+.. class:: FormInputLimit
+
+    Represents input limits for form fields and will generate additional output
+    information to users as they type.
