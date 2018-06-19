@@ -553,7 +553,7 @@ class DocumentView(MediaView):
         }
 
 
-class ProcessingMediaView(ModelView):
+class ProcessingMediaView(MediaView):
     """
     Base class for editing media assets.
     """
@@ -565,7 +565,6 @@ class ProcessingMediaView(ModelView):
     grid_view = False
     can_add = False
     can_edit = False
-    can_view = False
 
 
     def _get_objects(self, request):
