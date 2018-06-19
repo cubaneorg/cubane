@@ -4,9 +4,9 @@ from django.conf import settings
 from django import template
 from django import forms
 from django.template import Context
-from django.template.loader import get_template
 from cubane.lib.templatetags import value_or_literal, value_or_none, template_error
 from cubane.lib.image import get_ext
+from cubane.lib.template import get_template
 import re
 register = template.Library()
 

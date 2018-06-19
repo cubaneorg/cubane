@@ -400,25 +400,48 @@ class FormsBootstrapTextInputTestCase(CubaneTestCase):
     def test_no_prepend_nor_append(self):
         widget = BootstrapTextInput()
         html = widget.render('foo', 'bar')
-        self.assertEqual('<input name="foo" type="text" value="bar" />', html)
+        self.assertMarkup(html, 'input', {
+            'name': 'foo',
+            'type': 'text',
+            'value': 'bar'
+        })
 
 
     def test_prepend_and_append(self):
         widget = BootstrapTextInput(prepend='£', append='###.##')
         html = widget.render('foo', 'bar')
-        self.assertEqual('<div class="input-prepend input-append""><span class="add-on">\xa3</span><input name="foo" type="text" value="bar" /><span class="add-on">###.##</span></div>', html)
+        self.assertMarkup(html, 'div', {'class': 'input-prepend input-append'})
+        self.assertMarkup(html, 'span', {'class': 'add-on'}, '\xa3')
+        self.assertMarkup(html, 'input', {
+            'name': 'foo',
+            'type': 'text',
+            'value': 'bar'
+        })
+        self.assertMarkup(html, 'span', {'class': 'add-on'}, '###.##')
 
 
     def test_prepend(self):
         widget = BootstrapTextInput(prepend='£')
         html = widget.render('foo', 'bar')
-        self.assertEqual('<div class="input-prepend"><span class="add-on">\xa3</span><input name="foo" type="text" value="bar" /></div>', html)
+        self.assertMarkup(html, 'div', {'class': 'input-prepend'})
+        self.assertMarkup(html, 'span', {'class': 'add-on'}, '\xa3')
+        self.assertMarkup(html, 'input', {
+            'name': 'foo',
+            'type': 'text',
+            'value': 'bar'
+        })
 
 
-    def test_apend(self):
+    def test_append(self):
         widget = BootstrapTextInput(append='###.##')
         html = widget.render('foo', 'bar')
-        self.assertEqual('<div class="input-append"><input name="foo" type="text" value="bar" /><span class="add-on">###.##</span></div>', html)
+        self.assertMarkup(html, 'div', {'class': 'input-append'})
+        self.assertMarkup(html, 'input', {
+            'name': 'foo',
+            'type': 'text',
+            'value': 'bar'
+        })
+        self.assertMarkup(html, 'span', {'class': 'add-on'}, '###.##')
 
 
 class FormsUrlInputTestCase(CubaneTestCase):
@@ -429,7 +452,13 @@ class FormsUrlInputTestCase(CubaneTestCase):
     def test_prepend_url(self):
         widget = UrlInput()
         html = widget.render('foo', 'http://innershed.com/')
-        self.assertEqual('<div class="input-prepend"><span class="add-on">URL:</span><input name="foo" type="url" value="http://innershed.com/" /></div>', html)
+        self.assertMarkup(html, 'div', {'class': 'input-prepend'})
+        self.assertMarkup(html, 'span', {'class': 'add-on'}, 'URL:')
+        self.assertMarkup(html, 'input', {
+            'name': 'foo',
+            'type': 'url',
+            'value': 'http://innershed.com/'
+        })
 
 
 class FormsSectionWidgetAndFieldTestCase(CubaneTestCase):
@@ -697,7 +726,13 @@ class FormUnicodeTestCase(CubaneTestCase):
         markup = unicode(TestRenderForm())
         self.assertIn('<form class="form-horizontal', markup)
         self.assertIn('<span class="required_indicator">*</span>', markup)
-        self.assertIn('<input id="id_title" maxlength="16" name="title" type="text" required />', markup)
+        self.assertMarkup(markup, 'input', {
+            'id': 'id_title',
+            'maxlength': '16',
+            'name': 'title',
+            'type': 'text',
+            'required': True
+        })
 
 
 class FormToDictTestCase(CubaneTestCase):

@@ -4,10 +4,10 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, mail_admins
 from django.views.debug import ExceptionReporter
 from django.template import Context
-from django.template.loader import get_template
 from django.db.models.query import QuerySet
 from django.test import RequestFactory
 from cubane.lib.text import text_from_html
+from cubane.lib.template import get_template
 import email
 import os
 import sys

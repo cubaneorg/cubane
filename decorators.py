@@ -5,10 +5,10 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.template import loader
-from django.template.loader import get_template
 from django.shortcuts import resolve_url
 from cubane.backend.accounts.models import ProxyUser, ProxyGroup, ProxyPermission
 from cubane.backend.changelog import ChangeLogManager
+from cubane.lib.template import get_template
 from urlparse import urlparse
 from functools import wraps, update_wrapper, WRAPPER_ASSIGNMENTS
 

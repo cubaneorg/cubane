@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django import template
 from django.template import Context
 from django.contrib import messages
-from django.template.loader import get_template, TemplateDoesNotExist
+from django.template.loader import TemplateDoesNotExist
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html, escape
@@ -15,6 +15,7 @@ from cubane.lib.html import transpose_html_headlines
 from cubane.lib.html import cleanup_html
 from cubane.lib.app import model_to_hash
 from cubane.lib.acl import Acl
+from cubane.lib.template import get_template
 from cubane.cms.forms import MailChimpSubscriptionForm
 from cubane.media.views import load_images_for_content
 from cubane.cms.views import get_page_links_from_content

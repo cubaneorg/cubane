@@ -1798,7 +1798,7 @@ class CMS(View):
                         return replacement(request, c)
                     elif template:
                         c.update(m.groupdict())
-                        return template.render(c.flatten())
+                        return template.render(c)
                     else:
                         return replacement
 
@@ -2319,8 +2319,8 @@ class CMS(View):
         Submit mailchimp newsletter subscription.
         """
         from cubane.cms.forms import MailChimpSubscriptionForm
-        from django.template.loader import get_template
         from cubane.lib.libjson import to_json_response
+        from cubane.lib.template import get_template
         from mailsnake import MailSnake
 
         if not self.settings.mailchimp_api or not self.settings.mailchimp_list_id:

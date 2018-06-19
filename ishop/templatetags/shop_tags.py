@@ -5,11 +5,11 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.defaulttags import token_kwargs
 from django.utils.safestring import mark_safe
-from django.template.loader import get_template
 from cubane.lib.templatetags import value_or_literal, value_or_none
 from cubane.lib.url import make_absolute_url
 from cubane.lib.currency import format_currency
 from cubane.lib.currency import currency_symbol as lib_currency_symbol
+from cubane.lib.template import get_template
 from cubane.media.templatetags.media_tags import ImageNode
 from cubane.media.templatetags.media_tags import render_background_image_attr
 from cubane.cms.models import ChildPage, PageBase

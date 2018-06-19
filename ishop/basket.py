@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from django.conf import settings
 from django import forms
-from django.template.loader import get_template
 from django.db.models import Q, F, Prefetch
 from django.core.exceptions import FieldDoesNotExist
 from django.template import Template, Context
@@ -16,6 +15,7 @@ from cubane.ishop.apps.shop.basket.forms import AddToBasketForm
 from cubane.media.models import Media
 from cubane.lib.libjson import decode_json, to_json_response
 from cubane.lib.args import list_of, clean_dict
+from cubane.lib.template import get_template
 import hashlib
 import decimal
 import datetime

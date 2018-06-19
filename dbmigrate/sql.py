@@ -6,8 +6,14 @@ from django.db.backends.utils import truncate_name
 from django.db.models.fields import NOT_PROVIDED
 from django.utils.encoding import force_bytes
 from cubane.lib import verbose
+from cubane.lib.app import get_models
 import re
 import hashlib
+
+
+class ModelMock(object):
+    class _meta:
+        db_table = None
 
 
 class Sql(object):
@@ -151,37 +157,29 @@ class PostgresSql(Sql):
         return h.hexdigest()[:8]
 
 
+    def _get_model_by_table_name(self, table):
+        """
+        Return the model based on the given table name.
+        """
+        if not hasattr(self, '_model_table_cache'):
+            self._model_table_cache = {}
+            for model in get_models():
+                self._model_table_cache[model._meta.db_table] = model
+
+        return self._model_table_cache.get(table)
+
+
     def _create_index_name(self, table, column_names, suffix=''):
         """
         Generates a unique name for an index/unique constraint.
         """
-        # If there is just one column in the index, use a default algorithm from Django
-        if len(column_names) == 1 and not suffix:
-            return truncate_name(
-                '%s_%s' % (table, self._digest(column_names[0])),
-                self.connection.ops.max_name_length()
-            )
-        # Else generate the name for the index using a different algorithm
-        table_name = table.replace('"', '').replace('.', '_')
-        index_unique_name = '_%s' % self._digest(table_name, *column_names)
-        max_length = self.connection.ops.max_name_length() or 200
-        # If the index name is too long, truncate it
-        index_name = ('%s_%s%s%s' % (
-            table_name, column_names[0], index_unique_name, suffix,
-        )).replace('"', '').replace('.', '_')
-        if len(index_name) > max_length:
-            part = ('_%s%s%s' % (column_names[0], index_unique_name, suffix))
-            index_name = '%s%s' % (table_name[:(max_length - len(part))], part)
-        # It shouldn't start with an underscore (Oracle hates this)
-        if index_name[0] == "_":
-            index_name = index_name[1:]
-        # If it's STILL too long, just hash it down
-        if len(index_name) > max_length:
-            index_name = hashlib.md5(force_bytes(index_name)).hexdigest()[:max_length]
-        # It can't start with a number on Oracle, so prepend D if we need to
-        if index_name[0].isdigit():
-            index_name = "D%s" % index_name[:-1]
-        return index_name
+        # Call into django's base to construct index names
+        schema_editor = self.connection.schema_editor()
+        model = self._get_model_by_table_name(table)
+        if not model:
+            model = ModelMock()
+            model._meta.db_table = table
+        return schema_editor._create_index_name(model, column_names, suffix)
 
 
     def get_index_name(self, table, column_names, suffix='', unique=False):

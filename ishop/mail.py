@@ -5,9 +5,9 @@ from django.core.mail import send_mail, EmailMessage
 from django.template import Context
 from django.core.mail import mail_admins
 from django.core.urlresolvers import reverse
-from django.template.loader import get_template
 from cubane.lib.url import make_absolute_url, get_absolute_url
 from cubane.lib.mail import cubane_send_shop_mail
+from cubane.lib.template import get_template
 import os.path
 
 

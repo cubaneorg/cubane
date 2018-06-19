@@ -737,17 +737,18 @@ class CMSNewsletterSignupFormTestCase(CMSNewsletterTestCaseBase):
 
 
     def test_should_return_html_for_form(self):
-        self.assertEqual(
-            '<div class="mailchimp-subscription-form"><form method="post"><div class="form-content"><div class="form-content-fields"><div class="control-group control-group-mailchimp_subscription__name required"><label class="control-label" for="id_mailchimp_subscription__name">Name<span class="required_indicator">*</span></label><div class="controls"><div class="field"><input id="id_mailchimp_subscription__name" maxlength="255" name="mailchimp_subscription__name" placeholder="Name" type="text" required /></div></div></div><div class="control-group control-group-mailchimp_subscription__email required"><label class="control-label" for="id_mailchimp_subscription__email">Email<span class="required_indicator">*</span></label><div class="controls"><div class="field"><input id="id_mailchimp_subscription__email" maxlength="255" name="mailchimp_subscription__email" placeholder="Email" type="email" required /></div></div></div></div></div><button class="btn" type="submit">Signup</button></form></div>',
-            newsletter_signup_form(self._context(post=False))
-        )
+        html = newsletter_signup_form(self._context(post=False))
+        self.assertMarkup(html, 'div', {'class': 'mailchimp-subscription-form'})
+        self.assertMarkup(html, 'form', {'method': 'post'})
+        self.assertMarkup(html, 'form', {'method': 'post'})
+        self.assertMarkup(html, 'input', {'name': 'mailchimp_subscription__name', 'required': True})
+        self.assertMarkup(html, 'input', {'name': 'mailchimp_subscription__email', 'required': True})
 
 
     def test_should_present_errors_on_post(self):
-        self.assertEqual(
-            '<div class="mailchimp-subscription-form"><form method="post"><div class="form-content"><div class="form-content-fields"><div class="control-group control-group-mailchimp_subscription__name required error"><label class="control-label" for="id_mailchimp_subscription__name">Name<span class="required_indicator">*</span></label><div class="controls"><div class="field"><input id="id_mailchimp_subscription__name" maxlength="255" name="mailchimp_subscription__name" placeholder="Name" type="text" required /></div><div class="help-inline">This field is required.</div></div></div><div class="control-group control-group-mailchimp_subscription__email required error"><label class="control-label" for="id_mailchimp_subscription__email">Email<span class="required_indicator">*</span></label><div class="controls"><div class="field"><input id="id_mailchimp_subscription__email" maxlength="255" name="mailchimp_subscription__email" placeholder="Email" type="email" required /></div><div class="help-inline">This field is required.</div></div></div></div></div><button class="btn" type="submit">Signup</button></form></div>',
-            newsletter_signup_form(self._context(post=True))
-        )
+        html = newsletter_signup_form(self._context(post=True))
+        self.assertMarkup(html, 'div', {'class': 'control-group control-group-mailchimp_subscription__email required error'})
+        self.assertMarkup(html, 'div', {'class': 'help-inline'}, 'This field is required.')
 
 
     @patch('cubane.cms.templatetags.cms_tags.MailSnake')
@@ -793,14 +794,13 @@ class CMSNewsletterSignupFormAjaxTestCase(CMSNewsletterTestCaseBase):
 
 
     def test_should_return_html_for_form(self):
-        self.assertEqual(
-            '<div class="mailchimp-subscription-form"><form method="post"><div class="form-content"><div class="form-content-fields"><div class="control-group control-group-mailchimp_subscription__email required"><label class="control-label" for="id_mailchimp_subscription__email">Email<span class="required_indicator">*</span></label><div class="controls"><div class="field"><input id="id_mailchimp_subscription__email" maxlength="255" name="mailchimp_subscription__email" placeholder="Email" type="email" required /></div></div></div></div></div><button class="btn" type="submit">Signup</button></form></div>',
-            newsletter_signup_form_ajax(self._context(post=False))
-        )
+        html = newsletter_signup_form_ajax(self._context(post=False))
+        self.assertMarkup(html, 'div', {'class': 'mailchimp-subscription-form'})
+        self.assertMarkup(html, 'form', {'method': 'post'})
+        self.assertMarkup(html, 'input', {'name': 'mailchimp_subscription__email'})
 
 
     def test_should_present_errors_on_post(self):
-        self.assertEqual(
-            '<div class="mailchimp-subscription-form"><form method="post"><div class="form-content"><div class="form-content-fields"><div class="control-group control-group-mailchimp_subscription__email required error"><label class="control-label" for="id_mailchimp_subscription__email">Email<span class="required_indicator">*</span></label><div class="controls"><div class="field"><input id="id_mailchimp_subscription__email" maxlength="255" name="mailchimp_subscription__email" placeholder="Email" type="email" required /></div><div class="help-inline">This field is required.</div></div></div></div></div><button class="btn" type="submit">Signup</button></form></div>',
-            newsletter_signup_form_ajax(self._context(post=True))
-        )
+        html = newsletter_signup_form_ajax(self._context(post=True))
+        self.assertMarkup(html, 'div', {'class': 'mailchimp-subscription-form'})
+        self.assertMarkup(html, 'div', {'class': 'help-inline'}, 'This field is required.')

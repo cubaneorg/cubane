@@ -187,7 +187,7 @@ class ModelsDataExporterRenameColumnsTestCase(CubaneModelsDataTestCaseBase):
         '"2","Test 2"\r\n' +
         '"3","Test 3"\r\n' +
         '"4",""\r\n' +
-        '"5",",Test ""5"""\r\n'
+        '"5",",Test ""5""' + '"\r\n'
     )
 
 
@@ -238,7 +238,7 @@ class ModelsDataExporterIgnoreColumnsTestCase(CubaneModelsDataTestCaseBase):
         '"2","Test 2"\r\n' +
         '"3","Test 3"\r\n' +
         '"4",""\r\n' +
-        '"5",",Test ""5"""\r\n'
+        '"5",",Test ""5""' + '"\r\n'
     )
 
 

@@ -157,55 +157,70 @@ class BrowseSelectTestCase(CubaneTestCase):
 
     def test_should_render_browse_select(self):
         field = BrowseSelect(choices=self.choices)
-
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix"><div class="cubane-backend-browse-select"><select name="fieldname">\n' +
-                '<option value="1">test 1</option>\n' +
-                '<option value="2" selected="selected">test 2</option>\n' +
-                '<option value="3">test 3</option>\n' +
-            '</select></div></div>',
-            field.render('fieldname', '2')
-        )
+        html = field.render('fieldname', '2')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'fieldname'})
+        self.assertMarkup(html, 'option', {'value': '1'}, 'test 1')
+        self.assertMarkup(html, 'option', {'value': '2', 'selected': True}, 'test 2')
+        self.assertMarkup(html, 'option', {'value': '3'}, 'test 3')
 
 
     def test_should_render_browse_select_and_browse_button(self):
         field = BrowseSelect(choices=self.choices, attrs={'browse': 'Browse', 'name': 'Model'})
-
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix"><div class="cubane-backend-browse-select"><select name="fieldname">\n' +
-                '<option value="1">test 1</option>\n' +
-                '<option value="2">test 2</option>\n' +
-                '<option value="3" selected="selected">test 3</option>\n' +
-            '</select></div><div class="cubane-backend-browse-button"><span class="btn" data-browse-url="Browse" data-model-name="Model">Browse...</span></div></div>',
-            field.render('fieldname', '3')
-        )
+        html = field.render('fieldname', '3')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'fieldname'})
+        self.assertMarkup(html, 'option', {'value': '1'}, 'test 1')
+        self.assertMarkup(html, 'option', {'value': '2'}, 'test 2')
+        self.assertMarkup(html, 'option', {'value': '3', 'selected': True}, 'test 3')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-button'})
+        self.assertMarkup(html, 'span', {
+            'class': 'btn',
+            'data-browse-url': 'Browse',
+            'data-model-name': 'Model'
+        })
 
 
     def test_should_render_browse_select_and_create_button(self):
         field = BrowseSelect(choices=self.choices, attrs={'create': 'Create', 'name': 'Model'})
-
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix"><div class="cubane-backend-browse-select"><select name="fieldname">\n' +
-                '<option value="1" selected="selected">test 1</option>\n' +
-                '<option value="2">test 2</option>\n' +
-                '<option value="3">test 3</option>\n' +
-            '</select></div><div class="cubane-backend-browse-add-button"><span class="btn" data-create-url="Create" data-model-name="Model">+</span></div></div>',
-            field.render('fieldname', '1')
-        )
+        html = field.render('fieldname', '1')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'fieldname'})
+        self.assertMarkup(html, 'option', {'value': '1', 'selected': True}, 'test 1')
+        self.assertMarkup(html, 'option', {'value': '2'}, 'test 2')
+        self.assertMarkup(html, 'option', {'value': '3'}, 'test 3')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-add-button'})
+        self.assertMarkup(html, 'span', {
+            'class': 'btn',
+            'data-create-url': 'Create',
+            'data-model-name': 'Model'
+        })
 
 
     def test_should_render_browse_select_and_all_buttons(self):
         field = BrowseSelect(choices=self.choices, attrs={'name': 'MyModel', 'create': 'MyCreate', 'browse': 'MyBrowse'})
-
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix"><div class="cubane-backend-browse-select"><select name="myfieldname">\n' +
-                '<option value="1">test 1</option>\n' +
-                '<option value="2" selected="selected">test 2</option>\n' +
-                '<option value="3">test 3</option>\n' +
-            '</select></div><div class="cubane-backend-browse-button"><span class="btn" data-browse-url="MyBrowse" data-model-name="MyModel">Browse...</span></div>' +
-            '<div class="cubane-backend-browse-add-button"><span class="btn" data-create-url="MyCreate" data-model-name="MyModel">+</span></div></div>',
-            field.render('myfieldname', '2')
-        )
+        html = field.render('myfieldname', '2')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'myfieldname'})
+        self.assertMarkup(html, 'option', {'value': '1'}, 'test 1')
+        self.assertMarkup(html, 'option', {'value': '2', 'selected': True}, 'test 2')
+        self.assertMarkup(html, 'option', {'value': '3'}, 'test 3')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-button'})
+        self.assertMarkup(html, 'span', {
+            'class': 'btn',
+            'data-browse-url': 'MyBrowse',
+            'data-model-name': 'MyModel'
+        })
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-add-button'})
+        self.assertMarkup(html, 'span', {
+            'class': 'btn',
+            'data-create-url': 'MyCreate',
+            'data-model-name': 'MyModel'
+        })
 
 
 class BrowseSelectThumbnailTestCase(CubaneTestCase):
@@ -266,42 +281,28 @@ class BrowseSelectThumbnailTestCase(CubaneTestCase):
 class BackendBrowseFieldTestCase(CubaneTestCase):
     def test_should_render_correct_markup(self):
         field = BrowseField(queryset=Enquiry.objects.all(), name='Name', browse='browse', create='create')
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix">' +
-                '<div class="cubane-backend-browse-select">' +
-                    '<select name="fieldname">\n' +
-                        '<option value="">---------</option>\n' +
-                    '</select>' +
-                '</div>' +
-                '<div class="cubane-backend-browse-button">' +
-                    '<span class="btn" data-browse-url="browse" data-model-name="Name">Browse...</span>' +
-                '</div>' +
-                '<div class="cubane-backend-browse-add-button">' +
-                    '<span class="btn" data-create-url="create" data-model-name="Name">+</span>' +
-                '</div>' +
-            '</div>',
-            field.widget.render('fieldname', 'fieldvalue')
-        )
+        html = field.widget.render('fieldname', 'fieldvalue')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'fieldname'})
+        self.assertMarkup(html, 'option', {'value': ''}, '---------')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-button'})
+        self.assertMarkup(html, 'span', {'class': 'btn', 'data-browse-url': 'browse', 'data-model-name': 'Name'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-add-button'})
+        self.assertMarkup(html, 'span', {'class': 'btn', 'data-create-url': 'create', 'data-model-name': 'Name'})
 
 
 class BackendBrowseChoiceFieldTestCase(CubaneTestCase):
     def test_should_render_correct_markup(self):
         field = BrowseChoiceField(choices=(), name='Name', browse='browse', create='create')
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix">' +
-                '<div class="cubane-backend-browse-select">' +
-                    '<select name="fieldname">\n' +
-                    '</select>' +
-                '</div>' +
-                '<div class="cubane-backend-browse-button">' +
-                    '<span class="btn" data-browse-url="browse" data-model-name="Name">Browse...</span>' +
-                '</div>' +
-                '<div class="cubane-backend-browse-add-button">' +
-                    '<span class="btn" data-create-url="create" data-model-name="Name">+</span>' +
-                '</div>' +
-            '</div>',
-            field.widget.render('fieldname', 'fieldvalue')
-        )
+        html = field.widget.render('fieldname', 'fieldvalue')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'fieldname'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-button'})
+        self.assertMarkup(html, 'span', {'class': 'btn', 'data-browse-url': 'browse', 'data-model-name': 'Name'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-add-button'})
+        self.assertMarkup(html, 'span', {'class': 'btn', 'data-create-url': 'create', 'data-model-name': 'Name'})
 
 
 class BackendBrowseTreeFieldTestCase(CubaneTestCase):
@@ -312,20 +313,15 @@ class BackendBrowseTreeFieldTestCase(CubaneTestCase):
         b = TestTreeNode.objects.create(title='b', seq=2)
 
         field = BrowseTreeField(model=TestTreeNode)
-        self.assertEqual(
-            '<div class="cubane-backend-browse clearfix">' +
-                '<div class="cubane-backend-browse-select">' +
-                    '<select name="fieldname">\n' +
-                        '<option value="">---------</option>\n' +
-                        '<option value="1">a</option>\n' +
-                        '<option value="2">&nbsp;&nbsp;a.1</option>\n' +
-                        '<option value="3">&nbsp;&nbsp;a.2x</option>\n' +
-                        '<option value="4">b</option>\n' +
-                    '</select>' +
-                '</div>' +
-            '</div>',
-            field.widget.render('fieldname', 'fieldvalue')
-        )
+        html = field.widget.render('fieldname', 'fieldvalue')
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse clearfix'})
+        self.assertMarkup(html, 'div', {'class': 'cubane-backend-browse-select'})
+        self.assertMarkup(html, 'select', {'name': 'fieldname'})
+        self.assertMarkup(html, 'option', {'value': ''}, '---------')
+        self.assertMarkup(html, 'option', {'value': '1'}, 'a')
+        self.assertMarkup(html, 'option', {'value': '2'}, '&nbsp;&nbsp;a.1')
+        self.assertMarkup(html, 'option', {'value': '3'}, '&nbsp;&nbsp;a.2x')
+        self.assertMarkup(html, 'option', {'value': '4'}, 'b')
 
         b.delete()
         a2.delete()

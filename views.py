@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy, RegexURLPattern
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.template.loader import get_template, TemplateDoesNotExist
+from django.template.loader import TemplateDoesNotExist
 from django.forms import ModelForm, ModelChoiceField
 from django.forms.models import fields_for_model
 from django.forms.widgets import CheckboxInput, Select, RadioSelect
@@ -58,6 +58,7 @@ from cubane.lib.request import request_int, request_bool, request_int_list
 from cubane.lib.url import make_absolute_url
 from cubane.lib.text import get_words, pluralize
 from cubane.lib.acl import Acl
+from cubane.lib.template import get_template
 from cubane.signals import before_cms_save, after_cms_save
 import re
 import os

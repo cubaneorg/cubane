@@ -9,11 +9,11 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.shortcuts import render_to_response, render
 from django.template import Template
-from django.template.loader import get_template
 from cubane.models import Country
 from cubane.decorators import template
 from cubane.cms.decorators import cubane_cms_context
 from cubane.lib.libjson import to_json, to_json_response
+from cubane.lib.template import get_template
 from cubane.ishop import get_product_model, get_order_model
 from cubane.ishop.views import get_shop
 from cubane.ishop.models import OrderBase, Voucher, DeliveryOption

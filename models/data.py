@@ -457,9 +457,12 @@ class Importer(ImportExportBase):
                     instance.save()
 
                 # maintain entity map for 'self' references
-                instance_unicode = unicode(instance)
-                for k in entity_map_self:
-                    entity_map[k][instance_unicode] = instance.pk
+                try:
+                    instance_unicode = unicode(instance)
+                    for k in entity_map_self:
+                        entity_map[k][instance_unicode] = instance.pk
+                except TypeError:
+                    pass
 
                 # keep track of count of successfully imported records
                 i_success += 1

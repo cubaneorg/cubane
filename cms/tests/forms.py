@@ -118,9 +118,9 @@ class CmsFormLegacyUrlTestCase(CubaneTestCase):
         return form.cleaned_data.get('legacy_url')
 
 
-    def test_should_return_empty_string_if_path_is_not_presented(self):
-        self.assertEqual('', self._getLegacyPath(None))
-        self.assertEqual('', self._getLegacyPath(''))
+    def test_should_return_empty_string_or_none_if_path_is_not_presented(self):
+        self.assertNoneOrEmpty(self._getLegacyPath(None))
+        self.assertNoneOrEmpty(self._getLegacyPath(''))
 
 
     def test_should_return_path(self):

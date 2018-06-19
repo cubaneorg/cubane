@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 from django import template
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.template.loader import get_template
 from cubane.lib.templatetags import value_or_none
 from cubane.lib.currency import format_currency
+from cubane.lib.template import get_template
 from cubane.backend.views import BackendSection
 
 register = template.Library()
@@ -31,7 +31,7 @@ def assert_user(filter_name, user):
 class ListingNode(template.Node):
     def render(self, context):
         t = get_template('cubane/backend/listing/listing.html')
-        return t.render(context.flatten())
+        return t.render(context)
 
 
 @register.tag('listing')

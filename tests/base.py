@@ -176,6 +176,51 @@ class CubaneTestCase(TestCase):
         self.assertFormFieldError(form, '__all__', msg)
 
 
+    def matchesAttributes(self, match, attrs):
+        """
+        Return True, if the given match contains all given attributes.
+        """
+        matches = False
+        for k, v in attrs.items():
+            if v == True:
+                if k not in match:
+                    return False
+            else:
+                if ('%s="%s"' % (k, v)) not in match:
+                    return False
+
+        return True
+
+
+    def assertMarkup(self, markup, tag, attrs, content=None):
+        """
+        Assert that the given markup contains the given tag with the given
+        attributes.
+        """
+        # verify that at least one tag exists for which all attributes are set
+        if content is None:
+            for m in re.findall(r'<%s(.*?)>' % tag, markup):
+                if self.matchesAttributes(m, attrs):
+                    return
+        else:
+            for m, m_content in re.findall(r'<%s(.*?)>(.*?)</%s>' % (tag, tag), markup):
+                if self.matchesAttributes(m, attrs) and content in m_content:
+                    return
+
+        self.assertTrue(False, 'tag \'%s\' with attributes \'%s\' not found within markup \'%s\' or content does not match.' % (
+            tag,
+            ', '.join(attrs),
+            markup
+        ))
+
+
+    def assertNoneOrEmpty(self, v):
+        """
+        Assert that the given value v is either None or empty.
+        """
+        self.assertTrue(v in [None, ''])
+
+
     def get_user_profile(self, user):
         if user and not isinstance(user, AnonymousUser):
             try:

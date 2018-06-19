@@ -1,8 +1,8 @@
 # coding=UTF-8
 from __future__ import unicode_literals
 from django.template import Context
-from django.template.loader import get_template
 from django.views.debug import ExceptionReporter
+from cubane.lib.template import get_template
 import sys
 
 

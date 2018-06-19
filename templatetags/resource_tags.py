@@ -5,7 +5,6 @@ from django import template
 from django.core.urlresolvers import get_resolver
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html, escape
-from django.template.loader import get_template
 from django.template import Context
 from cubane.lib.resources import get_resources, get_resource
 from cubane.lib.resources import get_minified_filename
@@ -15,6 +14,7 @@ from cubane.lib.resources import is_external_resource
 from cubane.lib.url import url_join, get_url_patterns
 from cubane.lib.libjson import to_json
 from cubane.lib.templatetags import literal, value_or_literal
+from cubane.lib.template import get_template
 
 
 register = template.Library()

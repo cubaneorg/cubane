@@ -4,9 +4,9 @@ from django.conf import settings
 from django import template
 from django import forms
 from django.template import Context
-from django.template.loader import get_template
 from django.template.defaulttags import CsrfTokenNode
 from cubane.lib.templatetags import value_or_literal, value_or_none
+from cubane.lib.template import get_template
 register = template.Library()
 
 
@@ -33,7 +33,7 @@ class FormNode(template.Node):
             'enctype': enctype
         }
         with context.push(**d):
-            return t.render(context.flatten())
+            return t.render(context)
 
 
 class FilterFormNode(FormNode):

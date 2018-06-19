@@ -140,7 +140,7 @@ class DBMigrateSqlPostgresGetFunctionNamesTestCase(DBMigrateSqlPostgresTestCase)
 
 
 class DBMigrateSqlPostgresGetIndicesTestCase(DBMigrateSqlPostgresTestCase):
-    def test_should_return_lits_of_all_indices(self):
+    def test_should_return_list_of_all_indices(self):
         existing_indices = self.sql.get_indices(self.table)
         expected_indices = [
             'created_by_id',

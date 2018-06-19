@@ -475,9 +475,10 @@ class PageForm(PageFormBase):
 
 
     def clean_identifier(self):
-        identifier = self.cleaned_data.get('identifier').lower()
-
+        identifier = self.cleaned_data.get('identifier')
         if identifier:
+            identifier = identifier.lower()
+
             # validate identifier format
             if not re.match(r'^[a-z][_a-z0-9]+$', identifier):
                 raise forms.ValidationError(self.ERROR_IDENTIFIER_INVALID_FORMAT)
