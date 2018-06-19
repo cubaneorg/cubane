@@ -129,7 +129,7 @@ class BrowseSelect(widgets.Select):
 
         # initiate by model (if given)
         model = kwargs.pop('model', None)
-        prefix = kwargs.pop('prefix', '')
+        prefix = kwargs.pop('prefix', 'cubane.cms')
         if model is not None:
             if prefix: prefix += '.'
 
@@ -187,7 +187,7 @@ class BrowseSelectThumbnail(widgets.Select):
 
         # initiate by model (if given)
         model = kwargs.pop('model', None)
-        prefix = kwargs.pop('prefix', '')
+        prefix = kwargs.pop('prefix', 'cubane.cms')
         if model is not None:
             if prefix: prefix += '.'
 
