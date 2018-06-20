@@ -4,6 +4,13 @@
 Backend Views
 =============
 
+A backend view is responsible for managing additional functionality for the
+backend system. Usually, a backend view is derived from
+:class:`cubane.views.View` or :class:`cubane.views.ModelView`.
+
+Views are organised into backend sections which then drives the navigation
+system.
+
 
 
 
@@ -37,7 +44,7 @@ system, declare the following function in your app's ``__init__.py`` file:
         from myApp.backend import BookShopBackendSection
         backend.register_section(BookShopBackendSection())
 
-Of course you would need to create your own implementation for a backend
+Of course, you would need to create your own implementation for a backend
 section first. In the example above, we implemented our backend section
 ``MyBackendSection`` in the file ``myApp.backend.py`` in the following way:
 
@@ -73,12 +80,12 @@ similar way to the ``Book Shop`` section itself:
 
 The main difference is that the sub-section does not declare any further
 sub-sections but declares a view instead. A view is a class that has been
-derived from :class:`cubane.views.View`. In most cases you would want to derive
+derived from :class:`cubane.views.View`. In most cases, you would want to derive
 your view class from :class:`cubane.views.ModelView` since it provides a lot of
 model-related management capabilities with it, such as listing, searching and
-filtering records as well as the usual create, edit and delete actions.
+filtering records, as well as the usual, create, edit and delete actions.
 
-However, we will start by looking at it's base class first, which is
+However, we will start by looking at its base class first, which is
 :class:`cubane.views.View`:
 
 
@@ -89,9 +96,9 @@ However, we will start by looking at it's base class first, which is
 View
 ====
 
-A :class:`~cubane.views.View` encapsulates django's url patterns (which you
-would usually declare within a ``urls.py`` file) together with view handlers
-(which would usually go into a separate ``views.py`` file). Let's look at an
+A :class:`~cubane.views.View` encapsulates Django's URL patterns (which you
+would usually declare within the ``urls.py`` file) together with view handlers
+(which would usually go into the ``views.py`` file). Let's look at an
 example first:
 
 .. code-block:: python
@@ -119,25 +126,25 @@ example first:
                 'book': book
             })
 
-You declare url patterns via the ``patterns`` field, which is a list of url
-patterns very similar to how you would declare url patterns within a
+You declare URL patterns via the ``patterns`` field, which is a list of URL
+patterns very similar to how you would declare URL patterns within a
 ``urls.py`` file: The first argument to :func:`~cubane.views.view_url` declares
-the regular expression of the url pattern, the second argument gives the name
+the regular expression of the URL pattern, the second argument gives the name
 of the view handler as the name of any method of the same class as a string.
 
 Other than that, the implementation behaves in exactly the same way as a
-regular django view handler. You can add decorators, but you need to use the
+regular Django view handler. You can add decorators, but you need to use the
 :func:`~cubane.views.view` function in order to do so as shown in the code
 example above.
 
-The benefit from combining multiple endpoints into a :class:`~cubane.views.View`
+The benefit of combining multiple endpoints into a :class:`~cubane.views.View`
 is that more complex views can be build by deriving from an already existing
 view.
 
 You can use a view fully independently of Cubane's backend system (which is why
 it is not bundled within the namespace ``cubane.backend``), but the concept of
 a :class:`~cubane.views.View` was originally created in order to facilitate
-Cubane's backend system to begin with.
+Cubane's backend system.
 
 You can hook up any number of views within your ``urls.py`` file in the
 following way:
@@ -182,10 +189,10 @@ debug output in your console window:
     index
     after
 
-Which represents the order in which those method are executed by the system.
+Which represents the order in which those methods are executed by the system.
 Before any view handler method is executed, the ``before`` method is executed.
 Then the actual view handler method is executed (in this case ``index``) and
-finally after the view handler method returned, the ``after`` method is
+finally, after the view handler method returned, the ``after`` method is
 executed.
 
 The ``handler`` method refers to the actual view handler method that is
@@ -307,10 +314,10 @@ in the following way:
 :class:`~cubane.views.TemplateView` class. In this example, the index method
 would render to template ``myApp/books/index.html``.
 
-Internally this behavior is implemented by overriding the ``after`` method of
+Internally this behaviour is implemented by overriding the ``after`` method of
 the :class:`~cubane.views.View` class. If you happened to override the ``after``
 method as well, please make sure to call the derived implementation in order to
-keep the default behavior of the :class:`~cubane.views.TemplateView`, if this
+keep the default behaviour of the :class:`~cubane.views.TemplateView`, if this
 is what you wanted:
 
 .. code-block:: python
@@ -349,12 +356,11 @@ API View
 ========
 
 Sometimes a set of view handlers are concerned about generating JSON responses.
-We can imagine a JSON-based service endpoint that is concerned about books,
+We can imagine a JSON-based service endpoint that is concerned with books,
 where each view handler will return JSON-encoded data.
 
-For these circumstances, Cubane provides the class
-:class:`~cubane.views.ApiView` which will exactly provided this functionality
-as the next example demonstrates:
+Cubane provides the class :class:`~cubane.views.ApiView` for implementing
+API-related views as the next example demonstrates:
 
 .. code-block:: python
 
@@ -408,9 +414,9 @@ A model view provides a wast amount of functionality for a particular model:
 - Create, Update, Duplicate, Delete
 - Sequential Ordering
 - Sorting, Searching and Filtering
-- Folders and Drag'n Drop
+- Folders and *Drag and Drop*
 
-Let's look at a simply example, where we derive our own class from
+Let's look at a simple example, where we derive our own class from
 :class:`~cubane.views.ModelView` in order to provide backend functionality for
 managing books:
 
@@ -441,23 +447,23 @@ presents a model view ``BookView`` which operates on the ``Book`` model.
 
 .. note::
 
-    For most entities you do not necessarily have to declare this structure by
+    For most entities, you do not necessarily have to declare this structure by
     yourself. For example, if you derived any models from
     :class:`cubane.cms.models.Entity` then Cubane's CMS component will
     automatically generate appropriate backend views for you.
 
-Of course the presentation and functionality of a
-:class:`~cubane.views.ModelView` can be customized and extended. This section
+Of course, the presentation and functionality of a
+:class:`~cubane.views.ModelView` can be customised and extended. This section
 will provide more information on extending the :class:`~cubane.views.ModelView`
 itself.
 
-However, the behavior of a :class:`~cubane.views.ModelView` is also driven by
+However, the behaviour of a :class:`~cubane.views.ModelView` is also driven by
 the model itself, since under most circumstances we are not involved in
-customizing the :class:`~cubane.views.ModelView` directly.
+customising the :class:`~cubane.views.ModelView` directly.
 
 .. seealso::
 
-    Please refer to the :ref:`Model View Options
-    <topics/backend/model_view_options>` section for more information on how to
-    control the presentation of a :class:`~cubane.views.ModelView` by declaring
-    backend-specific options through the corresponding model class.
+    Please refer to the :ref:`topics/backend/model_view_options` section for
+    more information on how to control the presentation of a
+    :class:`~cubane.views.ModelView` by declaring backend-specific options
+    through the corresponding model class.

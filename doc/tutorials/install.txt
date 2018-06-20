@@ -18,7 +18,7 @@ Cubane requires the following main components:
 
     Please also compare the Python requirements for different Django_ versions.
 
-    .. _django: https://docs.djangoproject.com/en/1.10/faq/install/#faq-python-version-support
+    .. _django: https://docs.djangoproject.com/en/1.11/faq/install/#faq-python-version-support
 
 
 Install Python

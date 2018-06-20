@@ -25,8 +25,8 @@ In order to edit a model instance, the corresponding backend view needs to know
 what form to use for this purpose. A form can be either declared by the model
 itself or the model view.
 
-In the later case, the form that is used for editing model instance can be
-declared via the ``from`` declaration on the model view class as the following
+In the latter case, the form that is used for editing model instance can be
+declared via the ``form`` declaration on the model view class as the following
 example demonstrates:
 
 .. code-block:: python
@@ -73,15 +73,15 @@ instead:
             return self.title
 
 The class method ``get_form`` should return the class of the form that is able
-of represent instances of the model. A model view representing Books will then
-determine the form by calling the very same class method on the model class,
+of representing instances of the model. A model view representing Books will then
+determine the form by calling the very same class method on the model class
 unless a form has been declared by the model view itself.
 
 .. seealso::
 
-    Please refer to the :ref:`Model Forms <topics/backend/model_forms>` section
-    in order to learn more about how model forms can be declared and customised
-    for the backend system.
+    Please refer to the :ref:`topics/backend/model_forms` section in order to
+    learn more about how model forms can be declared and customised for the
+    backend system.
 
 
 
@@ -92,7 +92,7 @@ Model View Filter Form
 ======================
 
 A model view may provide filter options by which records of a particular model
-can be filtered by individual attributes. When working with books for example,
+can be filtered by individual attributes. When working with books, for example,
 you may want to allow users of the backend system to filter books by specific
 properties such as book title, author or ISBN.
 
@@ -100,11 +100,11 @@ A model filter form is used for this purpose. It is usually presented within a
 side column which can be extended by the user to see all options available.
 
 If no filter form is declared, then the regular model form is used instead,
-which is sufficient in most cases. However, in some cases you may want to use a
+which is sufficient in most cases. However, in some cases, you may want to use a
 different form that extends the model form in a specific way.
 
 A filter form can be declared either by the model itself or by the
-corresponding model view. For the later case, you can simply declare the filter
+corresponding model view. For the latter case, you can simply declare the filter
 form in a similar way as the model form is declared:
 
 .. code-block:: python
@@ -158,17 +158,17 @@ declare a model view:
             return self.title
 
 In this example, the ``BookForm`` is used for creating or editing instances of
-books, but the ``BookFilterForm`` is used for filtering books instead, unless a
+books, but the ``BookFilterForm`` is used for filtering books instead unless a
 filter form has been declared by the corresponding model view directly.
 
 .. note::
 
     Please note that ultimately the model listing option :listing:`filter_by`
     dictates the fields that are presented to users as part of the filter form,
-    but those fields obviously need to be present in the form to begin with.
+    but those fields obviously need to be present in the form.
 
     You can read more about the :listing:`filter_by` options as part of the
-    :ref:`Model View Options <_topics/backend/model_view_options>` section.
+    :ref:`topics/backend/model_view_options` section.
 
 
 
@@ -310,9 +310,9 @@ declared in the base class.
 In addition, the parent class may override existing properties using one of the
 following principals:
 
-1. A new form fields can be added to the end of any existing tab by simply
-re-stating the tab matching the existing name of the tab. In the example, the
-field ``author`` is added to the end of the tab with the name ``Book Name``.
+1. New form fields can be added to the end of any existing tab by simply
+matching the name of an existing tab. In the example, the field ``author`` is
+added to the end of the tab with the name ``Book Name``.
 
 2. A new or existing field can be inserted or moved ``before`` or ``after`` any
 existing field. In the example, a new field with the name ``barcode`` is
@@ -334,7 +334,7 @@ added to the tab; however, a tab can be renamed without adding fields to it.
 
     Fields cannot be removed since the form is deriving from an existing form
     and cannot change the behaviour of the form itself via the declaration of
-    ``tabs``. Of course it is always possible to remove form fields dynamically
+    ``tabs``. Of course, it is always possible to remove form fields dynamically
     during its construction or configuration of the form.
 
     Currently, tabs can be renamed but cannot be removed or merged with other
@@ -633,11 +633,11 @@ Cubane provides the helper method :meth:`FormBaseMixin.field_error` when
 raising form validation errors for a particular form field - in particular when
 validating multiple form fields at once.
 
-Usually ValidationError exception is raised within a clean method that is
+Usually, a ``ValidationError`` exception is raised within a clean method that is
 specific to a particular form field. However, when validating form data by
 overriding the generic clean method of the form then ValidationError cannot be
 raised. Instead, the :meth:`FormBaseMixin.field_error` can be used to trigger a
-form field specific validation error message:
+form field-specific validation error message:
 
 .. code-block:: python
 
@@ -671,12 +671,12 @@ Form Browse
 ===========
 
 When referring to other entities in the form of ForeignKey, then the
-corresponding form field is usually a drop down field listing all related model
+corresponding form field is usually a drop-down field listing all related model
 instances to choose from.
 
 In order to integrate this better into Cubane, such ModelChoiceField can be
-extended to use a widget that allows to *browse* for model instances by
-attaching a *browse* button next to the drop down field.
+extended to use a widget that allows *browsing* for model instances by
+attaching a *browse* button next to the drop-down field.
 
 The :class:`BrowseSelect` widget can be used in the following way:
 
@@ -717,7 +717,7 @@ renders a thumbnail preview of the image that is being selected:
 
 .. seealso::
 
-    In addition to those widgets, form field implementation are also provided
+    In addition to those widgets, a form field implementation is also provided
     via :class:`BrowseField` and :class:`BrowseThumbnailField`.
 
 
@@ -753,7 +753,7 @@ additional fields may be presented and required.
 
 In this example, the fields ``rrp`` and ``recommended_since`` are both only
 visible if the field ``recommended`` is ``True`` (e.g. checked). Assuming that
-the field ``rrp`` is not mandetory by default, it is required in the case that
+the field ``rrp`` is not mandatory by default, it is required in the case that
 the field ``recommended`` is ``True``.
 
 Form visibility can also be nested and linked like in the following example:
@@ -818,8 +818,8 @@ Form Blueprint Rules
 ====================
 
 A blueprint is based around the idea of auto-completing parts of a form by
-choosing from a list of possible options. For example, a invoice system for a
-book store may allow us to create line items by choosing a book. Form fields
+choosing from a list of possible options. For example, an invoice system for a
+bookstore may allow us to create line items by choosing a book. Form fields
 such as description, tax and price are then pre-populated based on data that is
 associated with the ebook record that has been chosen.
 
@@ -852,7 +852,7 @@ fields in the form.
 We assume that the model ``LineItem`` has a foreign key field to the ``Book``
 model via the property ``book``. Therefore the corresponding model form will
 have a model choice field form with the same name. We also provide a browse
-field widget to make choosing a book convenient.
+field widget to make choosing a book conveniently.
 
 The blueprint rule is based on the field ``book``. Whenever it changes, the
 fields ``description``, ``tax`` and ``price`` from the chosen book instance are
@@ -863,7 +863,7 @@ Multiple blueprint rules for multiple form fields can be expressed in a similar
 way. Also, one or multiple form fields can be pre-populated this way.
 
 Sometimes, the form field of the related model instance is not matching up the
-field of the hosting form perfectly, in this case an actual assignment can be
+field of the hosting form perfectly, in this case, an actual assignment can be
 described in the following way:
 
 .. code-block:: python
@@ -902,7 +902,7 @@ Form Limit Rules
 Form limitation rules are designed to give interactive feedback about form
 field limitations as the user is typing. For example, we assume that a form
 field has a recommended max. character length of ``120`` characters, then a
-form limitation rule can help presenting this information to users:
+form limitation rule can help to present this information to users:
 
 .. code-block:: python
 

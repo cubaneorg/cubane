@@ -4,11 +4,13 @@
 Working with SVG Icons
 ======================
 
-SVG images are incredible useful: They are small in size, scale to any size and
-there appearance is always crystal-sharp regardless of the device.
+SVG images are incredibly useful: They are small in size, scale to any size and
+their appearance is always crystal-sharp regardless of the device.
 
 Cubane's SVG icon system simply allows you to declare a set of SVG-based icons
 and to refer to those icons anywhere within your template.
+
+
 
 
 .. _topics/svgicons/creating_svgicons:
@@ -16,13 +18,15 @@ and to refer to those icons anywhere within your template.
 Creating SVG Icons
 ==================
 
-When creating SVG icons, we would advise to use the same ``viewBox`` for all
-SVG files throughout; this will make it easier to place icons within a design
-more consistently.
+When creating SVG icons, we would advise using the same ``viewBox`` for all SVG
+files throughout; this will make it easier to place icons within a design more
+consistently.
 
 In addition, we suggest to align all icons on the same baseline and to maintain
 the same visual white space around an icon. This will greatly help to align
 icons within a design.
+
+
 
 
 .. _topics/svgicons/loading:
@@ -46,7 +50,7 @@ Cubane's SVG icon system is implemented as a separate app, which is
 
 
 The SVG icon system also provides some default CSS style for icons. If you wish
-to use it, simple embed all resources from ``cubane.svgicons`` within the
+to use it, simply embed all resources from ``cubane.svgicons`` within the
 default resource bucket that you are using for your website, for example:
 
 .. code-block:: python
@@ -60,10 +64,12 @@ default resource bucket that you are using for your website, for example:
     }
 
 
+
+
 .. _topics/svgicons/declaring_uni_colored_svg_icons:
 
-Declaring uni-colored SVG icons
-===============================
+Declaring uni-coloured SVG icons
+================================
 
 In your app's ``__init__.py`` file, where you declare Cubane's resources,
 you can simply declare individual SVG files as SVG icons as well:
@@ -88,7 +94,7 @@ you can simply declare individual SVG files as SVG icons as well:
     because we will simply be able to refer to the ``phone.svg`` icon file via
     its name ``phone``.
 
-As discussed in the :ref:`Media API Urls <topics/media/media_api_urls>`
+As discussed in the :ref:`topics/media/media_api_urls`
 section, we can use pattern expansion to make this very compact:
 
 .. code-block:: python
@@ -107,9 +113,11 @@ Because the order in which Cubane processes SVG icon files is entirely
 arbitrary, we do not need to be concerned about the order in which SVG icon
 files are declared (which would be alphabetical when using pattern expansion).
 
-All SVG icons declared in such way are uni-colored by default. This means that
-all shapes will automatically take the fill color of the current text color as
+All SVG icons declared in such way are uni-coloured by default. This means that
+all shapes will automatically take the fill colour of the current text colour as
 declared in your CSS style. We will see how this works in just a moment.
+
+
 
 
 .. _topics/svgicons/referring_to_svg_icons:
@@ -117,7 +125,7 @@ declared in your CSS style. We will see how this works in just a moment.
 Referring to SVG icons
 ======================
 
-After having declared your SVG icons as resources, you can simply refer to any
+After having declared your SVG icons as resources, you can simply refer to an
 icon by its name within your templates, for example:
 
 .. code-block:: html+django
@@ -154,13 +162,14 @@ symbol ``svgicon-phone`` from within the file.
 
 .. note::
 
-    Refering to SVG icons this way means that the browser will download an
+    Referring to SVG icons this way means that the browser will download an
     external file before any SVG icon can be presented. The browser can cache
     the external file once it has been downloaded.
 
     In *Debug* mode, Cubane will generate a different path using the
-    :ref:`Media API Urls <topics/media/media_api_urls>` to refer to a
-    particular SVG icon.
+    :ref:`topics/media/media_api_urls` to refer to a particular SVG icon.
+
+
 
 
 .. _topics/svgicons/embedding_svg_icon_sets:
@@ -170,12 +179,12 @@ Embedding SVG icon sets
 
 Another way of using SVG icons is to embed an SVG icon set within your template.
 This is usually your base template. It will contain the declaration of each SVG
-icon; however no icon has actually been presented anywhere yet.
+icon; however, no icon has actually been presented anywhere yet.
 
-Embedding SVG icons has the benefit of faster rendering time, since no external
-resource has to be downloaded first in order to present an icon on the screen.
-However, this approach -- if not considered carefully -- may overload your
-initial markup file extensively.
+Embedding SVG icons offer the benefit of faster rendering time since no
+external resource has to be downloaded first in order to present an icon on the
+screen. However, this approach -- if not considered carefully -- may overload
+your initial markup file extensively.
 
 .. code-block:: html+django
 
@@ -209,9 +218,11 @@ its filename.
 
 .. note::
 
-    Cubane will remove any embedded style information for uni-colored SVG icons
-    automatically, because the current text color of the containing element
-    will be used as the fill color of the SVG icon.
+    Cubane will remove any embedded style information for uni-coloured SVG
+    icons automatically because the current text colour of the containing
+    element will be used as the fill colour of the SVG icon.
+
+
 
 
 .. _topics/svgicons/using_embedded_svg_icons:
@@ -249,23 +260,25 @@ Ultimately this will generate markup similar to the following:
 
 Please note that the markup for any SVG icon is contained within the template
 only once, even if the same SVG icon is used multiple times. Further, the fill
-color of any SVG icon is set to the current text color. For example, if the
-text color of the ``.header`` container would be set to ``red``, then any shape
-of the ``phone`` SVG icon would also be filled with the color ``red``.
+colour of an SVG icon is set to the current text colour. For example, if the
+text colour of the ``.header`` container would be set to ``red``, then any shape
+of the ``phone`` SVG icon would also be filled with the colour ``red``.
+
+
 
 
 .. _topics/svgicons/using_multi_colored_svg_icons:
 
-Using multi-colored SVG Icons
-=============================
+Using multi-coloured SVG Icons
+==============================
 
-By default, SVG icons are uni-colored, which means that the current text color
-will define what the actual fill color is used when presenting an SVG icon.
+By default, SVG icons are uni-coloured, which means that the current text colour
+will define what the actual fill colour is used when presenting an SVG icon.
 
-SVG icons can be declared as multi-colored SVG icons, which means that the icon
-will retain its style information; independently of the current text color.
+SVG icons can be declared as multi-coloured SVG icons, which means that the icon
+will retain its style information; independently of the current text colour.
 
-You can simply declare multi-colored SVG icons by using the ``with-style``
+You can simply declare multi-coloured SVG icons by using the ``with-style``
 prefix operator when declaring an SVG icon:
 
 .. code-block:: python
@@ -275,7 +288,7 @@ prefix operator when declaring an SVG icon:
         'css/style.css',
         ...
 
-        # multi-colored SVG icons
+        # multi-coloured SVG icons
         'with-style|svgicons/phone.svg',
         'with-style|svgicons/mail.svg',
         'with-style|svgicons/location.svg'
@@ -295,13 +308,13 @@ prefix operator, like in the following example:
 .. code-block:: python
 
     RESOURCES = [
-        # multi-colored SVG icons
+        # multi-coloured SVG icons
         'with-style|styled-svgicons/*.svg',
         ...
     ]
 
-If you are using uni-colored *and* multi-colored SVG icons in your project, you
-could declare both types of icons by using pattern expansion based on two
+If you are using uni-coloured *and* multi-coloured SVG icons in your project,
+you could declare both types of icons by using pattern expansion based on two
 different folders, for example:
 
 .. code-block:: python
@@ -312,14 +325,14 @@ different folders, for example:
         ...
     ]
 
-You would present a multi-colored SVG icon in the same way as before by using
+You would present a multi-coloured SVG icon in the same way as before by using
 the ``svgicon`` or ``svgiconref`` template tags.
 
-The system automatically determines if the icon is presented as a uni-colored
-SVG icons (using the current text color as the fill color) or as a
-multi-colored SVG icon (using the style information embedded within the SVG
+The system automatically determines if the icon is presented as a uni-coloured
+SVG icon (using the current text colour as the fill colour) or as a
+multi-coloured SVG icon (using the style information embedded within the SVG
 icon itself).
 
-Uni-colored and multi-colored SVG icons can be mixed within the same resource
+Uni-coloured and multi-coloured SVG icons can be mixed within the same resource
 bucket and can be used when embedded within a template or referred to through
 an external file.

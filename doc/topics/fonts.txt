@@ -4,9 +4,9 @@
 Working with Fonts
 ==================
 
-We briefly discussed Cubane's font system as part of the :ref:`Working with
-Resource <topics/resources>` section. However, this section will explore the
-font system in more depth.
+We briefly discussed Cubane's font system as part of the
+:ref:`topics/resources` section. However, this section will explore the font
+system in more depth.
 
 
 Web Fonts play an increasingly important role. Cubane provides an
@@ -16,6 +16,8 @@ websites.
 Cubane provides a default font backend which is using the
 `google-webfonts-helper <https://google-webfonts-helper.herokuapp.com/fonts>`_
 by Mario Ranftl.
+
+
 
 
 .. _topics/fonts/declaring_fonts:
@@ -48,8 +50,10 @@ and will also generate all required CSS style for the declaration of the font.
 .. note::
 
     When referring to fonts, make sure that the name of the font is given as
-    listen on the Google WebFonts Helper website, otherwise, Cubane will not be
+    listed on the Google WebFonts Helper website, otherwise, Cubane will not be
     able to locate the exact font.
+
+
 
 
 .. _topics/fonts/declaring_variants:
@@ -57,7 +61,7 @@ and will also generate all required CSS style for the declaration of the font.
 Declaring Font Variants
 =======================
 
-A font may come in different flavors, mostly with separate boldness and italic
+A font may come in different flavours, mostly with separate boldness and italic
 style or not. It is important to understand that each variation of a font is
 ultimately a separate file that the browser needs to download if it is used on
 a site.
@@ -81,9 +85,9 @@ font files: Browsers will only download the ones that are actually needed; if
 your website does not make use of the italic variant in boldness 700, then the
 corresponding file will never be downloaded.
 
-Browsers can also synthesize missing font declarations. For example, if a
+Browsers can also synthesise missing font declarations. For example, if a
 particular font is not declared, the browser may still be able to produce the
-required boldness and italic style automatically. Of course the result may not
+required boldness and italic style automatically. Of course, the result may not
 be as pleasing as the actual font file itself.
 
 In order to give you more fine-control over which font variants are declared,
@@ -101,14 +105,18 @@ boldness 300 and 600, both in regular and italic styles. Cubane will also only
 download font files for those variants.
 
 
+
+
 .. _topics/fonts/charsets:
 
 Font Charsets
 =============
 
-Currently Cubane will only download the *latin* charset for any font. If you
+Currently, Cubane will only download the *latin* charset for any font. If you
 require any other charset, you would need to download the required font files
 by yourself manually.
+
+
 
 
 .. _topics/fonts/file_formats:
@@ -118,6 +126,8 @@ Supported Font File Formats
 
 Cubane's font system is currently only downloading two font versions: *woff2*
 and *woff*. This should provide a very good coverage for all modern browsers.
+
+
 
 
 .. _topics/fonts/cache:
@@ -173,13 +183,15 @@ and download them again:
         $ python manage.py loadfonts --refresh
 
 
+
+
 .. _topics/fonts/backends:
 
 Font Backends
 =============
 
 A font backend is a class implementation derived from :class:FontBackendBase.
-It's responsibility is to download a particular font given by its name if the
+Its responsibility is to download a particular font given by its name if the
 backend knows about the font.
 
 You can declare multiple font backends in your project settings. The default

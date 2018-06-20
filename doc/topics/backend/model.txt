@@ -5,7 +5,7 @@ Backend Model Options
 =====================
 
 Often a custom backend view is generated for a model automatically. This is why
-most aspects of how a backend view is presenting model instances is actually
+most aspects of how a backend view is presenting model instances are actually
 controlled via the model.
 
 The idea is that the backend system is very generative. It provides common edit
@@ -20,7 +20,7 @@ basis through backend view options.
 Model View Options
 ==================
 
-Model view options are options declared on model level that alter the
+Model view options are options declared by the model that alter the
 presentation and functionality of the corresponding model view that operates on
 the model as part of the backend system.
 
@@ -37,12 +37,12 @@ system to manage ``Books``:
         template_path = 'cubane/backend/'
         model = Book
 
-One of the first thing that you would want to customize is the columns that are
+One of the first thing that you would want to customise is the columns that are
 presented by the model view. By default, a model view will simply extract a
 number of columns from the model automatically, which might not necessarily be
 the ones you wanted.
 
-In order to customize the columns that are presented by the backend, simply
+In order to customise the columns that are presented by the backend, simply
 declare the class ``Listing`` within your model class and declare a list of
 columns:
 
@@ -129,11 +129,11 @@ detail:
 
         - a valid ``model field`` of the model or
         - an implicit method without arguments, like ``get_FOO_display()`` or
-        - an explicit method without arguments, for example ``get_foo()`` or
-        - a property of the model, for example ``foo``
+        - an explicit method without arguments, for example, ``get_foo()`` or
+        - a property of the model, for example, ``foo``
 
     The maximum number of columns is restricted to *six* full columns. Any
-    declared column is a full column, unless the column name is prefixed with
+    declared column is a full column  unless the column name is prefixed with
     ``/``, in which case the column is presented as a half-column. Half columns
     are not as wide as full columns and the system can present any combination
     of half and full columns as long as the total number of full columns does
@@ -221,24 +221,24 @@ detail:
     ``price`` column.
 
     If the column refers to a method or property, then sorting is disabled for
-    such column. For example the column declaration
+    such column. For example, the column declaration
     ``get_absolute_url|Website|url`` invokes the instance method
     ``get_absolute_url`` for each instance, therefore the resulting value is
     computed and the resulting listing cannot be sorted by this column.
 
     To overcome this limitation, the name of the underlying property may be
     declared as well which can then be used to sort the resulting list of
-    items. For example the column declaration
+    items. For example, the column declaration
     ``slug(get_absolute_url)|Website|url`` is still invoking the instance
     method ``get_absolute_url`` for each instance but the resulting listing
     remains sortable by the ``Website`` column based on sorting the internal
-    column ``slug`` which -- of course -- is the basis by which the full url is
+    column ``slug`` which -- of course -- is the basis by which the full URL is
     computed in the first place.
 
-    A column declaration can also refer to foreign key fields.
-    For example, let's say the book class had a foreign key to an ``Author`` model
-    which contained a name field, then the author's name may be referenced in
-    the listing by using the following column declaration:
+    A column declaration can also refer to foreign key fields. For example,
+    let's say the book class had a foreign key to an ``Author`` model which
+    contained a name field, then the author's name may be referenced in the
+    listing by using the following column declaration:
 
     .. code-block:: python
 
@@ -288,9 +288,9 @@ detail:
     .. note::
 
         Bulk editing must be enabled via the :listing:`edit_view` listing
-        option in order to allow for bulk editing to begin with.
+        option in order to allow for bulk editing.
 
-        Not all formatting options are available in bulk editing mode, since
+        Not all formatting options are available in bulk editing mode since
         all column data is presented as form elements rather than formatted
         column values.
 
@@ -307,7 +307,7 @@ detail:
     backend system can precisely filter records by using specific values for
     individual columns.
 
-    By default the filter panel is hidden away. Only if columns are declared
+    By default, the filter panel is hidden away. Only if columns are declared
     via the ``filter_by`` option, the filter side panel is presented and
     available through the backend system.
 
@@ -330,10 +330,11 @@ detail:
                 'isbn'
             ]
 
-    The resulting filter side panel form will present those columns in the order
-    as specified: ``title`` then ``slug`` then ``isbn``. In particular for filter forms
-    containing a number of fields, section titles can be inserted in order to provide
-    a sense of partition or to group similar fields:
+    The resulting filter side panel form will present those columns in the
+    order as specified: ``title`` then ``slug`` then ``isbn``. In particular,
+    for filter forms containing a number of fields, section titles can be
+    inserted in order to provide a sense of partition or to group similar
+    fields:
 
     .. code-block:: python
 
@@ -356,7 +357,7 @@ detail:
     .. note::
 
         The system may change the default presentation of form fields to suit
-        the purpose of the filter form. For example: Usually boolean fields are
+        the purpose of the filter form. For example: Usually, boolean fields are
         represented as checkbox input fields within forms. However, the backend
         system will replace those with radio input fields for the purpose of
         filtering -- providing three possible options: Off, Yes (``True``) and
@@ -372,9 +373,9 @@ detail:
     By default, a model is *not* sortable.
 
     When making a model sortable, the backend system will provide user
-    interface options to define the order or items by allowing users to drag 'n
-    drop items. The established sorting order can then be used for example to
-    derive the order in which items are presented on the frontend.
+    interface options to define the order or items by allowing users to *drag
+    and drop* items. The established sorting order can then be used for example
+    to derive the order in which items are presented on the frontend.
 
     If sortable is set to ''True'', then the system implicitly expects that the
     model has a column with the name ''seq' of some integer type, for example:
@@ -400,7 +401,7 @@ detail:
     are ordered.
 
     On the frontend, you would usually sort books by ordering them by the
-    ''seq'' field; for example to present a list of books in a specific
+    ''seq'' field; for example, to present a list of books in a specific
     user-defined order.
 
     .. code-block:: python
@@ -408,12 +409,12 @@ detail:
         books = Book.objects.all().order_by('seq')
 
     The sequence of items is only defined per level of hierarchy in case
-    folders are used. For example, if books were organized within folders -
+    folders are used. For example, if books were organised within folders -
     let's say genres - then the sequence order as defined by the ''seq'' field
     applies for each genre individually. Horror books declare a sequence
     starting with 1 while books in the kids section also start with 1. The
     backend system will distinguish those cases and will not allow users to
-    change the order in case books of multiple genres are presented at the same
+    change the order -- books of multiple genres could be presented at the same
     time.
 
 
@@ -427,18 +428,18 @@ detail:
     By default, no additional model fields are declared as being searchable.
 
     When searching via the quick search method, all visible columns as declared
-    via the :listing:`columns` field are searchable. Further, quick search only
-    applies to text-related field and would not apply to boolean fields for
-    example.
+    via the :listing:`columns` field are searchable. Further, *quick search*
+    only applies to text-related fields and would not apply to boolean fields
+    for example.
 
     Sometimes, you would like to allow the quick search facility to yield
     results based on columns that are to directly presented within the listing
-    screen of the backend. In this case those *additional* columns may be
+    screen of the backend. In this case, those *additional* columns may be
     declared via the :listing:`searchable` listing option.
 
-    For example, if the IDBN number for books would not be part of the listing
+    For example, if the ISBN number for books would not be part of the listing
     for some reason, but you still wanted users to be able to search via the
-    IDBN number in the backend, then you could declare the following listing
+    ISBN number in the backend, then you could declare the following listing
     option:
 
     .. code-block:: python
@@ -458,7 +459,7 @@ detail:
 
     Declares if bulk-editing is provided for the listing screen.
 
-    By default bulk editing is not enabled.
+    By default, bulk editing is not enabled.
 
     Cubane's backend system provides bulk editing functionality, where certain
     columns can be edited at the same time on the listing screen; rather than
@@ -477,16 +478,16 @@ detail:
 
     By default, grid view is not available.
 
-    For some type of items, in particular for those that have an image
+    For some type of items, in particular, for those that have an image
     associated with it, Cubane's backend system can present items as image
-    thumbnails rather than tabular data. In particular for media assets this
+    thumbnails rather than tabular data. In particular, for media assets, this
     type of presentation is more useful.
 
     The system will implicitly assume that each item is a
     :class:`cubane.media.models.Media` instance or has a foreign key to a
     :class:`~cubane.media.models.Media` instance called ``image``.
 
-    If you model does not have an image reference or the field is called
+    If your model does not have an image reference or the field is called
     differently, you can either rename your field or introduce a property with
     the name ``image`` that returns the reference to
     :class:`~cubane.media.models.Media` internally.
@@ -514,17 +515,14 @@ detail:
 
     Available options are:
 
-        +------------------+----------------------------------------------------+
-        | Option           | Description                                        |
-        +==================+====================================================+
-        | ``list``         | Default list view (tabular)                        |
-        +------------------+----------------------------------------------------+
-        | ``compact-list`` | Compact version of the default list view (tabular) |
-        +------------------+----------------------------------------------------+
-        | ``edit``         | Bulk editing view                                  |
-        +------------------+----------------------------------------------------+
-        | ``grid``         | Image-based grid view                              |
-        +------------------+----------------------------------------------------+
+    ================  ==========================================================
+    Option            Description
+    ================  ==========================================================
+    ``list``          Default list view (tabular).
+    ``compact-list``  Compact version of the default list view (tabular).
+    ``edit``          Bulk editing view.
+    ``grid``          Image-based grid view
+    ================  ==========================================================
 
 
 .. listing:: data_import
@@ -550,7 +548,7 @@ detail:
     .. note::
 
         If the import data contains the primary key field, then the
-        corresponding record is updated; otherwise a new record is created.
+        corresponding record is updated; otherwise, a new record is created.
 
 
 .. listing:: data_export
@@ -562,7 +560,8 @@ detail:
     By default, CSV data export is *not* available.
 
     When exporting CSV files, the system will export all field columns, unless
-    specific columns are declared via the :listing:`data_columns` listing option.
+    specific columns are declared via the :listing:`data_columns` listing
+    option.
 
     .. code-block:: python
 
@@ -583,7 +582,7 @@ detail:
     option (which must be enabled via :listing:`data_export`).
 
     By default, the list of exported columns is undefined and the exporter will
-    export all model columns that are defined by the model automatically, unless
+    export all model columns that are defined by the model automatically unless
     columns are ignored for data export via :listing:`data_ignore`.
 
     .. code-block:: python
@@ -640,14 +639,14 @@ detail:
         class Listing:
             data_export = True
             data_map_fields = {
-                'IDBN Number': 'isbn',
+                'ISBN Number': 'isbn',
                 ...
             }
 
-    The example demonstrates how an additional column name ``IDBN Number`` may
+    The example demonstrates how an additional column name ``ISBN Number`` may
     be declared in order to map the column ``ISBN Number`` to the internal
     model field ``isbn``. Without such mapping, the column name must have been
-    labeled as ``isbn`` in order for the importer to be able to import the data
+    labelled as ``isbn`` in order for the importer to be able to import the data
     successfully.
 
     .. note::
@@ -664,7 +663,7 @@ detail:
 ``data_default_values``
 
     Declares a default value that is used when importing data from a CSV file
-    and a particular column cell value happens to be empty.
+    and a particular column cell value happen to be empty.
 
     By default, the default value for an empty cell value is ``None``, unless
     :listing:`data_default_value` declares a different value.
@@ -715,7 +714,7 @@ detail:
     The example above shows how books are mapped to all existing books in the
     system when importing CSV data from a file. By default, the system would
     have used the ``id`` primary key column of the model for this purpose, but
-    perhaps we do not want to include the *build-in* ``id`` column in the first
+    perhaps we do not want to include the *built-in* ``id`` column in the first
     place. By declaring the ``isbn`` column as the primary key, any existing
     records from the CSV file with the same ``isbn`` number will trigger a data
     update rather than an insert.

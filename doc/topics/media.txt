@@ -13,8 +13,9 @@ other type of content.
 
     In opposite to media, static content is usually part of the website project
     and under the control of a developer. Please see more information about
-    static assets within the topic for Cubane's :ref:`Working with Resources
-    <topics/resources>`.
+    static assets within the topic for Cubane's :ref:`topics/resources`.
+
+
 
 
 .. _topics/media/introduction:
@@ -30,8 +31,7 @@ Generally, media is:
 
 - A single model instance of ``Media``.
 - Imported from ``cubane.media.models``.
-- Usually created and managed through Cubane's :ref:`Backend System
-  <topics/backend>`.
+- Usually created and managed through Cubane's :ref:`topics/backend`.
 - Can be created and managed programmatically.
 - Usually, represents an image, but can also represent a document, such as a
   PDF file.
@@ -49,14 +49,14 @@ allow us to give you a quick overview of what you can with ``Media``:
 - Responsive image versions.
 - Image shapes.
 - Art Direction.
-- On Demand image manipulation, in particular for SVG images.
+- On-Demand image manipulation, in particular for SVG images.
 - Responsive SVG images with embedded bitmap layers.
 - Lazy loading of SVG images that are then safely embedded into the DOM for
   further manipulation.
 
 Usually, when you define the structure of your site, you will make references
 to the ``Media`` model. Common base implementations are provided by Cubane that
-also define some references. For example, a CMS page may refer to ``Media`` to
+also defines some references. For example, a CMS page may refer to ``Media`` to
 represent the main image of that page.
 
 As you build your website templates, you will use media template tags to
@@ -65,6 +65,8 @@ particular shape that the image should present itself.
 
 Finally, your content authors may use Cubane's backend system to insert media
 into page content or connect media items to other entities in the system.
+
+
 
 
 .. _topics/media/loading:
@@ -98,6 +100,8 @@ is loaded depends on actual properties of the device, such as pixel density and
 the surface area that the image will occupy.
 
 
+
+
 .. _topics/media/lazy_loading:
 
 Lazy Loading
@@ -106,7 +110,7 @@ Lazy Loading
 This process, which is often referred to as *lazy-loading* can provide a number
 of benefits:
 
-- Images are only loaded when actually visible. In particular when presenting a
+- Images are only loaded when actually visible. In particular, when presenting a
   lot of images, it can speed up the loading of your website significantly.
 
 - The resolution of the actual image that is downloaded is determined based on
@@ -136,14 +140,16 @@ media loader:
 
 - By default, a lazy-loaded image will occupy the full width of its container
   element.
-- The space that any lazy-loaded image will occupy will be reserved, so that
+- The space that any lazy-loaded image will occupy will be reserved so that
   any content that follows is not pushed down when the image is finally
   presented. This way, the arrangement and layout of the website are not
   disrupted or changed once an image has been loaded.
 - Images may load as a user scrolls the page as more images are revealed.
 - Scrollable areas that are embedded within the page need to be annotated in a
-  certain way, so that the media loader is aware that scrolling those areas may
+  certain way so that the media loader is aware that scrolling those areas may
   reveal further images that need to be loaded.
+
+
 
 
 .. _topics/media/media_loader:
@@ -152,8 +158,8 @@ Media Loader
 ============
 
 In order to take advantage of lazy loading, your website's frontend has to
-embed the medialoader app ``cubane.medialoader``, which provides the
-javascript-based runtime for actually loading images on your website.
+embed the ``cubane.medialoader`` app, which provides the javascript-based
+runtime for actually loading images on your website.
 
 First, simply include ``cubane.medialoader`` within
 ``settings.INSTALLED_APPS``. Typically you would need to include
@@ -202,8 +208,10 @@ embed all resource content for the given resource pool ``inline``:
         </body>
     </html>
 
-You can read more about how resources are organized and managed in the
-:ref:`Working with Resources <topics/resources>` section.
+You can read more about how resources are organised and managed in the
+:ref:`topics/resources` section.
+
+
 
 
 .. _topics/media/rendering:
@@ -222,10 +230,12 @@ presented always fits a certain aspect ratio.
 Or, you may want to use an image as a background image, so that you can use CSS
 techniques to cover an area of the website that is not pre-determined.
 
-Usually, all those different ways of rendering an image have one principal in
+Usually, all those different ways of rendering an image have one principle in
 common: Media assets are loaded when actually visible and the concrete image
 resolution that is loaded depends on actual properties of the device, such
 as pixel density and the surface area that the image will occupy.
+
+
 
 
 .. _topics/media/plain_image:
@@ -247,12 +257,14 @@ uploaded in its *original* aspect ratio.
 .. note::
 
     The ``Media`` model provides a number of properties, in particular for
-    different shapes and sizes that can be used to render a different image
-    versions if required. For more information, please refer to the :ref:`Media
-    Model Reference <ref/media_model>`.
+    different shapes and sizes that can be used to render different image
+    versions if required. For more information, please refer to the
+    :ref:`ref/media_model`.
 
-In most cases, you would like to utilize lazy loading which you can do by using
+In most cases, you would like to utilise lazy loading which you can do by using
 the ``media`` template tag library.
+
+
 
 
 .. _topics/media/lazy_load_image:
@@ -269,10 +281,10 @@ the ``image`` tag in the following way:
 
     {% image myImage %}
 
-This will render the same image in its *original* aspect ratio but using the
-lazy-loading mechanism. Moreover, the media loader will determine at runtime
-which image version to use. For example, a phone may load a smaller resolution
-image than a high-res desktop display device might.
+This renders the same image in its *original* aspect ratio but is using the
+lazy-loading mechanism instead. Moreover, the media loader will determine at
+runtime which image version to use. For example, a phone may load a smaller
+resolution image than a high-res desktop display device might.
 
 .. tip::
 
@@ -280,6 +292,8 @@ image than a high-res desktop display device might.
     'original' %}, which refers to the ``original`` shape of the image, which
     is always the *original* image that was uploaded for ``myImage`` in its
     *original* aspect ratio.
+
+
 
 
 .. _topics/media/responsive_image_sizes:
@@ -336,7 +350,7 @@ website and adjust as needed.
     that was uploaded. The ``create_thumbnails`` command will generate all
     required image version from the original image file.
 
-Also keep in mind that some devices have a higher pixel density. For example,
+Also, keep in mind that some devices have a higher pixel density. For example,
 some phones may have a device pixel ratio of two or more for example. This
 means that for a screen of 400 pixels width, the device actually displays
 800 physical pixels.
@@ -344,9 +358,9 @@ means that for a screen of 400 pixels width, the device actually displays
 The media loader will take this into consideration and will present the best
 possible match based on the sizes defined in your project settings for
 ``IMAGE_SHAPE``. The media loader may upscale an image a tiny bit in order to
-avoid having to download a much bigger image size. However, at some point the
-media loader will load the bigger image version and the final image will be
-downscaled. There is always a tradeoff.
+avoid having to download a much bigger image size. However, at some point in
+time, the media loader will load the bigger image version and the final image
+will be downscaled. There is always a tradeoff.
 
 When Cubane generates different image versions for each size, it will *never*
 upscale an image. If the original image that was uploaded is only 400 pixels
@@ -354,6 +368,8 @@ wide, then Cubane will quite happily generate the sizes ``xx-small``,
 ``x-small`` and ``small``, but it will not generate any versions with higher
 resolutions because the result would be upscaled. The media loader will simply
 load the highest possible resolution that is required but also available.
+
+
 
 
 .. _topics/media/max_image_width:
@@ -381,8 +397,10 @@ the original image is greatly improved if the original image size is reduced.
 
 .. note::
 
-    You can turn off this behavior by setting :settings:`IMG_MAX_WIDTH` to
+    You can turn off this behaviour by setting :settings:`IMG_MAX_WIDTH` to
     ``None``.
+
+
 
 
 .. _topics/media/image_shapes:
@@ -439,7 +457,7 @@ the *original* aspect ratio of the image that was uploaded.
     <!-- render image in the listing -->
     {% image myImage 'listing' %}
 
-    <!-- error: unknonw shape -->
+    <!-- error: unknown shape -->
     {% image myImage 'does_not_exists' %}
 
 The shape must be declared ahead of time in ``IMAGE_SHAPES``. If the ``image``
@@ -456,21 +474,23 @@ production mode, this error will be ignored.
     If you can, keep the number of versions and shapes low.
 
 
+
+
 .. _topics/media/image_shape_names:
 
 Image Shape Names
 =================
 
 Cubane's backend system provides an overview of all shapes that are declared in
-the system. This is particular useful when uploading new images and changing
+the system. This is particularly useful when uploading new images and changing
 the focal point of an image.
 
 The focal point of an image will influence how Cubane will crop an image if
-neccessary to fit the image into specific shapes.
+necessary to fit the image into specific shapes.
 
 For example, a landscape image showing a person's face might need to be cropped
 to fit a more square or portrait format. If the focal point of the image is the
-center of the face, then all cropped shapes that are generated would have the
+centre of the face, then all cropped shapes that are generated would have the
 face in it and the system would not cut off the face.
 
 To clearly identify the different shapes that have been declared, a more useful
@@ -488,13 +508,15 @@ A more detailed description of each shape will help users to identify in which
 way each image shape is used on the website.
 
 
+
+
 .. _topics/media/image_shape_css:
 
 Image Shape CSS
 ===============
 
 Cubane's lazy-loading mechanism uses a specific CSS technique to ensure that
-the image area is reserved on the website, so that when the image is finally
+the image area is reserved on the website so that when the image is finally
 loaded, it will not disrupt the layout of the page by *pushing* content down.
 
 When rendering an image using the ``image`` tag, the system will generate
@@ -565,10 +587,9 @@ When embedding all resources for the ``cubane.medialoader`` app into your
 website, you will not only include the javascript code library for loading
 images. You will also include some CSS code along with it.
 
-Some of this CSS code is general, such as the general CSS rules related to the
-lazy-load container itself. However, all CSS rules related to the shape's
-aspect ratio are generated based on all shapes declared in your application
-settings.
+Some of this CSS code is related to the lazy-load container itself but it also
+contains all CSS rules related to the shape's aspect ratio which are generated
+based on all shapes declared in your application settings.
 
 When rendering images using the ``cubane.media`` template library, this will
 take advantage of such CSS rules as described above.
@@ -586,6 +607,8 @@ take advantage of such CSS rules as described above.
     load an image unless this is precisely your intention.
 
 
+
+
 .. _topics/media/lightbox:
 
 Lightbox
@@ -599,7 +622,7 @@ There are a number of libraries available to do this and we encourage you to
 use any third-party library to accomplish this.
 
 Because this task is so common, we added a basic lightbox to Cubane as the
-``cubane.lightbox`` package. It contains a customized version of Dmitry's
+``cubane.lightbox`` package. It contains a customised version of Dmitry's
 `Magnific Popup implementation <http://dimsemenov.com/plugins/magnific-popup/>`.
 
 .. note::
@@ -655,6 +678,8 @@ such container does not necessarily have to be the direct parent node:
     set to another.
 
 
+
+
 .. _topics/media/background_images:
 
 Background Images
@@ -690,7 +715,7 @@ The ``background_image`` template tag will render additional data attributes
 for the ``header-image`` element. You are free to use any other element, it
 does not necessarily have to be a ``div`` element.
 
-However, it is important that you use the CSS class ``lazy-load``, otherwise
+However, it is important that you use the CSS class ``lazy-load``, otherwise,
 the media loader will not be able to identify this element as a lazy-loading
 container.
 
@@ -721,13 +746,15 @@ as it would do otherwise if the height dictates a higher resolution image.
 
 .. note::
 
-    Depending on the height, you may end up loading a very large image in order
+    Depending on the height, you may end up, loading a very large image in order
     to satisfy the height requirement and a lot of the image is cropped as a
     consequence.
 
-    Alternatively, you can also use a technique called :ref:`Art Direction
-    <topics/media/art_direction>`, which allows you to change the shape of a
-    lazy-loaded image based on device properties.
+    Alternatively, you can also use a technique called
+    :ref:`topics/media/art_direction`, which allows you to change the shape of
+    a lazy-loaded image based on device properties.
+
+
 
 
 .. _topics/media/size_template:
@@ -754,7 +781,7 @@ images, this might be the element itself and not its direct parent element.
 You can annotate the direct parent that contains the image (or the element
 containing a background image) with the attribute ``data-size``. In this case,
 the lazy loader will determine the size of the corresponding image based on a
-common parent element higher up the hierarchie that has been annotated with the
+common parent element higher up the hierarchy that has been annotated with the
 attribute ``data-size-template``.
 
 Consider the following example:
@@ -800,6 +827,8 @@ the actual size of the image and its visibility.
                 {% endfor %}
             </div>
         </div>
+
+
 
 
 .. _topics/media/art_direction:
@@ -899,6 +928,8 @@ actual shape that is used at runtime based on the width of the browser window.
     functionality is not in place yet.
 
 
+
+
 .. _topics/media/art_direction_css:
 
 Art Direction and CSS Classes
@@ -940,6 +971,8 @@ rules that are declared in your application settings, such as:
 Feel free to use those CSS rules for your own element if you wanted to.
 
 
+
+
 .. _topics/media/svg:
 
 SVG Vector Images
@@ -949,7 +982,7 @@ Cubane's media pipeline has full support for SVG vector images. You can upload
 SVG files by using the backend system as you could upload any other type of
 image file. However, the processing of vector images is a bit different to
 bitmap based image formats, such as *jpg* or *png*, although the way you use
-SVG based images are exactly the same:
+SVG based images is exactly the same:
 
 .. code-block:: html+django
 
@@ -979,18 +1012,20 @@ clothing itself might be vector shapes, with a bitmap-based shadow map on top
 of it. This way it will give the otherwise solid and plain looking garment
 depth and definition and will appear dimensional and not flat.
 
-Representing clothing like this has another benefit: We might want to customize
-colors for individual layers of the garment (e.g. coloring different parts of
+Representing clothing like this has another benefit: We might want to customise
+colours for individual layers of the garment (e.g. colouring different parts of
 the SVG image programmatically). SVG gives us this flexibility as we will see
 shortly.
 
 Because SVG images may contain bitmap data, Cubane's media system will generate
-different image versions for each SVG image uploaded. The system will analyze
+different image versions for each SVG image uploaded. The system will analyse
 the SVG markup and generates a version where any embedded bitmap data has been
 scaled down to fit the maximum width of the image version.
 
 In order to be consistent, the system will do this process for any SVG image,
 regardless of whether the SVG image contains bitmap data or not.
+
+
 
 
 .. _topics/media/media_urls:
@@ -1005,7 +1040,7 @@ python.
 This is a common setup when hosting Django-based applications.
 
 For example, you can access any original media image by using the following
-url::
+URL::
 
     /media/originals/<bucket>/<primary-key>/<filename>.<ext>
 
@@ -1014,7 +1049,7 @@ For example::
     /media/originals/0/1/my-image.svg
 
 The first digit *0* represents the *bucket* or group of images. Cubane will
-organize images in groups of 1,000 images per folder. The second digit *1*
+organise images in groups of 1,000 images per folder. The second digit *1*
 represents the numeric primary key of the corresponding database record.
 
 Any image with a primary key between 0 and 999 will be associated with the
@@ -1023,11 +1058,11 @@ so forth.
 
 The last component is a representation of the image caption. Whenever you
 change the caption of an image, all image files will be renamed to reflect the
-full caption of the image within its filename. Because each image is organized
+full caption of the image within its filename. Because each image is organised
 within a folder that represents a unique primary key of the underlying database
 record, the caption may contain duplicates.
 
-Any derived image version is organized by applying the following structure::
+Any derived image version is organised by applying the following structure::
 
     /media/shapes/<shape>/<size>/<bucket>/<primary-key>/<filename>.<ext>
 
@@ -1057,12 +1092,14 @@ Which will then result in the following paths::
 In most cases you will not need to work with the underlying folder structure
 directly: Cubane's ``Media`` model provides a set of helper methods and
 properties that generate all the different URLs and file paths for you. Please
-refer to the :ref:`Media Model Reference <ref/media_model>` for more information.
+refer to the :ref:`ref/media_model` for more information.
+
+
 
 
 .. _topics/media/media_api_urls:
 
-Media API Urls
+Media API URLs
 ==============
 
 In *Production* mode, you would usually set up a web server to serve media files
@@ -1072,12 +1109,12 @@ some cases where you would like to apply modifications to an image on demand.
 Cubane will generate all image versions ahead of time for best performance in
 production, so there is no need to resize or crop images on demand.
 
-However, in particular, for SVG images you may want to colorize different
+However, in particular, for SVG images you may want to colourise different
 shapes of an SVG image at runtime based on user's choice. Coming back to the
 eCommerce example from earlier, a customer may configure a garment by choosing
-different colors for different parts of the garment.
+different colours for different parts of the garment.
 
-If you need to render a specific version based on those color choices, then
+If you need to render a specific version based on those colour choices, then
 Cubane's media API is the way to go.
 
 Usually, you can access any image by using the following URLs, as explained in
@@ -1085,7 +1122,7 @@ the `Media URLs`_. section::
 
     /media/shapes/header/small/0/1/my-image.svg
 
-If you need to customize an SVG image at runtime, you can simply use the media
+If you need to customise an SVG image at runtime, you can simply use the media
 API URL instead::
 
     /media-api/shapes/header/small/0/1/my-image.svg
@@ -1106,12 +1143,12 @@ following image changes the SVG shape with the identifier ``base`` to red::
 
     /media-api/shapes/header/small/0/1/my-image.svg?base=red
 
-The general rule for applying colorization attributes like this is::
+The general rule for applying colorisation attributes like this is::
 
     <identifier>=<attribute>:<value>
 
 The attribute can be omitted, in which case the default attribute is ``fill``,
-which is the instruction for an SVG shape's fill color. These two rules are
+which is the instruction for an SVG shape's fill colour. These two rules are
 therefore equivalent::
 
     /media-api/shapes/header/small/0/1/my-image.svg?base=red
@@ -1126,22 +1163,22 @@ Multiple attributes can be combined for the same or different shapes::
 
     /media-api/shapes/header/small/0/1/my-image.svg?base=fill:red&base=stroke:blue&base=stroke-width:2&zip=green
 
-When using colors, you can use *named* colors such as ``red``, ``green`` and
-``blue``, but you can also use any RGB color in its hexadecimal
+When using colours, you can use *named* colours such as ``red``, ``green`` and
+``blue``, but you can also use any RGB colour in its hexadecimal
 representation::
 
     /media-api/shapes/header/small/0/1/my-image.svg?base=e9d8c7
 
 .. note::
 
-    In CSS for example, RGB colors are usually represented by a leading sharp
+    In CSS for example, RGB colours are usually represented by a leading sharp
     symbol, such as ``#e9d8c7``. Since ``#`` has a reserved meaning within a
     URL and would need to be escaped, the media API simply omits the sharp
     symbol altogether.
 
 If you start out with a ``Media`` instance, then you can simply use ``image``
 template tag to generate markup that will load the image lazily through the
-media api with the given customizations applied.
+media api with the given customisations applied.
 
 .. code-block:: html+django
 
@@ -1149,8 +1186,8 @@ media api with the given customizations applied.
 
     {% image mySvgImage 'header' 'base=fill:red&base=stroke:blue' %}
 
-If all you need is the url itself - for example within an email template where
-lazy loading images is not available - then you can use the following template
+If all you need is the URL itself - for example within an email template where
+lazy loading images are not available - then you can use the following template
 tag instead:
 
 .. code-block:: html+django
@@ -1164,12 +1201,12 @@ be downloaded in *Debug* mode only. Cubane's SVG icon system relies on this
 extension in order to serve external SVG icon files in *Debug* mode.
 
 In *Debug* mode, any SVG icon set file can be accessed by using the following
-media api url (this file is usually only available in *Production* mode and is
+Media API URL (this file is usually only available in *Production* mode and is
 generated as part of the deployment process of the website)::
 
     /media-api/svgicons/frontend.svg
 
-This url refers to the SVG icon set file containing all SVG icons that have
+This URL refers to the SVG icon set file containing all SVG icons that have
 been declared for the ``frontend`` bucket. The SVG icon file is generated on
 demand.
 
@@ -1177,13 +1214,15 @@ Individual SVG icons can be accessed in the following way::
 
     /media-api/svgicons/frontend/phone.svg
 
-This url refers to an SVG icon file which only contains the ``phone`` resource
+This URL refers to an SVG icon file which only contains the ``phone`` resource
 as declared for the ``frontend`` resource bucket.
 
 .. seealso:
 
-    You can read more about Cubane's SVG icons system within the :ref:`Working
-    with SVG Icons <topics/svgicons>` section.
+    You can read more about Cubane's SVG icons system within the
+    :ref:`topics/svgicons` section.
+
+
 
 
 .. _topics/media/embedding_svg:
@@ -1213,17 +1252,17 @@ following way:
 .. note::
 
     This will still load and embed the SVG images lazily and only if visible,
-    even thought the image will be embedded into the DOM of the HTML document.
+    even though the image will be embedded into the DOM of the HTML document.
 
 When embedding SVG images, the markup of the SVG document becomes part of the
 DOM of the website document. SVG images may contain ``id`` attributes and
-``<style>`` tags. Usually this would mean that ``id`` attributes may collide
-because of duplication, since an identifier may collide with any identifier on
-your website. Perhaps even more severe, style information that was previously
-embedded within the SVG image is now applied globally to the entire document
-and may affect other parts of your website.
+``<style>`` tags. Usually, this would mean that ``id`` attributes may collide
+because of duplication, since an identifier may collide with any other
+identifier on your website. Perhaps even more severe, style information that
+was previously embedded within the SVG image is now applied globally to the
+entire document and may affect other parts of your website.
 
-To avoid these problems, all SVG images are optimized in the follow way:
+To avoid these problems, all SVG images are optimised in the following way:
 
 - Any style declarations within SVG images are removed and embedded as inline
   style attributes.
@@ -1231,8 +1270,10 @@ To avoid these problems, all SVG images are optimized in the follow way:
   SVG image file, the particular responsive version and shape. This means that
   different SVG images and different image sizes or shapes can safely be
   embedded without identifiers colliding. The prefix itself is added to the
-  ``svg`` tag as the ``data-prefix`` attribute, so that the prefix can be
+  ``svg`` tag as the ``data-prefix`` attribute so that the prefix can be
   obtained programmatically.
+
+
 
 
 .. _topics/media/svg_clip_paths:
@@ -1243,20 +1284,20 @@ SVG-based clip paths
 Wouldn’t it be great to break out of those rectangular shapes for images? With
 SVG-based clip paths, you can define an arbitrary shape, where an image - which
 would otherwise be rectangular - can be presented differently; for example as
-an ellipse or with a slope, in the shape of an arrow or any other shape you can
+an ellipse or with a slope, in the shape of an arrow or any other shape, you can
 think of.
 
 There is a CSS solution: The clip-path property allows us to define a specific
 region of an element to display, rather than showing the complete area.
 However, browser support is great but still limited.
 
-The next best thing that comes to mind are SVG clip paths: Very similar in
+The next best thing that comes to mind is SVG clip paths: Very similar in
 concept but — as it turns out — much wider supported in today's browsers.
 
 We are still going to use the clip-path CSS property, but instead of defining
 the clip path shape in CSS and having it acting on any arbitrary DOM element,
 we will use SVG instead. Both, the clip path itself and the targeted image need
-to live in SVG land in order to make this solution as widely supported as
+to live in *SVG land* in order to make this solution as widely supported as
 possible.
 
 The clip path itself can be defined in your template like the following example:
@@ -1279,11 +1320,11 @@ example a path.
 Please note that we use ``objectBoundingBox`` for the ``clipPathUnits``
 attribute. This way the path can be defined in percentage values (0.0 to 1.0)
 based on the bounding box of the object the clip path is assigned to. This is
-great for responsive images, because the clip path will simply resize itself
+great for responsive images because the clip path will simply resize itself
 according to the image.
 
-Once a clip path is defined anywhere within your template, you can start using
-the clip path by loading an image and applying the clip path to it:
+Once a clipping path is defined anywhere within your template, you can start
+using the clip path by loading an image and applying the clip path to it:
 
 .. code-block:: html+django
 

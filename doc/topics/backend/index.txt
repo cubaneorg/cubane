@@ -12,8 +12,8 @@ However, you can also use Cubane's backend system without any other components
 on its own if you require a quick and effective way to build a backend system
 for your data.
 
-Of course Django provides an excellent admin interface by itself, which can be
-used instead or beside Cubane's admin interface. However, when it comes to
+Of course, Django provides an excellent admin interface by itself, which can be
+used instead of or beside Cubane's admin interface. However, when it comes to
 managing content management data or media assets, those components will not
 integrate with Django's admin interface automatically in the way they integrate
 with Cubane's backend system.
@@ -53,7 +53,7 @@ well:
         'myApp'
     ])
 
-Finally, your ``urls.py`` file needs to attach the backend to the url structure
+Finally, your ``urls.py`` file needs to attach the backend to the URL structure
 of your application. A typical ``urls.py`` file for a CMS-enabled website may
 look like this:
 
@@ -99,7 +99,7 @@ URL: ``http://localhost:8000/admin/``.
         Username: admin
         Password: password
 
-    In production mode however, you will be required to change your password
+    In *production* mode, however, you will be required to change your password
     after the first login.
 
 

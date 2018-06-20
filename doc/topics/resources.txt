@@ -15,8 +15,9 @@ production system.
 
     In opposite to static assets, media is generally speaking content that was
     uploaded by an author and is part of the content of the website and not its
-    codebase. Read more about media within the topic for :ref:`Working with
-    Media <topics/media>`.
+    codebase. Read more about media within the topic for :ref:`topics/media`.
+
+
 
 
 .. _topics/resources/requirements:
@@ -26,7 +27,7 @@ Requirements
 
 Cubane's resource system requires Django's ``staticfiles`` app. Please read
 more about `how Django manages static files
-<https://docs.djangoproject.com/en/1.10/howto/static-files/>`_.
+<https://docs.djangoproject.com/en/1.11/howto/static-files/>`_.
 
 .. note::
 
@@ -38,8 +39,10 @@ more about `how Django manages static files
     When setting up ``settings.INSTALLED_APPS``, please make sure that
     ``django.contrib.staticfiles`` is listing *after* ``cubane`` and not before.
 
-    You can also use Cubane's :ref:`Settings <topics/settings>` environment to
-    setup installed apps, which will take care of this automatically for you.
+    You can also use Cubane's :ref:`topics/settings` environment to setup
+    installed apps, which will take care of this automatically for you.
+
+
 
 
 .. _topics/resources/introduction:
@@ -48,8 +51,8 @@ What the Resource Management System does
 ========================================
 
 Cubane's resource management system allows you to define a list of *static
-files* per Django app. In your project settings you can then define which app's
-resources are combined into a named *bucket*.
+files* per Django app. In your project settings, you can then define which
+app's resources are combined into a named *bucket*.
 
 All resource files that are listed for each app within a bucket are then
 combined into one resource file. Finally, that resource file is minified and
@@ -61,12 +64,14 @@ however, in *production* mode, there is usually only one file included per
 *bucket* and type of resource.
 
 
+
+
 .. _topics/resources/declaring_resources:
 
 Declaring Resources
 ===================
 
-All resources for an app are defined by an array ``RESOURCES`` within the
+All resources for an app are defined by the array ``RESOURCES`` within the
 ``__init__.py`` file of your python package that is listed in your
 `settings.INSTALLED_APPS`. Let's assume that we had an app called ``myApp``,
 which defined the following resources:
@@ -120,6 +125,8 @@ installed in ``settings.INSTALLED_APP``:
     ]
 
 
+
+
 .. _topics/resources/declaring_resource_buckets:
 
 Declaring Resource Buckets
@@ -133,7 +140,7 @@ purposes: You may have a bucket for your front-end, then you might define
 another bucket that is inlined into the template because those resources need
 higher priority.
 
-You may also have a print style as a separate file if you prefer to organize
+You may also have a print style as a separate file if you prefer to organise
 your print style that way.
 
 Cubane's backend system requires some style information as well and you
@@ -176,13 +183,15 @@ from only one app, which is ``cubane.medialoader``. The media loader is
 responsible for *lazy-loading* images and is therefore given its own bucket in
 order to inline its code into the website markup directly for better
 performance. You can read more about Cubane's media system within the
-:ref:`Working with Media <topics/media>` section.
+:ref:`topics/media` section.
 
 .. note::
 
     The buckets ``backend`` and ``backend-inline`` are reserved for Cubane's
     default backend system. Apart from those, you can declare as many buckets
     as you need.
+
+
 
 
 .. _topics/resources/include:
@@ -237,6 +246,8 @@ The following sections will guide you through the different ways of embedding
 resources.
 
 
+
+
 .. _topics/resources/inline_include:
 
 Inline Resources
@@ -280,6 +291,8 @@ minified before being embedded into the template at deployment time.
     referring to inline HTML code.
 
 
+
+
 .. _topics/resources/external_css:
 
 External CSS
@@ -300,8 +313,8 @@ An example:
     {% resources 'frontend' 'css' 'print' %}
 
 Unlike ``inline_resources``, an additional argument may be provided that
-declares the CSS media type, such as ``screen`` or ``print``. By default.
-``screen`` is assumed by default if this argument is not given.
+declares the CSS media type, such as ``screen`` or ``print``. ``screen`` is
+assumed by default if this argument is not given.
 
 Cubane will generate markup like ``<link href="..." rel="stylesheet"
 media="screen">`` when including CSS resources using the ``resources`` template
@@ -327,9 +340,9 @@ resource without blocking the rendering of the website.
 .. note::
 
     Browsers are beginning to support a standard markup pattern for loading CSS
-    (and other file types) asynchronously via ``<link rel="preload">``. Cubane
-    may start to support those techniques in favor of the current
-    Javascript-based solution once browser support is sufficient.
+    (and other file types) asynchronously via ``<link rel="preload">``.
+
+
 
 
 .. _topics/resources/external_js:
@@ -359,6 +372,8 @@ external Javascript file (representing the ``frontend`` bucket) asynchronously.
 
 The last line is loading the same external Javascript file by blocking the
 browser.
+
+
 
 
 .. _topics/resources/declaring_css_resources:
@@ -408,11 +423,11 @@ type ``screen`` and the remaining two resources for the media type ``print``.
 
 .. note::
 
-    For CSS, the order in which resource files appear within the list may
-    matter; Cubane will combine and minify all CSS files within the same bucket
-    and media type in the order as specified. If your CSS files need to appear
-    in a specific order, then please make sure that this order is reflected
-    when listing your resources.
+    For CSS, the order in which resource files appear in the list may matter;
+    Cubane will combine and minify all CSS files within the same bucket and
+    media type in the order as specified. If your CSS files need to appear in a
+    specific order, then please make sure that this order is reflected when
+    listing your resources.
 
 When working with CSS, it is quite common to use a CSS reset style to unify the
 default browser style to a known and precise state, so that your own style can
@@ -456,6 +471,8 @@ followed by your own style files.
     matters, in particular with CSS reset style.
 
 
+
+
 .. _topics/resources/declaring_js_resources:
 
 Declaring Javascript Resources
@@ -475,6 +492,8 @@ multiple Javascript files:
 The order in which Javascript files are declared may be important. For example,
 if ``main.js`` would refer to JQuery, then you should make sure that the source
 for JQuery appears *before* ``main.js``.
+
+
 
 
 .. _topics/resources/declaring_font_resources:
@@ -515,13 +534,14 @@ and will also generate all required CSS style for the declaration of the font.
 .. note::
 
     When referring to fonts, make sure that the name of the font is given as
-    listen on the Google WebFonts Helper website, otherwise, Cubane will not be
+    listed on the Google WebFonts Helper website, otherwise, Cubane will not be
     able to locate the exact font.
 
-Cubane's font system allows for further customization and extension which would
-go beyond the scope of this section. Please refer to the :ref:`Working with
-Fonts <topics/fonts>` section for further information about Cubane's font
-system.
+Cubane's font system allows for further customisation and extension which would
+go beyond the scope of this section. Please refer to the :ref:`topics/fonts`
+section for further information about Cubane's font system.
+
+
 
 
 .. _topics/resources/abs_path:
@@ -530,7 +550,7 @@ Declaring Resources with Absolute Path
 ======================================
 
 When declaring resources, you would usually use a relative path to refer to
-individual resource files, like in the following example:
+individual resource files, as in the following example:
 
 .. code-block:: python
 
@@ -576,7 +596,7 @@ resources by using an *absolute path* instead; starting with a slash (*/*):
 
 In this example, all resources are referred to by using absolute paths. An
 absolute path will not be prefixed automatically with the name of the app that
-declared those resources to begin with.
+declared those resources.
 
 Instead, an absolute path is fed into Django's ``staticfiles`` resolution
 mechanism directly. As long as the path assembles a valid path to a static
@@ -593,6 +613,8 @@ asset for *any* installed Django app, this will work.
     do not intend to share your app with anyone else.
 
 
+
+
 .. _topics/resources/media_resources:
 
 Declaring Media Resources
@@ -606,7 +628,7 @@ On the contrary, there is media, which is usually user-generated content, like
 images uploaded to the system etc. Such data is usually stored in one folder
 called ``media``, which is *not* part of the code repository.
 
-If you require assets that are downloaded from third party sources and are of
+If you require assets that are downloaded from third-party sources and are of
 temporary nature, you may want to store such data within the *media* folder and
 *not* within the *static* folder, since the *media* folder is not part of the
 code repository.
@@ -622,11 +644,13 @@ to those assets by referring to the media folder in the following way:
     ]
 
 In this example, we assume that you have some process for caching CSS style
-information that is generated by a third party. Such data is stored within the
+information that is generated by a third party. Such data is stored in the
 *media* folder for reasons outlined above.
 
-In order to include this resource into the build process, you can simply refer
-to the file via an absolute path to the *media* folder.
+In order to include this resource in the build process, you can simply refer to
+the file via an absolute path to the *media* folder.
+
+
 
 
 .. _topics/resources/pattern_expansion:
@@ -664,7 +688,7 @@ order*.
 .. note::
 
     When using pattern expansions, the resulting list of individual file paths
-    is sorted alphabetical by default. If the order in which your resource
+    is sorted alphabetically by default. If the order in which your resource
     files appear matters than it may not be appropriate to use pattern
     expansion.
 
@@ -677,8 +701,9 @@ order*.
     use pattern expansion where the order of things does not matter.
 
 Pattern expansion is particularly useful for SVG-based icons. You can read more
-about SVG-based icon sets within the :ref:`Working with SVG Icons
-<topics/svgicons>` section.
+about SVG-based icon sets within the :ref:`topics/svgicons` section.
+
+
 
 
 .. _topics/resources/templates:
@@ -703,7 +728,7 @@ your settings within your Javascript files, the template system might be exactly
 what you need.
 
 First, you have to rename your asset file to include the reserved extension
-``template``, for example ``main.js`` would become ``main.template.js``.
+``template``, for example, ``main.js`` would become ``main.template.js``.
 
 .. code-block:: python
 
@@ -753,6 +778,8 @@ file ``main.template.js`` file actually contains the final result after the
 website has been deployed.
 
 
+
+
 .. _topics/resources/requirejs:
 
 Using RequireJS
@@ -781,12 +808,12 @@ sources that are using RequireJS as a module loader.
 
 ``filename``
 
-    Required. For each source, the ``filename`` argument is required in order to provide
-    the path to the main entry file for your RequireJS source.
+    Required. For each source, the ``filename`` argument is required in order
+    to provide the path to the main entry file for your RequireJS source.
 
 ``baseurl``
 
-    Optional. Root directory to every module search.
+    Optional. Root directory for every module search.
 
 ``module``
 
@@ -794,8 +821,11 @@ sources that are using RequireJS as a module loader.
 
 .. seealso::
 
-    Please refer to the `RequireJS Documentation
-    <http://requirejs.org/docs/start.html>` for more information on RequireJS.
+    Please refer to the
+    `RequireJS Documentation <http://requirejs.org/docs/start.html>` for more
+    information on RequireJS.
+
+
 
 
 .. _topics/resources/extension:
