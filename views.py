@@ -12,7 +12,6 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.template.loader import TemplateDoesNotExist
 from django.forms import ModelForm, ModelChoiceField
 from django.forms.models import fields_for_model
-from django.forms.widgets import CheckboxInput, Select, RadioSelect
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -947,7 +946,7 @@ class ModelView(TemplateView):
                     field.initial = None
 
                 # no help text unless checkbox or radio
-                if not isinstance(field.widget, (CheckboxInput, RadioSelect)):
+                if not isinstance(field.widget, (forms.CheckboxInput, forms.RadioSelect)):
                     field.help_text = None
 
                 # multiple-choices fields must have an empty value, unless

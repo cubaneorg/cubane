@@ -269,6 +269,26 @@ class ExtFileField(forms.FileField):
                 )
 
 
+class RadioSelect(forms.RadioSelect):
+    """
+    Radio select widget which is also considering choices from its form field
+    unlike Django's implementation in DJango 1.11.
+    """
+    def set_choices(self, choices):
+        self._choices = choices
+
+
+    def get_choices(self):
+        if not self._choices:
+            if hasattr(self, '_field'):
+                return self._field.choices
+        else:
+            return self._choices
+
+
+    choices = property(get_choices, set_choices)
+
+
 class MultiSelectFormField(forms.MultipleChoiceField):
     """
     Based on django's CheckboxSelectMultiple, it provides a list of
@@ -562,8 +582,10 @@ def form_configure(form, request, instance=None, edit=True):
                 widget=forms.HiddenInput()
             )
 
-    # configure form fields
+    # configure form fields and assign to widgets
     for field in form.fields.values():
+        field.widget._field = field
+
         if hasattr(field, 'configure'):
             field.configure(request, form, instance, edit)
 
