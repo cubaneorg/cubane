@@ -144,7 +144,7 @@ class MetaPreviewWidget(widgets.Widget):
     re_duplicate = r'/duplicate[/]{0,1}$'
     re_pages = r'/pages[/]{0,1}$'
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         """
         Returns this Widget rendered as HTML, as a Unicode string.
 

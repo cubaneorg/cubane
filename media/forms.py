@@ -111,7 +111,7 @@ class FileInputWidget(forms.ClearableFileInput):
         super(FileInputWidget, self).__init__(*args, **kwargs)
 
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if self._multiple:
             attrs['multiple'] = 'multiple'
 

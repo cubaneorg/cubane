@@ -26,7 +26,7 @@ class BasketWidget(forms.Widget):
         self.basket = None
 
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         return render_to_string('cubane/ishop/elements/order/basket/basket_frame.html', context={
             'order': self.order,
             'basket': self.basket,

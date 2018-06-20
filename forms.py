@@ -59,7 +59,7 @@ class DateInput(forms.widgets.TextInput):
         return value
 
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None:
             value = ''
         final_attrs = build_attrs(self.attrs, attrs, type=self.input_type, name=name)
@@ -76,7 +76,7 @@ class TimeInput(forms.widgets.Input):
     input_type = 'text'
 
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None:
             value = ''
         final_attrs = build_attrs(self.attrs, attrs, type=self.input_type, name=name)
@@ -127,7 +127,7 @@ class ColorInput(forms.widgets.Input):
     """
     input_type = 'text'
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None:
             value = ''
         final_attrs = build_attrs(self.attrs, attrs, type=self.input_type, name=name)
@@ -146,7 +146,7 @@ class StaticTextWidget(forms.Widget):
         super(StaticTextWidget, self).__init__(*args, **kwargs)
 
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         return mark_safe(u'<span class="static-text">%s</span>' % unicode(self.text if self.text else value))
 
 
@@ -183,7 +183,7 @@ class UrlInput(BootstrapTextInput):
 
 
 class SectionWidget(forms.Widget):
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         final_attrs = build_attrs(self.attrs, attrs)
         help_text = final_attrs.get('help_text', None)
         if help_text == '': help_text = None
@@ -214,7 +214,7 @@ class SectionField(forms.Field):
 
 
 class LocationMapWidget(forms.Widget):
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if attrs == None: attrs = {}
         attrs.update(self.attrs)
         attrs.setdefault('data-key', settings.CUBANE_GOOGLE_MAP_API_KEY)

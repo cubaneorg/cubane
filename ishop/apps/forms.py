@@ -32,7 +32,7 @@ class VarietySelectWidget(forms.Widget):
         super(VarietySelectWidget, self).__init__(attrs)
 
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None: value = ''
 
         # get shop

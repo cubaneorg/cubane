@@ -209,7 +209,7 @@ class BrowseSelectThumbnail(widgets.Select):
         super(BrowseSelectThumbnail, self).__init__(*args, **kwargs)
 
 
-    def render(self, name, value, attrs={}, choices=()):
+    def render(self, name, value, attrs={}, choices=(), renderer=None):
         data_name = self.attrs.get('data_name', self.data_name)
         browse = self.attrs.get('browse', self.browse)
         create = self.attrs.get('create', self.create)
@@ -396,7 +396,7 @@ class BrowseTreeField(BrowseField):
 
 
 class ModelSelectMultiple(widgets.CheckboxSelectMultiple):
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None, choices=(), renderer=None):
         queryset         = self.attrs.get('queryset', None)
         url              = self.attrs.get('url', '')
         alt_url          = self.attrs.get('alt_url', '')
@@ -615,7 +615,7 @@ class RelatedListingWidget(widgets.Widget):
     """
     Widget to present a listing of related model instances.
     """
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         view = self.attrs.get('view')
         context = view.index(self._request)
         context['full_height'] = self.attrs.get('full_height')
@@ -696,7 +696,7 @@ class RelatedEditWidget(widgets.Widget):
     """
     Widget to present a list of editable related model instances.
     """
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         # try to obtain value from initials with prefix in case we are
         # a nested form with a prefix...
         if value is None:
@@ -993,7 +993,7 @@ class InfoWidget(widgets.Widget):
     """
     Widget for rendering arbitrary html content.
     """
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if self._field.render:
             return self._field.render(self._request, self._instance, self._edit)
         elif self._field.html:
