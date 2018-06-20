@@ -50,6 +50,7 @@ class PostgresSql(Sql):
     SQL_TABLE_EXISTS = 'select 1 from information_schema.tables where table_type = \'BASE TABLE\' and table_schema = \'public\' and table_name=\'%(table)s\';'
     SQL_CONSTRAINT_EXISTS = 'select constraint_name from information_schema.constraint_column_usage where table_name = \'%(rel_table)s\' and constraint_name = \'%(name)s\''
     SQL_INDEX_EXISTS = 'select 1 FROM pg_class c join pg_namespace n ON n.oid = c.relnamespace where c.relname = \'%(name)s\' and c.relkind = \'i\';'
+    SQL_GET_INDICES = 'SELECT * FROM pg_indexes WHERE tablename = \'%(table)s\';'
     SQL_IS_INDEX_UNIQUE = 'select idx.indisunique FROM pg_class c join pg_namespace n ON n.oid = c.relnamespace join pg_index idx on idx.indexrelid = c.oid where c.relname = \'%(name)s\' and c.relkind = \'i\';'
     SQL_COLUMN_EXISTS = 'select 1 from information_schema.columns WHERE table_name = \'%(table)s\' and column_name = \'%(column_name)s\';'
 
@@ -61,6 +62,7 @@ class PostgresSql(Sql):
     SQL_ALTER_TABLE_ADD_COLUMN = 'alter table "%(table)s" add column "%(column)s" %(datatype)s %(null)s%(default)s;'
     SQL_ALTER_TABLE_DROP_COLUMN = 'alter table "%(table)s" drop column "%(column)s";'
     SQL_ALTER_TABLE_DROP_CONSTRAINT = 'alter table "%(table)s" drop constraint "%(constraint_name)s";'
+    SQL_ALTER_TABLE_DROP_CONSTRAINT_CASCADE = 'alter table "%(table)s" drop constraint "%(constraint_name)s" cascade;'
     SQL_ALTER_TABLE_ADD_FOREIGN_KEY_CONSTRAINT = 'alter table "%(table)s" add constraint "%(name)s" foreign key ("%(column)s") references "%(rel_table)s" ("%(rel_column)s") DEFERRABLE INITIALLY DEFERRED;'
     SQL_ALTER_TABLE_ADD_UNIQUE_CONSTRAINT = 'alter table "%(table)s" add constraint "%(index_name)s" unique (%(column_list)s);'
     SQL_ALTER_TABLE_RENAME_COLUMN = 'alter table "%(table)s" rename "%(column)s" to "%(new_column)s";'
@@ -78,6 +80,7 @@ class PostgresSql(Sql):
 
     SQL_CREATE_INDEX = 'create index "%(index_name)s" on "%(table)s" (%(column_list)s);'
     SQL_DROP_INDEX = 'drop index %(index_name)s;'
+    SQL_DROP_INDEX_CASCADE = 'drop index %(index_name)s cascade;'
     SQL_CREATE_LIKE_INDEX = 'create index "%(index_name)s" on "%(table)s" using %(index_type)s ("%(column)s" %(pattern_ops)s);'
     SQL_CREATE_FTS_INDEX = 'create index %(index_name)s on %(table)s using gin(%(column_list)s);'
 
@@ -349,6 +352,16 @@ class PostgresSql(Sql):
         })
 
 
+    def get_table_indices(self, table):
+        """
+        Return a list of all index names for the given table.
+        """
+        rows = self.select(self.SQL_GET_INDICES % {
+            'table': table
+        })
+        return [row.get('indexname') for row in rows]
+
+
     def is_index_unique(self, name):
         """
         Assuming the given index exists, return True if the index if unique;
@@ -419,16 +432,16 @@ class PostgresSql(Sql):
             })
 
 
-    def drop_index(self, table, index_name):
+    def drop_index(self, table, index_name, cascade=False):
         """
         Remove the index with the given name. If the index is unique, we will
         drop the unique constraint instead, which will drop the index as well.
         """
-        if self.is_index_unique(index_name):
-            if self.constraint_exists(table, index_name):
-                return self.drop_constraint(table, index_name)
+        if self.constraint_exists(table, index_name):
+            return self.drop_constraint(table, index_name, cascade)
 
-        self.sql(self.SQL_DROP_INDEX % {
+        sql = self.SQL_DROP_INDEX_CASCADE if cascade else self.SQL_DROP_INDEX
+        self.sql(sql % {
             'index_name': index_name
         })
 
@@ -461,7 +474,7 @@ class PostgresSql(Sql):
         exists. Constraints are stored for the referenced table, so the first
         argument is the table to which a constraint is referenced.
         """
-        return self.has_one_row(self.SQL_CONSTRAINT_EXISTS % {
+        return self.has_one_or_more_rows(self.SQL_CONSTRAINT_EXISTS % {
             'rel_table': rel_table,
             'name': name
         })
@@ -571,11 +584,12 @@ class PostgresSql(Sql):
             })
 
 
-    def drop_constraint(self, table, constraint_name):
+    def drop_constraint(self, table, constraint_name, cascade=False):
         """
         Delete (drop) given constraint for the given table.
         """
-        self.sql(self.SQL_ALTER_TABLE_DROP_CONSTRAINT % {
+        sql = self.SQL_ALTER_TABLE_DROP_CONSTRAINT_CASCADE if cascade else self.SQL_ALTER_TABLE_DROP_CONSTRAINT
+        self.sql(sql % {
             'table': table,
             'constraint_name': constraint_name
         })

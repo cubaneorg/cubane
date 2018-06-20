@@ -105,8 +105,12 @@ def update_fields(schema, model):
     """
     Update field attributes for each column of the given model/tabel.
     """
+    # update individual fields
     for field in schema.get_model_fields(model):
         schema.update_field(model, field)
+
+    # remove deprecated indices
+    schema.remove_deprecated_indices(model)
 
 
 def fts_install_for_model(schema, model):

@@ -476,6 +476,36 @@ class Schema(object):
                     self.sql.change_column_data_type(model._meta.db_table, field.column, 'varchar(%d)' % field.max_length)
 
 
+    def remove_deprecated_indices(self, model):
+        """
+        Remove any indices that no longer exist.
+        """
+        # collect all indices that should be present
+        table = model._meta.db_table
+        indices = set()
+        for field in self.get_model_fields(model):
+            indices.add(self.sql.get_index_name(table, field.column))
+
+            if isinstance(field, self.TEXTFIELDS):
+                indices.add(self.sql.get_like_index_name(table, field.column))
+
+            if field.unique:
+                indices.add(self.sql.get_index_name(table, field.column, unique=True))
+
+        # collect FTS indices
+        fts_columns = self.get_fts_columns_for_model(model)
+        for column, fields in fts_columns.items():
+            index_name = 'cubane_fts_%s_%s' % (table, column)
+            indices.add(index_name)
+
+        # determine all indices that are actually present and remove those
+        # that should not be there...
+        actual_indices = self.sql.get_table_indices(table)
+        for index in actual_indices:
+            if index not in indices and index not in self._keep_indicies:
+                self.sql.drop_index(table, index, cascade=True)
+
+
     def drop_index(self, table, index_name):
         """
         Drop the given index from the given table, unless the index should
