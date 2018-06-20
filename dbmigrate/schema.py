@@ -489,8 +489,11 @@ class Schema(object):
             if isinstance(field, self.TEXTFIELDS):
                 indices.add(self.sql.get_like_index_name(table, field.column))
 
-            if field.unique:
+            if field.unique and not field.primary_key:
                 indices.add(self.sql.get_index_name(table, field.column, unique=True))
+
+            if field.primary_key:
+                indices.add(self.sql.get_index_name(table, 'pkey'))
 
         # collect FTS indices
         fts_columns = self.get_fts_columns_for_model(model)
