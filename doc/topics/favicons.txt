@@ -1,10 +1,10 @@
 .. _topics/favicons:
 
 =========================
-Generating Favorite Icons
+Generating Favourite Icons
 =========================
 
-A *favicon* (short for *favorite icon*) is an image file that browsers
+A *favicon* (short for *favourite icon*) is an image file that browsers
 associate with a particular website.
 
 In order to support a variety of desktop and mobile devices, a number of such
@@ -17,12 +17,16 @@ Cubane supports a number of different favicon formats *out of the box* and
 will generate favicon files based on one image source automatically for you.
 
 
-Using Standard Favorite Icons
------------------------------
 
-In you base template, simply use the ``favicons`` template tag as part of the
-``resource_tags`` template library to generate the required markup for a
-number of different favicon references:
+
+.. _topics/favicons/standard_favicons:
+
+Using Standard Favourite Icons
+==============================
+
+Simply use the ``favicons`` template tag as part of the ``resource_tags``
+template library to generate the required markup for a number of different
+favicon references:
 
 .. code-block:: html+django
 
@@ -54,12 +58,16 @@ By default, the favicon image generator will use the file
 
 .. tip::
 
-    For best performance, we advise using an image size of 320 by 320 pixels
-    for the ``favicon.png`` source image file.
+    For best results, we advise using an image size of 320 by 320 pixels for
+    the ``favicon.png`` source image file.
 
+
+
+
+.. _topics/favicons/changing_source_image_file:
 
 Changing source image file
---------------------------
+==========================
 
 The image source file that is used to generate different versions of the
 favicon is determined by the two settings variables: :settings:`FAVICON_PATH`
@@ -67,7 +75,7 @@ and :settings:`FAVICON_FILENAME`. Together they form a path within the static
 root folder of your application.
 
 Feel free to change the path or filename as you require. The image source file
-is required to be insufficient resolution. Some favicon image formats require
+is required to be of sufficient resolution. Some favicon image formats require
 up to 310 by 310 pixels.
 
 .. note::
@@ -78,10 +86,14 @@ up to 310 by 310 pixels.
     various formats.
 
 
-Adding favicon image formats
-----------------------------
 
-You can customize the particular image file formats that Cubane generates by
+
+.. _topics/favicons/adding_favicon_image_formats:
+
+Adding favicon image formats
+============================
+
+You can customise the particular image file formats that Cubane generates by
 changing :settings:`FAVICON_PNG_SIZES` and/or :settings:`FAVICON_ICO_SIZES`.
 
 :settings:`FAVICON_PNG_SIZES` represents a list of image formats that are
@@ -117,8 +129,12 @@ Simply reference any previously generated PNG image that should be embedded
 into one single icon file: ``favicon.ico``.
 
 
-Customizing favicon markup
---------------------------
+
+
+.. _topics/favicons/customising_favicon_markup:
+
+Customising favicon markup
+==========================
 
 When using the ``favicons`` template tag, Cubane will simply include the
 template file ``cubane/favicons.html``, which contains markup for a list of
