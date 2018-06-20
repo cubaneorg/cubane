@@ -4,6 +4,7 @@ from django.conf import settings
 from django.http import Http404, HttpRequest, HttpResponse
 from django.http.response import HttpResponsePermanentRedirect
 from django.test.utils import override_settings
+from django.template.context import Context
 from django.template.defaultfilters import slugify
 from django.db.models.query import QuerySet
 from django.test.client import RequestFactory
@@ -17,6 +18,7 @@ from cubane.blog.models import BlogPost
 from cubane.testapp.models import TestModel, Settings
 from cubane.testapp.forms import EnquiryForm
 from cubane.testapp.models import TestGroupedModelA, TestDirectoryContent, TestDirectoryCategory
+from cubane.testapp.views import TestAppCMS
 from mock import Mock, patch
 from datetime import datetime
 import json
@@ -1318,6 +1320,31 @@ class CMSViewGetPageModelTestCase(CubaneTestCase):
     def test_get_page_model_returns_page_if_not_defined_in_settings(self):
         from cubane.cms.models import Page
         self.assertEqual(get_page_model(), Page)
+
+
+class CMSViewOnRenderContentPipelinePatcher(CubaneTestCase):
+    def setUp(self):
+        factory = RequestFactory()
+        self.request = factory.get('/')
+        self.cms = TestAppCMS()
+
+
+    def test_should_replace_registered_snippet(self):
+        self.cms.map_content('FOO', 'BAR')
+        result = self.cms.on_render_content_pipeline(self.request, 'Hello {FOO}', {})
+        self.assertEqual('Hello BAR', result)
+
+
+    def test_should_replace_registered_snippet_with_template_code(self):
+        self.cms.map_content('FOO', '{{ subject }}')
+        result = self.cms.on_render_content_pipeline(self.request, 'Hello {FOO}', {'subject': 'BAR'})
+        self.assertEqual('Hello BAR', result)
+
+
+    def test_should_replace_registered_snippet_with_template_code_using_template_context(self):
+        self.cms.map_content('FOO', '{{ subject }}')
+        result = self.cms.on_render_content_pipeline(self.request, 'Hello {FOO}', Context({'subject': 'BAR'}))
+        self.assertEqual('Hello BAR', result)
 
 
 class CMSViewGetSitemapTestCase(CubaneTestCase):

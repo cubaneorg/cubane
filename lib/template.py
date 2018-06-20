@@ -21,12 +21,11 @@ class CubaneTemplate(Template):
                 reraise(exc, self.backend)
 
 
-def get_template(template_name, using=None):
+def get_compatible_template(t):
     """
-    Return a template based on the given template name.
+    Return a compatible template that can render content based on a template
+    context and not only a dictionary.
     """
-    t = django_get_template(template_name, using)
-
     # Django 1.11 migration:
     # django.template.backends.django.Template.render()
     #   prohibits non-dict context
@@ -35,5 +34,13 @@ def get_template(template_name, using=None):
     # Context avoiding having to flatten the context which will be slow.
     if isinstance(t, Template):
         t = CubaneTemplate(t.template, t.backend)
-
     return t
+
+
+def get_template(template_name, using=None):
+    """
+    Return a template based on the given template name.
+    """
+    return get_compatible_template(
+        django_get_template(template_name, using)
+    )

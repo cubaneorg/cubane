@@ -43,6 +43,7 @@ from cubane.lib.mail import cubane_send_cms_enquiry_mail
 from cubane.lib.mail import cubane_send_mail_template
 from cubane.lib.mail import get_ordered_list_of_fields
 from cubane.lib.text import char_range
+from cubane.lib.template import get_compatible_template
 from datetime import datetime
 import re
 import os
@@ -1798,7 +1799,7 @@ class CMS(View):
                         return replacement(request, c)
                     elif template:
                         c.update(m.groupdict())
-                        return template.render(c)
+                        return get_compatible_template(template).render(c)
                     else:
                         return replacement
 
