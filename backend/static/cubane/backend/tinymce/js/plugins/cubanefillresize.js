@@ -66,11 +66,11 @@ tinymce.PluginManager.add('cubanefillresize', function(editor) {
             if (frontendEditing) {
                 h = wh - (content.height() - wh);
             } else {
-                h = wh - (content.height() + 220 - wh);
+                h = wh - (content.height() + 270 - wh);
             }
 
 	    	iframe.height(h);
-	    }, 0);
+	    }, 50);
 	}
 
 
