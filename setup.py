@@ -9,10 +9,7 @@ with open("README.md", "r") as fh:
 
 requirements = []
 with open("cubane/requirements/common.txt", "r") as fh:
-    requirements = fh.readlines()
-
-# remove newline
-requirements = [requirement[:-1] for requirement in requirements]
+    requirements = fh.read().splitlines()
 
 
 version = '.'.join([unicode(x) for x in cubane.VERSION[:3]])
