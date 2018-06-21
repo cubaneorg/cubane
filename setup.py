@@ -7,6 +7,14 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+requirements = []
+with open("cubane/requirements/common.txt", "r") as fh:
+    requirements = fh.readlines()
+
+# remove newline
+requirements = [requirement[:-1] for requirement in requirements]
+
+
 version = '.'.join([unicode(x) for x in cubane.VERSION[:3]])
 
 
@@ -36,25 +44,5 @@ setuptools.setup(
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=['cubane'],
-    install_requires=[
-        'Django>=1.10,<=1.11',
-        'psycopg2>=2.5.4',
-        'beautifulsoup4>=4.5.3',
-        'lxml>=3.7.2',
-        'django-htmlmin>=0.9.0',
-        'Wand>=0.4.4',
-        'requests>=2.12.5',
-        'requests[security]',
-        'pycrypto>=2.6.1',
-        'oauth2>=1.9.0.post1',
-        'mailsnake>=1.6.4',
-        'ipaddr>=2.1.11',
-        'ifaddr>=0.1.4',
-        'pydns>=2.3.6',
-        'pyspf==2.0.11',
-        'chardet>=2.3.0',
-        'stripe>=1.46.0',
-        'pyBarcode>=0.7',
-        'idna>=2.5'
-    ]
+    install_requires=requirements
 )
