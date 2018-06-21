@@ -37,7 +37,7 @@ Thumbs.db
 manage.py
 
 # testapp media folder
-testapp/media
+cubane/testapp/media
 
 # documentation build folder
-doc/_build
+cubane/doc/_build

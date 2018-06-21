@@ -7,5 +7,5 @@ else
   echo "Run full test with ./test full. This test suite will NOT cover all tests but runs significantly faster than running the full suite."
 fi
 
-python manage.py test cubane.tests
+python manage.py test cubane
 export DEV_TEST_FULL=0

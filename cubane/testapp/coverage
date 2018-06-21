@@ -8,7 +8,7 @@ else
 fi
 
 find . -name \*.pyc -delete
-coverage run --source='../' manage.py test cubane.tests
+coverage run --source='../' manage.py test cubane
 coverage report -m
 coverage erase
 export DEV_TEST_FULL
