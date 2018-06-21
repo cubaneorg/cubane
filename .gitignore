@@ -40,4 +40,4 @@ manage.py
 cubane/testapp/media
 
 # documentation build folder
-cubane/doc/_build
+doc/_build

@@ -1,5 +1,0 @@
-.. _topics/cms:
-
-==================
-Content Management
-==================

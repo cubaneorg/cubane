@@ -1,5 +1,0 @@
-.. _topics/pull:
-
-=======================
-Pulling Production Data
-=======================
