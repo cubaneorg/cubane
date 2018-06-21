@@ -1127,7 +1127,7 @@ class PageContext(object):
         # hierarchical pages
         if settings.PAGE_HIERARCHY and current_page.pk:
             context.update({
-                'hierarchical_pages': list(get_page_model().objects.filter(parent_id=current_page.pk).order_by('seq'))
+                'hierarchical_pages': list(get_page_model().objects.filter(parent_id=current_page.pk).exclude(disabled=True).order_by('seq'))
             })
 
         # child pages
