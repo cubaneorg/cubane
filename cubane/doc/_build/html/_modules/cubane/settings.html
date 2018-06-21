@@ -1,0 +1,1197 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cubane.settings &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../../index.html">
+            <img src="../../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../topics/index.html">Using Cubane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>cubane.settings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cubane.settings</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=UTF-8</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">cubane.lib.module</span> <span class="k">import</span> <span class="n">get_module_by_name</span><span class="p">,</span> <span class="n">module_exists</span>
+<span class="kn">from</span> <span class="nn">cubane.lib.acl</span> <span class="k">import</span> <span class="n">Acl</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">class</span> <span class="nc">SettingsValidationError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">validate_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the given settings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if staticfiles is used, make sure it is installed AFTER cubane.</span>
+    <span class="k">if</span> <span class="s1">&#39;django.contrib.staticfiles&#39;</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span> <span class="ow">and</span> \
+       <span class="s1">&#39;cubane&#39;</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="p">:</span>
+        <span class="c1"># compare indicies</span>
+        <span class="n">index_staticfiles</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">)</span>
+        <span class="n">index_cubane</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;cubane&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index_staticfiles</span> <span class="o">&lt;</span> <span class="n">index_cubane</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SettingsValidationError</span><span class="p">(</span>
+                <span class="s1">&#39;The app </span><span class="se">\&#39;</span><span class="s1">django.contrib.staticfiles</span><span class="se">\&#39;</span><span class="s1"> should appear AFTER &#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">cubane</span><span class="se">\&#39;</span><span class="s1">. Use the </span><span class="se">\&#39;</span><span class="s1">add_apps()</span><span class="se">\&#39;</span><span class="s1"> helper method in order &#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;to safely add installed apps without having to manually &#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;take care of the correct order.&#39;</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_default_templates</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">debug</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the default templates settings configuration structure</span>
+<span class="sd">    based on given base path and debug settings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># default template loader and template paths</span>
+    <span class="n">_template_loaders</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;django.template.loaders.filesystem.Loader&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.template.loaders.app_directories.Loader&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># load with template caching in production</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">_template_loaders</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;django.template.loaders.cached.Loader&#39;</span><span class="p">,</span> <span class="n">_template_loaders</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.template.backends.django.DjangoTemplates&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;DIRS&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;context_processors&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;django.contrib.auth.context_processors.auth&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;django.template.context_processors.debug&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;django.template.context_processors.media&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;django.template.context_processors.request&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;django.contrib.messages.context_processors.messages&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;cubane.context_processors.config&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;cubane.context_processors.backend&#39;</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="s1">&#39;loaders&#39;</span><span class="p">:</span> <span class="n">_template_loaders</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">SettingWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returned by default_env() that provides additional helper methods for</span>
+<span class="sd">    the project&#39;s settings file to use in order to work with settings, such as</span>
+<span class="sd">    adding addition context processors or apps.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LOAD_APPS_AFTER_CUBANE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;django.contrib.staticfiles&#39;</span>
+    <span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new settings wrapper for the given settings module m.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
+
+
+    <span class="k">def</span> <span class="nf">add_template_context_processors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_context_processors</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the given list of template processors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_context_processors</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">template_context_processors</span> <span class="o">=</span> <span class="p">[</span><span class="n">template_context_processors</span><span class="p">]</span>
+
+        <span class="c1"># create TEMPLATES if it does not exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;TEMPLATES&#39;</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;TEMPLATES&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="c1"># create generic django-based template settings if empty</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="n">get_default_templates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+        <span class="c1"># create &#39;OPTIONS&#39; if not present</span>
+        <span class="k">if</span> <span class="s1">&#39;OPTIONS&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;OPTIONS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
+
+        <span class="c1"># create &#39;context_processors&#39; if not present</span>
+        <span class="k">if</span> <span class="s1">&#39;context_processors&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;OPTIONS&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;OPTIONS&#39;</span><span class="p">][</span><span class="s1">&#39;context_processors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+
+        <span class="c1"># add to context processors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;OPTIONS&#39;</span><span class="p">][</span><span class="s1">&#39;context_processors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">template_context_processors</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+    <span class="k">def</span> <span class="nf">add_apps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">apps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add given list of apps to the system. Please note that staticfiles is</span>
+<span class="sd">        (on purpose) kept at the end of the list, since cubane overrides</span>
+<span class="sd">        runserver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert to list</span>
+        <span class="n">installed_apps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">installed_apps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="p">)</span>
+
+        <span class="c1"># convert argument to list</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">apps</span><span class="p">:</span>
+            <span class="n">apps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">apps</span> <span class="o">=</span> <span class="p">[</span><span class="n">apps</span><span class="p">]</span>
+
+        <span class="c1"># add apps (without duplicates)</span>
+        <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">apps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">app</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">installed_apps</span><span class="p">:</span>
+                <span class="n">installed_apps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+        <span class="c1"># are we actually using cubane?</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">installed_apps</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;cubane&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># make sure that certain apps are loaded AFTER cubane</span>
+            <span class="n">load_apps_after_cubane</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">LOAD_APPS_AFTER_CUBANE</span><span class="p">:</span>
+                <span class="c1"># extract out of existing set of installed apps</span>
+                <span class="k">if</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">installed_apps</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">app</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">load_apps_after_cubane</span><span class="p">:</span>
+                        <span class="n">load_apps_after_cubane</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+                    <span class="n">installed_apps</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+            <span class="c1"># re-insert apps that need to be loaded after cubane after having</span>
+            <span class="c1"># loaded cubane in the order they have been defined.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">load_apps_after_cubane</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">installed_apps</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">installed_apps</span><span class="p">[:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                    <span class="n">load_apps_after_cubane</span> <span class="o">+</span>
+                    <span class="n">installed_apps</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+                <span class="p">)</span>
+
+        <span class="c1"># save result in settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="n">installed_apps</span>
+
+        <span class="c1"># adjust max. data upload fields if we are using the shop system</span>
+        <span class="k">if</span> <span class="s1">&#39;cubane.ishop&#39;</span> <span class="ow">in</span> <span class="n">installed_apps</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">.</span><span class="n">DATA_UPLOAD_MAX_NUMBER_FIELDS</span> <span class="o">=</span> <span class="mi">5000</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the settings module.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+
+
+<div class="viewcode-block" id="default_env"><a class="viewcode-back" href="../../topics/settings.html#cubane.settings.default_env">[docs]</a><span class="k">def</span> <span class="nf">default_env</span><span class="p">(</span>
+    <span class="n">module_name</span><span class="p">,</span>
+    <span class="n">domain_name</span><span class="p">,</span>
+    <span class="n">admin_email</span><span class="p">,</span>
+    <span class="n">site_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">db_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">test</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">debug</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">debug_toolbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">high_res_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">image_credits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">pull_host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pull_user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pull_sudo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pull_db_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pull_shell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">csrf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">ssl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">frontend_editing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">email_file_log</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup default configuration, where module_name is the settings module that</span>
+<span class="sd">    is calling this function, domain_name the name of the website or project.</span>
+
+<span class="sd">    The default project configuration setup a PostgreSQL database with a name</span>
+<span class="sd">    that is equal to the name of the project (e.g. domain_name). The base path</span>
+<span class="sd">    is determined by the absolute path of the module that is named module_name.</span>
+
+<span class="sd">    In order to pre-configure your project, add the following two lines to your</span>
+<span class="sd">    settings.py file:</span>
+
+<span class="sd">    from lib.settings import default_env</span>
+<span class="sd">    env = default_env(__name__, &#39;test.co.uk&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get settings module and normalise site name</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">get_module_by_name</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="n">domain_name</span> <span class="o">=</span> <span class="n">domain_name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+
+    <span class="c1"># determine debug or production mode.</span>
+    <span class="c1"># default is production mode unless we find the environment variable</span>
+    <span class="c1"># DEV_MODE to be set to 1, in which case we assume DEBUG mode.</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">debug</span> <span class="k">if</span> <span class="n">debug</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DEV_MODE&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">MINIFY_RESOURCES</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Determine if we are running under TEST</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TEST</span> <span class="o">=</span> <span class="n">test</span> <span class="k">if</span> <span class="n">test</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;test&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Site</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SITE_ID</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DOMAIN_NAME</span> <span class="o">=</span> <span class="n">domain_name</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TRACK_REVISION</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GENERATE_MINIFY_SRC</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEBUG_DOMAIN_NAME</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Site name</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_SITE_NAME</span> <span class="o">=</span> <span class="n">site_name</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Database name</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="n">db_name</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">DATABASE_NAME</span> <span class="o">=</span> <span class="n">db_name</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">DATABASE_NAME</span> <span class="o">=</span> <span class="n">domain_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default path</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+            <span class="s1">&#39;../&#39;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span>
+            <span class="s1">&#39;../&#39;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Resource compressors</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">TEST</span><span class="p">:</span>
+        <span class="c1"># we use yuicompressor in test, because it is much faster</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MINIFY_CMD_JS</span>  <span class="o">=</span> <span class="s1">&#39;java -jar </span><span class="si">%s</span><span class="s1"> --type js&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PATH</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;yui&#39;</span><span class="p">,</span> <span class="s1">&#39;yuicompressor-2.4.8.jar&#39;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MINIFY_CMD_CSS</span> <span class="o">=</span> <span class="s1">&#39;java -jar </span><span class="si">%s</span><span class="s1"> --type css&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PATH</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;yui&#39;</span><span class="p">,</span> <span class="s1">&#39;yuicompressor-2.4.8.jar&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MINIFY_CMD_JS</span>  <span class="o">=</span> <span class="s1">&#39;java -jar </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PATH</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;closure-compiler&#39;</span><span class="p">,</span> <span class="s1">&#39;compiler.jar&#39;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MINIFY_CMD_CSS</span> <span class="o">=</span> <span class="s1">&#39;java -jar </span><span class="si">%s</span><span class="s1"> --type css&#39;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PATH</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;yui&#39;</span><span class="p">,</span> <span class="s1">&#39;yuicompressor-2.4.8.jar&#39;</span><span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Dashboard</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_DASHBOARD</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default Operations</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_LISTING_DEFAULT_CLEAN</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_LISTING_DEFAULT_MERGE</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default CMS settings</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_RENDER_SLOT_CONTAINER</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_TEMPLATES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;cubane/cms/default_template.html&#39;</span><span class="p">,</span> <span class="s1">&#39;Default Template&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_NAVIGATION</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;header&#39;</span><span class="p">,</span> <span class="s1">&#39;Header&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;footer&#39;</span><span class="p">,</span> <span class="s1">&#39;Footer&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_NAVIGATION_INCLUDE_CHILD_PAGES</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_EXCERPT_LENGTH</span> <span class="o">=</span> <span class="mi">60</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_NO_AUTO_EXCERPT</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_SLOTNAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_NAVIGATION_RELATED_FIELDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_TEST_SPF</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_SOFTFAIL_SPF</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_ADV_EDITOR_PLUGINS</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_DEFAULT_SLOTNAME</span> <span class="o">=</span> <span class="s1">&#39;content&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_BACKEND_SITEMAP</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default Google Analytics key in debug mode</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEBUG_GOOGLE_ANALYTICS</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Admin and managers</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">ADMINS</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">MANAGERS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="n">admin_email</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">INTERNAL_IPS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default session serializer (Extended JSON)</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SESSION_SERIALIZER</span> <span class="o">=</span> <span class="s1">&#39;cubane.serializers.ExtendedJSONSerializer&#39;</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Backend permissions and ACLs</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_PERMISSIONS</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_ACL</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_DEFAULT_ACL</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;create&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="s1">&#39;read&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="s1">&#39;update&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="s1">&#39;delete&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="s1">&#39;data_import&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="s1">&#39;data_export&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+        <span class="s1">&#39;merge&#39;</span><span class="p">:</span> <span class="n">Acl</span><span class="o">.</span><span class="n">ALL</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Cubane backend editor</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_EDITOR_PLUGINS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;-advlist&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-autolink&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-charmap&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-print&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-searchreplace&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-visualblocks&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-code&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-fullscreen&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-insertdatetime&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-table&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-paste&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-nonbreaking&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-lists&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-cubanepreview&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-cubanelink&#39;</span>
+    <span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_EDITOR_YOUTUBE</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Depreceated: Default backend presentation</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">BACKEND_THEME</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;product_name&#39;</span><span class="p">:</span> <span class="s1">&#39;inystem&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;hide_innershed_logo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="mi">232</span><span class="p">,</span>
+            <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span>
+            <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">138</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default backend button labels</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_DEFAULT_SAVE_BUTTON_LABEL</span> <span class="o">=</span> <span class="s1">&#39;Save &lt;small&gt;And Close&lt;/small&gt;&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_DEFAULT_SAVE_AND_CONTINUE_BUTTON_LABEL</span> <span class="o">=</span> <span class="s1">&#39;Save &lt;small&gt;And Continue&lt;/small&gt;&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_DEFAULT_BACK_BUTTON_LABEL</span> <span class="o">=</span> <span class="s1">&#39;Back&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Media options</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_BACKEND_MEDIA</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_HASHED_MEDIA_URLS</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_DEFAULT_MEDIA_PREVIEW_EXT</span> <span class="o">=</span> <span class="s1">&#39;.jpg&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_MEDIA_VERSIONS</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Video</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_VIDEO_TYPES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;youtube&#39;</span>
+    <span class="p">]</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Timezone, Language and Formatting</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TIME_ZONE</span> <span class="o">=</span> <span class="s1">&#39;Europe/London&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-GB&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">USE_I18N</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DATE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;d/m/Y&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TIME_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;P&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DATETIME_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;d/m/Y H:i&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">STR_DATE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">_%m_%Y&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DATE_INPUT_FORMATS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>   <span class="c1"># 2006-10-25s</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y&#39;</span><span class="p">,</span>   <span class="c1"># 25/10/2006</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%y&#39;</span><span class="p">,</span>   <span class="c1"># 25/10/06</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%b-%y&#39;</span><span class="p">,</span>   <span class="c1"># 30-Dec-06</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TIME_INPUT_FORMATS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span>    <span class="c1"># 14:30:55</span>
+        <span class="s1">&#39;%H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="c1"># 14:30:55.123</span>
+        <span class="s1">&#39;%H:%M&#39;</span><span class="p">,</span>       <span class="c1"># 14:30</span>
+        <span class="s1">&#39;%I:%M %p&#39;</span>     <span class="c1"># 2:30 PM</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DATETIME_INPUT_FORMATS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M&#39;</span><span class="p">,</span>        <span class="c1"># &#39;2010-10-10T10:15&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y %H:%M:%S&#39;</span><span class="p">,</span>     <span class="c1"># &#39;25/10/2006 14:30:59&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y %H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># &#39;25/10/2006 14:30:59.000200&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y %H:%M&#39;</span><span class="p">,</span>        <span class="c1"># &#39;25/10/2006 14:30&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y&#39;</span><span class="p">,</span>              <span class="c1"># &#39;25/10/2006&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%y %H:%M:%S&#39;</span><span class="p">,</span>     <span class="c1"># &#39;25/10/06 14:30:59&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%y %H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># &#39;25/10/06 14:30:59.000200&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%y %H:%M&#39;</span><span class="p">,</span>        <span class="c1"># &#39;25/10/06 14:30&#39;</span>
+        <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%y&#39;</span><span class="p">,</span>              <span class="c1"># &#39;25/10/06&#39;</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default database setup</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.postgresql_psycopg2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">DATABASE_NAME</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Speed up unit testing by switching database engine to sqlite3, unless</span>
+    <span class="c1"># the env. specifies to run a full test and not speeding up unit testing.</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TEST_FULL</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">TEST</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">TEST_FULL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DEV_TEST_FULL&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">TEST_FULL</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">DATABASES</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;ENGINE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;django.db.backends.sqlite3&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Turn off django migrations if we are running under test.</span>
+    <span class="c1"># See: http://stackoverflow.com/questions/25161425/disable-migrations-when-running-unit-tests-in-django-1-7</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">TEST</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MIGRATION_MODULES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;myapp&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Static and cache</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CACHE_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s1">&#39;/static/&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">PUBLIC_HTML_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;public_html&#39;</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CACHE_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">PUBLIC_HTML_ROOT</span><span class="p">,</span> <span class="s1">&#39;cache&#39;</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">PUBLIC_HTML_ROOT</span><span class="p">,</span> <span class="s1">&#39;static&#39;</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">STATICFILES_DIRS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s1">&#39;static&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Media</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MEDIA_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s1">&#39;media&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MEDIA_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;public_html&#39;</span><span class="p">,</span> <span class="s1">&#39;media&#39;</span><span class="p">))</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">MEDIA_URL</span> <span class="o">=</span> <span class="s1">&#39;media/&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">MEDIA_API_URL</span> <span class="o">=</span> <span class="s1">&#39;media-api/&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Media Download Url</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">MEDIA_DOWNLOAD_URL</span> <span class="o">=</span> <span class="s1">&#39;download/&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Fonts</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_FONT_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="p">,</span> <span class="s1">&#39;fonts&#39;</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_FONT_BACKENDS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.fonts.backends.GoogleFontsBackend&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Responsive image sizes</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_IMAGE_SIZE</span> <span class="o">=</span> <span class="s1">&#39;x-large&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CMS_EDITOR_DEFAULT_IMAGE_SIZE</span> <span class="o">=</span> <span class="s1">&#39;x-large&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_SIZES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;xx-small&#39;</span><span class="p">:</span>  <span class="mi">50</span><span class="p">,</span>
+        <span class="s1">&#39;x-small&#39;</span><span class="p">:</span>  <span class="mi">160</span><span class="p">,</span>
+        <span class="s1">&#39;small&#39;</span><span class="p">:</span>    <span class="mi">320</span><span class="p">,</span>
+        <span class="s1">&#39;medium&#39;</span><span class="p">:</span>   <span class="mi">640</span><span class="p">,</span>
+        <span class="s1">&#39;large&#39;</span><span class="p">:</span>    <span class="mi">900</span><span class="p">,</span>
+        <span class="s1">&#39;x-large&#39;</span><span class="p">:</span> <span class="mi">1200</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">high_res_images</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_IMAGE_SIZE</span> <span class="o">=</span> <span class="s1">&#39;xxx-large&#39;</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">CMS_EDITOR_DEFAULT_IMAGE_SIZE</span> <span class="o">=</span> <span class="s1">&#39;xxx-large&#39;</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_SIZES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;xx-large&#39;</span><span class="p">:</span>  <span class="mi">1600</span><span class="p">,</span>
+            <span class="s1">&#39;xxx-large&#39;</span><span class="p">:</span> <span class="mi">2400</span>
+        <span class="p">})</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">DISABLE_DEVICE_RATIO</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Automatic image fitting</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_FITTING_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_FITTING_SHAPES</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_FITTING_COLOR</span>   <span class="o">=</span> <span class="s1">&#39;white&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Convert PNG files without transparency to JPG files</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_CONVERT_PNG_TO_JPG</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># The default image compression for jpeg images</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_COMPRESSION_QUALITY</span> <span class="o">=</span> <span class="mi">82</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Image Optimization</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_OPTIMIZE</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_JPEG_OPT_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;jpegtran -optimize -progressive -copy none -outfile </span><span class="si">%(dest)s</span><span class="s1"> </span><span class="si">%(source)s</span><span class="s1">&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_PNG_OPT_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;optipng -o 0 -quiet -out </span><span class="si">%(dest)s</span><span class="s1"> </span><span class="si">%(source)s</span><span class="s1">&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Image PDF preview generation</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_PDF_PREVIEW_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;gs -sDEVICE=jpeg -o </span><span class="si">%(dest)s</span><span class="s1"> -dFirstPage=1 -dLastPage=1 -dJPEGQ=84 -r120 </span><span class="si">%(source)s</span><span class="s1">&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Maximal width considered to be saved as an original on the server</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMG_MAX_WIDTH</span> <span class="o">=</span> <span class="mi">2400</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default image shape and image generator settings</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_IMAGE_SHAPE</span> <span class="o">=</span> <span class="s1">&#39;original&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_SHAPES</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_SHAPE_NAMES</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_ART_DIRECTION</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Additional image information</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_CREDITS</span> <span class="o">=</span> <span class="n">image_credits</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_EXTRA_TITLE</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_CAPTION_LABEL</span> <span class="o">=</span> <span class="s1">&#39;Caption&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_CAPTION_HELP_TEXT</span> <span class="o">=</span> <span class="s1">&#39;Leave empty to fill automatically; Briefly describe the content of the image or document. This information is associated with the image or document and is analysed by search engines.&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_EXTRA_TITLE_LABEL</span> <span class="o">=</span> <span class="s1">&#39;Description&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">IMAGE_EXTRA_TITLE_HELP_TEXT</span> <span class="o">=</span> <span class="s1">&#39;If you wish to add an extra description to the image or document.&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Devdeloper Information</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PROVIDED_BY</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Site Notification</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_SITE_NOTIFICATION</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Client Logo</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CLIENT_LOGO</span> <span class="o">=</span> <span class="s1">&#39;client-logo.png&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Developer Logo</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEVELOPER_LOGO</span> <span class="o">=</span> <span class="s1">&#39;developer-logo.png&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Favicon Sizes used to generate the various favicons for different browsers</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">FAVICON_PATH</span> <span class="o">=</span> <span class="s1">&#39;img&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">FAVICON_FILENAME</span> <span class="o">=</span> <span class="s1">&#39;favicon.png&#39;</span>
+
+
+    <span class="n">m</span><span class="o">.</span><span class="n">FAVICON_PNG_SIZES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;16x16&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-16x16.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;24x24&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-24x24.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;32x32&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-32x32.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;48x48&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-48x48.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;57x57&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-57x57.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;60x60&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-60x60.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;64x64&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-64x64.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;70x70&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-70x70.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;72x72&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-72x72.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;76x76&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-76x76.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;96x96&#39;</span><span class="p">,</span>   <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-96x96.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;114x114&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-114x114.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;120x120&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-120x120.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;128x128&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-128x128.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;144x144&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-144x144.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;150x150&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-150x150.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;152x152&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-152x152.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;196x196&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-196x196.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;310x150&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-310x150.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;310x310&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-310x310.png&#39;</span><span class="p">}</span>
+    <span class="p">]</span>
+
+
+    <span class="n">m</span><span class="o">.</span><span class="n">FAVICON_ICO_SIZES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;16x16&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-16x16.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;24x24&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-24x24.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;32x32&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-32x32.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;48x48&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-48x48.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;64x64&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-64x64.png&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;128x128&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;favicon-128x128.png&#39;</span><span class="p">}</span>
+    <span class="p">]</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default middleware</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cubane.middleware.SettingsMiddleware&#39;</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># CSRF</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="n">csrf</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Templates</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="n">get_default_templates</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default apps</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.sitemaps&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;django.contrib.staticfiles&#39;</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Frontend editing</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_FRONTEND_EDITING</span> <span class="o">=</span> <span class="n">frontend_editing</span>
+    <span class="k">if</span> <span class="n">frontend_editing</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s1">&#39;cubane.middleware.FrontendEditingMiddleware&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s1">&#39;cubane.frontend&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;cubane.frontendloader&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default locale</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_LOCALE</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;en_GB.UTF-8&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Captcha</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CAPTCHA</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">RECAPTCHA_PUBLIC_KEY</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">RECAPTCHA_PRIVATE_KEY</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CAPTCHA_PLACEHOLDER</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Google Map API Key</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_GOOGLE_MAP_API_KEY</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Google analytics</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_GOOGLE_ANALYTICS_ASYNC</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Mail</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">EMAIL_SUBJECT_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] &#39;</span> <span class="o">%</span> <span class="n">domain_name</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">email_file_log</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;cubane.backends.EmailEmlFileBackend&#39;</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">EMAIL_FILE_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django.core.mail.backends.console.EmailBackend&#39;</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">TEST</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django.core.mail.backends.locmem.EmailBackend&#39;</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Login and Authentication</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">AUTHENTICATION_BACKENDS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;django.contrib.auth.backends.ModelBackend&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cubane.backends.EmailAuthBackend&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Urls</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">APPEND_SLASH</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">PREPEND_WWW</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># SSL - Determines whether the website should run ssl or not. This will</span>
+    <span class="c1"># affect page redirects (which would be https:// rather than http:// but</span>
+    <span class="c1"># will not neccessarily redirect from http:// to https:// automatically).</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SSL</span> <span class="o">=</span> <span class="n">ssl</span>
+    <span class="k">if</span> <span class="n">ssl</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39;cubane.middleware.SSLResponseRedirectMiddleware&#39;</span><span class="p">,)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default logging setup</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;filters&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;require_debug_false&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;()&#39;</span><span class="p">:</span> <span class="s1">&#39;django.utils.log.RequireDebugFalse&#39;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;mail_admins&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;filters&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;require_debug_false&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;django.utils.log.AdminEmailHandler&#39;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;loggers&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;django.request&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mail_admins&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;propagate&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default file upload handlers</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">FILE_UPLOAD_HANDLERS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;django.core.files.uploadhandler.TemporaryFileUploadHandler&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default resource targets</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CSS_MEDIA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span> <span class="s1">&#39;print&#39;</span><span class="p">]</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Default Require.js entry files</span>
+    <span class="c1"># Array of config dict: [{&#39;filepath&#39;:s, &#39;baseurl&#39;:s, &#39;module&#39;:s},...]</span>
+    <span class="c1"># filepath: to id the file that needs to be compiled to a single file</span>
+    <span class="c1"># baseURL: root directory to every module search (optional)</span>
+    <span class="c1"># module: name of the module e.g. main (from main.js) (optional)</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">REQUIRE_JS</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default configuration for backend listings</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">MAX_LISTING_COLUMNS</span> <span class="o">=</span> <span class="mi">6</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default location for google map (backend)</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_MAP_LOCATION</span> <span class="o">=</span> <span class="p">[</span><span class="mf">52.6370209</span><span class="p">,</span> <span class="mf">1.2996577</span><span class="p">]</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default configuration for paginator</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_PAGE_SIZE</span>     <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_MIN_PAGE_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_MAX_PAGE_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Shop defaults</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_PREAUTH</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_CUSTOM_PROPERTIES</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_BASKET_SESSION_VAR</span> <span class="o">=</span> <span class="s1">&#39;ishop_basket&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_BASKET_ALLOWED_PREFIX</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ishop_basket&#39;</span><span class="p">]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_BASKET_BACKEND_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;ishop_backend&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_DEFAULT_DELIVERY_COUNTRY_ISO</span> <span class="o">=</span> <span class="s1">&#39;GB&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">TRACKING_PROVIDERS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_LOCALE</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;en_GB.UTF-8&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_ENABLE_KIT_BUILDER</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_VARIETY_FILTER_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_MULTIPLE_CATEGORIES</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_CHANGE_CUSTOMER_PASSWORD_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_LOAD_VARIETY_PREVIEW</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Payment Gateways</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_TEST</span>      <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_SAGEPAY</span>   <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_PAYPAL</span>    <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_STRIPE</span>    <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_DEKO</span>      <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_OMNIPORT</span>  <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_TEST</span><span class="p">,</span> <span class="s1">&#39;Test Gateway&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_SAGEPAY</span><span class="p">,</span> <span class="s1">&#39;Sagepay&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_PAYPAL</span><span class="p">,</span> <span class="s1">&#39;PayPal&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_STRIPE</span><span class="p">,</span> <span class="s1">&#39;Stripe&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_DEKO</span><span class="p">,</span> <span class="s1">&#39;Deko&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_OMNIPORT</span><span class="p">,</span> <span class="s1">&#39;OmniPort&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Default Payment gateways used</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_LOAN_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_DEFAULT_PAYMENT_GATEWAY</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_SAGEPAY</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_LOAN_PAYMENT_GATEWAY</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">GATEWAY_DEKO</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_PAYMENT_CONFIG</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">SHOP_TEST_MODE</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Allow pages to use hierarchy</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">PAGE_HIERARCHY</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Postcode Lookup</span>
+    <span class="c1">#</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">POSTCODE_GETADDRESS</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">POSTCODE_PROVIDERS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">POSTCODE_GETADDRESS</span><span class="p">,</span> <span class="s1">&#39;GetAddress.io&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_POSTCODE_PROVIDER</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">POSTCODE_GETADDRESS</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">POSTCODE_PROVIDER</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_POSTCODE_PROVIDER</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">POSTCODE_DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Status Code handlers</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">HANDLER_404</span> <span class="o">=</span> <span class="s1">&#39;cubane.default_views.custom404&#39;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">HANDLER_500</span> <span class="o">=</span> <span class="s1">&#39;cubane.default_views.custom500&#39;</span>
+
+
+    <span class="c1"># Pull from production server</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">CUBANE_PULL</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;DATABASE&#39;</span><span class="p">:</span> <span class="n">pull_db_name</span> <span class="k">if</span> <span class="n">pull_db_name</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">DATABASE_NAME</span><span class="p">,</span>
+        <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="n">pull_host</span> <span class="k">if</span> <span class="n">pull_host</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">DOMAIN_NAME</span><span class="p">,</span>
+        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="n">pull_user</span> <span class="k">if</span> <span class="n">pull_user</span> <span class="k">else</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DBDUMP&#39;</span><span class="p">:</span> <span class="s1">&#39;pg_dump&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SUDO&#39;</span><span class="p">:</span> <span class="n">pull_sudo</span> <span class="k">if</span> <span class="n">pull_sudo</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">DOMAIN_NAME</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pull_user</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;SHELL&#39;</span><span class="p">:</span> <span class="n">pull_shell</span> <span class="k">if</span> <span class="n">pull_shell</span> <span class="k">else</span> <span class="s1">&#39;sh&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SUDO_DEFINED&#39;</span><span class="p">:</span> <span class="n">pull_user</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="p">}</span>
+
+
+    <span class="c1">#</span>
+    <span class="c1"># Debug Toolbar (Debug only)</span>
+    <span class="c1">#</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">DEBUG_TOOLBAR</span> <span class="o">=</span> <span class="n">debug_toolbar</span>
+    <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">DEBUG</span> <span class="ow">and</span> <span class="n">debug_toolbar</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">INSTALLED_APPS</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;debug_toolbar&#39;</span><span class="p">,)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;debug_toolbar.middleware.DebugToolbarMiddleware&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">MIDDLEWARE_CLASSES</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">DEBUG_TOOLBAR_PANELS</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;debug_toolbar.panels.versions.VersionsPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.timer.TimerPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.settings.SettingsPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.headers.HeadersPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.request.RequestPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.sql.SQLPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.staticfiles.StaticFilesPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.cache.CachePanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.signals.SignalsPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.logging.LoggingPanel&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;debug_toolbar.panels.redirects.RedirectsPanel&#39;</span><span class="p">,</span>
+            <span class="c1">#&#39;debug_toolbar.panels.templates.TemplatesPanel&#39;</span>
+        <span class="p">]</span>
+
+
+    <span class="k">return</span> <span class="n">SettingWrapper</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with Resources &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with Fonts" href="fonts.html" />
+    <link rel="prev" title="Using Cubane" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../index.html">
+            <img src="../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Cubane</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with Resources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-the-resource-management-system-does">What the Resource Management System does</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-resources">Declaring Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-resource-buckets">Declaring Resource Buckets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#including-resources">Including Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inline-resources">Inline Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#external-css">External CSS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#external-javascript">External Javascript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-css-resources">Declaring CSS Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-javascript-resources">Declaring Javascript Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-font-resources">Declaring Font Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-resources-with-absolute-path">Declaring Resources with Absolute Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-media-resources">Declaring Media Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pattern-expansion">Pattern Expansion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-templates">Resource Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-requirejs">Using RequireJS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extending-the-resource-system">Extending the Resource System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fonts.html">Working with Fonts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="svgicons.html">Working with SVG Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="media.html">Working with Media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend/index.html">Backend System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cms.html">Content Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enquiry.html">Enquiry Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="favicons.html">Generating Favorite Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html">Deploying Cubane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pull.html">Pulling Production Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">Testing Cubane</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Using Cubane</a> &raquo;</li>
+        
+      <li>Working with Resources</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/topics/resources.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="working-with-resources">
+<span id="topics-resources"></span><h1>Working with Resources<a class="headerlink" href="#working-with-resources" title="Permalink to this headline">¶</a></h1>
+<p>Static assets are usually under the control of a developer and can be managed
+by Cubane’s resource management system.</p>
+<p>For Cubane, a resource is any file (usually part of the website’s code
+repository) that needs to be processed when deploying a website onto a
+production system.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">In opposite to static assets, media is generally speaking content that was
+uploaded by an author and is part of the content of the website and not its
+codebase. Read more about media within the topic for <a class="reference internal" href="media.html#topics-media"><span class="std std-ref">Working with Media</span></a>.</p>
+</div>
+<div class="section" id="requirements">
+<span id="topics-resources-requirements"></span><h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s resource system requires Django’s <code class="docutils literal"><span class="pre">staticfiles</span></code> app. Please read
+more about <a class="reference external" href="https://docs.djangoproject.com/en/1.11/howto/static-files/">how Django manages static files</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is important that <code class="docutils literal"><span class="pre">django.contrib.staticfiles</span></code> is loaded <em>after</em>
+<code class="docutils literal"><span class="pre">cubane</span></code>, because Cubane changes certain aspects of the <code class="docutils literal"><span class="pre">runserver</span></code>
+management command. Those overwrite would be invalidated by
+<code class="docutils literal"><span class="pre">staticfiles</span></code>, if the order is reversed.</p>
+<p>When setting up <code class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></code>, please make sure that
+<code class="docutils literal"><span class="pre">django.contrib.staticfiles</span></code> is listing <em>after</em> <code class="docutils literal"><span class="pre">cubane</span></code> and not before.</p>
+<p class="last">You can also use Cubane’s <span class="xref std std-ref">topics/settings</span> environment to setup
+installed apps, which will take care of this automatically for you.</p>
+</div>
+</div>
+<div class="section" id="what-the-resource-management-system-does">
+<span id="topics-resources-introduction"></span><h2>What the Resource Management System does<a class="headerlink" href="#what-the-resource-management-system-does" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s resource management system allows you to define a list of <em>static
+files</em> per Django app. In your project settings, you can then define which
+app’s resources are combined into a named <em>bucket</em>.</p>
+<p>All resource files that are listed for each app within a bucket are then
+combined into one resource file. Finally, that resource file is minified and
+combined with a unique version number for each deployment.</p>
+<p>In your templates, you can include resources in different ways based on each
+named <em>bucket</em>. In <em>debug</em> mode, all resources are included as separate files;
+however, in <em>production</em> mode, there is usually only one file included per
+<em>bucket</em> and type of resource.</p>
+</div>
+<div class="section" id="declaring-resources">
+<span id="topics-resources-declaring-resources"></span><h2>Declaring Resources<a class="headerlink" href="#declaring-resources" title="Permalink to this headline">¶</a></h2>
+<p>All resources for an app are defined by the array <code class="docutils literal"><span class="pre">RESOURCES</span></code> within the
+<code class="docutils literal"><span class="pre">__init__.py</span></code> file of your python package that is listed in your
+<cite>settings.INSTALLED_APPS</cite>. Let’s assume that we had an app called <code class="docutils literal"><span class="pre">myApp</span></code>,
+which defined the following resources:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;css/style.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;print|css/print.css&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;js/main.js&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The order in which resource files are listed is important. Generally
+speaking, Cubane will process, combine and minify resources in the order as
+specified.</p>
+<p class="last">Further, you usually declare all your resources, even if they are of
+different type. Feel free to list all your CSS and Javascript resources
+together; Cubane will split resources by type later in the process
+automatically.</p>
+</div>
+<p>Because of the general layout of static assets managed by <code class="docutils literal"><span class="pre">staticfiles</span></code>
+behind the scenes, we may have organized those assets in the following
+structure:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>myApp/
+    static/
+        myApp/
+            css/
+                style.css
+                print.css
+            js/
+                main.js
+</pre></div>
+</div>
+<p>Each resource within the <code class="docutils literal"><span class="pre">RESOURCES</span></code> array is declared relative to the
+location of the static files of <code class="docutils literal"><span class="pre">myApp</span></code>, which is <code class="docutils literal"><span class="pre">myApp/static/myApp/...</span></code>.
+In order for Cubane to process any resources, the app <code class="docutils literal"><span class="pre">myApp</span></code> must be
+installed in <code class="docutils literal"><span class="pre">settings.INSTALLED_APP</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;myApp&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="declaring-resource-buckets">
+<span id="topics-resources-declaring-resource-buckets"></span><h2>Declaring Resource Buckets<a class="headerlink" href="#declaring-resource-buckets" title="Permalink to this headline">¶</a></h2>
+<p>So far so good. Now, before we can include resources in our template, we first
+have to declare resource buckets and which app goes into which bucket:</p>
+<p>In Cubane, you usually declare multiple resource buckets for different
+purposes: You may have a bucket for your front-end, then you might define
+another bucket that is inlined into the template because those resources need
+higher priority.</p>
+<p>You may also have a print style as a separate file if you prefer to organise
+your print style that way.</p>
+<p>Cubane’s backend system requires some style information as well and you
+certainly, do not want to mix this with your own front-end style.</p>
+<p>For each bucket, Cubane will generate a separate file per resource type (for
+example CSS or Javascript), which can be included in a template differently.</p>
+<p>You declare resource buckets in your <em>application settings</em>, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;frontend&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.lightbox&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;myApp&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;inline&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.medialoader&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;backend&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">...</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;backend-inline&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.medialoader&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The named bucket <code class="docutils literal"><span class="pre">frontend</span></code> will include all resources from the
+apps <code class="docutils literal"><span class="pre">cubane.lightbox</span></code> and <code class="docutils literal"><span class="pre">myApp</span></code> combined, in that order.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The order in which apps are listed is important. Generally speaking, Cubane
+will process, combine and minify all resources from all apps in the order
+as specified.</p>
+</div>
+<p>The bucket <code class="docutils literal"><span class="pre">inline</span></code> and <code class="docutils literal"><span class="pre">backend-inline</span></code> respectively contain the resources
+from only one app, which is <code class="docutils literal"><span class="pre">cubane.medialoader</span></code>. The media loader is
+responsible for <em>lazy-loading</em> images and is therefore given its own bucket in
+order to inline its code into the website markup directly for better
+performance. You can read more about Cubane’s media system within the
+<a class="reference internal" href="media.html#topics-media"><span class="std std-ref">Working with Media</span></a> section.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The buckets <code class="docutils literal"><span class="pre">backend</span></code> and <code class="docutils literal"><span class="pre">backend-inline</span></code> are reserved for Cubane’s
+default backend system. Apart from those, you can declare as many buckets
+as you need.</p>
+</div>
+</div>
+<div class="section" id="including-resources">
+<span id="topics-resources-include"></span><h2>Including Resources<a class="headerlink" href="#including-resources" title="Permalink to this headline">¶</a></h2>
+<p>After having declared all resource <em>assets</em> and <em>buckets</em>, we finally would
+need to refer to those assets. We do this by using Cubane’s <code class="docutils literal"><span class="pre">resource_tags</span></code>
+template library. The template library contains a set of template tags that can
+be used to embed resource buckets into your template in various ways. The
+following example should give you a good overview of how this works:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">resource_tags</span> <span class="cp">%}</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        ...
+
+        <span class="c">&lt;!-- inline CSS resources --&gt;</span>
+        <span class="cp">{%</span> <span class="k">inline_resources</span> <span class="s1">&#39;inline&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="cp">%}</span>
+
+        <span class="c">&lt;!-- external CSS, you may want to inline above the fold css styles --&gt;</span>
+        <span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="cp">%}</span>
+
+        <span class="c">&lt;!-- print resources --&gt;</span>
+        <span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="s1">&#39;print&#39;</span> <span class="cp">%}</span>
+        <span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;inline&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="s1">&#39;print&#39;</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        ...
+
+        <span class="c">&lt;!-- inline Javascript --&gt;</span>
+        <span class="cp">{%</span> <span class="k">inline_resources</span> <span class="s1">&#39;inline&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="cp">%}</span>
+
+        <span class="c">&lt;!-- external Javascript, async --&gt;</span>
+        <span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>As a typical base template, you would – <em>generally speaking</em> – load CSS
+resources at the top and Javascript resources at the bottom. For best
+performance, some CSS code is critical: For example, you would want to embed a
+good portion of your CSS to render the <em>above the fold content</em> within your
+template itself, rather than loading an external CSS file. Other resources are
+less critical and can be loaded from an external file asynchronously.</p>
+<p>The following sections will guide you through the different ways of embedding
+resources.</p>
+</div>
+<div class="section" id="inline-resources">
+<span id="topics-resources-inline-include"></span><h2>Inline Resources<a class="headerlink" href="#inline-resources" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">inline_resources</span></code> template tag will embed all resources from the given
+<em>bucket</em> and <em>resource type</em> within the template itself. Usually this means
+that Cubane will generate <code class="docutils literal"><span class="pre">&lt;style&gt;...&lt;/style&gt;</span></code> markup for <em>CSS</em> and
+<code class="docutils literal"><span class="pre">&lt;script&gt;...&lt;/script&gt;</span></code> markup for <em>Javascript</em> code.</p>
+<p>An example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">inline_resources</span> <span class="s1">&#39;inline&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">inline_resources</span> <span class="s1">&#39;inline&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>The first argument is the name of the <em>bucket</em>. The second argument is the type
+of resources that should be embedded. This argument is required since there
+are different ways of how resources are embedded depending on the type of
+resources.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>For best website performance, you should always split your stylesheet into
+critical CSS code that must be present to render everything <em>above the
+fold</em> and any remaining CSS code for styling other – less important –
+parts of your website.</p>
+<p class="last">Critical <em>above the fold</em> CSS code should be inlined if such code is not
+too heavy in size. Any other CSS code may be loaded from an external file.</p>
+</div>
+<p>In <em>Production</em> mode, all embedded resources will have been combined and
+minified before being embedded into the template at deployment time.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In <em>Debug</em> mode, Cubane will <em>never</em> actually embed content within the
+template. When debugging CSS or Javascript code, it is much easier to use
+the browser’s development tools which can refer to actual files instead of
+referring to inline HTML code.</p>
+</div>
+</div>
+<div class="section" id="external-css">
+<span id="topics-resources-external-css"></span><h2>External CSS<a class="headerlink" href="#external-css" title="Permalink to this headline">¶</a></h2>
+<p>External CSS code can be included with the <code class="docutils literal"><span class="pre">resources</span></code> template tag. Unlike
+the previous example, we are now instructing the browser to load additional
+resources from an external file.</p>
+<p>An example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="c">&lt;!-- css (screen only) --&gt;</span>
+<span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="cp">%}</span>
+
+<span class="c">&lt;!-- css (print only) --&gt;</span>
+<span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="s1">&#39;print&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Unlike <code class="docutils literal"><span class="pre">inline_resources</span></code>, an additional argument may be provided that
+declares the CSS media type, such as <code class="docutils literal"><span class="pre">screen</span></code> or <code class="docutils literal"><span class="pre">print</span></code>. <code class="docutils literal"><span class="pre">screen</span></code> is
+assumed by default if this argument is not given.</p>
+<p>Cubane will generate markup like <code class="docutils literal"><span class="pre">&lt;link</span> <span class="pre">href=&quot;...&quot;</span> <span class="pre">rel=&quot;stylesheet&quot;</span>
+<span class="pre">media=&quot;screen&quot;&gt;</span></code> when including CSS resources using the <code class="docutils literal"><span class="pre">resources</span></code> template
+tag.</p>
+<p>In <em>Production</em> mode, all resources from the named <em>bucket</em> will have been
+combined and minified into one file at deployment time. In <em>Debug</em> mode, Cubane
+will generate individual <code class="docutils literal"><span class="pre">&lt;link&gt;</span></code> tags, one for each resource file within the
+bucket.</p>
+<p>You can instruct the browser to load a CSS resource asynchronously by adding
+the <code class="docutils literal"><span class="pre">async</span></code> argument like:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="c">&lt;!-- load css asynchronously --&gt;</span>
+<span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;css&#39;</span> <span class="s1">&#39;screen&#39;</span> <span class="s1">&#39;async&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Loading CSS asynchronously currently relies on Javascript. Cubane will generate
+a bit of inline Javascript code that will instruct the browser to load the CSS
+resource without blocking the rendering of the website.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Browsers are beginning to support a standard markup pattern for loading CSS
+(and other file types) asynchronously via <code class="docutils literal"><span class="pre">&lt;link</span> <span class="pre">rel=&quot;preload&quot;&gt;</span></code>.</p>
+</div>
+</div>
+<div class="section" id="external-javascript">
+<span id="topics-resources-external-js"></span><h2>External Javascript<a class="headerlink" href="#external-javascript" title="Permalink to this headline">¶</a></h2>
+<p>Like loading external CSS files, you can use the <em>same</em> template tag
+<code class="docutils literal"><span class="pre">resources</span></code> to include external Javascript files as well, like in the
+following example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="c">&lt;!-- external javascript, asynchronously --&gt;</span>
+<span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="kp">True</span> <span class="cp">%}</span>
+
+<span class="c">&lt;!-- external javascript, blocking --&gt;</span>
+<span class="cp">{%</span> <span class="k">resources</span> <span class="s1">&#39;frontend&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="kp">False</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>The first two lines are identical and will both instruct the browser to load an
+external Javascript file (representing the <code class="docutils literal"><span class="pre">frontend</span></code> bucket) asynchronously.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All external Javascript code is loaded asynchronously by default.</p>
+</div>
+<p>The last line is loading the same external Javascript file by blocking the
+browser.</p>
+</div>
+<div class="section" id="declaring-css-resources">
+<span id="topics-resources-declaring-css-resources"></span><h2>Declaring CSS Resources<a class="headerlink" href="#declaring-css-resources" title="Permalink to this headline">¶</a></h2>
+<p>CSS files are declared by simply referring to the path of one or multiple CSS
+files. Because CSS can target different media types, such as screen or print
+media, Cubane allows us to specify the type of media alongside each resource
+file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;screen|css/screen1.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;screen|css/screen2.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;print|css/print1.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;print|css/print2.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The media type if prefixed to the resource path by using the <em>pipe</em>
+character:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>[&lt;resource-prefix&gt;] | &lt;resource-path&gt;
+</pre></div>
+</div>
+<p>The prefix is optional. In the context of CSS files, <code class="docutils literal"><span class="pre">screen</span></code> is assumed if
+omitted. Therefore we could have written the following instead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;css/screen1.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;css/screen2.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;print|css/print1.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;print|css/print2.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In both cases, Cubane will combine the first two resource files for the media
+type <code class="docutils literal"><span class="pre">screen</span></code> and the remaining two resources for the media type <code class="docutils literal"><span class="pre">print</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For CSS, the order in which resource files appear in the list may matter;
+Cubane will combine and minify all CSS files within the same bucket and
+media type in the order as specified. If your CSS files need to appear in a
+specific order, then please make sure that this order is reflected when
+listing your resources.</p>
+</div>
+<p>When working with CSS, it is quite common to use a CSS reset style to unify the
+default browser style to a known and precise state, so that your own style can
+be defined on top it.</p>
+<p>Usually, such CSS reset style is listed at the beginning of your resource list,
+followed by your own style files.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>Alternatively, Cubane provides a default <em>out of the box</em> CSS reset style.
+Simply include the app <code class="docutils literal"><span class="pre">cubane.cssreset</span></code> within your list of installed
+Django apps like in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;cubane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cubane.cssreset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;myApp&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The final step is to include all resources from <code class="docutils literal"><span class="pre">cubane.cssreset</span></code> within
+your resource bucket of choice, let’s assume that your website is using the
+<code class="docutils literal"><span class="pre">frontend</span></code> bucket:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;frontend&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.cssreset&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;myApp&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">Make sure that <code class="docutils literal"><span class="pre">cubane.cssreset</span></code> appears before your own app containing
+your own style, since the order in which CSS style information appears
+matters, in particular with CSS reset style.</p>
+</div>
+</div>
+<div class="section" id="declaring-javascript-resources">
+<span id="topics-resources-declaring-js-resources"></span><h2>Declaring Javascript Resources<a class="headerlink" href="#declaring-javascript-resources" title="Permalink to this headline">¶</a></h2>
+<p>Javascript files are declared by simply referring to the path of one or
+multiple Javascript files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;js/lib/jquery.js&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;js/main.js&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The order in which Javascript files are declared may be important. For example,
+if <code class="docutils literal"><span class="pre">main.js</span></code> would refer to JQuery, then you should make sure that the source
+for JQuery appears <em>before</em> <code class="docutils literal"><span class="pre">main.js</span></code>.</p>
+</div>
+<div class="section" id="declaring-font-resources">
+<span id="topics-resources-declaring-font-resources"></span><h2>Declaring Font Resources<a class="headerlink" href="#declaring-font-resources" title="Permalink to this headline">¶</a></h2>
+<p>Web Fonts play an increasingly important role. Cubane provides an
+automatic process for including a large number of free web fonts within your
+websites.</p>
+<p>Cubane provides a default font backend which is using the
+<a class="reference external" href="https://google-webfonts-helper.herokuapp.com/fonts">google-webfonts-helper</a>
+by Mario Ranftl.</p>
+<p>You can use any font (listed on the Google WebFonts Helper website) by simply
+including it as a resource within your app’s list of resources like in the
+following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;font|Open Sans&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>And that’s it. In your CSS style, you can now use the font, for example:</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="nt">body</span> <span class="p">{</span>
+    <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Open Sans&#39;</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Cubane will automatically download all required font files to your local system
+and will also generate all required CSS style for the declaration of the font.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When referring to fonts, make sure that the name of the font is given as
+listed on the Google WebFonts Helper website, otherwise, Cubane will not be
+able to locate the exact font.</p>
+</div>
+<p>Cubane’s font system allows for further customisation and extension which would
+go beyond the scope of this section. Please refer to the <a class="reference internal" href="fonts.html#topics-fonts"><span class="std std-ref">Working with Fonts</span></a>
+section for further information about Cubane’s font system.</p>
+</div>
+<div class="section" id="declaring-resources-with-absolute-path">
+<span id="topics-resources-abs-path"></span><h2>Declaring Resources with Absolute Path<a class="headerlink" href="#declaring-resources-with-absolute-path" title="Permalink to this headline">¶</a></h2>
+<p>When declaring resources, you would usually use a relative path to refer to
+individual resource files, as in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;css/style.css&#39;</span>
+    <span class="s1">&#39;js/main.js&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The path is considered to be a relative path because it does not start with a
+slash (<em>/</em>). Therefore the path is relative to the app that declared the list
+of resources. Let’s assume that your app is called <code class="docutils literal"><span class="pre">myApp</span></code>, then you may use
+the following directory structure for your static assets (remember that
+Cubane’s resource system requires Django’s <code class="docutils literal"><span class="pre">staticfiles</span></code>):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>myApp/
+    static/
+        myApp/
+            css/
+                style.css
+            js/
+                main.js
+</pre></div>
+</div>
+<p>The relative path <code class="docutils literal"><span class="pre">css/style.css</span></code> will be extended to
+<code class="docutils literal"><span class="pre">/myApp/css/style.css</span></code>, which will then refer to the correct file within the
+<code class="docutils literal"><span class="pre">myApp</span></code> app. Under the hood, Cubane will use Django’s <code class="docutils literal"><span class="pre">staticfiles</span></code>
+resolution mechanism to find static files in the described way.</p>
+<p>Instead of specifying resource based on a relative path, you can specify
+resources by using an <em>absolute path</em> instead; starting with a slash (<em>/</em>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;/myApp/css/style.css&#39;</span>
+
+    <span class="s1">&#39;/myLib/js/jquery.js&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;/myApp/js/main.js&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In this example, all resources are referred to by using absolute paths. An
+absolute path will not be prefixed automatically with the name of the app that
+declared those resources.</p>
+<p>Instead, an absolute path is fed into Django’s <code class="docutils literal"><span class="pre">staticfiles</span></code> resolution
+mechanism directly. As long as the path assembles a valid path to a static
+asset for <em>any</em> installed Django app, this will work.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Please consider to use absolute paths rarely and only if it makes your life
+so much easier. In most cases, we find that it is a good thing that each
+Django app is isolated from each other; by using absolute paths, you may
+create hidden dependencies between your apps.</p>
+<p class="last">We would advise to use absolute paths only if you need to and only if you
+do not intend to share your app with anyone else.</p>
+</div>
+</div>
+<div class="section" id="declaring-media-resources">
+<span id="topics-resources-media-resources"></span><h2>Declaring Media Resources<a class="headerlink" href="#declaring-media-resources" title="Permalink to this headline">¶</a></h2>
+<p>Usually, resources are assets that are part of the codebase and Django’s
+<code class="docutils literal"><span class="pre">staticfiles</span></code> requires those assets to be located within one specific folder
+per app, which is usually called <code class="docutils literal"><span class="pre">static</span></code>.</p>
+<p>On the contrary, there is media, which is usually user-generated content, like
+images uploaded to the system etc. Such data is usually stored in one folder
+called <code class="docutils literal"><span class="pre">media</span></code>, which is <em>not</em> part of the code repository.</p>
+<p>If you require assets that are downloaded from third-party sources and are of
+temporary nature, you may want to store such data within the <em>media</em> folder and
+<em>not</em> within the <em>static</em> folder, since the <em>media</em> folder is not part of the
+code repository.</p>
+<p>If you wanted to serve those resources through the pipeline, then you can refer
+to those assets by referring to the media folder in the following way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;/media/imgcache/tiles.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In this example, we assume that you have some process for caching CSS style
+information that is generated by a third party. Such data is stored in the
+<em>media</em> folder for reasons outlined above.</p>
+<p>In order to include this resource in the build process, you can simply refer to
+the file via an absolute path to the <em>media</em> folder.</p>
+</div>
+<div class="section" id="pattern-expansion">
+<span id="topics-resources-pattern-expansion"></span><h2>Pattern Expansion<a class="headerlink" href="#pattern-expansion" title="Permalink to this headline">¶</a></h2>
+<p>Resources can be declared by using UNIX-style pathname pattern expansion. For
+example, instead of listing all CSS style files individually you could simply
+refer to all files with the extension <code class="docutils literal"><span class="pre">.css</span></code> instead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># listing all resources individually:</span>
+    <span class="s1">&#39;css/components/header.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;css/components/button.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;css/components/carousel.css&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;css/components/footer.css&#39;</span><span class="p">,</span>
+
+    <span class="c1"># using pattern expansion instead:</span>
+    <span class="s1">&#39;css/components/*.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The first block is (<em>almost</em>) equivalent to the second block: While the first
+block refers to all style files individually, the second block simply refers to
+all CSS style files within a specific folder.</p>
+<p>Cubane will automatically expand the pattern <code class="docutils literal"><span class="pre">css/components/*.css</span></code> into a
+list of individual file paths based on the expansion of the pattern. Each CSS
+file within the <code class="docutils literal"><span class="pre">css/components</span></code> folder will be listed in <em>alphabetical
+order</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When using pattern expansions, the resulting list of individual file paths
+is sorted alphabetically by default. If the order in which your resource
+files appear matters than it may not be appropriate to use pattern
+expansion.</p>
+<p>However, there are a lot of cases where the order does not matter. For CSS
+style files for example, if you separated your style based on independent
+style components then the precise order in which they appear may not matter
+at all.</p>
+<p class="last">We would advise declaring individual files where the order matters and to
+use pattern expansion where the order of things does not matter.</p>
+</div>
+<p>Pattern expansion is particularly useful for SVG-based icons. You can read more
+about SVG-based icon sets within the <a class="reference internal" href="svgicons.html#topics-svgicons"><span class="std std-ref">Working with SVG Icons</span></a> section.</p>
+</div>
+<div class="section" id="resource-templates">
+<span id="topics-resources-templates"></span><h2>Resource Templates<a class="headerlink" href="#resource-templates" title="Permalink to this headline">¶</a></h2>
+<p>In some cases, it can be useful to embed generated data or content into resource
+files. Cubane is using this concept in a number of places where this is
+required, for example, the media loader or the font system.</p>
+<p>Basically, you can instruct Cubane to process any resource file through Django’s
+template system before serving the file. This would allow you to generate parts
+of the resource file dynamically based on data generated by your application.</p>
+<p>We would <em>not</em> advise using this technique for implementing CSS themes or
+performing computation for CSS style in general for your website’s theme; there
+are far better solutions for pre-processing CSS style information.</p>
+<p>However, for generating short bits of CSS style or generating constants based on
+your settings within your Javascript files, the template system might be exactly
+what you need.</p>
+<p>First, you have to rename your asset file to include the reserved extension
+<code class="docutils literal"><span class="pre">template</span></code>, for example, <code class="docutils literal"><span class="pre">main.js</span></code> would become <code class="docutils literal"><span class="pre">main.template.js</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># referring to a template instead of a static file will invoke</span>
+    <span class="c1"># Django&#39;s template system...</span>
+    <span class="s1">&#39;js/main.template.js&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>This is actually enough to invoke Django’s template system. In most cases, you
+would want to construct an additional template context for your template that
+contains some data required to render the template.</p>
+<p>In your app’s <code class="docutils literal"><span class="pre">__init__.py</span></code> file, define a method called
+<code class="docutils literal"><span class="pre">get_deploy_context()</span></code> that returns a dictionary that is used as the template
+context for rendering any asset (of your app) via Django’s template system:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_deploy_context</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;greetings&#39;</span><span class="p">:</span> <span class="s1">&#39;Hello World&#39;</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally, in your <code class="docutils literal"><span class="pre">main.template.js</span></code> file, you can use Django’s template system
+to generate Javascript code dynamically.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">greetings</span> <span class="o">=</span> <span class="s1">&#39;{{ greetings }}&#39;</span><span class="p">;</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>In <em>Debug</em> mode, the <code class="docutils literal"><span class="pre">runserver</span></code> command will process templates as they are
+requested. For example, when the browser downloads the file
+<code class="docutils literal"><span class="pre">/static/myApp/js/main.template.js</span></code>, then the Django template system is
+invoked and the following result is returned to the browser:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">greetings</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span><span class="p">;</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>In <em>Production</em> mode, the template system is invoked only once, when the
+website is deployed. All static assets are generated at deployment time and the
+file <code class="docutils literal"><span class="pre">main.template.js</span></code> file actually contains the final result after the
+website has been deployed.</p>
+</div>
+<div class="section" id="using-requirejs">
+<span id="topics-resources-requirejs"></span><h2>Using RequireJS<a class="headerlink" href="#using-requirejs" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://requirejs.org/">RequireJS</a> is a Javascript file and module loader. If
+your Javascript code base is using RequireJS, Cubane can help you to
+automatically compile and minify your Javascript code as part of the site’s
+deployment.</p>
+<p>For every RequireJS main javascript source file, you need to declare the
+following entry in your application’s settings file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">REQUIRE_JS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;myProject/js/require_js_main.js&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;baseurl&#39;</span><span class="p">:</span> <span class="s1">&#39;myProject/js&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;module&#39;</span><span class="p">:</span> <span class="s1">&#39;require_js_main&#39;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="settings.html#std:settings-REQUIRE_JS"><code class="xref std std-settings docutils literal"><span class="pre">REQUIRE_JS</span></code></a> settings variable declares a list of Javascript
+sources that are using RequireJS as a module loader.</p>
+<p><code class="docutils literal"><span class="pre">filename</span></code></p>
+<blockquote>
+<div>Required. For each source, the <code class="docutils literal"><span class="pre">filename</span></code> argument is required in order
+to provide the path to the main entry file for your RequireJS source.</div></blockquote>
+<p><code class="docutils literal"><span class="pre">baseurl</span></code></p>
+<blockquote>
+<div>Optional. Root directory for every module search.</div></blockquote>
+<p><code class="docutils literal"><span class="pre">module</span></code></p>
+<blockquote>
+<div>Optional. Name of the module as declared in your main javascript file.</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Please refer to the
+<cite>RequireJS Documentation &lt;http://requirejs.org/docs/start.html&gt;</cite> for more
+information on RequireJS.</p>
+</div>
+</div>
+<div class="section" id="extending-the-resource-system">
+<span id="topics-resources-extension"></span><h2>Extending the Resource System<a class="headerlink" href="#extending-the-resource-system" title="Permalink to this headline">¶</a></h2>
+<p>TODO: Describe hooks that can be used to tap into the resource system, like the
+font system is doing it.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fonts.html" class="btn btn-neutral float-right" title="Working with Fonts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Using Cubane" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

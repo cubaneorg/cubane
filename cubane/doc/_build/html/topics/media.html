@@ -1,0 +1,1284 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with Media &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings" href="settings.html" />
+    <link rel="prev" title="Working with SVG Icons" href="svgicons.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../index.html">
+            <img src="../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Cubane</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Working with Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fonts.html">Working with Fonts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="svgicons.html">Working with SVG Icons</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with Media</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction-to-media-content">Introduction to Media Content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-media-assets">Loading Media Assets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lazy-loading">Lazy Loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#media-loader">Media Loader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rendering-media-assets">Rendering Media Assets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plain-image">Plain Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lazy-loaded-image">Lazy Loaded Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#responsive-image-sizes">Responsive Image Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maximum-image-width">Maximum Image Width</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-shapes">Image Shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-shape-names">Image Shape Names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-shape-css">Image Shape CSS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lightbox">Lightbox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#background-images">Background Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#size-templates">Size Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#art-direction">Art Direction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#art-direction-and-css-classes">Art Direction and CSS Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#svg-vector-images">SVG Vector Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#media-urls">Media URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#media-api-urls">Media API URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding-svg-images">Embedding SVG Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#svg-based-clip-paths">SVG-based clip paths</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend/index.html">Backend System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cms.html">Content Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enquiry.html">Enquiry Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="favicons.html">Generating Favorite Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html">Deploying Cubane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pull.html">Pulling Production Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">Testing Cubane</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Using Cubane</a> &raquo;</li>
+        
+      <li>Working with Media</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/topics/media.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="working-with-media">
+<span id="topics-media"></span><h1>Working with Media<a class="headerlink" href="#working-with-media" title="Permalink to this headline">¶</a></h1>
+<p>Media represents user content such as images and documents that were uploaded
+to the website to be presented on some page or is associated with a page or any
+other type of content.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">In opposite to media, static content is usually part of the website project
+and under the control of a developer. Please see more information about
+static assets within the topic for Cubane’s <a class="reference internal" href="resources.html#topics-resources"><span class="std std-ref">Working with Resources</span></a>.</p>
+</div>
+<div class="section" id="introduction-to-media-content">
+<span id="topics-media-introduction"></span><h2>Introduction to Media Content<a class="headerlink" href="#introduction-to-media-content" title="Permalink to this headline">¶</a></h2>
+<p>Cubane represents media content as a Django model which contains some metadata
+of one particular image or document.</p>
+<p>Generally, media is:</p>
+<ul class="simple">
+<li>A single model instance of <code class="docutils literal"><span class="pre">Media</span></code>.</li>
+<li>Imported from <code class="docutils literal"><span class="pre">cubane.media.models</span></code>.</li>
+<li>Usually created and managed through Cubane’s <a class="reference internal" href="backend/index.html#topics-backend"><span class="std std-ref">Backend System</span></a>.</li>
+<li>Can be created and managed programmatically.</li>
+<li>Usually, represents an image, but can also represent a document, such as a
+PDF file.</li>
+</ul>
+<p>This rather abstract representation provides a fundamental layer in Cubane for
+a number of features. In particular, for images, we want to make your life
+working with imagery as simple as possible while allowing you to build fast and
+compelling websites easily.</p>
+<p>Please feel free to browse this topic’s section in more detail. However, please
+allow us to give you a quick overview of what you can with <code class="docutils literal"><span class="pre">Media</span></code>:</p>
+<ul class="simple">
+<li>Lazy loading of images and background images.</li>
+<li>Lazy loading of images with clip paths.</li>
+<li>Responsive image versions.</li>
+<li>Image shapes.</li>
+<li>Art Direction.</li>
+<li>On-Demand image manipulation, in particular for SVG images.</li>
+<li>Responsive SVG images with embedded bitmap layers.</li>
+<li>Lazy loading of SVG images that are then safely embedded into the DOM for
+further manipulation.</li>
+</ul>
+<p>Usually, when you define the structure of your site, you will make references
+to the <code class="docutils literal"><span class="pre">Media</span></code> model. Common base implementations are provided by Cubane that
+also defines some references. For example, a CMS page may refer to <code class="docutils literal"><span class="pre">Media</span></code> to
+represent the main image of that page.</p>
+<p>As you build your website templates, you will use media template tags to
+<em>render</em> a media item in a particular way. For example, you may define a
+particular shape that the image should present itself.</p>
+<p>Finally, your content authors may use Cubane’s backend system to insert media
+into page content or connect media items to other entities in the system.</p>
+</div>
+<div class="section" id="loading-media-assets">
+<span id="topics-media-loading"></span><h2>Loading Media Assets<a class="headerlink" href="#loading-media-assets" title="Permalink to this headline">¶</a></h2>
+<p>When rendering a media asset on the website through a template, we generate a
+bit of markup that instructs the browser to present an
+image or a link to a document.</p>
+<p>In the case of an image, this is mostly straight forward:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/media/foo.jpg&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;Foo&quot;</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>In Django template code, this might look like this (<code class="docutils literal"><span class="pre">myImage</span></code> being an
+instance of <code class="docutils literal"><span class="pre">Media</span></code>):</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">myImage.url</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">myImage.caption</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>This - as you know - will instruct the browser to load <em>foo.jpg</em> and present
+it within the website document; so far so good.</p>
+<p>All major media-related features in Cubane have one concept in common: Media
+assets are loaded when actually visible and the concrete image resolution that
+is loaded depends on actual properties of the device, such as pixel density and
+the surface area that the image will occupy.</p>
+</div>
+<div class="section" id="lazy-loading">
+<span id="topics-media-lazy-loading"></span><h2>Lazy Loading<a class="headerlink" href="#lazy-loading" title="Permalink to this headline">¶</a></h2>
+<p>This process, which is often referred to as <em>lazy-loading</em> can provide a number
+of benefits:</p>
+<ul class="simple">
+<li>Images are only loaded when actually visible. In particular, when presenting a
+lot of images, it can speed up the loading of your website significantly.</li>
+<li>The resolution of the actual image that is downloaded is determined based on
+the pixel density of the device and the surface area that the image will
+occupy. Generally speaking, this means that smaller-sized images are
+downloaded on devices with smaller displays, while larger images are
+downloaded on larger screens.</li>
+</ul>
+<p>Referring back to our example from above, here is how you do it in a template
+using lazy-loading:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">image</span></code> template tag renders a bit of markup that contains some metadata
+about the given image <code class="docutils literal"><span class="pre">myImage</span></code>. This metadata is then used by the media
+loader at runtime to determine the actual image source that is used to render
+the image and how the image is actually being presented on the screen.</p>
+<p>Without going into too many details on the media loader itself within this
+section, it is worth mentioning the following side effects from using the
+media loader:</p>
+<ul class="simple">
+<li>By default, a lazy-loaded image will occupy the full width of its container
+element.</li>
+<li>The space that any lazy-loaded image will occupy will be reserved so that
+any content that follows is not pushed down when the image is finally
+presented. This way, the arrangement and layout of the website are not
+disrupted or changed once an image has been loaded.</li>
+<li>Images may load as a user scrolls the page as more images are revealed.</li>
+<li>Scrollable areas that are embedded within the page need to be annotated in a
+certain way so that the media loader is aware that scrolling those areas may
+reveal further images that need to be loaded.</li>
+</ul>
+</div>
+<div class="section" id="media-loader">
+<span id="topics-media-media-loader"></span><h2>Media Loader<a class="headerlink" href="#media-loader" title="Permalink to this headline">¶</a></h2>
+<p>In order to take advantage of lazy loading, your website’s frontend has to
+embed the <code class="docutils literal"><span class="pre">cubane.medialoader</span></code> app, which provides the javascript-based
+runtime for actually loading images on your website.</p>
+<p>First, simply include <code class="docutils literal"><span class="pre">cubane.medialoader</span></code> within
+<code class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></code>. Typically you would need to include
+<code class="docutils literal"><span class="pre">cubane.media</span></code> as well in order to use the media tag library and the media
+model <code class="docutils literal"><span class="pre">Media</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;cubane.media&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cubane.medialoader&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In order to include the media loader’s javascript resources within your
+website, you would typically define a resource bucket for this purpose. Among
+your own CSS and javascript, you may want to include the media loader here as
+well.</p>
+<p>We tend to embed the media loader inlined within the website, which speeds up
+the downloading of images for the tradeoff of increasing the overall size of
+the website’s markup:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;inline&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.medialoader&#39;</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In your base template, you can use the <code class="docutils literal"><span class="pre">inline_resource</span></code> template tag to
+embed all resource content for the given resource pool <code class="docutils literal"><span class="pre">inline</span></code>:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">resource_tags</span> <span class="cp">%}</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        ...
+
+        <span class="cp">{%</span> <span class="k">inline_resources</span> <span class="s1">&#39;inline&#39;</span> <span class="s1">&#39;js&#39;</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>You can read more about how resources are organised and managed in the
+<a class="reference internal" href="resources.html#topics-resources"><span class="std std-ref">Working with Resources</span></a> section.</p>
+</div>
+<div class="section" id="rendering-media-assets">
+<span id="topics-media-rendering"></span><h2>Rendering Media Assets<a class="headerlink" href="#rendering-media-assets" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">cubane.media</span></code> package provides the <code class="docutils literal"><span class="pre">media_tags</span></code> template library,
+which makes a number of template tags available for <em>rendering</em> media items
+from templates.</p>
+<p>Cubane provides a number of ways for rendering images. For example, you may
+want to define the shape of the image, so that the resulting image that is
+presented always fits a certain aspect ratio.</p>
+<p>Or, you may want to use an image as a background image, so that you can use CSS
+techniques to cover an area of the website that is not pre-determined.</p>
+<p>Usually, all those different ways of rendering an image have one principle in
+common: Media assets are loaded when actually visible and the concrete image
+resolution that is loaded depends on actual properties of the device, such
+as pixel density and the surface area that the image will occupy.</p>
+</div>
+<div class="section" id="plain-image">
+<span id="topics-media-plain-image"></span><h2>Plain Image<a class="headerlink" href="#plain-image" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to render an image is to simply use an <code class="docutils literal"><span class="pre">img</span></code> HTML tag to
+render the image, such as:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">myImage.url</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">myImage.caption</span><span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>which will simply present the image <code class="docutils literal"><span class="pre">myImage</span></code> with the caption as provided
+for the alternative text. <code class="docutils literal"><span class="pre">myImage.url</span></code> refers to the original image that was
+uploaded in its <em>original</em> aspect ratio.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">Media</span></code> model provides a number of properties, in particular for
+different shapes and sizes that can be used to render different image
+versions if required. For more information, please refer to the
+<a class="reference internal" href="../ref/Media.html#ref-media-model"><span class="std std-ref">Media Model Reference</span></a>.</p>
+</div>
+<p>In most cases, you would like to utilise lazy loading which you can do by using
+the <code class="docutils literal"><span class="pre">media</span></code> template tag library.</p>
+</div>
+<div class="section" id="lazy-loaded-image">
+<span id="topics-media-lazy-load-image"></span><h2>Lazy Loaded Image<a class="headerlink" href="#lazy-loaded-image" title="Permalink to this headline">¶</a></h2>
+<p>To render the same image <code class="docutils literal"><span class="pre">MyImage</span></code> using lazy-loading within templates, use
+the <code class="docutils literal"><span class="pre">image</span></code> tag in the following way:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>This renders the same image in its <em>original</em> aspect ratio but is using the
+lazy-loading mechanism instead. Moreover, the media loader will determine at
+runtime which image version to use. For example, a phone may load a smaller
+resolution image than a high-res desktop display device might.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The term <code class="docutils literal"><span class="pre">{%</span> <span class="pre">image</span> <span class="pre">myImage</span> <span class="pre">%}</span></code> is equivalent with {% image myImage
+‘original’ %}, which refers to the <code class="docutils literal"><span class="pre">original</span></code> shape of the image, which
+is always the <em>original</em> image that was uploaded for <code class="docutils literal"><span class="pre">myImage</span></code> in its
+<em>original</em> aspect ratio.</p>
+</div>
+</div>
+<div class="section" id="responsive-image-sizes">
+<span id="topics-media-responsive-image-sizes"></span><h2>Responsive Image Sizes<a class="headerlink" href="#responsive-image-sizes" title="Permalink to this headline">¶</a></h2>
+<p>For each image uploaded, Cubane will generate different versions of the same
+image in the same aspect ratio but with lower resolution.</p>
+<p>This will ensure that devices with lower resolution displays will load lower
+resolution images for example.</p>
+<p>You can define image sizes in your project settings, like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_SIZES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;xx-small&#39;</span><span class="p">:</span>  <span class="mi">50</span><span class="p">,</span>
+    <span class="s1">&#39;x-small&#39;</span><span class="p">:</span>  <span class="mi">160</span><span class="p">,</span>
+    <span class="s1">&#39;small&#39;</span><span class="p">:</span>    <span class="mi">320</span><span class="p">,</span>
+    <span class="s1">&#39;medium&#39;</span><span class="p">:</span>   <span class="mi">640</span><span class="p">,</span>
+    <span class="s1">&#39;large&#39;</span><span class="p">:</span>    <span class="mi">900</span><span class="p">,</span>
+    <span class="s1">&#39;x-large&#39;</span><span class="p">:</span> <span class="mi">1200</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Cubane supports the following named sizes (from smallest to largest):
+<code class="docutils literal"><span class="pre">xxx-small</span></code>, <code class="docutils literal"><span class="pre">xx-small</span></code>, <code class="docutils literal"><span class="pre">x-small</span></code>, <code class="docutils literal"><span class="pre">small</span></code>, <code class="docutils literal"><span class="pre">medium</span></code>, <code class="docutils literal"><span class="pre">large</span></code>,
+<code class="docutils literal"><span class="pre">x-large</span></code>, <code class="docutils literal"><span class="pre">xx-large</span></code> and <code class="docutils literal"><span class="pre">xxx-large</span></code>.</p>
+<p>You cannot add new versions, but you can define a subset of those image sizes
+based on your requirements (to use fewer image versions) and - more importantly
+- you can change the width of each image size (in pixels).</p>
+<p>For example, the code above defines that there is an image size <code class="docutils literal"><span class="pre">xx-small</span></code>,
+which is 50 pixels wide. The corresponding height is determined for each image
+based on its individual aspect ratio.</p>
+<p>You should adjust these numbers based on your specific requirements. Test your
+website and adjust as needed.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>You can regenerate all images after having changed these numbers with the
+following management command, which is provided by the <code class="docutils literal"><span class="pre">cubane.media</span></code>
+app:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py create_thumbnails
+</pre></div>
+</div>
+<p class="last">This is possible because Cubane will maintain a copy of the original image
+that was uploaded. The <code class="docutils literal"><span class="pre">create_thumbnails</span></code> command will generate all
+required image version from the original image file.</p>
+</div>
+<p>Also, keep in mind that some devices have a higher pixel density. For example,
+some phones may have a device pixel ratio of two or more for example. This
+means that for a screen of 400 pixels width, the device actually displays
+800 physical pixels.</p>
+<p>The media loader will take this into consideration and will present the best
+possible match based on the sizes defined in your project settings for
+<code class="docutils literal"><span class="pre">IMAGE_SHAPE</span></code>. The media loader may upscale an image a tiny bit in order to
+avoid having to download a much bigger image size. However, at some point in
+time, the media loader will load the bigger image version and the final image
+will be downscaled. There is always a tradeoff.</p>
+<p>When Cubane generates different image versions for each size, it will <em>never</em>
+upscale an image. If the original image that was uploaded is only 400 pixels
+wide, then Cubane will quite happily generate the sizes <code class="docutils literal"><span class="pre">xx-small</span></code>,
+<code class="docutils literal"><span class="pre">x-small</span></code> and <code class="docutils literal"><span class="pre">small</span></code>, but it will not generate any versions with higher
+resolutions because the result would be upscaled. The media loader will simply
+load the highest possible resolution that is required but also available.</p>
+</div>
+<div class="section" id="maximum-image-width">
+<span id="topics-media-max-image-width"></span><h2>Maximum Image Width<a class="headerlink" href="#maximum-image-width" title="Permalink to this headline">¶</a></h2>
+<p>The maximum image width that Cubane supports are 2,400 pixels by default, but
+you can change this in your project settings:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMG_MAX_WIDTH</span> <span class="o">=</span> <span class="mi">2400</span>
+</pre></div>
+</div>
+<p>Any image wider than 2,400 pixels is scaled down to 2,400 pixels and then
+stored permanently as the original version of the image. From there, any
+additional image versions are generated by downscaling the image from the
+original version.</p>
+<p>This process exists in order to keep uploaded media assets to a certain maximum
+size and preventing storing original images that are too large. Also, the
+processing time for resizing and generating different image version based on
+the original image is greatly improved if the original image size is reduced.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can turn off this behaviour by setting <a class="reference internal" href="settings.html#std:settings-IMG_MAX_WIDTH"><code class="xref std std-settings docutils literal"><span class="pre">IMG_MAX_WIDTH</span></code></a> to
+<code class="docutils literal"><span class="pre">None</span></code>.</p>
+</div>
+</div>
+<div class="section" id="image-shapes">
+<span id="topics-media-image-shapes"></span><h2>Image Shapes<a class="headerlink" href="#image-shapes" title="Permalink to this headline">¶</a></h2>
+<p>Cubane will automatically generate different <em>shapes</em> for each image, as
+defined in your project settings, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_SHAPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="s1">&#39;1150:285&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;listing&#39;</span><span class="p">:</span> <span class="s1">&#39;300:300&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A shape is basically a specific aspect ratio in which you want the image to
+appear. Cubane will crop the image so that the image content itself is not
+distorted.</p>
+<p>Remember, the actual width of an image depends on physical device properties,
+therefore <code class="docutils literal"><span class="pre">IMAGE_SHAPES</span></code> defines a list of named shapes and maps a specific
+<em>aspect ratio</em> to each of them. For example, the shape named <cite>listing</cite> may have
+been defined in different ways, all of which are equivalent, because they all
+express the same aspect ratio <em>1:1</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_SHAPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;listing1&#39;</span><span class="p">:</span> <span class="s1">&#39;1:1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;listing2&#39;</span><span class="p">:</span> <span class="s1">&#39;300:300&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;listing3&#39;</span><span class="p">:</span> <span class="s1">&#39;1024:1024&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is simply a way to express the form of the shape (in the case of <cite>listing</cite>
+a square).</p>
+<p>When rendering an image by using the <code class="docutils literal"><span class="pre">image</span></code> tag, the second argument may
+specify the name of the shape to use. The shape <code class="docutils literal"><span class="pre">original</span></code> always refers to
+the <em>original</em> aspect ratio of the image that was uploaded.</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="c">&lt;!-- render image in original aspect ratio --&gt;</span>
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="s1">&#39;original&#39;</span> <span class="cp">%}</span>
+
+<span class="c">&lt;!-- render image in the header shape --&gt;</span>
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="s1">&#39;header&#39;</span> <span class="cp">%}</span>
+
+<span class="c">&lt;!-- render image in the listing --&gt;</span>
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="s1">&#39;listing&#39;</span> <span class="cp">%}</span>
+
+<span class="c">&lt;!-- error: unknown shape --&gt;</span>
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="s1">&#39;does_not_exists&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>The shape must be declared ahead of time in <code class="docutils literal"><span class="pre">IMAGE_SHAPES</span></code>. If the <code class="docutils literal"><span class="pre">image</span></code>
+tag cannot find a shape, Cubane will render an error in DEBUG mode. In
+production mode, this error will be ignored.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Cubane will generate a number of different responsive versions for each
+image and each shape. For example, if you had six responsive image
+versions and two shapes, then Cubane would generate twelve different
+individual assets for each image uploaded.</p>
+<p class="last">If you can, keep the number of versions and shapes low.</p>
+</div>
+</div>
+<div class="section" id="image-shape-names">
+<span id="topics-media-image-shape-names"></span><h2>Image Shape Names<a class="headerlink" href="#image-shape-names" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s backend system provides an overview of all shapes that are declared in
+the system. This is particularly useful when uploading new images and changing
+the focal point of an image.</p>
+<p>The focal point of an image will influence how Cubane will crop an image if
+necessary to fit the image into specific shapes.</p>
+<p>For example, a landscape image showing a person’s face might need to be cropped
+to fit a more square or portrait format. If the focal point of the image is the
+centre of the face, then all cropped shapes that are generated would have the
+face in it and the system would not cut off the face.</p>
+<p>To clearly identify the different shapes that have been declared, a more useful
+human-readable name may be declared for each shape:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_SHAPE_NAMES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="s1">&#39;Header Background Image&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;Main Product Shot (Listing and Details Pages)&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A more detailed description of each shape will help users to identify in which
+way each image shape is used on the website.</p>
+</div>
+<div class="section" id="image-shape-css">
+<span id="topics-media-image-shape-css"></span><h2>Image Shape CSS<a class="headerlink" href="#image-shape-css" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s lazy-loading mechanism uses a specific CSS technique to ensure that
+the image area is reserved on the website so that when the image is finally
+loaded, it will not disrupt the layout of the page by <em>pushing</em> content down.</p>
+<p>When rendering an image using the <code class="docutils literal"><span class="pre">image</span></code> tag, the system will generate
+markup similar to the example below:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="s1">&#39;header&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>will render markup like:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;lazy-load&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;lazy-load-shape-header&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">noscript</span> <span class="na">data-ar</span><span class="o">=</span><span class="s">&quot;100.0&quot;</span> <span class="na">data-path</span><span class="o">=</span><span class="s">&quot;/0/1/my-image.jpg&quot;</span> <span class="na">data-shape</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="na">data-sizes</span><span class="o">=</span><span class="s">&quot;small|medium|large&quot;</span> <span class="na">data-title</span><span class="o">=</span><span class="s">&quot;My Image&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/media/shapes/original/large/0/1/my-image.jpg&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;My Image&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">noscript</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>If no javascript is executed, then this solution will still be able to present
+an image on the screen due to the <code class="docutils literal"><span class="pre">&lt;noscript&gt;</span></code> tag in the markup.</p>
+<p>More importantly, the outer container with the CSS class
+<code class="docutils literal"><span class="pre">lazy-load-shape-header</span></code> enforces a specific aspect ratio by applying the
+following CSS rules:</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">lazy-load</span> <span class="p">{</span>
+    <span class="k">display</span><span class="p">:</span> <span class="kc">block</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">lazy-load</span> <span class="o">&gt;</span> <span class="nt">span</span> <span class="p">{</span>
+    <span class="k">display</span><span class="p">:</span> <span class="kc">block</span><span class="p">;</span>
+    <span class="k">position</span><span class="p">:</span> <span class="kc">relative</span><span class="p">;</span>
+    <span class="k">height</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">lazy-load-shape-header</span> <span class="p">{</span>
+    <span class="k">padding-bottom</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Because the outer container has zero height, the padding-bottom CSS rule will
+effectively apply a fixed aspect ratio of <em>1:1</em> to the container. Therefore the
+image within will load just fine without having any effect on the layout of the
+outside of its container. Moreover, the image will naturally fit the
+container’s aspect ratio because the media loader will obviously load an image
+version that matches the aspect ratio of the container perfectly.</p>
+<p>Let us assume that the header shape had an aspect ratio of two to one, then the
+system would generate the following CSS rule for the header shape instead:</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">lazy-load-shape-header</span> <span class="p">{</span>
+    <span class="k">padding-bottom</span><span class="p">:</span> <span class="mi">50</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When embedding all resources for the <code class="docutils literal"><span class="pre">cubane.medialoader</span></code> app into your
+website, you will not only include the javascript code library for loading
+images. You will also include some CSS code along with it.</p>
+<p>Some of this CSS code is related to the lazy-load container itself but it also
+contains all CSS rules related to the shape’s aspect ratio which are generated
+based on all shapes declared in your application settings.</p>
+<p>When rendering images using the <code class="docutils literal"><span class="pre">cubane.media</span></code> template library, this will
+take advantage of such CSS rules as described above.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>You can use those shape-related CSS rules by yourself in a different
+context, perhaps you would like to render a background image that follows a
+certain aspect ratio or you have another element that should always have
+the same aspect ratio as one of your image shapes.</p>
+<p class="last">Feel free to apply the <code class="docutils literal"><span class="pre">lazy-load-shape-header</span></code> CSS class to any element
+in your markup for your own purposes. When you do, do not apply the
+<code class="docutils literal"><span class="pre">lazy-load</span></code> class since this will invoke the media loader to attempt to
+load an image unless this is precisely your intention.</p>
+</div>
+</div>
+<div class="section" id="lightbox">
+<span id="topics-media-lightbox"></span><h2>Lightbox<a class="headerlink" href="#lightbox" title="Permalink to this headline">¶</a></h2>
+<p>There is a common requirement for presenting images within a <em>lightbox</em> after
+clicking an image. A lightbox is typically a dialogue window of some kind which
+presents an image in a higher resolution than otherwise.</p>
+<p>There are a number of libraries available to do this and we encourage you to
+use any third-party library to accomplish this.</p>
+<p>Because this task is so common, we added a basic lightbox to Cubane as the
+<code class="docutils literal"><span class="pre">cubane.lightbox</span></code> package. It contains a customised version of Dmitry’s
+<cite>Magnific Popup implementation &lt;http://dimsemenov.com/plugins/magnific-popup/&gt;</cite>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Cubane’s default lightbox implementation requires
+<cite>jQuery &lt;https://jquery.com/&gt;</cite>.</p>
+</div>
+<p>You can add lightbox functionality by using the following markup:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;lightbox&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">myImage.url</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">title</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">myImage.caption</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">image</span> <span class="nv">myImage</span> <span class="s1">&#39;listing&#39;</span> <span class="cp">%}</span>
+<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The class <code class="docutils literal"><span class="pre">lightbox</span></code> will trigger the lightbox functionality.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember that you have to load <code class="docutils literal"><span class="pre">cubane.lightbox</span></code> by listing it in
+<code class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></code> and you also have to include the package’s
+resources onto your website for the lightbox to work.</p>
+</div>
+<p>Content authors may also determine that an image should open in a lightbox. If
+such option is used, Cubane’s CMS component will generate similar markup as to
+the above. If you add your own lightbox implementation, please make sure that
+the lightbox is triggered based on the <code class="docutils literal"><span class="pre">lightbox</span></code> CSS class.</p>
+<p>You can wrap multiple <em>lightbox-enabled</em> images inside a <em>gallery</em>, in which
+case the lightbox implementation will provide forward and backward navigation
+buttons which allow a visitor to navigate between all images that are nested
+within the same container. You simply have to contain all images that belong to
+one set of images into a container element with the CSS class <code class="docutils literal"><span class="pre">gallery</span></code>, and
+such container does not necessarily have to be the direct parent node:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;gallery&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">img</span> <span class="k">in</span> <span class="nv">images</span> <span class="cp">%}</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;gallery-item&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;lightbox&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">img.url</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">title</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">img.caption</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>
+                <span class="cp">{%</span> <span class="k">image</span> <span class="nv">img</span> <span class="s1">&#39;listing&#39;</span> <span class="cp">%}</span>
+            <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can create multiple image sets by creating multiple <em>gallery</em>
+containers. Each set of images is independent, which means that you can
+navigate between images within a set but not necessarily navigate from one
+set to another.</p>
+</div>
+</div>
+<div class="section" id="background-images">
+<span id="topics-media-background-images"></span><h2>Background Images<a class="headerlink" href="#background-images" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is useful to represent an image or a set of images as a background
+image. By doing so, we have a lot more flexibility; for example, we could use
+different CSS techniques to present the image within a region of the website
+that does not have a fixed shape.</p>
+<p>For instance, let’s assume that we have a header image on our website, which
+always takes 100% of the width but has a fixed height. When resizing the
+browser window, we will obviously end up with a different image shape every
+time: While the width is changing, the height remains fixed to a certain value.</p>
+<p>The following CSS rule should stretch the background image so that the entire
+area of the element is covered by the image.</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">header-image</span> <span class="p">{</span>
+    <span class="k">background-size</span><span class="p">:</span> <span class="kc">cover</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the corresponding markup for rendering the background image with
+lazy-loading:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header-image lazy-load&quot;</span> <span class="cp">{%</span> <span class="k">background_image</span> <span class="nv">myImage</span> <span class="s1">&#39;original&#39;</span> <span class="cp">%}</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">background_image</span></code> template tag will render additional data attributes
+for the <code class="docutils literal"><span class="pre">header-image</span></code> element. You are free to use any other element, it
+does not necessarily have to be a <code class="docutils literal"><span class="pre">div</span></code> element.</p>
+<p>However, it is important that you use the CSS class <code class="docutils literal"><span class="pre">lazy-load</span></code>, otherwise,
+the media loader will not be able to identify this element as a lazy-loading
+container.</p>
+<p>The media loader will then use those additional data attributes in order to
+determine the actual image version that will be loaded whenever the image
+becomes visible.</p>
+<p>By default, the actual image version that is loaded depends on the width of the
+element - which is the <code class="docutils literal"><span class="pre">div</span></code> element in our example from above. In some
+situations, you may want to take the height of the element into consideration
+as well. For example, you may have an element that expands vertically depending
+on other content on the same page next to it. If the height is not taken into
+consideration, then the resulting image may appear pixelated because the image
+resolution has been determined based on the width alone - ignoring the height
+of the element (assuming we are still using the cover CSS rule for stretching
+the background image from above).</p>
+<p>For lazy-loaded background images, you can specify that the height should also
+be taken into consideration in the following way:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header-image lazy-load&quot;</span> <span class="cp">{%</span> <span class="k">background_image</span> <span class="nv">myImage</span> <span class="s1">&#39;original&#39;</span> <span class="kp">True</span> <span class="cp">%}</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The <em>True</em> argument specifies that the height of the element is taken into
+consideration as well, therefore the media loader may load a higher resolution
+as it would do otherwise if the height dictates a higher resolution image.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Depending on the height, you may end up, loading a very large image in order
+to satisfy the height requirement and a lot of the image is cropped as a
+consequence.</p>
+<p class="last">Alternatively, you can also use a technique called
+<a class="reference internal" href="#topics-media-art-direction"><span class="std std-ref">Art Direction</span></a>, which allows you to change the shape of
+a lazy-loaded image based on device properties.</p>
+</div>
+</div>
+<div class="section" id="size-templates">
+<span id="topics-media-size-template"></span><h2>Size Templates<a class="headerlink" href="#size-templates" title="Permalink to this headline">¶</a></h2>
+<p>Lazy-loading images will work in most circumstances; however, there are a few
+instances where this will not work automatically and further markup or
+JavaScript code is needed.</p>
+<p>A typical carousel implementation is a good example where the dimensions of all
+images might not be known ahead of time. Since most slides are invisible by
+default (assuming that only one slide of the carousel is active at any given
+time), all images within inactive slides will not be loaded automatically.</p>
+<p>Those images are either hidden or are located off-screen due to the nature of
+the carousel.</p>
+<p>By default, the lazy loader will take the direct container of the image into
+consideration when determining visibility and size of the image. For background
+images, this might be the element itself and not its direct parent element.</p>
+<p>You can annotate the direct parent that contains the image (or the element
+containing a background image) with the attribute <code class="docutils literal"><span class="pre">data-size</span></code>. In this case,
+the lazy loader will determine the size of the corresponding image based on a
+common parent element higher up the hierarchy that has been annotated with the
+attribute <code class="docutils literal"><span class="pre">data-size-template</span></code>.</p>
+<p>Consider the following example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-container&quot;</span> <span class="na">data-size-template</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-slides&quot;</span><span class="p">&gt;</span>
+        <span class="cp">{%</span> <span class="k">for</span> <span class="nv">slide</span> <span class="k">in</span> <span class="nv">slides</span> <span class="cp">%}</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-slide&quot;</span> <span class="na">data-size</span><span class="p">&gt;</span>
+                <span class="cp">{%</span> <span class="k">image</span> <span class="nv">slide.image</span> <span class="cp">%}</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Each image would normally collapse to zero width or would be located off-screen
+or otherwise invisible due to the CSS style for the carousel. However, because
+the direct container element with the CSS class <code class="docutils literal"><span class="pre">carousel-item</span></code> has the
+<code class="docutils literal"><span class="pre">data-size</span></code> attribute, the lazy loader will scan upwards to locate the
+containing element with the attribute <code class="docutils literal"><span class="pre">data-size-template</span></code>. Then this element
+(with the CSS class <code class="docutils literal"><span class="pre">carousel-container</span></code>) will be used instead to determine
+the actual size of the image and its visibility.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When working with background images, the <code class="docutils literal"><span class="pre">data-size</span></code> attribute must be
+applied to the element itself and not to its parent like the following
+example demonstrates:</p>
+<div class="last highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-container&quot;</span> <span class="na">data-size-template</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-slides&quot;</span><span class="p">&gt;</span>
+        <span class="cp">{%</span> <span class="k">for</span> <span class="nv">slide</span> <span class="k">in</span> <span class="nv">slides</span> <span class="cp">%}</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-slide&quot;</span><span class="p">&gt;</span>
+                 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">data-size</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;carousel-slide-image lazy-load&quot;</span> <span class="cp">{%</span> <span class="k">background_image</span> <span class="nv">myImage</span> <span class="s1">&#39;original&#39;</span> <span class="cp">%}</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="art-direction">
+<span id="topics-media-art-direction"></span><h2>Art Direction<a class="headerlink" href="#art-direction" title="Permalink to this headline">¶</a></h2>
+<p>Many websites feature a bold and big header image, which is great on desktop
+devices, but if you scale the same shape down to the size of a phone, then the
+narrow landscape shape might not be exactly what you wanted.</p>
+<p>Let’s take the following example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">image</span> <span class="nv">headerImage</span> <span class="s1">&#39;header&#39;</span> <span class="cp">%}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>We assume that the header shape has been defined as a narrow landscape format,
+something like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_SHAPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="s1">&#39;1200:400&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When scaling the website down to the size of a phone, the image within the
+header of the website will scale down proportional to its shape. Let’s assume
+that the screen width of our phone is 400 pixels, then the narrow header image
+will have been scaled itself down to just 133 pixels.</p>
+<p>This is all fine, but the point is: We may want to change the shape of the
+image based on the device. This is what <em>Art Direction</em> can provide.</p>
+<p>Let’s assume that we wanted to change the shape from landscape to a square on
+phones. We first invent a new shape for this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_SHAPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;landscape&#39;</span><span class="p">:</span> <span class="s1">&#39;1200:400&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;square&#39;</span><span class="p">:</span> <span class="s1">&#39;400:400&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We removed the shape <code class="docutils literal"><span class="pre">header</span></code> and replaced it with <code class="docutils literal"><span class="pre">landscape</span></code>. We also
+added a new shape called <code class="docutils literal"><span class="pre">square</span></code> to represent our square shape for phones.
+We can now define an art-directed shape called <code class="docutils literal"><span class="pre">header</span></code>, which will determine
+the actual shape that shall be used based on the screen width of the website,
+like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">IMAGE_ART_DIRECTION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;header&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;767&#39;</span><span class="p">:</span> <span class="s1">&#39;square&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;*&#39;</span><span class="p">:</span>   <span class="s1">&#39;landscape&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This declares a new art-directed shape called <code class="docutils literal"><span class="pre">header</span></code> as we had before, but
+now the shape is <em>art-directed</em>: This means that the actual shape is determined
+by the list of rules, we declared as above.</p>
+<p>The left-hand side declares the maximum screen width (in logical pixels,
+inclusive), which is then mapped to the name of a regular image shape that
+shall be used in that case. The declaration <code class="docutils literal"><span class="pre">*</span></code> is used in the case that no
+other rule matches.</p>
+<p>Finally, we can simply render an image by using the <em>art-directed</em> shape
+instead of referring to a concrete shape:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">image</span> <span class="nv">headerImage</span> <span class="s1">&#39;header&#39;</span> <span class="cp">%}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Now the shape <code class="docutils literal"><span class="pre">header</span></code> has a different meaning. Cubane will resolve the
+actual shape that is used at runtime based on the width of the browser window.</p>
+</div>
+<div class="section" id="art-direction-and-css-classes">
+<span id="topics-media-art-direction-css"></span><h2>Art Direction and CSS Classes<a class="headerlink" href="#art-direction-and-css-classes" title="Permalink to this headline">¶</a></h2>
+<p>Cubane will generate CSS classes for each shape declared in your application
+settings as described in section <a class="reference internal" href="#image-shape-css">Image Shape CSS</a>. All image shapes that
+have been declared for this example would result in the following CSS code to
+be generated:</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">lazy-load-shape-square</span> <span class="p">{</span>
+    <span class="k">padding-bottom</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">lazy-load-shape-landscape</span> <span class="p">{</span>
+    <span class="k">padding-bottom</span><span class="p">:</span> <span class="mf">33.3333</span><span class="kt">%</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to accommodate art direction, additional CSS classes are generated for
+each <em>art-directed</em> shape using CSS media queries based on the art-direction
+rules that are declared in your application settings, such as:</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">media</span><span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">767px</span><span class="o">)</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nc">lazy-load-shape-header</span> <span class="p">{</span>
+        <span class="k">padding-bottom</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="k">media</span><span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">768px</span><span class="o">)</span> <span class="p">{</span>
+    <span class="p">.</span><span class="nc">lazy-load-shape-header</span> <span class="p">{</span>
+        <span class="k">padding-bottom</span><span class="p">:</span> <span class="mf">33.3333</span><span class="kt">%</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Feel free to use those CSS rules for your own element if you wanted to.</p>
+</div>
+<div class="section" id="svg-vector-images">
+<span id="topics-media-svg"></span><h2>SVG Vector Images<a class="headerlink" href="#svg-vector-images" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s media pipeline has full support for SVG vector images. You can upload
+SVG files by using the backend system as you could upload any other type of
+image file. However, the processing of vector images is a bit different to
+bitmap based image formats, such as <em>jpg</em> or <em>png</em>, although the way you use
+SVG based images is exactly the same:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">mySvgImage</span> <span class="s1">&#39;header&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>This will render the SVG image <code class="docutils literal"><span class="pre">mySVGImage</span></code> in the aspect ratio for the shape
+<code class="docutils literal"><span class="pre">header</span></code> as the system would render any other (bitmap-based) image.</p>
+<p>The system will generate different image versions for each shape that has been
+declared in the application settings. SVG images are cropped by adjusting their
+<code class="docutils literal"><span class="pre">viewBox</span></code> property according to the shape’s aspect ratio.</p>
+<p>Regarding responsive images, because a vector is already scalable, we do not
+necessarily need to generate different image versions for different screen
+sizes, or do we?</p>
+<p>As it turns out, you can quite happily embed bitmap data within an SVG file,
+which gives you effectively a combined image with scalable vector components as
+well as one or more layers of bitmap data mixed together.</p>
+<p>Given that most SVG images will probably contain vector graphics without any
+bitmap information, this use case is still extremely useful: Think about an
+eCommerce example, where we sell clothing. You could easily see how the
+clothing itself might be vector shapes, with a bitmap-based shadow map on top
+of it. This way it will give the otherwise solid and plain looking garment
+depth and definition and will appear dimensional and not flat.</p>
+<p>Representing clothing like this has another benefit: We might want to customise
+colours for individual layers of the garment (e.g. colouring different parts of
+the SVG image programmatically). SVG gives us this flexibility as we will see
+shortly.</p>
+<p>Because SVG images may contain bitmap data, Cubane’s media system will generate
+different image versions for each SVG image uploaded. The system will analyse
+the SVG markup and generates a version where any embedded bitmap data has been
+scaled down to fit the maximum width of the image version.</p>
+<p>In order to be consistent, the system will do this process for any SVG image,
+regardless of whether the SVG image contains bitmap data or not.</p>
+</div>
+<div class="section" id="media-urls">
+<span id="topics-media-media-urls"></span><h2>Media URLs<a class="headerlink" href="#media-urls" title="Permalink to this headline">¶</a></h2>
+<p>By default, media data is stored within the <code class="docutils literal"><span class="pre">media</span></code> folder and your web
+server is typically configured to serve media assets directly without invoking
+python.</p>
+<p>This is a common setup when hosting Django-based applications.</p>
+<p>For example, you can access any original media image by using the following
+URL:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">originals</span><span class="o">/&lt;</span><span class="n">bucket</span><span class="o">&gt;/&lt;</span><span class="n">primary</span><span class="o">-</span><span class="n">key</span><span class="o">&gt;/&lt;</span><span class="n">filename</span><span class="o">&gt;.&lt;</span><span class="n">ext</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">originals</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>The first digit <em>0</em> represents the <em>bucket</em> or group of images. Cubane will
+organise images in groups of 1,000 images per folder. The second digit <em>1</em>
+represents the numeric primary key of the corresponding database record.</p>
+<p>Any image with a primary key between 0 and 999 will be associated with the
+bucket identifier of <em>0</em>, any primary key between 1,000 and 1,999 with <em>1</em> and
+so forth.</p>
+<p>The last component is a representation of the image caption. Whenever you
+change the caption of an image, all image files will be renamed to reflect the
+full caption of the image within its filename. Because each image is organised
+within a folder that represents a unique primary key of the underlying database
+record, the caption may contain duplicates.</p>
+<p>Any derived image version is organised by applying the following structure:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">shapes</span><span class="o">/&lt;</span><span class="n">shape</span><span class="o">&gt;/&lt;</span><span class="n">size</span><span class="o">&gt;/&lt;</span><span class="n">bucket</span><span class="o">&gt;/&lt;</span><span class="n">primary</span><span class="o">-</span><span class="n">key</span><span class="o">&gt;/&lt;</span><span class="n">filename</span><span class="o">&gt;.&lt;</span><span class="n">ext</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">shapes</span><span class="o">/</span><span class="n">header</span><span class="o">/</span><span class="n">small</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>The prefix <code class="docutils literal"><span class="pre">/media/</span></code> can be changed in your application settings, such as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">MEDIA_URL</span> <span class="o">=</span> <span class="s1">&#39;media-assets&#39;</span>
+</pre></div>
+</div>
+<p>Which will then result in the following paths:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">-</span><span class="n">assets</span><span class="o">/</span><span class="n">originals</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">.</span><span class="n">svg</span>
+<span class="o">/</span><span class="n">media</span><span class="o">-</span><span class="n">assets</span><span class="o">/</span><span class="n">shapes</span><span class="o">/</span><span class="n">header</span><span class="o">/</span><span class="n">small</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When changing the <code class="docutils literal"><span class="pre">MEDIA_URL</span></code> settings variable, the system will not
+rename the underlying physical path location. If you already uploaded some
+media files, you would need to rename the physical folder on the filesystem
+by yourself or adjust the configuration of <code class="docutils literal"><span class="pre">settings.MEDIA_ROOT</span></code>
+accordingly.</p>
+</div>
+<p>In most cases you will not need to work with the underlying folder structure
+directly: Cubane’s <code class="docutils literal"><span class="pre">Media</span></code> model provides a set of helper methods and
+properties that generate all the different URLs and file paths for you. Please
+refer to the <a class="reference internal" href="../ref/Media.html#ref-media-model"><span class="std std-ref">Media Model Reference</span></a> for more information.</p>
+</div>
+<div class="section" id="media-api-urls">
+<span id="topics-media-media-api-urls"></span><h2>Media API URLs<a class="headerlink" href="#media-api-urls" title="Permalink to this headline">¶</a></h2>
+<p>In <em>Production</em> mode, you would usually set up a web server to serve media files
+directly without invoking python, Django or Cubane to do so. However, there are
+some cases where you would like to apply modifications to an image on demand.</p>
+<p>Cubane will generate all image versions ahead of time for best performance in
+production, so there is no need to resize or crop images on demand.</p>
+<p>However, in particular, for SVG images you may want to colourise different
+shapes of an SVG image at runtime based on user’s choice. Coming back to the
+eCommerce example from earlier, a customer may configure a garment by choosing
+different colours for different parts of the garment.</p>
+<p>If you need to render a specific version based on those colour choices, then
+Cubane’s media API is the way to go.</p>
+<p>Usually, you can access any image by using the following URLs, as explained in
+the <a class="reference internal" href="#media-urls">Media URLs</a>. section:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">shapes</span><span class="o">/</span><span class="n">header</span><span class="o">/</span><span class="n">small</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>If you need to customise an SVG image at runtime, you can simply use the media
+API URL instead:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">-</span><span class="n">api</span><span class="o">/</span><span class="n">shapes</span><span class="o">/</span><span class="n">header</span><span class="o">/</span><span class="n">small</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>The URL is exactly the same as the usual image URL, only the prefix changed
+from <em>/media/</em> to <em>/media-api/</em>. Any image served via the media API URL will
+generate a media file on demand and will invoke python, Django and Cubane to do
+so.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because an image is generated on demand, this process is significantly
+slower than using pre-generated image versions.</p>
+</div>
+<p>The benefit of generating the image on demand is that additional transformation
+functions can be applied at runtime specific to this request. For example, the
+following image changes the SVG shape with the identifier <code class="docutils literal"><span class="pre">base</span></code> to red:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/media-api/shapes/header/small/0/1/my-image.svg?base=red
+</pre></div>
+</div>
+<p>The general rule for applying colorisation attributes like this is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">identifier</span><span class="o">&gt;=&lt;</span><span class="n">attribute</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The attribute can be omitted, in which case the default attribute is <code class="docutils literal"><span class="pre">fill</span></code>,
+which is the instruction for an SVG shape’s fill colour. These two rules are
+therefore equivalent:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/media-api/shapes/header/small/0/1/my-image.svg?base=red
+/media-api/shapes/header/small/0/1/my-image.svg?base=fill:red
+</pre></div>
+</div>
+<p>Other attributes, such as <code class="docutils literal"><span class="pre">stroke-width</span></code> or <code class="docutils literal"><span class="pre">stroke</span></code> are also supported in
+the context of SVG images:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/media-api/shapes/header/small/0/1/my-image.svg?base=stroke:blue
+</pre></div>
+</div>
+<p>Multiple attributes can be combined for the same or different shapes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/media-api/shapes/header/small/0/1/my-image.svg?base=fill:red&amp;base=stroke:blue&amp;base=stroke-width:2&amp;zip=green
+</pre></div>
+</div>
+<p>When using colours, you can use <em>named</em> colours such as <code class="docutils literal"><span class="pre">red</span></code>, <code class="docutils literal"><span class="pre">green</span></code> and
+<code class="docutils literal"><span class="pre">blue</span></code>, but you can also use any RGB colour in its hexadecimal
+representation:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/media-api/shapes/header/small/0/1/my-image.svg?base=e9d8c7
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In CSS for example, RGB colours are usually represented by a leading sharp
+symbol, such as <code class="docutils literal"><span class="pre">#e9d8c7</span></code>. Since <code class="docutils literal"><span class="pre">#</span></code> has a reserved meaning within a
+URL and would need to be escaped, the media API simply omits the sharp
+symbol altogether.</p>
+</div>
+<p>If you start out with a <code class="docutils literal"><span class="pre">Media</span></code> instance, then you can simply use <code class="docutils literal"><span class="pre">image</span></code>
+template tag to generate markup that will load the image lazily through the
+media api with the given customisations applied.</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">image</span> <span class="nv">mySvgImage</span> <span class="s1">&#39;header&#39;</span> <span class="s1">&#39;base=fill:red&amp;base=stroke:blue&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>If all you need is the URL itself - for example within an email template where
+lazy loading images are not available - then you can use the following template
+tag instead:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">media_api_url</span> <span class="nv">mySvgImage</span> <span class="s1">&#39;large&#39;</span> <span class="s1">&#39;base=fill:red&amp;base=stroke:blue&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">cubane.svgicons</span></code> app extends the Media API by allowing SVG icons sets to
+be downloaded in <em>Debug</em> mode only. Cubane’s SVG icon system relies on this
+extension in order to serve external SVG icon files in <em>Debug</em> mode.</p>
+<p>In <em>Debug</em> mode, any SVG icon set file can be accessed by using the following
+Media API URL (this file is usually only available in <em>Production</em> mode and is
+generated as part of the deployment process of the website):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">-</span><span class="n">api</span><span class="o">/</span><span class="n">svgicons</span><span class="o">/</span><span class="n">frontend</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>This URL refers to the SVG icon set file containing all SVG icons that have
+been declared for the <code class="docutils literal"><span class="pre">frontend</span></code> bucket. The SVG icon file is generated on
+demand.</p>
+<p>Individual SVG icons can be accessed in the following way:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">media</span><span class="o">-</span><span class="n">api</span><span class="o">/</span><span class="n">svgicons</span><span class="o">/</span><span class="n">frontend</span><span class="o">/</span><span class="n">phone</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>This URL refers to an SVG icon file which only contains the <code class="docutils literal"><span class="pre">phone</span></code> resource
+as declared for the <code class="docutils literal"><span class="pre">frontend</span></code> resource bucket.</p>
+</div>
+<div class="section" id="embedding-svg-images">
+<span id="topics-media-embedding-svg"></span><h2>Embedding SVG Images<a class="headerlink" href="#embedding-svg-images" title="Permalink to this headline">¶</a></h2>
+<p>All rendering methods we’ve discussed so far are referring to an image by using
+the <code class="docutils literal"><span class="pre">img</span></code> tag. Even when loading the image lazily, the actual markup ends up
+to be an <code class="docutils literal"><span class="pre">img</span></code> tag.</p>
+<p>Under specific circumstances, in particular with SVG images, you may want to
+embed the actual image data within the document itself. For SVG images, this
+could mean that you like to change individual parts of the SVG images
+programmatically using javascript for example.</p>
+<p>In order to do this consistently, the best possible option is to embed the
+actual SVG document within the HTML markup itself, which you can do in the
+following way:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">inline_image</span> <span class="nv">mySvgImage</span> <span class="s1">&#39;header&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will still load and embed the SVG images lazily and only if visible,
+even though the image will be embedded into the DOM of the HTML document.</p>
+</div>
+<p>When embedding SVG images, the markup of the SVG document becomes part of the
+DOM of the website document. SVG images may contain <code class="docutils literal"><span class="pre">id</span></code> attributes and
+<code class="docutils literal"><span class="pre">&lt;style&gt;</span></code> tags. Usually, this would mean that <code class="docutils literal"><span class="pre">id</span></code> attributes may collide
+because of duplication, since an identifier may collide with any other
+identifier on your website. Perhaps even more severe, style information that
+was previously embedded within the SVG image is now applied globally to the
+entire document and may affect other parts of your website.</p>
+<p>To avoid these problems, all SVG images are optimised in the following way:</p>
+<ul class="simple">
+<li>Any style declarations within SVG images are removed and embedded as inline
+style attributes.</li>
+<li>All identifiers are prefixed with a short term. The prefix is unique to the
+SVG image file, the particular responsive version and shape. This means that
+different SVG images and different image sizes or shapes can safely be
+embedded without identifiers colliding. The prefix itself is added to the
+<code class="docutils literal"><span class="pre">svg</span></code> tag as the <code class="docutils literal"><span class="pre">data-prefix</span></code> attribute so that the prefix can be
+obtained programmatically.</li>
+</ul>
+</div>
+<div class="section" id="svg-based-clip-paths">
+<span id="topics-media-svg-clip-paths"></span><h2>SVG-based clip paths<a class="headerlink" href="#svg-based-clip-paths" title="Permalink to this headline">¶</a></h2>
+<p>Wouldn’t it be great to break out of those rectangular shapes for images? With
+SVG-based clip paths, you can define an arbitrary shape, where an image - which
+would otherwise be rectangular - can be presented differently; for example as
+an ellipse or with a slope, in the shape of an arrow or any other shape, you can
+think of.</p>
+<p>There is a CSS solution: The clip-path property allows us to define a specific
+region of an element to display, rather than showing the complete area.
+However, browser support is great but still limited.</p>
+<p>The next best thing that comes to mind is SVG clip paths: Very similar in
+concept but — as it turns out — much wider supported in today’s browsers.</p>
+<p>We are still going to use the clip-path CSS property, but instead of defining
+the clip path shape in CSS and having it acting on any arbitrary DOM element,
+we will use SVG instead. Both, the clip path itself and the targeted image need
+to live in <em>SVG land</em> in order to make this solution as widely supported as
+possible.</p>
+<p>The clip path itself can be defined in your template like the following example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">svg</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;svg-defs&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;0&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">defs</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">clipPath</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;my-clip-path&quot;</span> <span class="na">clipPathUnits</span><span class="o">=</span><span class="s">&quot;objectBoundingBox&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">path</span> <span class="na">d</span><span class="o">=</span><span class="s">&quot;M1,0L1,0.865C0.867,0.949 0.688,1 0.491,1C0.303,1 0.131,0.953 0,0.876L0,0L1,0Z&quot;</span><span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">clipPath</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">defs</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The container does not have any dimensions (0x0 in size) and can be defined
+anywhere within the body of the document. We define the clip path via the
+<code class="docutils literal"><span class="pre">clipPath</span></code> tag. The clip path itself is made up by any SVG shapes, for
+example a path.</p>
+<p>Please note that we use <code class="docutils literal"><span class="pre">objectBoundingBox</span></code> for the <code class="docutils literal"><span class="pre">clipPathUnits</span></code>
+attribute. This way the path can be defined in percentage values (0.0 to 1.0)
+based on the bounding box of the object the clip path is assigned to. This is
+great for responsive images because the clip path will simply resize itself
+according to the image.</p>
+<p>Once a clipping path is defined anywhere within your template, you can start
+using the clip path by loading an image and applying the clip path to it:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">media_tags</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">svg_image</span> <span class="nv">myImage</span> <span class="s1">&#39;header&#39;</span> <span class="s1">&#39;my-clip-path&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="svgicons.html" class="btn btn-neutral" title="Working with SVG Icons" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

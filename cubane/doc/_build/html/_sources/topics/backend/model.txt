@@ -1,0 +1,770 @@
+.. _topics/backend/backend_model_options:
+
+=====================
+Backend Model Options
+=====================
+
+Often a custom backend view is generated for a model automatically. This is why
+most aspects of how a backend view is presenting model instances are actually
+controlled via the model.
+
+The idea is that the backend system is very generative. It provides common edit
+functionality based on the model that can then be customised on a case-by-case
+basis through backend view options.
+
+
+
+
+.. _topics/backend/model_view_options:
+
+Model View Options
+==================
+
+Model view options are options declared by the model that alter the
+presentation and functionality of the corresponding model view that operates on
+the model as part of the backend system.
+
+Let's say that the following model view is installed as part of the backend
+system to manage ``Books``:
+
+.. code-block:: python
+
+    from cubane.backend.views import BackendSection
+    from cubane.views import ModelView
+    from models import Book
+
+    class BookView(ModelView):
+        template_path = 'cubane/backend/'
+        model = Book
+
+One of the first thing that you would want to customise is the columns that are
+presented by the model view. By default, a model view will simply extract a
+number of columns from the model automatically, which might not necessarily be
+the ones you wanted.
+
+In order to customise the columns that are presented by the backend, simply
+declare the class ``Listing`` within your model class and declare a list of
+columns:
+
+.. code-block:: python
+
+    from django.db import models
+    from cubane.models import DateTimeBase
+
+    class Book(DateTimeBase):
+        class Meta:
+            verbose_name        = 'Book'
+            verbose_name_plural = 'Books'
+            ordering            = ['title']
+
+        class Listing:
+            columns = [
+                'title',
+                'slug',
+                'isbn',
+                'recommended',
+                'price'
+            ]
+
+        title = models.CharField(max_length=255)
+        slug = models.SlugField(max_length=255, db_index=True)
+        isbn = models.CharField(max_length=32, db_index=True, unique=True)
+        published = models.DateField()
+        publisher = models.CharField(max_length=255)
+        author = models.CharField(max_length=255)
+        recommended = models.BooleanField(default=False)
+        price = models.DecimalField(max_digits=12, decimal_places=2)
+
+        @classmethod
+        def get_form(cls):
+            from forms import BookForm
+            return BookForm
+
+        def __unicode__(self):
+            return self.title
+
+In the following, we will discuss various other ``Listing`` options that may
+affect the presentation and functionality of a model view:
+
+    - :listing:`columns`: List of visible columns.
+    - :listing:`edit_columns`: List of editable columns.
+    - :listing:`filter_by`: List of columns that can be filtered by.
+    - :listing:`sortable`: True, if the model has a sequence order which can be
+      changed.
+    - :listing:`searchable`: List of additional columns that take part in quick
+      searching.
+    - :listing:`edit_view`: True, if bulk editing mode is available.
+    - :listing:`grid_view`: True, if image-based grid view is available.
+    - :listing:`default_view`: Default view type (``list``, ``edit`` or
+      ``grid``).
+    - :listing:`default_view`: Default view type (``list``, ``edit`` or
+    - :listing:`data_import`: True, if data import is available.
+    - :listing:`data_import`: True, if data export is available.
+    - :listing:`data_columns`: List of columns that are exported.
+    - :listing:`data_ignore`: List of columns that are not exported.
+    - :listing:`data_map_fields`: Maps CSV file columns to internal columns
+      when importing data.
+    - :listing:`data_default_values`: Provides default values for columns
+      during data import and export.
+    - :listing:`data_id_field`: Specified an alternative primary key column
+      when importing data.
+
+The following sections will describe each individual listing option in more
+detail:
+
+
+
+
+.. listing:: columns
+
+``columns``
+
+    Declares a list of columns that are presented by the corresponding model
+    view in default list mode.
+
+    By default, the corresponding model view will extract a number of columns
+    automatically if no columns have been declared.
+
+    Any column reference must be the name of
+
+        - a valid ``model field`` of the model or
+        - an implicit method without arguments, like ``get_FOO_display()`` or
+        - an explicit method without arguments, for example, ``get_foo()`` or
+        - a property of the model, for example, ``foo``
+
+    The maximum number of columns is restricted to *six* full columns. Any
+    declared column is a full column  unless the column name is prefixed with
+    ``/``, in which case the column is presented as a half-column. Half columns
+    are not as wide as full columns and the system can present any combination
+    of half and full columns as long as the total number of full columns does
+    not exceed *six* columns. Two half columns would make up for one full
+    column.
+
+    For example:
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                'title',
+                'slug',
+                'isbn',
+                'published',
+                '/author',       # half column
+                '/recommended',  # half column
+                '/price'         # half column
+            ]
+
+    The column header label that is generated by the model view is
+    automatically derived from the column reference name. For example, the
+    column name ``title`` implicitly names the column ``Title``. You may
+    declare the visual column label explicitly by piping the column name and the
+    column label like in the following example:
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                'price|Total',
+                ...
+            ]
+
+    The column value by default is left-aligned. However, you can align the
+    column value to the right by prefixing the column name with a hyphen
+    character (``-``):
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                '-price|Total',   # right-aligned
+                ...
+            ]
+
+    For half-columns, the half-column indicator comes first, then the
+    right-alignment indicator like the following example demonstrates:
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                '/-price|Total',   # right-aligned half column
+                ...
+            ]
+
+    There are multiple formatting options available which can be expressed as
+    another pipe expression. Cubane supports the following formatting options:
+
+        - Boolean values presented as yes/no.
+        - Url (clickable website url).
+        - Currency.
+        - HTML content.
+        - Invoking listing action.
+
+    The following example gives an overview of all formatting options based on
+    our book example:
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                'get_absolute_url|Website|url',   # website url
+                'html_excerpt|Excerpt|html',      # html content
+                'recommended|Recommended|bool',   # yes/no
+                '-price|Total|currency',          # right-aligned currency
+                'action:checkout'                 # invoke action 'checkout'
+            ]
+
+    All columns that directly map to a model field are sortable by that column.
+    For example the column declaration ``-price|Total|currency`` directly maps
+    to the model field ``price``, therefore the user can sort the listing by the
+    ``price`` column.
+
+    If the column refers to a method or property, then sorting is disabled for
+    such column. For example, the column declaration
+    ``get_absolute_url|Website|url`` invokes the instance method
+    ``get_absolute_url`` for each instance, therefore the resulting value is
+    computed and the resulting listing cannot be sorted by this column.
+
+    To overcome this limitation, the name of the underlying property may be
+    declared as well which can then be used to sort the resulting list of
+    items. For example, the column declaration
+    ``slug(get_absolute_url)|Website|url`` is still invoking the instance
+    method ``get_absolute_url`` for each instance but the resulting listing
+    remains sortable by the ``Website`` column based on sorting the internal
+    column ``slug`` which -- of course -- is the basis by which the full URL is
+    computed in the first place.
+
+    A column declaration can also refer to foreign key fields. For example,
+    let's say the book class had a foreign key to an ``Author`` model which
+    contained a name field, then the author's name may be referenced in the
+    listing by using the following column declaration:
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                'author__name|Author',   # name field in Author model
+                ...
+            ]
+
+    .. note::
+
+         The actual model view implementation may exclude certain columns to
+         start with. Excluded columns will not be presented within the listing,
+         even if the column is declared by the model.
+
+
+.. listing:: edit_columns
+
+``edit_columns``
+
+    Declares a list of columns that are presented by the corresponding model
+    view in bulk editing mode.
+
+    By default, if no edit columns are declared, all regular columns declared
+    via :listing:`columns` are used instead.
+
+    .. code-block:: python
+
+        class Listing:
+            columns = [
+                'title',
+                'slug',
+                'isbn',
+                '/price'
+            ]
+            edit_view = True   # enable bulk-editing to begin with
+            edit_columns = [   # slug not editable in bulk editing mode...
+                'title',
+                'isbn',
+                '/price'
+            ]
+
+    If columns are declared, then only those columns are presented in bulk
+    editing mode. The same rules for declaring regular columns via
+    :listing:`columns` applies when declaring columns for bulk editing.
+
+    .. note::
+
+        Bulk editing must be enabled via the :listing:`edit_view` listing
+        option in order to allow for bulk editing.
+
+        Not all formatting options are available in bulk editing mode since
+        all column data is presented as form elements rather than formatted
+        column values.
+
+        Please refer to the :listing:`columns` section for more information on
+        how to declare columns in general.
+
+
+.. listing:: filter_by
+
+``filter_by``
+
+    Declares a list of columns that are presented within the side panel as
+    filter options. By providing model fields as filter options, users of the
+    backend system can precisely filter records by using specific values for
+    individual columns.
+
+    By default, the filter panel is hidden away. Only if columns are declared
+    via the ``filter_by`` option, the filter side panel is presented and
+    available through the backend system.
+
+    Each column must refer to a form field declared by the corresponding model
+    form. This form is usually the same form that is used for editing records
+    of the model through the backend system. An alternative form just for the
+    purpose of filtering may be declared.
+
+    Filter columns are declared via the ``filter_by`` option. For example, the
+    following declaration will allow books to be filtered by **Title**,
+    **Slug** and/or **ISDB number**; provided that the model form provides
+    those three fields.
+
+    .. code-block:: python
+
+        class Listing:
+            filter_by = [
+                'title',
+                'slug',
+                'isbn'
+            ]
+
+    The resulting filter side panel form will present those columns in the
+    order as specified: ``title`` then ``slug`` then ``isbn``. In particular,
+    for filter forms containing a number of fields, section titles can be
+    inserted in order to provide a sense of partition or to group similar
+    fields:
+
+    .. code-block:: python
+
+        class Listing:
+            filter_by = [
+                ':Book Title',       # section title
+                'title',
+                'slug',
+
+                ':Identification',   # another section title
+                'isbn'
+            ]
+
+    In the example above, the resulting filter form still contains three form
+    fields, but will contain grouping information that combines the form fields
+    ``title`` and ``slug`` into one local group (named ``Book Title``) and
+    places the form field ``isbn`` into another logical group (named
+    ``Identification``).
+
+    .. note::
+
+        The system may change the default presentation of form fields to suit
+        the purpose of the filter form. For example: Usually, boolean fields are
+        represented as checkbox input fields within forms. However, the backend
+        system will replace those with radio input fields for the purpose of
+        filtering -- providing three possible options: Off, Yes (``True``) and
+        No (``False``).
+
+
+.. listing:: sortable
+
+``sortable``
+
+    Declares if a model is sortable in the backend.
+
+    By default, a model is *not* sortable.
+
+    When making a model sortable, the backend system will provide user
+    interface options to define the order or items by allowing users to *drag
+    and drop* items. The established sorting order can then be used for example
+    to derive the order in which items are presented on the frontend.
+
+    If sortable is set to ''True'', then the system implicitly expects that the
+    model has a column with the name ''seq' of some integer type, for example:
+
+    .. code-block:: python
+
+        from django.db import models
+        from cubane.models import DateTimeBase
+
+        class Book(DateTimeBase):
+            class Listing:
+                sortable = True
+
+            title = models.CharField(max_length=255)
+            slug = models.SlugField(max_length=255, db_index=True)
+            isbn = models.CharField(max_length=32, db_index=True, unique=True)
+            seq = models.IntegerField(db_index=True, default=0, editable=False)
+
+    In this case, the model declares a field with the name ''seq'' which is
+    used by the system to store the order of books. The first book within a
+    sequence will start with 1, the second book with 2 and so forth. Backend
+    users can use drag 'n drop in order to manipulate the order in which books
+    are ordered.
+
+    On the frontend, you would usually sort books by ordering them by the
+    ''seq'' field; for example, to present a list of books in a specific
+    user-defined order.
+
+    .. code-block:: python
+
+        books = Book.objects.all().order_by('seq')
+
+    The sequence of items is only defined per level of hierarchy in case
+    folders are used. For example, if books were organised within folders -
+    let's say genres - then the sequence order as defined by the ''seq'' field
+    applies for each genre individually. Horror books declare a sequence
+    starting with 1 while books in the kids section also start with 1. The
+    backend system will distinguish those cases and will not allow users to
+    change the order -- books of multiple genres could be presented at the same
+    time.
+
+
+.. listing:: searchable
+
+``searchable``
+
+    Declares a list of additional model fields by which model instances are
+    searched when using the quick search facility.
+
+    By default, no additional model fields are declared as being searchable.
+
+    When searching via the quick search method, all visible columns as declared
+    via the :listing:`columns` field are searchable. Further, *quick search*
+    only applies to text-related fields and would not apply to boolean fields
+    for example.
+
+    Sometimes, you would like to allow the quick search facility to yield
+    results based on columns that are to directly presented within the listing
+    screen of the backend. In this case, those *additional* columns may be
+    declared via the :listing:`searchable` listing option.
+
+    For example, if the ISBN number for books would not be part of the listing
+    for some reason, but you still wanted users to be able to search via the
+    ISBN number in the backend, then you could declare the following listing
+    option:
+
+    .. code-block:: python
+
+        class Listing:
+            searchable = ['isbn']
+
+    .. note::
+
+        Non-text fields and fields that are already listed as columns via the
+        :listing:`columns` listing option are ignored.
+
+
+.. listing:: edit_view
+
+``edit_view``
+
+    Declares if bulk-editing is provided for the listing screen.
+
+    By default, bulk editing is not enabled.
+
+    Cubane's backend system provides bulk editing functionality, where certain
+    columns can be edited at the same time on the listing screen; rather than
+    opening each item for editing individually.
+
+    This options is not enabled by default and may require the definition of
+    columns that are applicable in bulk editing mode (see section
+    :listing:`edit_columns`).
+
+
+.. listing:: grid_view
+
+``grid_view``
+
+    Declares if the image-based grid view is provided for the listing screen.
+
+    By default, grid view is not available.
+
+    For some type of items, in particular, for those that have an image
+    associated with it, Cubane's backend system can present items as image
+    thumbnails rather than tabular data. In particular, for media assets, this
+    type of presentation is more useful.
+
+    The system will implicitly assume that each item is a
+    :class:`cubane.media.models.Media` instance or has a foreign key to a
+    :class:`~cubane.media.models.Media` instance called ``image``.
+
+    If your model does not have an image reference or the field is called
+    differently, you can either rename your field or introduce a property with
+    the name ``image`` that returns the reference to
+    :class:`~cubane.media.models.Media` internally.
+
+    .. code-block:: python
+
+        class Listing:
+            grid_view = True
+
+
+.. listing:: default_view
+
+``default_view``
+
+    Declares the default view that is presented for the corresponding model
+    within Cubane's backend system.
+
+    By default the regular list view is presented, which is always available
+    for any model:
+
+    .. code-block:: python
+
+        class Listing:
+            default_view = 'grid'
+
+    Available options are:
+
+    ================  ==========================================================
+    Option            Description
+    ================  ==========================================================
+    ``list``          Default list view (tabular).
+    ``compact-list``  Compact version of the default list view (tabular).
+    ``edit``          Bulk editing view.
+    ``grid``          Image-based grid view
+    ================  ==========================================================
+
+
+.. listing:: data_import
+
+``data_import``
+
+    Declares whether CSV file data import is available or not.
+
+    By default, CSV data import is *not* available.
+
+    When importing CSV files, the first row must contain the name of the model
+    field the column data represents and the model form must contain a valid
+    form field of the same name.
+
+    During import, each data record is then processed via the model form as if
+    the data were inputted into the form manually.
+
+    .. code-block:: python
+
+        class Listing:
+            data_import = True
+
+    .. note::
+
+        If the import data contains the primary key field, then the
+        corresponding record is updated; otherwise, a new record is created.
+
+
+.. listing:: data_export
+
+``data_export``
+
+    Declares whether CSV file data export is available or not.
+
+    By default, CSV data export is *not* available.
+
+    When exporting CSV files, the system will export all field columns, unless
+    specific columns are declared via the :listing:`data_columns` listing
+    option.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+
+    .. note::
+
+        The system will automatically export model field names as the first
+        data row that is exported.
+
+
+.. listing:: data_columns
+
+``data_columns``
+
+    Declares a list of columns that are exported when using the CSV file export
+    option (which must be enabled via :listing:`data_export`).
+
+    By default, the list of exported columns is undefined and the exporter will
+    export all model columns that are defined by the model automatically unless
+    columns are ignored for data export via :listing:`data_ignore`.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+            data_columns = [
+                'id',
+                'title',
+                'slug',
+                'isbn'
+            ]
+
+
+.. listing:: data_ignore
+
+``data_ignore``
+
+    Declares a list of columns that are ignored when export CSV files. Listed
+    columns are *not* exported, even if they are declared via
+    :listing:`data_columns`.
+
+    By default, no columns are ignored.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+            data_ignore = [
+                'isbn'   # do not export ISBN
+            ]
+
+    .. note::
+
+        :listing:`data_ignore` is ideally suited to declare fields you do not
+        want to be exported if no list of columns has been declared via
+        :listing:`data_columns`. In this case, all columns are exported and you
+        can use :listing:`data_ignore` to remove unwanted ones.
+
+
+.. listing:: data_map_fields
+
+``data_map_fields``
+
+    Declares a mapping from alternative column names to actual model field
+    names used during the CSV file import process to understand
+    differently-named columns.
+
+    By default, no additional data mapping is declared and the CSV file importer
+    will only understand column names that match the model.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+            data_map_fields = {
+                'ISBN Number': 'isbn',
+                ...
+            }
+
+    The example demonstrates how an additional column name ``ISBN Number`` may
+    be declared in order to map the column ``ISBN Number`` to the internal
+    model field ``isbn``. Without such mapping, the column name must have been
+    labelled as ``isbn`` in order for the importer to be able to import the data
+    successfully.
+
+    .. note::
+
+        Mapping columns in this way is particularly useful if you renamed
+        columns and would still be able to support the previous name or the
+        input data is part of an initial data import process and has been
+        compiled by hand with column labels that do not necessarily match the
+        ones used by the model.
+
+
+.. listing:: data_default_values
+
+``data_default_values``
+
+    Declares a default value that is used when importing data from a CSV file
+    and a particular column cell value happen to be empty.
+
+    By default, the default value for an empty cell value is ``None``, unless
+    :listing:`data_default_value` declares a different value.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+            data_default_values = {
+                'title': '<Unnamed>',
+                ...
+            }
+
+    The example demonstrates how a book title will automatically take the value
+    ``<Unnamed>`` in case a book title is not defined within the CSV import
+    file.
+
+    .. note::
+
+        Even though the default value is ``None``, the actual value that is
+        used by the model may also depend on the model form that is used by the
+        data importer to validate each record. Further, the model itself may
+        declare a default value on the database level.
+
+        The listing option :listing:`data_default_values` sets a default value
+        as part of the import process before the data is validated via the form
+        or saved to the database.
+
+
+.. listing:: data_id_field
+
+``data_id_field``
+
+    Declares the name of the column that is used as the primary key for each
+    record in order for the data importer to decide if any given record already
+    exists in the system and is therefore considered to be an update operation
+    rather than an insert operation.
+
+    By default, the name of the primary key column is the name of the primary
+    key of the model, which is typically ``id`` but does not have to be.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+            data_id_field = 'isbn'
+
+    The example above shows how books are mapped to all existing books in the
+    system when importing CSV data from a file. By default, the system would
+    have used the ``id`` primary key column of the model for this purpose, but
+    perhaps we do not want to include the *built-in* ``id`` column in the first
+    place. By declaring the ``isbn`` column as the primary key, any existing
+    records from the CSV file with the same ``isbn`` number will trigger a data
+    update rather than an insert.
+
+    .. note::
+
+        Make sure that the column that has been declared as the primary key for
+        the purpose of importing data from a CSV file is unique. There should
+        not be more than one record with the same column value.
+
+
+
+
+.. _topics/backend/model_view_overrides:
+
+Model View Overrides
+====================
+
+A model base class may specify backend-specific view options which are then
+inherited to its parent model classes and can be overridden fully or partially.
+
+For example, the following model may declare some general view options:
+
+.. code-block:: python
+
+    from cubane.models import DateTimeBase
+
+    class BaseModel(DateTimeBase):
+        class Listing:
+            columns = [
+                'foo',
+                'bar'
+            ]
+            sortable = False
+
+
+Then a deriving class may add the ability to sort items:
+
+.. code-block:: python
+
+    from django.db import models
+    from cubane.models import DateTimeBase
+
+    class Book(BaseModel):
+        class Listing:
+            sortable = True
+
+        seq = models.IntegerField(db_index=True, default=0, editable=False)
+
+In order to provide such functionality through the backend system, the
+:listing:`sortable` view option is overridden. However, the :listing:`columns`
+view option has *not* been overridden; therefore the declaration from the base
+class is used instead.

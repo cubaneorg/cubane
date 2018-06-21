@@ -1,0 +1,14 @@
+====================
+Class: BaseModelForm
+====================
+
+Base class for backend model forms.
+
+.. seealso::
+
+    Please refer to :class:`BaseFormMixin` for more information.
+
+
+.. class:: BaseModelForm
+
+    Base class for backend model forms.

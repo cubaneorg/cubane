@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Class: BaseFormMixin &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class: BaseModelForm" href="BaseModelForm.html" />
+    <link rel="prev" title="Class: BaseForm" href="BaseForm.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../index.html">
+            <img src="../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Cubane</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cubane Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="BaseForm.html">Class: BaseForm</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Class: BaseFormMixin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BaseModelForm.html">Class: BaseModelForm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BrowseField.html">Class: BrowseField</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BrowseSelect.html">Class: BrowseSelect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BrowseSelectThumbnail.html">Class: BrowseSelectThumbnail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BrowseThumbnailField.html">Class: BrowseThumbnailField</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FormInputLimit.html">Class: FormInputLimit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Media.html">Media Model Reference</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Cubane Reference</a> &raquo;</li>
+        
+      <li>Class: BaseFormMixin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/ref/BaseFormMixin.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="class-baseformmixin">
+<h1>Class: BaseFormMixin<a class="headerlink" href="#class-baseformmixin" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#BaseFormMixin" title="BaseFormMixin"><code class="xref py py-class docutils literal"><span class="pre">BaseFormMixin</span></code></a> class provides useful helper methods for working
+with forms - in particular for Cubane’s backend system.</p>
+<p>The mixin is used for both, <a class="reference internal" href="BaseForm.html#BaseForm" title="BaseForm"><code class="xref py py-class docutils literal"><span class="pre">BaseForm</span></code></a> and <a class="reference internal" href="BaseModelForm.html#BaseModelForm" title="BaseModelForm"><code class="xref py py-class docutils literal"><span class="pre">BaseModelForm</span></code></a>.</p>
+<dl class="class">
+<dt id="BaseFormMixin">
+<em class="property">class </em><code class="descname">BaseFormMixin</code><a class="headerlink" href="#BaseFormMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides common helper methods for forms.</p>
+<dl class="attribute">
+<dt id="BaseFormMixin.is_tabbed">
+<code class="descname">is_tabbed</code><a class="headerlink" href="#BaseFormMixin.is_tabbed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if the form is tabbed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.has_sections">
+<code class="descname">has_sections</code><a class="headerlink" href="#BaseFormMixin.has_sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if the form has at least one section.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.has_visibility_rules">
+<code class="descname">has_visibility_rules</code><a class="headerlink" href="#BaseFormMixin.has_visibility_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if the form has at least one visibility rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.has_blueprint_rules">
+<code class="descname">has_blueprint_rules</code><a class="headerlink" href="#BaseFormMixin.has_blueprint_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if this form has at least one blueprint rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.has_limit_rules">
+<code class="descname">has_limit_rules</code><a class="headerlink" href="#BaseFormMixin.has_limit_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if this form has at least one character limit rule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.tabs">
+<code class="descname">tabs</code><a class="headerlink" href="#BaseFormMixin.tabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all tabs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.excluded_fields">
+<code class="descname">excluded_fields</code><a class="headerlink" href="#BaseFormMixin.excluded_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of form field names that are excluded from this form.
+Excluded form fields are not processed by this form.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.is_duplicate">
+<code class="descname">is_duplicate</code><a class="headerlink" href="#BaseFormMixin.is_duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if this form is being used to duplicate an instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="BaseFormMixin.has_line_items">
+<code class="descname">has_line_items</code><a class="headerlink" href="#BaseFormMixin.has_line_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if at least one form fields is based on
+<code class="xref py py-class docutils literal"><span class="pre">RelatedEditField</span></code> which presents multiple editable forms that
+are embedded within this form.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.setup_initial">
+<code class="descname">setup_initial</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.setup_initial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by the constructor of <a class="reference internal" href="BaseForm.html#BaseForm" title="BaseForm"><code class="xref py py-class docutils literal"><span class="pre">BaseForm</span></code></a> and
+<a class="reference internal" href="BaseModelForm.html#BaseModelForm" title="BaseModelForm"><code class="xref py py-class docutils literal"><span class="pre">BaseModelForm</span></code></a> in order to setup the initial form data of this
+form.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by the constructor of <a class="reference internal" href="BaseForm.html#BaseForm" title="BaseForm"><code class="xref py py-class docutils literal"><span class="pre">BaseForm</span></code></a> and
+<a class="reference internal" href="BaseModelForm.html#BaseModelForm" title="BaseModelForm"><code class="xref py py-class docutils literal"><span class="pre">BaseModelForm</span></code></a> in order to setup the form including layout,
+tabs, sections etc.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.required_fields">
+<code class="descname">required_fields</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.required_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of bound form fields that are required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.are_all_fields_requried">
+<code class="descname">are_all_fields_requried</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.are_all_fields_requried" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if all form fields of this form  are required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.has_required_fields">
+<code class="descname">has_required_fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.has_required_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if at least one form field is required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.configure">
+<code class="descname">configure</code><span class="sig-paren">(</span><em>self</em>, <em>request</em>, <em>instance=None</em>, <em>edit=True</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called before a form is being validated and allows for form
+configuration to be carried out, such as dynamically removing form
+fields or making field required or not required.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> (<em>string</em>) – The request object.</li>
+<li><strong>instance</strong> (<em>string</em>) – Reference to the model instance that is being
+edited or created.</li>
+<li><strong>edit</strong> (<em>string</em>) – <code class="docutils literal"><span class="pre">True</span></code> if a model instance is edited rathe than
+being created.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.get_tab_by_title">
+<code class="descname">get_tab_by_title</code><span class="sig-paren">(</span><em>self</em>, <em>title</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.get_tab_by_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return information about the tab with the given title name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>title</strong> (<em>string</em>) – The name of tab for which information is
+returned.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.remove_tab">
+<code class="descname">remove_tab</code><span class="sig-paren">(</span><em>self</em>, <em>title</em>, <em>remove_fields=False</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.remove_tab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the tab with the given name and optionally remove all form
+fields alongside with it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<em>string</em>) – The name of tab that is being removed.</li>
+<li><strong>remove_fields</strong> (<em>string</em>) – <code class="docutils literal"><span class="pre">True</span></code> if form fields of the
+corresponding tab should also be removed alongside the tab.
+Default: <code class="docutils literal"><span class="pre">False</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.remove_tabs">
+<code class="descname">remove_tabs</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.remove_tabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all tabs, leaving the form as a  non-tabbed form.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.has_tab">
+<code class="descname">has_tab</code><span class="sig-paren">(</span><em>self</em>, <em>title</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.has_tab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal"><span class="pre">True</span></code> if there is at least one tab.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.remove_field">
+<code class="descname">remove_field</code><span class="sig-paren">(</span><em>self</em>, <em>fieldname</em>, <em>if_exists=False</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.remove_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the form field with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fieldname</strong> (<em>string</em>) – The name of the form field that is removed.</li>
+<li><strong>if_exists</strong> (<em>string</em>) – <code class="docutils literal"><span class="pre">True</span></code> to avoid raising an error if the form
+field does not exist.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.remove_fields">
+<code class="descname">remove_fields</code><span class="sig-paren">(</span><em>self</em>, <em>fieldnames</em>, <em>if_exists=False</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.remove_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove multiple form fields from the form.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fieldnames</strong> (<em>string</em>) – List of form field names that will be removed
+from the form.</li>
+<li><strong>if_exists</strong> (<em>string</em>) – <code class="docutils literal"><span class="pre">True</span></code> to avoid raising an error if any form
+field does not exist.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.field_error">
+<code class="descname">field_error</code><span class="sig-paren">(</span><em>self</em>, <em>fieldname</em>, <em>msg</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.field_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a form error condition with the given error message for the
+given form field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fieldname</strong> (<em>string</em>) – Name of the form field for which an error
+condition is raised.</li>
+<li><strong>msg</strong> (<em>string</em>) – Error message that is being raised.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.update_sections">
+<code class="descname">update_sections</code><span class="sig-paren">(</span><em>self</em>, <em>collect=True</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.update_sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the internal list of sections for this form, which may become
+necessarily whenever form fields are manipulated - in particular when
+being removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>collect</strong> (<em>string</em>) – <code class="docutils literal"><span class="pre">True</span></code> if sections not only be re-created but
+also re-collected from all derived classes (default).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.get_encoded_visibility_rules">
+<code class="descname">get_encoded_visibility_rules</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.get_encoded_visibility_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all visibility rules for this form encoded as a JSON
+string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.get_encoded_blueprint_rules">
+<code class="descname">get_encoded_blueprint_rules</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.get_encoded_blueprint_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all blueprint rules for this form encoded as a JSON
+string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.get_encoded_limit_rules">
+<code class="descname">get_encoded_limit_rules</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.get_encoded_limit_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of character limitation rules for this form encoded as
+a JSON string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="BaseFormMixin.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#BaseFormMixin.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a representation of this form as a dictionary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="BaseModelForm.html" class="btn btn-neutral float-right" title="Class: BaseModelForm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="BaseForm.html" class="btn btn-neutral" title="Class: BaseForm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

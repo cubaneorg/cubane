@@ -1,0 +1,922 @@
+.. _topics/backend/backend_forms:
+
+=============
+Backend Forms
+=============
+
+The backend system is using a model view form in order to allow users to edit
+properties of a model.
+
+A model may declare which model view form is used for the backend.
+
+In addition, Cubane extends Django's form implementation by providing a number
+of additional features such as tabs, form configuration and dynamic form field
+visibility.
+
+
+
+
+.. _topics/backend/model_view_form:
+
+Model View Form
+===============
+
+In order to edit a model instance, the corresponding backend view needs to know
+what form to use for this purpose. A form can be either declared by the model
+itself or the model view.
+
+In the latter case, the form that is used for editing model instance can be
+declared via the ``form`` declaration on the model view class as the following
+example demonstrates:
+
+.. code-block:: python
+
+    from cubane.views import ModelView
+    from models import Book
+    from forms import BookForm
+
+    class BookView(ModelView):
+        template_path = 'cubane/backend/'
+        model = Book
+        form = BookForm
+
+In this case, the model view ``BookView`` will use the form ``BookForm`` when
+editing or creating model instances of ``Book``.
+
+In some cases you may not implement a model view by yourself, which is why you
+can also declare the default form used by a model view through the model
+instead:
+
+.. code-block:: python
+
+    from django.db import models
+    from cubane.models import DateTimeBase
+
+    class Book(DateTimeBase):
+        class Meta:
+            verbose_name        = 'Book'
+            verbose_name_plural = 'Books'
+
+        class Listing:
+            columns = ['title', 'isbn']
+
+        title = models.CharField(max_length=255)
+        slug = models.SlugField(max_length=255, db_index=True)
+        isbn = models.CharField(max_length=32, db_index=True, unique=True)
+
+        @classmethod
+        def get_form(cls):
+            from forms import BookForm
+            return BookForm
+
+        def __unicode__(self):
+            return self.title
+
+The class method ``get_form`` should return the class of the form that is able
+of representing instances of the model. A model view representing Books will then
+determine the form by calling the very same class method on the model class
+unless a form has been declared by the model view itself.
+
+.. seealso::
+
+    Please refer to the :ref:`topics/backend/model_forms` section in order to
+    learn more about how model forms can be declared and customised for the
+    backend system.
+
+
+
+
+.. _topics/backend/model_view_filterform:
+
+Model View Filter Form
+======================
+
+A model view may provide filter options by which records of a particular model
+can be filtered by individual attributes. When working with books, for example,
+you may want to allow users of the backend system to filter books by specific
+properties such as book title, author or ISBN.
+
+A model filter form is used for this purpose. It is usually presented within a
+side column which can be extended by the user to see all options available.
+
+If no filter form is declared, then the regular model form is used instead,
+which is sufficient in most cases. However, in some cases, you may want to use a
+different form that extends the model form in a specific way.
+
+A filter form can be declared either by the model itself or by the
+corresponding model view. For the latter case, you can simply declare the filter
+form in a similar way as the model form is declared:
+
+.. code-block:: python
+
+    from cubane.views import ModelView
+    from models import Book
+    from forms import BookForm
+
+    class BookView(ModelView):
+        template_path = 'cubane/backend/'
+        model = Book
+        form = BookForm
+        filter_form = BookFilterForm
+
+In this example, the ``BookForm`` is used when creating or editing books.
+However, when filtering books, the ``BookFilterForm`` is used instead.
+
+In some cases you may not implement a model view by yourself, which is why you
+can declare a model filter form via the model in a similar way how you would
+declare a model view:
+
+.. code-block:: python
+
+    from django.db import models
+    from cubane.models import DateTimeBase
+
+    class Book(DateTimeBase):
+        class Meta:
+            verbose_name        = 'Book'
+            verbose_name_plural = 'Books'
+
+        class Listing:
+            columns = ['title', 'isbn']
+            filter_by = ['title', slug', 'isbn']
+
+        title = models.CharField(max_length=255)
+        slug = models.SlugField(max_length=255, db_index=True)
+        isbn = models.CharField(max_length=32, db_index=True, unique=True)
+
+        @classmethod
+        def get_form(cls):
+            from forms import BookForm
+            return BookForm
+
+        @classmethod
+        def get_filter_form(cls):
+            from forms import BookFilterForm
+            return BookFilterForm
+
+        def __unicode__(self):
+            return self.title
+
+In this example, the ``BookForm`` is used for creating or editing instances of
+books, but the ``BookFilterForm`` is used for filtering books instead unless a
+filter form has been declared by the corresponding model view directly.
+
+.. note::
+
+    Please note that ultimately the model listing option :listing:`filter_by`
+    dictates the fields that are presented to users as part of the filter form,
+    but those fields obviously need to be present in the form.
+
+    You can read more about the :listing:`filter_by` options as part of the
+    :ref:`topics/backend/model_view_options` section.
+
+
+
+
+.. _topics/backend/model_forms:
+
+Model Forms
+===========
+
+For Cubane's backend system, a model form is a form that derives itself from
+:class:`cubane.forms.BaseForm` or :class:`cubane.forms.BaseModelForm` and is
+able to represent a model for the purpose of creating, editing or filtering
+model instances.
+
+The base class :class:`cubane.forms.BaseForm` derives itself from Django's
+:class:`django.forms.Form` class but adds additional support for various
+aspects of editing model instances and customising the presentation and
+behaviour of the form.
+
+When working with models, you would probably want to use the class
+:class:`cubane.forms.BaseModelForm` instead, which derives itself from Django's
+:class:`django.forms.ModelForm` and therefore provides the ability to generate
+form fields based on the model automatically.
+
+The ``BookForm`` from previous examples may be declared in the following way:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+
+
+In addition to this simple form, Cubane allows for a number of options to
+extend the form - in particular for the purpose of the backend system.
+
+
+
+
+.. _topics/backend/form_tabs:
+
+Form Tabs
+=========
+
+Form fields can be organised into tabs, where each tab contains one or more
+form fields. The user is presented with a number of tabs and can switch between
+multiple tabs.
+
+Tabs are declared via the ``tabs`` option as part of the ``Meta`` class in the
+following way:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            tabs = [
+                {
+                    'title': 'Book Name',
+                    'fields': [
+                        'title',
+                        'slug',
+                    ]
+                }, {
+                    'title': 'Properties',
+                    'fields': [
+                        'isbn',
+                        'recommended',
+                        'price'
+                    ]
+                }
+            ]
+
+As the example demonstrates, tabs are declared as a list of dictionaries, where
+the ``title`` key declares the name of the tab and ``fields`` a list of
+individual form fields that are presented on that tab in the given order.
+
+For the last example, the form for editing book instances is organised into two
+separate tabs, one for editing the title and slug fields and another for
+editing further properties such as ISBN, recommendation and price.
+
+The order in which tabs are presented is the same as they are declared.
+Further, form fields within each tab are presented in the order in which they
+are listed for each tab.
+
+.. note::
+
+    When using tabs, all required fields have to be listed on some tab. The
+    system will generate an error message if a required field is not listed for
+    any tab.
+
+Tabs can be inherited from a base class, where additional fields are added to
+existing tabs or new tabs are introduced as the following example demonstrates:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class ExtendedBookForm(BookForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            tabs = [
+                {
+                    'title': 'Book Name',
+                    'fields': [
+                        'barcode:after(isbn)',
+                        'author',
+                    ]
+                }, {
+                    'title': 'Properties:as(Details)',
+                    'fields': [
+                        'rrp'
+                    ]
+                }, {
+                    'title': 'Content',
+                    'fields': [
+                        'description'
+                    ]
+                }
+            ]
+
+The example demonstrates three different mechanisms by which tabs can be
+extended. In general, a derived form will always inherit all tabs that were
+declared in the base class.
+
+In addition, the parent class may override existing properties using one of the
+following principals:
+
+1. New form fields can be added to the end of any existing tab by simply
+matching the name of an existing tab. In the example, the field ``author`` is
+added to the end of the tab with the name ``Book Name``.
+
+2. A new or existing field can be inserted or moved ``before`` or ``after`` any
+existing field. In the example, a new field with the name ``barcode`` is
+inserted into the ``Book Name`` tab after the existing field ``isbn``. The
+format is ``<field>:before(<ref-field>)`` for inserting the field *before*
+another field and ``<field>:after(<ref-field>)`` for inserting the field
+*after* another field.
+
+3. A new or existing field can be inserted or moved to a new tab that did not
+exist before. In the example, the new field ``description`` is being added to a
+new tab with the name ``Content``.
+
+4. A tab can be renamed by using the format ``<tab-name>:as(<new-tab-name>)``
+when referencing a tab. In the example, the tab with the name ``Properties`` is
+renamed to ``Details``. In addition, a new field with the name ``rrp`` is being
+added to the tab; however, a tab can be renamed without adding fields to it.
+
+.. note::
+
+    Fields cannot be removed since the form is deriving from an existing form
+    and cannot change the behaviour of the form itself via the declaration of
+    ``tabs``. Of course, it is always possible to remove form fields dynamically
+    during its construction or configuration of the form.
+
+    Currently, tabs can be renamed but cannot be removed or merged with other
+    tabs.
+
+
+
+
+.. _topics/backend/form_sections:
+
+Form Sections
+=============
+
+Form fields may be grouped into sections. A section is a group of form fields
+for which a name has been declared. Visually, form sections are usually
+rendered as two columns where sections are distributed among those columns
+evenly.
+
+Form sections are available for tabbed and non-tabbed forms alike and are
+declared via the ``sections`` field of the ``Meta`` class as the following
+example demonstrates:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            tabs = [
+                {
+                    'title': 'Book Name and Details',
+                    'fields': [
+                        'title',
+                        'slug',
+                        'isbn',
+                        'recommended',
+                        'price'
+                    ]
+                }
+            ]
+            sections = {
+                'title': 'Title and Slug',
+                'isbn': 'Details'
+            }
+
+The ``sections`` property is declared as a dictionary where the key is
+referring to the name of an existing form field and the value is describing the
+name of the section. A section is then grouping any number of form fields until
+the next form section or the end of the form or tab.
+
+In the previous example, the form fields ``title`` and ``slug`` are grouped
+into a section called ``Title and Slug`` and the remaining form fields are
+grouped into a section with the name ``Details``.
+
+When naming individual form fields by using the ``tabs`` property for example,
+then sections can also be created within the list of fields like the next
+example demonstrates:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            tabs = [
+                {
+                    'title': 'Book Name and Details',
+                    'fields': [
+                        ':Title and Slug',
+                        'title',
+                        'slug',
+
+                        ':Details',
+                        'isbn',
+                        'recommended',
+                        'price'
+                    ]
+                }
+            ]
+
+A section is introduced by using a colon character (``:``) as the first
+character of the section name.
+
+When using non-tabbed forms, form fields and sections can be declared via the
+``section_fields`` property:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            section_fields = [
+                ':Title and Slug',
+                'title',
+                'slug',
+
+                ':Details',
+                'isbn',
+                'recommended',
+                'price'
+            ]
+
+In this case, the form does not have any tabs but presents the same fields with
+the same sections in the same order as the previous example.
+
+A section may also have additional text information or help description which
+can be declared by using a pipe (``|``) character:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            layout = FormLayout.COLUMNS
+            section_fields = [
+                ':Title and Slug|Enter the name and the unique slug.',
+                'title',
+                'slug',
+
+                ':Details|Enter additional details.',
+                'isbn',
+                'recommended',
+                'price'
+            ]
+
+In this example, the section field ``Title and Slug`` will have an additional
+help text associated with it, which is ``Enter the name and the unique slug.``.
+
+
+
+
+.. _topics/backend/form_layout:
+
+Form Layout
+===========
+
+A form is usually rendered in two columns where form sections are distributed
+among those columns evenly like in the following example:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            layout = FormLayout.COLUMNS
+            section_fields = [
+                ':Title and Slug',
+                'title',
+                'slug',
+
+                ':Details',
+                'isbn',
+                'recommended',
+                'price'
+            ]
+
+The layout of the form is explicitly set to ``FormLayout.COLUMNS``. If the form
+should not be presented as columns then a flat layout can be specified instead:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            layout = FormLayout.FLAT
+            section_fields = [
+                ':Title and Slug',
+                'title',
+                'slug',
+
+                ':Details',
+                'isbn',
+                'recommended',
+                'price'
+            ]
+
+A flat layout is still presenting form sections but does not arrange them
+within columns.
+
+When using a column layout, individual sections can be forced to take up two
+columns at once by using the explanation mark (``!``) as the first character of
+the name of the section.
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            layout = FormLayout.COLUMNS
+            section_fields = [
+                '!:Title and Slug',
+                'title',
+                'slug',
+
+                '!:Details',
+                'isbn',
+                'recommended',
+                'price'
+            ]
+
+In this case, both sections will span across two columns deliberately.
+
+
+
+
+.. _topics/backend/form_configuration:
+
+Form Configuration
+==================
+
+When using forms, you can add code that gets executed in order to configure the
+form before it is being used:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+
+
+        def configure(form, request, instance=None, edit=True):
+            super(BookForm, self).configure(request, instance, edit)
+
+            self.remove_field('recommended')
+            self.update_sections()
+
+The :meth:`BaseFormMixin.configure` method is called before a form is being
+validated and can be used to dynamically change the form. Typically the
+configure method is used to:
+
+1. Setup the queryset for model choice fields
+2. Remove or add form fields
+3. Making form fields required or not required
+
+The given ``instance`` argument is representing the model instance that is
+being edited or created via the form. The ``edit`` property is ``True`` if a
+model instance is being edited rather than created.
+
+Various helper methods are available for forms, in particular
+:meth:`BaseFormMixin.remove_field` for removing form fields and
+:meth:`BaseFormMixin.update_sections` for re-arranging form sections, in
+particular after form fields have been removed.
+
+.. seealso::
+
+    Please refer to :class:`BaseFormMixin` for more information about form
+    utility methods.
+
+
+
+
+.. _topics/backend/form_field_validation:
+
+Form Field Validation
+=====================
+
+Cubane provides the helper method :meth:`FormBaseMixin.field_error` when
+raising form validation errors for a particular form field - in particular when
+validating multiple form fields at once.
+
+Usually, a ``ValidationError`` exception is raised within a clean method that is
+specific to a particular form field. However, when validating form data by
+overriding the generic clean method of the form then ValidationError cannot be
+raised. Instead, the :meth:`FormBaseMixin.field_error` can be used to trigger a
+form field-specific validation error message:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+
+
+        def clean(self):
+            d = super(BookForm, self).clean()
+
+            recommended = d.get('recommended')
+            rrp = d.get('rrp')
+
+            if recommended and not rrp:
+                self.field_error('rrp', 'This field is required for recommended books.')
+
+            return d
+
+
+
+
+.. _topics/backend/form_browse:
+
+Form Browse
+===========
+
+When referring to other entities in the form of ForeignKey, then the
+corresponding form field is usually a drop-down field listing all related model
+instances to choose from.
+
+In order to integrate this better into Cubane, such ModelChoiceField can be
+extended to use a widget that allows *browsing* for model instances by
+attaching a *browse* button next to the drop-down field.
+
+The :class:`BrowseSelect` widget can be used in the following way:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelect
+    from models import Book, Author
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            widgets = {
+                'author': BrowseSelect(model=Author)
+            }
+
+For image-based models that are derived from :class:`Media`, the alternative
+widget :class:`BrowseSelectThumbnail` can provide a better experience since it
+renders a thumbnail preview of the image that is being selected:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelectThumbnail
+    from cubane.media.models import Media
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            widgets = {
+                'cover_image': BrowseSelectThumbnail(model=Media)
+            }
+
+.. seealso::
+
+    In addition to those widgets, a form field implementation is also provided
+    via :class:`BrowseField` and :class:`BrowseThumbnailField`.
+
+
+
+
+.. _topics/backend/form_visibility_rules:
+
+Form Visibility Rules
+=====================
+
+Form visibility rules allow for conditional-based control of the visibility of
+one or more form fields. For example, Only if a certain tick box is ticked,
+additional fields may be presented and required.
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility(field='recommended', value=True, visible=[
+                    'rrp',
+                    'recommended_since'
+                ], required=[
+                    'rrp'
+                ]),
+            ]
+
+In this example, the fields ``rrp`` and ``recommended_since`` are both only
+visible if the field ``recommended`` is ``True`` (e.g. checked). Assuming that
+the field ``rrp`` is not mandatory by default, it is required in the case that
+the field ``recommended`` is ``True``.
+
+Form visibility can also be nested and linked like in the following example:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility(field='recommended', value=True, visible=[
+                    'rrp',
+                    'recommended_since'
+                ], required=[
+                    'rrp'
+                ]),
+                FormVisibility(field='rrp', compare='>', value=0, visible=[
+                    'recommended_since'
+                ])
+            ]
+
+Here, the field ``recommended_since`` is only visible if the field
+``recommended`` is ``True`` *and* the field ``rrp`` is *greater than* ``0``.
+
+Form visibility can also have multiple predicates, in which case the
+constructor of :class:`FormVisibility` takes a list of
+:class:`FormVisibilityPredicate` instances:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility([
+                    FormVisibilityPredicate(field='recommended', value=True),
+                    FormVisibilityPredicate(field='price', compare='>', value=0)
+                ], visible=[
+                    'rrp'
+                ])
+            ]
+
+In this example, the field ``rrp`` is only visible if the field ``recommended``
+is ``True`` *and* the field ``price`` is *greater than* ``0``.
+
+
+
+
+.. _topics/backend/form_blueprint_rules:
+
+Form Blueprint Rules
+====================
+
+A blueprint is based around the idea of auto-completing parts of a form by
+choosing from a list of possible options. For example, an invoice system for a
+bookstore may allow us to create line items by choosing a book. Form fields
+such as description, tax and price are then pre-populated based on data that is
+associated with the ebook record that has been chosen.
+
+A blueprint does exactly that and is only applicable for related model
+instances, usually represented as foreign keys in the model and model choice
+fields in the form.
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelect
+    from models import Book, LineItem
+
+
+    class LineItemForm(BaseModelForm):
+        class Meta:
+            model = LineItem
+            fields = '__all__'
+            widgets = {
+                'book': BrowseSelect(model=Book)
+            }
+            blueprints = {
+                'book': [
+                    'description',
+                    'tax',
+                    'price'
+                ]
+            }
+
+We assume that the model ``LineItem`` has a foreign key field to the ``Book``
+model via the property ``book``. Therefore the corresponding model form will
+have a model choice field form with the same name. We also provide a browse
+field widget to make choosing a book conveniently.
+
+The blueprint rule is based on the field ``book``. Whenever it changes, the
+fields ``description``, ``tax`` and ``price`` from the chosen book instance are
+fetched and then copied over to the corresponding form fields of the line item
+form.
+
+Multiple blueprint rules for multiple form fields can be expressed in a similar
+way. Also, one or multiple form fields can be pre-populated this way.
+
+Sometimes, the form field of the related model instance is not matching up the
+field of the hosting form perfectly, in this case, an actual assignment can be
+described in the following way:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from cubane.backend.forms import BrowseSelect
+    from models import Book, LineItem
+
+
+    class LineItemForm(BaseModelForm):
+        class Meta:
+            model = LineItem
+            fields = '__all__'
+            widgets = {
+                'book': BrowseSelect(model=Book)
+            }
+            blueprints = {
+                'book': [
+                    'item_description = description',
+                    'item_tax = tax',
+                    'item_price = price'
+                ]
+            }
+
+Here we assume that all relevant fields of the ``LineItem`` model are prefixed
+with ``item_``, which is why we expressed the blueprint rules as assignments.
+
+
+
+
+.. _topics/backend/form_limit_rules:
+
+Form Limit Rules
+================
+
+Form limitation rules are designed to give interactive feedback about form
+field limitations as the user is typing. For example, we assume that a form
+field has a recommended max. character length of ``120`` characters, then a
+form limitation rule can help to present this information to users:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm, FormInputLimit
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            limits = {
+                'title': FormInputLimit(120)
+            }
+
+A :class:`FormInputLimit` describes a max. character limit for a form field -
+in this case for the field ``title``.

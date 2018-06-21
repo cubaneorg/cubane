@@ -1,0 +1,5 @@
+.. _ref/media_model:
+
+=====================
+Media Model Reference
+=====================

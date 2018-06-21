@@ -1,0 +1,201 @@
+====================
+Class: BaseFormMixin
+====================
+
+The :class:`BaseFormMixin` class provides useful helper methods for working
+with forms - in particular for Cubane's backend system.
+
+The mixin is used for both, :class:`BaseForm` and :class:`BaseModelForm`.
+
+
+.. class:: BaseFormMixin
+
+    Provides common helper methods for forms.
+
+
+    .. attribute:: is_tabbed
+
+        Return ``True`` if the form is tabbed.
+
+
+    .. attribute:: has_sections
+
+        Return ``True`` if the form has at least one section.
+
+
+    .. attribute:: has_visibility_rules
+
+        Return ``True`` if the form has at least one visibility rule.
+
+
+    .. attribute:: has_blueprint_rules
+
+        Return ``True`` if this form has at least one blueprint rule.
+
+
+    .. attribute:: has_limit_rules
+
+        Return ``True`` if this form has at least one character limit rule.
+
+
+    .. attribute:: tabs
+
+        Return a list of all tabs.
+
+
+    .. attribute:: excluded_fields
+
+        Return a list of form field names that are excluded from this form.
+        Excluded form fields are not processed by this form.
+
+
+    .. attribute:: is_duplicate
+
+        Return ``True`` if this form is being used to duplicate an instance.
+
+
+    .. attribute:: has_line_items
+
+        Return ``True`` if at least one form fields is based on
+        :class:`RelatedEditField` which presents multiple editable forms that
+        are embedded within this form.
+
+
+    .. method:: setup_initial(self)
+
+        Called by the constructor of :class:`BaseForm` and
+        :class:`BaseModelForm` in order to setup the initial form data of this
+        form.
+
+
+    .. method:: setup(self)
+
+        Called by the constructor of :class:`BaseForm` and
+        :class:`BaseModelForm` in order to setup the form including layout,
+        tabs, sections etc.
+
+
+    .. method:: required_fields(self)
+
+        Return a list of bound form fields that are required.
+
+
+
+    .. method:: are_all_fields_requried()
+
+        Return ``True`` if all form fields of this form  are required.
+
+
+    .. method:: has_required_fields()
+
+        Return ``True`` if at least one form field is required.
+
+
+    .. method:: configure(self, request, instance=None, edit=True)
+
+        Called before a form is being validated and allows for form
+        configuration to be carried out, such as dynamically removing form
+        fields or making field required or not required.
+
+        :param string request: The request object.
+
+        :param string instance: Reference to the model instance that is being
+            edited or created.
+
+        :param string edit: ``True`` if a model instance is edited rathe than
+            being created.
+
+
+    .. method:: get_tab_by_title(self, title)
+
+        Return information about the tab with the given title name.
+
+        :param string title: The name of tab for which information is
+            returned.
+
+
+    .. method:: remove_tab(self, title, remove_fields=False)
+
+        Remove the tab with the given name and optionally remove all form
+        fields alongside with it.
+
+        :param string title: The name of tab that is being removed.
+
+        :param string remove_fields: ``True`` if form fields of the
+            corresponding tab should also be removed alongside the tab.
+            Default: ``False``.
+
+
+    .. method:: remove_tabs(self)
+
+        Remove all tabs, leaving the form as a  non-tabbed form.
+
+
+    .. method:: has_tab(self, title)
+
+        Return ``True`` if there is at least one tab.
+
+
+    .. method:: remove_field(self, fieldname, if_exists=False)
+
+        Remove the form field with the given name.
+
+        :param string fieldname: The name of the form field that is removed.
+
+        :param string if_exists: ``True`` to avoid raising an error if the form
+            field does not exist.
+
+
+    .. method:: remove_fields(self, fieldnames, if_exists=False)
+
+        Remove multiple form fields from the form.
+
+        :param string fieldnames: List of form field names that will be removed
+            from the form.
+
+        :param string if_exists: ``True`` to avoid raising an error if any form
+            field does not exist.
+
+
+    .. method:: field_error(self, fieldname, msg)
+
+        Generates a form error condition with the given error message for the
+        given form field.
+
+        :param string fieldname: Name of the form field for which an error
+            condition is raised.
+
+        :param string msg: Error message that is being raised.
+
+
+    .. method:: update_sections(self, collect=True)
+
+        Update the internal list of sections for this form, which may become
+        necessarily whenever form fields are manipulated - in particular when
+        being removed.
+
+        :param string collect: ``True`` if sections not only be re-created but
+            also re-collected from all derived classes (default).
+
+
+    .. method:: get_encoded_visibility_rules(self)
+
+        Return a list of all visibility rules for this form encoded as a JSON
+        string.
+
+
+    .. method:: get_encoded_blueprint_rules(self)
+
+        Return a list of all blueprint rules for this form encoded as a JSON
+        string.
+
+
+    .. method:: get_encoded_limit_rules(self)
+
+        Return a list of character limitation rules for this form encoded as
+        a JSON string.
+
+
+    .. method:: to_dict(self)
+
+        Return a representation of this form as a dictionary.

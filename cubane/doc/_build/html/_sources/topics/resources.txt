@@ -1,0 +1,837 @@
+.. _topics/resources:
+
+======================
+Working with Resources
+======================
+
+Static assets are usually under the control of a developer and can be managed
+by Cubane's resource management system.
+
+For Cubane, a resource is any file (usually part of the website's code
+repository) that needs to be processed when deploying a website onto a
+production system.
+
+.. seealso::
+
+    In opposite to static assets, media is generally speaking content that was
+    uploaded by an author and is part of the content of the website and not its
+    codebase. Read more about media within the topic for :ref:`topics/media`.
+
+
+
+
+.. _topics/resources/requirements:
+
+Requirements
+============
+
+Cubane's resource system requires Django's ``staticfiles`` app. Please read
+more about `how Django manages static files
+<https://docs.djangoproject.com/en/1.11/howto/static-files/>`_.
+
+.. note::
+
+    It is important that ``django.contrib.staticfiles`` is loaded *after*
+    ``cubane``, because Cubane changes certain aspects of the ``runserver``
+    management command. Those overwrite would be invalidated by
+    ``staticfiles``, if the order is reversed.
+
+    When setting up ``settings.INSTALLED_APPS``, please make sure that
+    ``django.contrib.staticfiles`` is listing *after* ``cubane`` and not before.
+
+    You can also use Cubane's :ref:`topics/settings` environment to setup
+    installed apps, which will take care of this automatically for you.
+
+
+
+
+.. _topics/resources/introduction:
+
+What the Resource Management System does
+========================================
+
+Cubane's resource management system allows you to define a list of *static
+files* per Django app. In your project settings, you can then define which
+app's resources are combined into a named *bucket*.
+
+All resource files that are listed for each app within a bucket are then
+combined into one resource file. Finally, that resource file is minified and
+combined with a unique version number for each deployment.
+
+In your templates, you can include resources in different ways based on each
+named *bucket*. In *debug* mode, all resources are included as separate files;
+however, in *production* mode, there is usually only one file included per
+*bucket* and type of resource.
+
+
+
+
+.. _topics/resources/declaring_resources:
+
+Declaring Resources
+===================
+
+All resources for an app are defined by the array ``RESOURCES`` within the
+``__init__.py`` file of your python package that is listed in your
+`settings.INSTALLED_APPS`. Let's assume that we had an app called ``myApp``,
+which defined the following resources:
+
+.. code-block:: python
+
+    RESOURCES = [
+        'css/style.css',
+        'print|css/print.css',
+
+        'js/main.js',
+    ]
+
+.. note::
+
+    The order in which resource files are listed is important. Generally
+    speaking, Cubane will process, combine and minify resources in the order as
+    specified.
+
+    Further, you usually declare all your resources, even if they are of
+    different type. Feel free to list all your CSS and Javascript resources
+    together; Cubane will split resources by type later in the process
+    automatically.
+
+Because of the general layout of static assets managed by ``staticfiles``
+behind the scenes, we may have organized those assets in the following
+structure:
+
+.. code-block:: none
+
+    myApp/
+        static/
+            myApp/
+                css/
+                    style.css
+                    print.css
+                js/
+                    main.js
+
+Each resource within the ``RESOURCES`` array is declared relative to the
+location of the static files of ``myApp``, which is ``myApp/static/myApp/...``.
+In order for Cubane to process any resources, the app ``myApp`` must be
+installed in ``settings.INSTALLED_APP``:
+
+.. code-block:: python
+
+    INSTALLED_APPS = [
+        ...
+        'myApp',
+        ...
+    ]
+
+
+
+
+.. _topics/resources/declaring_resource_buckets:
+
+Declaring Resource Buckets
+==========================
+
+So far so good. Now, before we can include resources in our template, we first
+have to declare resource buckets and which app goes into which bucket:
+
+In Cubane, you usually declare multiple resource buckets for different
+purposes: You may have a bucket for your front-end, then you might define
+another bucket that is inlined into the template because those resources need
+higher priority.
+
+You may also have a print style as a separate file if you prefer to organise
+your print style that way.
+
+Cubane's backend system requires some style information as well and you
+certainly, do not want to mix this with your own front-end style.
+
+For each bucket, Cubane will generate a separate file per resource type (for
+example CSS or Javascript), which can be included in a template differently.
+
+You declare resource buckets in your *application settings*, for example:
+
+.. code-block:: python
+
+    RESOURCES = {
+        'frontend': [
+            'cubane.lightbox',
+            'myApp',
+        ],
+        'inline': [
+            'cubane.medialoader',
+        ],
+        'backend': [
+            ...
+        ],
+        'backend-inline': [
+            'cubane.medialoader',
+        ]
+    }
+
+The named bucket ``frontend`` will include all resources from the
+apps ``cubane.lightbox`` and ``myApp`` combined, in that order.
+
+.. note::
+
+    The order in which apps are listed is important. Generally speaking, Cubane
+    will process, combine and minify all resources from all apps in the order
+    as specified.
+
+The bucket ``inline`` and ``backend-inline`` respectively contain the resources
+from only one app, which is ``cubane.medialoader``. The media loader is
+responsible for *lazy-loading* images and is therefore given its own bucket in
+order to inline its code into the website markup directly for better
+performance. You can read more about Cubane's media system within the
+:ref:`topics/media` section.
+
+.. note::
+
+    The buckets ``backend`` and ``backend-inline`` are reserved for Cubane's
+    default backend system. Apart from those, you can declare as many buckets
+    as you need.
+
+
+
+
+.. _topics/resources/include:
+
+Including Resources
+===================
+
+After having declared all resource *assets* and *buckets*, we finally would
+need to refer to those assets. We do this by using Cubane's ``resource_tags``
+template library. The template library contains a set of template tags that can
+be used to embed resource buckets into your template in various ways. The
+following example should give you a good overview of how this works:
+
+.. code-block:: html+django
+
+    {% load resource_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            ...
+
+            <!-- inline CSS resources -->
+            {% inline_resources 'inline' 'css' %}
+
+            <!-- external CSS, you may want to inline above the fold css styles -->
+            {% resources 'frontend' 'css' %}
+
+            <!-- print resources -->
+            {% resources 'frontend' 'css' 'print' %}
+            {% resources 'inline' 'css' 'print' %}
+        </head>
+
+        <body>
+            ...
+
+            <!-- inline Javascript -->
+            {% inline_resources 'inline' 'js' %}
+
+            <!-- external Javascript, async -->
+            {% resources 'frontend' 'js' %}
+        </body>
+    </html>
+
+As a typical base template, you would -- *generally speaking* -- load CSS
+resources at the top and Javascript resources at the bottom. For best
+performance, some CSS code is critical: For example, you would want to embed a
+good portion of your CSS to render the *above the fold content* within your
+template itself, rather than loading an external CSS file. Other resources are
+less critical and can be loaded from an external file asynchronously.
+
+The following sections will guide you through the different ways of embedding
+resources.
+
+
+
+
+.. _topics/resources/inline_include:
+
+Inline Resources
+================
+
+The ``inline_resources`` template tag will embed all resources from the given
+*bucket* and *resource type* within the template itself. Usually this means
+that Cubane will generate ``<style>...</style>`` markup for *CSS* and
+``<script>...</script>`` markup for *Javascript* code.
+
+An example:
+
+.. code-block:: html+django
+
+    {% inline_resources 'inline' 'css' %}
+    {% inline_resources 'inline' 'js' %}
+
+The first argument is the name of the *bucket*. The second argument is the type
+of resources that should be embedded. This argument is required since there
+are different ways of how resources are embedded depending on the type of
+resources.
+
+.. tip::
+
+    For best website performance, you should always split your stylesheet into
+    critical CSS code that must be present to render everything *above the
+    fold* and any remaining CSS code for styling other -- less important --
+    parts of your website.
+
+    Critical *above the fold* CSS code should be inlined if such code is not
+    too heavy in size. Any other CSS code may be loaded from an external file.
+
+In *Production* mode, all embedded resources will have been combined and
+minified before being embedded into the template at deployment time.
+
+.. note::
+
+    In *Debug* mode, Cubane will *never* actually embed content within the
+    template. When debugging CSS or Javascript code, it is much easier to use
+    the browser's development tools which can refer to actual files instead of
+    referring to inline HTML code.
+
+
+
+
+.. _topics/resources/external_css:
+
+External CSS
+============
+
+External CSS code can be included with the ``resources`` template tag. Unlike
+the previous example, we are now instructing the browser to load additional
+resources from an external file.
+
+An example:
+
+.. code-block:: html+django
+
+    <!-- css (screen only) -->
+    {% resources 'frontend' 'css' %}
+
+    <!-- css (print only) -->
+    {% resources 'frontend' 'css' 'print' %}
+
+Unlike ``inline_resources``, an additional argument may be provided that
+declares the CSS media type, such as ``screen`` or ``print``. ``screen`` is
+assumed by default if this argument is not given.
+
+Cubane will generate markup like ``<link href="..." rel="stylesheet"
+media="screen">`` when including CSS resources using the ``resources`` template
+tag.
+
+In *Production* mode, all resources from the named *bucket* will have been
+combined and minified into one file at deployment time. In *Debug* mode, Cubane
+will generate individual ``<link>`` tags, one for each resource file within the
+bucket.
+
+You can instruct the browser to load a CSS resource asynchronously by adding
+the ``async`` argument like:
+
+.. code-block:: html+django
+
+    <!-- load css asynchronously -->
+    {% resources 'frontend' 'css' 'screen' 'async' %}
+
+Loading CSS asynchronously currently relies on Javascript. Cubane will generate
+a bit of inline Javascript code that will instruct the browser to load the CSS
+resource without blocking the rendering of the website.
+
+.. note::
+
+    Browsers are beginning to support a standard markup pattern for loading CSS
+    (and other file types) asynchronously via ``<link rel="preload">``.
+
+
+
+
+.. _topics/resources/external_js:
+
+External Javascript
+===================
+
+Like loading external CSS files, you can use the *same* template tag
+``resources`` to include external Javascript files as well, like in the
+following example:
+
+.. code-block:: html+django
+
+    <!-- external javascript, asynchronously -->
+    {% resources 'frontend' 'js' %}
+    {% resources 'frontend' 'js' True %}
+
+    <!-- external javascript, blocking -->
+    {% resources 'frontend' 'js' False %}
+
+The first two lines are identical and will both instruct the browser to load an
+external Javascript file (representing the ``frontend`` bucket) asynchronously.
+
+.. note::
+
+    All external Javascript code is loaded asynchronously by default.
+
+The last line is loading the same external Javascript file by blocking the
+browser.
+
+
+
+
+.. _topics/resources/declaring_css_resources:
+
+Declaring CSS Resources
+=======================
+
+CSS files are declared by simply referring to the path of one or multiple CSS
+files. Because CSS can target different media types, such as screen or print
+media, Cubane allows us to specify the type of media alongside each resource
+file:
+
+.. code-block:: python
+
+    RESOURCES = [
+        'screen|css/screen1.css',
+        'screen|css/screen2.css',
+        ...
+        'print|css/print1.css',
+        'print|css/print2.css',
+        ...
+    ]
+
+The media type if prefixed to the resource path by using the *pipe*
+character:
+
+.. code-block:: none
+
+    [<resource-prefix>] | <resource-path>
+
+The prefix is optional. In the context of CSS files, ``screen`` is assumed if
+omitted. Therefore we could have written the following instead:
+
+.. code-block:: python
+
+    RESOURCES = [
+        'css/screen1.css',
+        'css/screen2.css',
+        ...
+        'print|css/print1.css',
+        'print|css/print2.css',
+        ...
+    ]
+
+In both cases, Cubane will combine the first two resource files for the media
+type ``screen`` and the remaining two resources for the media type ``print``.
+
+.. note::
+
+    For CSS, the order in which resource files appear in the list may matter;
+    Cubane will combine and minify all CSS files within the same bucket and
+    media type in the order as specified. If your CSS files need to appear in a
+    specific order, then please make sure that this order is reflected when
+    listing your resources.
+
+When working with CSS, it is quite common to use a CSS reset style to unify the
+default browser style to a known and precise state, so that your own style can
+be defined on top it.
+
+Usually, such CSS reset style is listed at the beginning of your resource list,
+followed by your own style files.
+
+.. tip::
+
+    Alternatively, Cubane provides a default *out of the box* CSS reset style.
+    Simply include the app ``cubane.cssreset`` within your list of installed
+    Django apps like in the following example:
+
+    .. code-block:: python
+
+        INSTALLED_APPS = [
+            ...
+            'cubane',
+            'cubane.cssreset',
+            'myApp',
+            ...
+        ]
+
+    The final step is to include all resources from ``cubane.cssreset`` within
+    your resource bucket of choice, let's assume that your website is using the
+    ``frontend`` bucket:
+
+    .. code-block:: python
+
+        RESOURCES = {
+            'frontend': [
+                'cubane.cssreset',
+                'myApp',
+            ],
+            ...
+        }
+
+    Make sure that ``cubane.cssreset`` appears before your own app containing
+    your own style, since the order in which CSS style information appears
+    matters, in particular with CSS reset style.
+
+
+
+
+.. _topics/resources/declaring_js_resources:
+
+Declaring Javascript Resources
+==============================
+
+Javascript files are declared by simply referring to the path of one or
+multiple Javascript files:
+
+.. code-block:: python
+
+    RESOURCES = [
+        'js/lib/jquery.js',
+        'js/main.js',
+        ...
+    ]
+
+The order in which Javascript files are declared may be important. For example,
+if ``main.js`` would refer to JQuery, then you should make sure that the source
+for JQuery appears *before* ``main.js``.
+
+
+
+
+.. _topics/resources/declaring_font_resources:
+
+Declaring Font Resources
+========================
+
+Web Fonts play an increasingly important role. Cubane provides an
+automatic process for including a large number of free web fonts within your
+websites.
+
+Cubane provides a default font backend which is using the
+`google-webfonts-helper <https://google-webfonts-helper.herokuapp.com/fonts>`_
+by Mario Ranftl.
+
+You can use any font (listed on the Google WebFonts Helper website) by simply
+including it as a resource within your app's list of resources like in the
+following example:
+
+.. code-block:: python
+
+    RESOURCES = [
+        'font|Open Sans',
+        ...
+    ]
+
+And that's it. In your CSS style, you can now use the font, for example:
+
+.. code-block:: css
+
+    body {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+Cubane will automatically download all required font files to your local system
+and will also generate all required CSS style for the declaration of the font.
+
+.. note::
+
+    When referring to fonts, make sure that the name of the font is given as
+    listed on the Google WebFonts Helper website, otherwise, Cubane will not be
+    able to locate the exact font.
+
+Cubane's font system allows for further customisation and extension which would
+go beyond the scope of this section. Please refer to the :ref:`topics/fonts`
+section for further information about Cubane's font system.
+
+
+
+
+.. _topics/resources/abs_path:
+
+Declaring Resources with Absolute Path
+======================================
+
+When declaring resources, you would usually use a relative path to refer to
+individual resource files, as in the following example:
+
+.. code-block:: python
+
+    RESOURCES = [
+        'css/style.css'
+        'js/main.js',
+        ...
+    ]
+
+The path is considered to be a relative path because it does not start with a
+slash (*/*). Therefore the path is relative to the app that declared the list
+of resources. Let's assume that your app is called ``myApp``, then you may use
+the following directory structure for your static assets (remember that
+Cubane's resource system requires Django's ``staticfiles``):
+
+.. code-block:: none
+
+    myApp/
+        static/
+            myApp/
+                css/
+                    style.css
+                js/
+                    main.js
+
+The relative path ``css/style.css`` will be extended to
+``/myApp/css/style.css``, which will then refer to the correct file within the
+``myApp`` app. Under the hood, Cubane will use Django's ``staticfiles``
+resolution mechanism to find static files in the described way.
+
+Instead of specifying resource based on a relative path, you can specify
+resources by using an *absolute path* instead; starting with a slash (*/*):
+
+.. code-block:: python
+
+    RESOURCES = [
+        '/myApp/css/style.css'
+
+        '/myLib/js/jquery.js',
+        '/myApp/js/main.js',
+        ...
+    ]
+
+In this example, all resources are referred to by using absolute paths. An
+absolute path will not be prefixed automatically with the name of the app that
+declared those resources.
+
+Instead, an absolute path is fed into Django's ``staticfiles`` resolution
+mechanism directly. As long as the path assembles a valid path to a static
+asset for *any* installed Django app, this will work.
+
+.. note::
+
+    Please consider to use absolute paths rarely and only if it makes your life
+    so much easier. In most cases, we find that it is a good thing that each
+    Django app is isolated from each other; by using absolute paths, you may
+    create hidden dependencies between your apps.
+
+    We would advise to use absolute paths only if you need to and only if you
+    do not intend to share your app with anyone else.
+
+
+
+
+.. _topics/resources/media_resources:
+
+Declaring Media Resources
+=========================
+
+Usually, resources are assets that are part of the codebase and Django's
+``staticfiles`` requires those assets to be located within one specific folder
+per app, which is usually called ``static``.
+
+On the contrary, there is media, which is usually user-generated content, like
+images uploaded to the system etc. Such data is usually stored in one folder
+called ``media``, which is *not* part of the code repository.
+
+If you require assets that are downloaded from third-party sources and are of
+temporary nature, you may want to store such data within the *media* folder and
+*not* within the *static* folder, since the *media* folder is not part of the
+code repository.
+
+If you wanted to serve those resources through the pipeline, then you can refer
+to those assets by referring to the media folder in the following way:
+
+.. code-block:: python
+
+    RESOURCES = [
+        '/media/imgcache/tiles.css',
+        ...
+    ]
+
+In this example, we assume that you have some process for caching CSS style
+information that is generated by a third party. Such data is stored in the
+*media* folder for reasons outlined above.
+
+In order to include this resource in the build process, you can simply refer to
+the file via an absolute path to the *media* folder.
+
+
+
+
+.. _topics/resources/pattern_expansion:
+
+Pattern Expansion
+=================
+
+Resources can be declared by using UNIX-style pathname pattern expansion. For
+example, instead of listing all CSS style files individually you could simply
+refer to all files with the extension ``.css`` instead:
+
+.. code-block:: python
+
+    RESOURCES = [
+        # listing all resources individually:
+        'css/components/header.css',
+        'css/components/button.css',
+        'css/components/carousel.css',
+        'css/components/footer.css',
+
+        # using pattern expansion instead:
+        'css/components/*.css',
+        ...
+    ]
+
+The first block is (*almost*) equivalent to the second block: While the first
+block refers to all style files individually, the second block simply refers to
+all CSS style files within a specific folder.
+
+Cubane will automatically expand the pattern ``css/components/*.css`` into a
+list of individual file paths based on the expansion of the pattern. Each CSS
+file within the ``css/components`` folder will be listed in *alphabetical
+order*.
+
+.. note::
+
+    When using pattern expansions, the resulting list of individual file paths
+    is sorted alphabetically by default. If the order in which your resource
+    files appear matters than it may not be appropriate to use pattern
+    expansion.
+
+    However, there are a lot of cases where the order does not matter. For CSS
+    style files for example, if you separated your style based on independent
+    style components then the precise order in which they appear may not matter
+    at all.
+
+    We would advise declaring individual files where the order matters and to
+    use pattern expansion where the order of things does not matter.
+
+Pattern expansion is particularly useful for SVG-based icons. You can read more
+about SVG-based icon sets within the :ref:`topics/svgicons` section.
+
+
+
+
+.. _topics/resources/templates:
+
+Resource Templates
+==================
+
+In some cases, it can be useful to embed generated data or content into resource
+files. Cubane is using this concept in a number of places where this is
+required, for example, the media loader or the font system.
+
+Basically, you can instruct Cubane to process any resource file through Django's
+template system before serving the file. This would allow you to generate parts
+of the resource file dynamically based on data generated by your application.
+
+We would *not* advise using this technique for implementing CSS themes or
+performing computation for CSS style in general for your website's theme; there
+are far better solutions for pre-processing CSS style information.
+
+However, for generating short bits of CSS style or generating constants based on
+your settings within your Javascript files, the template system might be exactly
+what you need.
+
+First, you have to rename your asset file to include the reserved extension
+``template``, for example, ``main.js`` would become ``main.template.js``.
+
+.. code-block:: python
+
+    RESOURCES = [
+        # referring to a template instead of a static file will invoke
+        # Django's template system...
+        'js/main.template.js',
+        ...
+    ]
+
+This is actually enough to invoke Django's template system. In most cases, you
+would want to construct an additional template context for your template that
+contains some data required to render the template.
+
+In your app's ``__init__.py`` file, define a method called
+``get_deploy_context()`` that returns a dictionary that is used as the template
+context for rendering any asset (of your app) via Django's template system:
+
+.. code-block:: python
+
+    def get_deploy_context():
+        return {
+            'greetings': 'Hello World'
+        }
+
+Finally, in your ``main.template.js`` file, you can use Django's template system
+to generate Javascript code dynamically.
+
+.. code-block:: javascript
+
+    var greetings = '{{ greetings }}';
+    ...
+
+In *Debug* mode, the ``runserver`` command will process templates as they are
+requested. For example, when the browser downloads the file
+``/static/myApp/js/main.template.js``, then the Django template system is
+invoked and the following result is returned to the browser:
+
+.. code-block:: javascript
+
+    var greetings = 'Hello World';
+    ...
+
+In *Production* mode, the template system is invoked only once, when the
+website is deployed. All static assets are generated at deployment time and the
+file ``main.template.js`` file actually contains the final result after the
+website has been deployed.
+
+
+
+
+.. _topics/resources/requirejs:
+
+Using RequireJS
+===============
+
+`RequireJS <http://requirejs.org/>`_ is a Javascript file and module loader. If
+your Javascript code base is using RequireJS, Cubane can help you to
+automatically compile and minify your Javascript code as part of the site's
+deployment.
+
+For every RequireJS main javascript source file, you need to declare the
+following entry in your application's settings file:
+
+.. code-block:: python
+
+    REQUIRE_JS = [
+        {
+            'filename': 'myProject/js/require_js_main.js',
+            'baseurl': 'myProject/js',
+            'module': 'require_js_main'
+        }
+    ]
+
+The :settings:`REQUIRE_JS` settings variable declares a list of Javascript
+sources that are using RequireJS as a module loader.
+
+``filename``
+
+    Required. For each source, the ``filename`` argument is required in order
+    to provide the path to the main entry file for your RequireJS source.
+
+``baseurl``
+
+    Optional. Root directory for every module search.
+
+``module``
+
+    Optional. Name of the module as declared in your main javascript file.
+
+.. seealso::
+
+    Please refer to the
+    `RequireJS Documentation <http://requirejs.org/docs/start.html>` for more
+    information on RequireJS.
+
+
+
+
+.. _topics/resources/extension:
+
+Extending the Resource System
+=============================
+
+TODO: Describe hooks that can be used to tap into the resource system, like the
+font system is doing it.

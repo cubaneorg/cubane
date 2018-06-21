@@ -1,0 +1,1020 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Backend Forms &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Content Management" href="../cms.html" />
+    <link rel="prev" title="Backend Model Options" href="model.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../../index.html">
+            <img src="../../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Using Cubane</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../resources.html">Working with Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fonts.html">Working with Fonts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../svgicons.html">Working with SVG Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../media.html">Working with Media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Backend System</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#installing-cubane-s-backend-system">Installing Cubane’s backend system</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#backend-overview">Backend Overview</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="views.html">Backend Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="model.html">Backend Model Options</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Backend Forms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cms.html">Content Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../enquiry.html">Enquiry Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache.html">Cache System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../favicons.html">Generating Favorite Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deploy.html">Deploying Cubane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pull.html">Pulling Production Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test.html">Testing Cubane</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Using Cubane</a> &raquo;</li>
+        
+          <li><a href="index.html">Backend System</a> &raquo;</li>
+        
+      <li>Backend Forms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/topics/backend/forms.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="backend-forms">
+<span id="topics-backend-backend-forms"></span><h1>Backend Forms<a class="headerlink" href="#backend-forms" title="Permalink to this headline">¶</a></h1>
+<p>The backend system is using a model view form in order to allow users to edit
+properties of a model.</p>
+<p>A model may declare which model view form is used for the backend.</p>
+<p>In addition, Cubane extends Django’s form implementation by providing a number
+of additional features such as tabs, form configuration and dynamic form field
+visibility.</p>
+<div class="section" id="model-view-form">
+<span id="topics-backend-model-view-form"></span><h2>Model View Form<a class="headerlink" href="#model-view-form" title="Permalink to this headline">¶</a></h2>
+<p>In order to edit a model instance, the corresponding backend view needs to know
+what form to use for this purpose. A form can be either declared by the model
+itself or the model view.</p>
+<p>In the latter case, the form that is used for editing model instance can be
+declared via the <code class="docutils literal"><span class="pre">form</span></code> declaration on the model view class as the following
+example demonstrates:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.views</span> <span class="kn">import</span> <span class="n">ModelView</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+<span class="kn">from</span> <span class="nn">forms</span> <span class="kn">import</span> <span class="n">BookForm</span>
+
+<span class="k">class</span> <span class="nc">BookView</span><span class="p">(</span><span class="n">ModelView</span><span class="p">):</span>
+    <span class="n">template_path</span> <span class="o">=</span> <span class="s1">&#39;cubane/backend/&#39;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">BookForm</span>
+</pre></div>
+</div>
+<p>In this case, the model view <code class="docutils literal"><span class="pre">BookView</span></code> will use the form <code class="docutils literal"><span class="pre">BookForm</span></code> when
+editing or creating model instances of <code class="docutils literal"><span class="pre">Book</span></code>.</p>
+<p>In some cases you may not implement a model view by yourself, which is why you
+can also declare the default form used by a model view through the model
+instead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">cubane.models</span> <span class="kn">import</span> <span class="n">DateTimeBase</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">DateTimeBase</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name</span>        <span class="o">=</span> <span class="s1">&#39;Book&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Books&#39;</span>
+
+    <span class="k">class</span> <span class="nc">Listing</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;isbn&#39;</span><span class="p">]</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">slug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">SlugField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">isbn</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_form</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">forms</span> <span class="kn">import</span> <span class="n">BookForm</span>
+        <span class="k">return</span> <span class="n">BookForm</span>
+
+    <span class="k">def</span> <span class="fm">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+</pre></div>
+</div>
+<p>The class method <code class="docutils literal"><span class="pre">get_form</span></code> should return the class of the form that is able
+of representing instances of the model. A model view representing Books will then
+determine the form by calling the very same class method on the model class
+unless a form has been declared by the model view itself.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Please refer to the <a class="reference internal" href="#topics-backend-model-forms"><span class="std std-ref">Model Forms</span></a> section in order to
+learn more about how model forms can be declared and customised for the
+backend system.</p>
+</div>
+</div>
+<div class="section" id="model-view-filter-form">
+<span id="topics-backend-model-view-filterform"></span><h2>Model View Filter Form<a class="headerlink" href="#model-view-filter-form" title="Permalink to this headline">¶</a></h2>
+<p>A model view may provide filter options by which records of a particular model
+can be filtered by individual attributes. When working with books, for example,
+you may want to allow users of the backend system to filter books by specific
+properties such as book title, author or ISBN.</p>
+<p>A model filter form is used for this purpose. It is usually presented within a
+side column which can be extended by the user to see all options available.</p>
+<p>If no filter form is declared, then the regular model form is used instead,
+which is sufficient in most cases. However, in some cases, you may want to use a
+different form that extends the model form in a specific way.</p>
+<p>A filter form can be declared either by the model itself or by the
+corresponding model view. For the latter case, you can simply declare the filter
+form in a similar way as the model form is declared:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.views</span> <span class="kn">import</span> <span class="n">ModelView</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+<span class="kn">from</span> <span class="nn">forms</span> <span class="kn">import</span> <span class="n">BookForm</span>
+
+<span class="k">class</span> <span class="nc">BookView</span><span class="p">(</span><span class="n">ModelView</span><span class="p">):</span>
+    <span class="n">template_path</span> <span class="o">=</span> <span class="s1">&#39;cubane/backend/&#39;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">BookForm</span>
+    <span class="n">filter_form</span> <span class="o">=</span> <span class="n">BookFilterForm</span>
+</pre></div>
+</div>
+<p>In this example, the <code class="docutils literal"><span class="pre">BookForm</span></code> is used when creating or editing books.
+However, when filtering books, the <code class="docutils literal"><span class="pre">BookFilterForm</span></code> is used instead.</p>
+<p>In some cases you may not implement a model view by yourself, which is why you
+can declare a model filter form via the model in a similar way how you would
+declare a model view:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">cubane.models</span> <span class="kn">import</span> <span class="n">DateTimeBase</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">DateTimeBase</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name</span>        <span class="o">=</span> <span class="s1">&#39;Book&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Books&#39;</span>
+
+    <span class="k">class</span> <span class="nc">Listing</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;isbn&#39;</span><span class="p">]</span>
+        <span class="n">filter_by</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="s1">&#39;, &#39;</span><span class="n">isbn</span><span class="s1">&#39;]</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">slug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">SlugField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">isbn</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_form</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">forms</span> <span class="kn">import</span> <span class="n">BookForm</span>
+        <span class="k">return</span> <span class="n">BookForm</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_filter_form</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">forms</span> <span class="kn">import</span> <span class="n">BookFilterForm</span>
+        <span class="k">return</span> <span class="n">BookFilterForm</span>
+
+    <span class="k">def</span> <span class="fm">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+</pre></div>
+</div>
+<p>In this example, the <code class="docutils literal"><span class="pre">BookForm</span></code> is used for creating or editing instances of
+books, but the <code class="docutils literal"><span class="pre">BookFilterForm</span></code> is used for filtering books instead unless a
+filter form has been declared by the corresponding model view directly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Please note that ultimately the model listing option <a class="reference internal" href="model.html#std:listing-filter_by"><code class="xref std std-listing docutils literal"><span class="pre">filter_by</span></code></a>
+dictates the fields that are presented to users as part of the filter form,
+but those fields obviously need to be present in the form.</p>
+<p class="last">You can read more about the <a class="reference internal" href="model.html#std:listing-filter_by"><code class="xref std std-listing docutils literal"><span class="pre">filter_by</span></code></a> options as part of the
+<a class="reference internal" href="model.html#topics-backend-model-view-options"><span class="std std-ref">Model View Options</span></a> section.</p>
+</div>
+</div>
+<div class="section" id="model-forms">
+<span id="topics-backend-model-forms"></span><h2>Model Forms<a class="headerlink" href="#model-forms" title="Permalink to this headline">¶</a></h2>
+<p>For Cubane’s backend system, a model form is a form that derives itself from
+<code class="xref py py-class docutils literal"><span class="pre">cubane.forms.BaseForm</span></code> or <code class="xref py py-class docutils literal"><span class="pre">cubane.forms.BaseModelForm</span></code> and is
+able to represent a model for the purpose of creating, editing or filtering
+model instances.</p>
+<p>The base class <code class="xref py py-class docutils literal"><span class="pre">cubane.forms.BaseForm</span></code> derives itself from Django’s
+<code class="xref py py-class docutils literal"><span class="pre">django.forms.Form</span></code> class but adds additional support for various
+aspects of editing model instances and customising the presentation and
+behaviour of the form.</p>
+<p>When working with models, you would probably want to use the class
+<code class="xref py py-class docutils literal"><span class="pre">cubane.forms.BaseModelForm</span></code> instead, which derives itself from Django’s
+<code class="xref py py-class docutils literal"><span class="pre">django.forms.ModelForm</span></code> and therefore provides the ability to generate
+form fields based on the model automatically.</p>
+<p>The <code class="docutils literal"><span class="pre">BookForm</span></code> from previous examples may be declared in the following way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+</pre></div>
+</div>
+<p>In addition to this simple form, Cubane allows for a number of options to
+extend the form - in particular for the purpose of the backend system.</p>
+</div>
+<div class="section" id="form-tabs">
+<span id="topics-backend-form-tabs"></span><h2>Form Tabs<a class="headerlink" href="#form-tabs" title="Permalink to this headline">¶</a></h2>
+<p>Form fields can be organised into tabs, where each tab contains one or more
+form fields. The user is presented with a number of tabs and can switch between
+multiple tabs.</p>
+<p>Tabs are declared via the <code class="docutils literal"><span class="pre">tabs</span></code> option as part of the <code class="docutils literal"><span class="pre">Meta</span></code> class in the
+following way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Book Name&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Properties&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;price&#39;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>As the example demonstrates, tabs are declared as a list of dictionaries, where
+the <code class="docutils literal"><span class="pre">title</span></code> key declares the name of the tab and <code class="docutils literal"><span class="pre">fields</span></code> a list of
+individual form fields that are presented on that tab in the given order.</p>
+<p>For the last example, the form for editing book instances is organised into two
+separate tabs, one for editing the title and slug fields and another for
+editing further properties such as ISBN, recommendation and price.</p>
+<p>The order in which tabs are presented is the same as they are declared.
+Further, form fields within each tab are presented in the order in which they
+are listed for each tab.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When using tabs, all required fields have to be listed on some tab. The
+system will generate an error message if a required field is not listed for
+any tab.</p>
+</div>
+<p>Tabs can be inherited from a base class, where additional fields are added to
+existing tabs or new tabs are introduced as the following example demonstrates:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">ExtendedBookForm</span><span class="p">(</span><span class="n">BookForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Book Name&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;barcode:after(isbn)&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;author&#39;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Properties:as(Details)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;rrp&#39;</span>
+                <span class="p">]</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;description&#39;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>The example demonstrates three different mechanisms by which tabs can be
+extended. In general, a derived form will always inherit all tabs that were
+declared in the base class.</p>
+<p>In addition, the parent class may override existing properties using one of the
+following principals:</p>
+<p>1. New form fields can be added to the end of any existing tab by simply
+matching the name of an existing tab. In the example, the field <code class="docutils literal"><span class="pre">author</span></code> is
+added to the end of the tab with the name <code class="docutils literal"><span class="pre">Book</span> <span class="pre">Name</span></code>.</p>
+<p>2. A new or existing field can be inserted or moved <code class="docutils literal"><span class="pre">before</span></code> or <code class="docutils literal"><span class="pre">after</span></code> any
+existing field. In the example, a new field with the name <code class="docutils literal"><span class="pre">barcode</span></code> is
+inserted into the <code class="docutils literal"><span class="pre">Book</span> <span class="pre">Name</span></code> tab after the existing field <code class="docutils literal"><span class="pre">isbn</span></code>. The
+format is <code class="docutils literal"><span class="pre">&lt;field&gt;:before(&lt;ref-field&gt;)</span></code> for inserting the field <em>before</em>
+another field and <code class="docutils literal"><span class="pre">&lt;field&gt;:after(&lt;ref-field&gt;)</span></code> for inserting the field
+<em>after</em> another field.</p>
+<p>3. A new or existing field can be inserted or moved to a new tab that did not
+exist before. In the example, the new field <code class="docutils literal"><span class="pre">description</span></code> is being added to a
+new tab with the name <code class="docutils literal"><span class="pre">Content</span></code>.</p>
+<p>4. A tab can be renamed by using the format <code class="docutils literal"><span class="pre">&lt;tab-name&gt;:as(&lt;new-tab-name&gt;)</span></code>
+when referencing a tab. In the example, the tab with the name <code class="docutils literal"><span class="pre">Properties</span></code> is
+renamed to <code class="docutils literal"><span class="pre">Details</span></code>. In addition, a new field with the name <code class="docutils literal"><span class="pre">rrp</span></code> is being
+added to the tab; however, a tab can be renamed without adding fields to it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Fields cannot be removed since the form is deriving from an existing form
+and cannot change the behaviour of the form itself via the declaration of
+<code class="docutils literal"><span class="pre">tabs</span></code>. Of course, it is always possible to remove form fields dynamically
+during its construction or configuration of the form.</p>
+<p class="last">Currently, tabs can be renamed but cannot be removed or merged with other
+tabs.</p>
+</div>
+</div>
+<div class="section" id="form-sections">
+<span id="topics-backend-form-sections"></span><h2>Form Sections<a class="headerlink" href="#form-sections" title="Permalink to this headline">¶</a></h2>
+<p>Form fields may be grouped into sections. A section is a group of form fields
+for which a name has been declared. Visually, form sections are usually
+rendered as two columns where sections are distributed among those columns
+evenly.</p>
+<p>Form sections are available for tabbed and non-tabbed forms alike and are
+declared via the <code class="docutils literal"><span class="pre">sections</span></code> field of the <code class="docutils literal"><span class="pre">Meta</span></code> class as the following
+example demonstrates:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Book Name and Details&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;price&#39;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title and Slug&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;isbn&#39;</span><span class="p">:</span> <span class="s1">&#39;Details&#39;</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">sections</span></code> property is declared as a dictionary where the key is
+referring to the name of an existing form field and the value is describing the
+name of the section. A section is then grouping any number of form fields until
+the next form section or the end of the form or tab.</p>
+<p>In the previous example, the form fields <code class="docutils literal"><span class="pre">title</span></code> and <code class="docutils literal"><span class="pre">slug</span></code> are grouped
+into a section called <code class="docutils literal"><span class="pre">Title</span> <span class="pre">and</span> <span class="pre">Slug</span></code> and the remaining form fields are
+grouped into a section with the name <code class="docutils literal"><span class="pre">Details</span></code>.</p>
+<p>When naming individual form fields by using the <code class="docutils literal"><span class="pre">tabs</span></code> property for example,
+then sections can also be created within the list of fields like the next
+example demonstrates:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Book Name and Details&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;:Title and Slug&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+
+                    <span class="s1">&#39;:Details&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;price&#39;</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>A section is introduced by using a colon character (<code class="docutils literal"><span class="pre">:</span></code>) as the first
+character of the section name.</p>
+<p>When using non-tabbed forms, form fields and sections can be declared via the
+<code class="docutils literal"><span class="pre">section_fields</span></code> property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">section_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;:Title and Slug&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+
+            <span class="s1">&#39;:Details&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>In this case, the form does not have any tabs but presents the same fields with
+the same sections in the same order as the previous example.</p>
+<p>A section may also have additional text information or help description which
+can be declared by using a pipe (<code class="docutils literal"><span class="pre">|</span></code>) character:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">FormLayout</span><span class="o">.</span><span class="n">COLUMNS</span>
+        <span class="n">section_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;:Title and Slug|Enter the name and the unique slug.&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+
+            <span class="s1">&#39;:Details|Enter additional details.&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>In this example, the section field <code class="docutils literal"><span class="pre">Title</span> <span class="pre">and</span> <span class="pre">Slug</span></code> will have an additional
+help text associated with it, which is <code class="docutils literal"><span class="pre">Enter</span> <span class="pre">the</span> <span class="pre">name</span> <span class="pre">and</span> <span class="pre">the</span> <span class="pre">unique</span> <span class="pre">slug.</span></code>.</p>
+</div>
+<div class="section" id="form-layout">
+<span id="topics-backend-form-layout"></span><h2>Form Layout<a class="headerlink" href="#form-layout" title="Permalink to this headline">¶</a></h2>
+<p>A form is usually rendered in two columns where form sections are distributed
+among those columns evenly like in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">FormLayout</span><span class="o">.</span><span class="n">COLUMNS</span>
+        <span class="n">section_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;:Title and Slug&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+
+            <span class="s1">&#39;:Details&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>The layout of the form is explicitly set to <code class="docutils literal"><span class="pre">FormLayout.COLUMNS</span></code>. If the form
+should not be presented as columns then a flat layout can be specified instead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">FormLayout</span><span class="o">.</span><span class="n">FLAT</span>
+        <span class="n">section_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;:Title and Slug&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+
+            <span class="s1">&#39;:Details&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>A flat layout is still presenting form sections but does not arrange them
+within columns.</p>
+<p>When using a column layout, individual sections can be forced to take up two
+columns at once by using the explanation mark (<code class="docutils literal"><span class="pre">!</span></code>) as the first character of
+the name of the section.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">FormLayout</span><span class="o">.</span><span class="n">COLUMNS</span>
+        <span class="n">section_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;!:Title and Slug&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;slug&#39;</span><span class="p">,</span>
+
+            <span class="s1">&#39;!:Details&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;isbn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;recommended&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>In this case, both sections will span across two columns deliberately.</p>
+</div>
+<div class="section" id="form-configuration">
+<span id="topics-backend-form-configuration"></span><h2>Form Configuration<a class="headerlink" href="#form-configuration" title="Permalink to this headline">¶</a></h2>
+<p>When using forms, you can add code that gets executed in order to configure the
+form before it is being used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+
+
+    <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">edit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BookForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">edit</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_field</span><span class="p">(</span><span class="s1">&#39;recommended&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_sections</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../../ref/BaseFormMixin.html#BaseFormMixin.configure" title="BaseFormMixin.configure"><code class="xref py py-meth docutils literal"><span class="pre">BaseFormMixin.configure()</span></code></a> method is called before a form is being
+validated and can be used to dynamically change the form. Typically the
+configure method is used to:</p>
+<ol class="arabic simple">
+<li>Setup the queryset for model choice fields</li>
+<li>Remove or add form fields</li>
+<li>Making form fields required or not required</li>
+</ol>
+<p>The given <code class="docutils literal"><span class="pre">instance</span></code> argument is representing the model instance that is
+being edited or created via the form. The <code class="docutils literal"><span class="pre">edit</span></code> property is <code class="docutils literal"><span class="pre">True</span></code> if a
+model instance is being edited rather than created.</p>
+<p>Various helper methods are available for forms, in particular
+<a class="reference internal" href="../../ref/BaseFormMixin.html#BaseFormMixin.remove_field" title="BaseFormMixin.remove_field"><code class="xref py py-meth docutils literal"><span class="pre">BaseFormMixin.remove_field()</span></code></a> for removing form fields and
+<a class="reference internal" href="../../ref/BaseFormMixin.html#BaseFormMixin.update_sections" title="BaseFormMixin.update_sections"><code class="xref py py-meth docutils literal"><span class="pre">BaseFormMixin.update_sections()</span></code></a> for re-arranging form sections, in
+particular after form fields have been removed.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Please refer to <a class="reference internal" href="../../ref/BaseFormMixin.html#BaseFormMixin" title="BaseFormMixin"><code class="xref py py-class docutils literal"><span class="pre">BaseFormMixin</span></code></a> for more information about form
+utility methods.</p>
+</div>
+</div>
+<div class="section" id="form-field-validation">
+<span id="topics-backend-form-field-validation"></span><h2>Form Field Validation<a class="headerlink" href="#form-field-validation" title="Permalink to this headline">¶</a></h2>
+<p>Cubane provides the helper method <code class="xref py py-meth docutils literal"><span class="pre">FormBaseMixin.field_error()</span></code> when
+raising form validation errors for a particular form field - in particular when
+validating multiple form fields at once.</p>
+<p>Usually, a <code class="docutils literal"><span class="pre">ValidationError</span></code> exception is raised within a clean method that is
+specific to a particular form field. However, when validating form data by
+overriding the generic clean method of the form then ValidationError cannot be
+raised. Instead, the <code class="xref py py-meth docutils literal"><span class="pre">FormBaseMixin.field_error()</span></code> can be used to trigger a
+form field-specific validation error message:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+
+
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">BookForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+        <span class="n">recommended</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;recommended&#39;</span><span class="p">)</span>
+        <span class="n">rrp</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rrp&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">recommended</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">rrp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">field_error</span><span class="p">(</span><span class="s1">&#39;rrp&#39;</span><span class="p">,</span> <span class="s1">&#39;This field is required for recommended books.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-browse">
+<span id="topics-backend-form-browse"></span><h2>Form Browse<a class="headerlink" href="#form-browse" title="Permalink to this headline">¶</a></h2>
+<p>When referring to other entities in the form of ForeignKey, then the
+corresponding form field is usually a drop-down field listing all related model
+instances to choose from.</p>
+<p>In order to integrate this better into Cubane, such ModelChoiceField can be
+extended to use a widget that allows <em>browsing</em> for model instances by
+attaching a <em>browse</em> button next to the drop-down field.</p>
+<p>The <a class="reference internal" href="../../ref/BrowseSelect.html#BrowseSelect" title="BrowseSelect"><code class="xref py py-class docutils literal"><span class="pre">BrowseSelect</span></code></a> widget can be used in the following way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">cubane.backend.forms</span> <span class="kn">import</span> <span class="n">BrowseSelect</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Author</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">BrowseSelect</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Author</span><span class="p">)</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<p>For image-based models that are derived from <code class="xref py py-class docutils literal"><span class="pre">Media</span></code>, the alternative
+widget <a class="reference internal" href="../../ref/BrowseSelectThumbnail.html#BrowseSelectThumbnail" title="BrowseSelectThumbnail"><code class="xref py py-class docutils literal"><span class="pre">BrowseSelectThumbnail</span></code></a> can provide a better experience since it
+renders a thumbnail preview of the image that is being selected:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">cubane.backend.forms</span> <span class="kn">import</span> <span class="n">BrowseSelectThumbnail</span>
+<span class="kn">from</span> <span class="nn">cubane.media.models</span> <span class="kn">import</span> <span class="n">Media</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;cover_image&#39;</span><span class="p">:</span> <span class="n">BrowseSelectThumbnail</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Media</span><span class="p">)</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">In addition to those widgets, a form field implementation is also provided
+via <a class="reference internal" href="../../ref/BrowseField.html#BrowseField" title="BrowseField"><code class="xref py py-class docutils literal"><span class="pre">BrowseField</span></code></a> and <a class="reference internal" href="../../ref/BrowseThumbnailField.html#BrowseThumbnailField" title="BrowseThumbnailField"><code class="xref py py-class docutils literal"><span class="pre">BrowseThumbnailField</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="form-visibility-rules">
+<span id="topics-backend-form-visibility-rules"></span><h2>Form Visibility Rules<a class="headerlink" href="#form-visibility-rules" title="Permalink to this headline">¶</a></h2>
+<p>Form visibility rules allow for conditional-based control of the visibility of
+one or more form fields. For example, Only if a certain tick box is ticked,
+additional fields may be presented and required.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">FormVisibility</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;recommended&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="p">[</span>
+                <span class="s1">&#39;rrp&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;recommended_since&#39;</span>
+            <span class="p">],</span> <span class="n">required</span><span class="o">=</span><span class="p">[</span>
+                <span class="s1">&#39;rrp&#39;</span>
+            <span class="p">]),</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>In this example, the fields <code class="docutils literal"><span class="pre">rrp</span></code> and <code class="docutils literal"><span class="pre">recommended_since</span></code> are both only
+visible if the field <code class="docutils literal"><span class="pre">recommended</span></code> is <code class="docutils literal"><span class="pre">True</span></code> (e.g. checked). Assuming that
+the field <code class="docutils literal"><span class="pre">rrp</span></code> is not mandatory by default, it is required in the case that
+the field <code class="docutils literal"><span class="pre">recommended</span></code> is <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<p>Form visibility can also be nested and linked like in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">FormVisibility</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;recommended&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="p">[</span>
+                <span class="s1">&#39;rrp&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;recommended_since&#39;</span>
+            <span class="p">],</span> <span class="n">required</span><span class="o">=</span><span class="p">[</span>
+                <span class="s1">&#39;rrp&#39;</span>
+            <span class="p">]),</span>
+            <span class="n">FormVisibility</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;rrp&#39;</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="p">[</span>
+                <span class="s1">&#39;recommended_since&#39;</span>
+            <span class="p">])</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>Here, the field <code class="docutils literal"><span class="pre">recommended_since</span></code> is only visible if the field
+<code class="docutils literal"><span class="pre">recommended</span></code> is <code class="docutils literal"><span class="pre">True</span></code> <em>and</em> the field <code class="docutils literal"><span class="pre">rrp</span></code> is <em>greater than</em> <code class="docutils literal"><span class="pre">0</span></code>.</p>
+<p>Form visibility can also have multiple predicates, in which case the
+constructor of <code class="xref py py-class docutils literal"><span class="pre">FormVisibility</span></code> takes a list of
+<code class="xref py py-class docutils literal"><span class="pre">FormVisibilityPredicate</span></code> instances:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">visibility</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">FormVisibility</span><span class="p">([</span>
+                <span class="n">FormVisibilityPredicate</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;recommended&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                <span class="n">FormVisibilityPredicate</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">visible</span><span class="o">=</span><span class="p">[</span>
+                <span class="s1">&#39;rrp&#39;</span>
+            <span class="p">])</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>In this example, the field <code class="docutils literal"><span class="pre">rrp</span></code> is only visible if the field <code class="docutils literal"><span class="pre">recommended</span></code>
+is <code class="docutils literal"><span class="pre">True</span></code> <em>and</em> the field <code class="docutils literal"><span class="pre">price</span></code> is <em>greater than</em> <code class="docutils literal"><span class="pre">0</span></code>.</p>
+</div>
+<div class="section" id="form-blueprint-rules">
+<span id="topics-backend-form-blueprint-rules"></span><h2>Form Blueprint Rules<a class="headerlink" href="#form-blueprint-rules" title="Permalink to this headline">¶</a></h2>
+<p>A blueprint is based around the idea of auto-completing parts of a form by
+choosing from a list of possible options. For example, an invoice system for a
+bookstore may allow us to create line items by choosing a book. Form fields
+such as description, tax and price are then pre-populated based on data that is
+associated with the ebook record that has been chosen.</p>
+<p>A blueprint does exactly that and is only applicable for related model
+instances, usually represented as foreign keys in the model and model choice
+fields in the form.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">cubane.backend.forms</span> <span class="kn">import</span> <span class="n">BrowseSelect</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span><span class="p">,</span> <span class="n">LineItem</span>
+
+
+<span class="k">class</span> <span class="nc">LineItemForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LineItem</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;book&#39;</span><span class="p">:</span> <span class="n">BrowseSelect</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">blueprints</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;book&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;description&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;tax&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;price&#39;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<p>We assume that the model <code class="docutils literal"><span class="pre">LineItem</span></code> has a foreign key field to the <code class="docutils literal"><span class="pre">Book</span></code>
+model via the property <code class="docutils literal"><span class="pre">book</span></code>. Therefore the corresponding model form will
+have a model choice field form with the same name. We also provide a browse
+field widget to make choosing a book conveniently.</p>
+<p>The blueprint rule is based on the field <code class="docutils literal"><span class="pre">book</span></code>. Whenever it changes, the
+fields <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">tax</span></code> and <code class="docutils literal"><span class="pre">price</span></code> from the chosen book instance are
+fetched and then copied over to the corresponding form fields of the line item
+form.</p>
+<p>Multiple blueprint rules for multiple form fields can be expressed in a similar
+way. Also, one or multiple form fields can be pre-populated this way.</p>
+<p>Sometimes, the form field of the related model instance is not matching up the
+field of the hosting form perfectly, in this case, an actual assignment can be
+described in the following way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span>
+<span class="kn">from</span> <span class="nn">cubane.backend.forms</span> <span class="kn">import</span> <span class="n">BrowseSelect</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span><span class="p">,</span> <span class="n">LineItem</span>
+
+
+<span class="k">class</span> <span class="nc">LineItemForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LineItem</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;book&#39;</span><span class="p">:</span> <span class="n">BrowseSelect</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">blueprints</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;book&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;item_description = description&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;item_tax = tax&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;item_price = price&#39;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we assume that all relevant fields of the <code class="docutils literal"><span class="pre">LineItem</span></code> model are prefixed
+with <code class="docutils literal"><span class="pre">item_</span></code>, which is why we expressed the blueprint rules as assignments.</p>
+</div>
+<div class="section" id="form-limit-rules">
+<span id="topics-backend-form-limit-rules"></span><h2>Form Limit Rules<a class="headerlink" href="#form-limit-rules" title="Permalink to this headline">¶</a></h2>
+<p>Form limitation rules are designed to give interactive feedback about form
+field limitations as the user is typing. For example, we assume that a form
+field has a recommended max. character length of <code class="docutils literal"><span class="pre">120</span></code> characters, then a
+form limitation rule can help to present this information to users:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cubane.forms</span> <span class="kn">import</span> <span class="n">BaseModelForm</span><span class="p">,</span> <span class="n">FormInputLimit</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Book</span>
+
+
+<span class="k">class</span> <span class="nc">BookForm</span><span class="p">(</span><span class="n">BaseModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Book</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">FormInputLimit</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<p>A <a class="reference internal" href="../../ref/FormInputLimit.html#FormInputLimit" title="FormInputLimit"><code class="xref py py-class docutils literal"><span class="pre">FormInputLimit</span></code></a> describes a max. character limit for a form field -
+in this case for the field <code class="docutils literal"><span class="pre">title</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cms.html" class="btn btn-neutral float-right" title="Content Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="model.html" class="btn btn-neutral" title="Backend Model Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

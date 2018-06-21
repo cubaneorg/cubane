@@ -1,0 +1,9 @@
+==================
+Class: BrowseField
+==================
+
+
+.. class:: BrowseField
+
+    Form field that provides a default select drop down box for selecting
+    entities, but also provides a *Browse* button to browse for entities.

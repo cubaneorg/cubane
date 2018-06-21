@@ -1,0 +1,9 @@
+============================
+Class: BrowseSelectThumbnail
+============================
+
+
+.. class:: BrowseSelectThumbnail
+
+    Widget that provides a thumbnail-based preview image when selecting media
+    instances alongside a *Browse* button to browsing through images.

@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with Fonts &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with SVG Icons" href="svgicons.html" />
+    <link rel="prev" title="Working with Resources" href="resources.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../index.html">
+            <img src="../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Cubane</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Working with Resources</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with Fonts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-font-resources">Declaring Font Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-font-variants">Declaring Font Variants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#font-charsets">Font Charsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-font-file-formats">Supported Font File Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#font-cache">Font Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#font-backends">Font Backends</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="svgicons.html">Working with SVG Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="media.html">Working with Media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend/index.html">Backend System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cms.html">Content Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enquiry.html">Enquiry Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="favicons.html">Generating Favorite Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html">Deploying Cubane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pull.html">Pulling Production Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">Testing Cubane</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Using Cubane</a> &raquo;</li>
+        
+      <li>Working with Fonts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/topics/fonts.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="working-with-fonts">
+<span id="topics-fonts"></span><h1>Working with Fonts<a class="headerlink" href="#working-with-fonts" title="Permalink to this headline">¶</a></h1>
+<p>We briefly discussed Cubane’s font system as part of the
+<a class="reference internal" href="resources.html#topics-resources"><span class="std std-ref">Working with Resources</span></a> section. However, this section will explore the font
+system in more depth.</p>
+<p>Web Fonts play an increasingly important role. Cubane provides an
+automatic process for including a large number of free web fonts within your
+websites.</p>
+<p>Cubane provides a default font backend which is using the
+<a class="reference external" href="https://google-webfonts-helper.herokuapp.com/fonts">google-webfonts-helper</a>
+by Mario Ranftl.</p>
+<div class="section" id="declaring-font-resources">
+<span id="topics-fonts-declaring-fonts"></span><h2>Declaring Font Resources<a class="headerlink" href="#declaring-font-resources" title="Permalink to this headline">¶</a></h2>
+<p>You can use any font (listed on the Google WebFonts Helper website) by simply
+including it as a resource within your app’s list of resources like in the
+following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;font|Open Sans&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>And that’s it. In your CSS style, you can now use the font, for example:</p>
+<div class="highlight-css"><div class="highlight"><pre><span></span><span class="nt">body</span> <span class="p">{</span>
+    <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Open Sans&#39;</span><span class="p">,</span> <span class="kc">sans-serif</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Cubane will automatically download all required font files to your local system
+and will also generate all required CSS style for the declaration of the font.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When referring to fonts, make sure that the name of the font is given as
+listed on the Google WebFonts Helper website, otherwise, Cubane will not be
+able to locate the exact font.</p>
+</div>
+</div>
+<div class="section" id="declaring-font-variants">
+<span id="topics-fonts-declaring-variants"></span><h2>Declaring Font Variants<a class="headerlink" href="#declaring-font-variants" title="Permalink to this headline">¶</a></h2>
+<p>A font may come in different flavours, mostly with separate boldness and italic
+style or not. It is important to understand that each variation of a font is
+ultimately a separate file that the browser needs to download if it is used on
+a site.</p>
+<p>For example, if we simply specified the following font resource:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;font|Open Sans&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Then Cubane will download <em>all</em> available font variations for <em>Open Sans</em>,
+which would be – at the time of writing – ten different variations and
+therefore ten different font files. In addition, Cubane would also generate CSS
+style to declare all different font variants.</p>
+<p>However, this does not necessarily mean that browsers will always download ten
+font files: Browsers will only download the ones that are actually needed; if
+your website does not make use of the italic variant in boldness 700, then the
+corresponding file will never be downloaded.</p>
+<p>Browsers can also synthesise missing font declarations. For example, if a
+particular font is not declared, the browser may still be able to produce the
+required boldness and italic style automatically. Of course, the result may not
+be as pleasing as the actual font file itself.</p>
+<p>In order to give you more fine-control over which font variants are declared,
+you can add the required font variants to the resource declaration, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;font|Open Sans:300,300i,600,600i&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>This will only generate the font declarations for four variants for the
+boldness 300 and 600, both in regular and italic styles. Cubane will also only
+download font files for those variants.</p>
+</div>
+<div class="section" id="font-charsets">
+<span id="topics-fonts-charsets"></span><h2>Font Charsets<a class="headerlink" href="#font-charsets" title="Permalink to this headline">¶</a></h2>
+<p>Currently, Cubane will only download the <em>latin</em> charset for any font. If you
+require any other charset, you would need to download the required font files
+by yourself manually.</p>
+</div>
+<div class="section" id="supported-font-file-formats">
+<span id="topics-fonts-file-formats"></span><h2>Supported Font File Formats<a class="headerlink" href="#supported-font-file-formats" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s font system is currently only downloading two font versions: <em>woff2</em>
+and <em>woff</em>. This should provide a very good coverage for all modern browsers.</p>
+</div>
+<div class="section" id="font-cache">
+<span id="topics-fonts-cache"></span><h2>Font Cache<a class="headerlink" href="#font-cache" title="Permalink to this headline">¶</a></h2>
+<p>The font system will automatically download all required font files if they are
+missing locally. When running</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py runserver
+</pre></div>
+</div>
+<p>Then you should see an output similar to the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Updating</span> <span class="n">font</span> <span class="n">cache</span><span class="o">...</span><span class="n">Please</span> <span class="n">Wait</span><span class="o">...</span>
+<span class="n">Open</span> <span class="n">Sans</span>                             <span class="p">[</span><span class="n">CACHED</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Font files are cached within your media folder, which should be similar to:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">media</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="nb">open</span><span class="o">-</span><span class="n">sans</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>You can delete all locally cached font files by executing the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py clearfonts
+</pre></div>
+</div>
+<p>The following command will download all font files that are missing:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py loadfonts
+</pre></div>
+</div>
+<p>You can also do those two commands in one step if you wanted to remove all fonts
+and download them again:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py loadfonts --refresh
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The font cache will not download additional font versions if the font is
+already cached. If you add or remove font versions, the font needs to be
+refreshed:</p>
+<div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python manage.py loadfonts --refresh
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="font-backends">
+<span id="topics-fonts-backends"></span><h2>Font Backends<a class="headerlink" href="#font-backends" title="Permalink to this headline">¶</a></h2>
+<p>A font backend is a class implementation derived from :class:FontBackendBase.
+Its responsibility is to download a particular font given by its name if the
+backend knows about the font.</p>
+<p>You can declare multiple font backends in your project settings. The default
+declaration only contains the default Google Font Helper Backend:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">CUBANE_FONT_BACKENDS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;cubane.fonts.backends.GoogleFontsBackend&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Feel free to add additional font backends if required. When downloading fonts,
+Cubane’s font system will simply try every font backend it knows about and will
+accept the first positive response that it can acquire. All you need to
+implement for a font backend to work is the following method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">font_name</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Simply verify that a font with given name is available. If so, return a new
+instance of :class:FontDescriptor, which contains a set of details of the font.
+If the font is not available, simply return <code class="docutils literal"><span class="pre">None</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="svgicons.html" class="btn btn-neutral float-right" title="Working with SVG Icons" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="resources.html" class="btn btn-neutral" title="Working with Resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

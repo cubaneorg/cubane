@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick install guide" href="install.html" />
+    <link rel="prev" title="Getting started" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../index.html">
+            <img src="../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#website-performance">Website Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#content-organisation">Content Organisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-cubane-philosophy">The Cubane philosophy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-s-next">What’s Next</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first cubane website, part 1</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Cubane</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Getting started</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/tutorials/introduction.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Cubane is written in <a class="reference external" href="https://python.org/">python</a> and is based on the <a class="reference external" href="https://djangoproject.com/">Django</a> web framework. Cubane
+adds additional concepts that will help you to build websites even faster.</p>
+<blockquote>
+<div></div></blockquote>
+<div class="section" id="website-performance">
+<h2>Website Performance<a class="headerlink" href="#website-performance" title="Permalink to this headline">¶</a></h2>
+<p>An increasingly significant part of a great website experience is performance,
+which is not necessarily related to server response time alone.</p>
+<p>We have to merge and minify resources, lazy-load images and background images.
+We use art direction to change the shape of images based on device properties.
+We also commonly use custom web fonts and of course, we are using SVG icon sets.</p>
+<p>We are also concerned about prioritising (and perhaps inlining) all content and
+assets for ‘above the fold’ content. Other resources are loaded asynchronously.
+As a consequence, we have to split our assets into several ‘buckets’ to merge
+and minify them individually.</p>
+<p>Finally, we cache everything; or we use static site generators so that we have
+the best possible server response time by avoiding any server-side computation.</p>
+<p>Cubane provides the infrastructure for those things so that you don’t have to
+deal with them on a regular basis.</p>
+</div>
+<div class="section" id="content-organisation">
+<h2>Content Organisation<a class="headerlink" href="#content-organisation" title="Permalink to this headline">¶</a></h2>
+<p>We face a variety of different challenges when working on website projects:
+Some websites require a simple page structure; others organise content
+hierarchically.</p>
+<p>Sometimes we work with collections of things, most commonly with posts but also
+with business-specific concepts, for example boats, courses, treatments and
+services.</p>
+<p>We also have to deal with related items that do not necessarily have their own
+navigable page but certainly contribute to a page’s content. Representing them
+as individual things makes it easy for content creators to create or edit them
+or simply to change the order in which they appear. Common things we face
+repeatedly are partners, accreditations, testimonials, FAQ items etc.</p>
+<p>Sometimes websites require a strict hierarchical structure such as nested
+pages, categories, folders or departments.</p>
+<p>In other cases, we need a very flexible hierarchy - one in which items can
+appear in multiple places within the hierarchy based on context - such as
+places to visit, things to do, experiences to have or simply great things to
+eat.</p>
+<p>We may also need to sell things so that we need to represent categories,
+products, a shopping basket and a checkout process.</p>
+<p>Cubane supports a set of organisational structures that support all those
+different use cases to organise your content. It’s up to you to pick one or a
+combination of those concepts that best fits your project.</p>
+</div>
+<div class="section" id="the-cubane-philosophy">
+<h2>The Cubane philosophy<a class="headerlink" href="#the-cubane-philosophy" title="Permalink to this headline">¶</a></h2>
+<p>Building websites that deliver a great user experience for visitors and content
+editors alike - but are also high performant at the same time - is a complex
+task; To do it continuously on a deadline is really only possible if you have a
+set of tools that get you there.</p>
+</div>
+<div class="section" id="what-s-next">
+<h2>What’s Next<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<p>Now that you know what Cubane is about, how about trying to <a class="reference internal" href="install.html"><span class="doc">install</span></a> it?</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="install.html" class="btn btn-neutral float-right" title="Quick install guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

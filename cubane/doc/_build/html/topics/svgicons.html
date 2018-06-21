@@ -1,0 +1,510 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with SVG Icons &mdash; Cubane 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/cubane.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with Media" href="media.html" />
+    <link rel="prev" title="Working with Fonts" href="fonts.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          <a href="../index.html">
+            <img src="../_static/cubane-logo.svg" class="logo" alt="Cubane"/>
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Cubane</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="resources.html">Working with Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fonts.html">Working with Fonts</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with SVG Icons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-svg-icons">Creating SVG Icons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-the-svg-icon-system">Loading the SVG icon system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-uni-coloured-svg-icons">Declaring uni-coloured SVG icons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#referring-to-svg-icons">Referring to SVG icons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embedding-svg-icon-sets">Embedding SVG icon sets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-embedded-svg-icons">Using embedded SVG icons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-multi-coloured-svg-icons">Using multi-coloured SVG Icons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="media.html">Working with Media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend/index.html">Backend System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cms.html">Content Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enquiry.html">Enquiry Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Cache System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="favicons.html">Generating Favorite Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html">Deploying Cubane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pull.html">Pulling Production Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">Testing Cubane</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">Cubane Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Cubane</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Using Cubane</a> &raquo;</li>
+        
+      <li>Working with SVG Icons</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/cubaneorg/cubane/blob/master/doc/topics/svgicons.txt" class="fa fa-github" target="_blank"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="working-with-svg-icons">
+<span id="topics-svgicons"></span><h1>Working with SVG Icons<a class="headerlink" href="#working-with-svg-icons" title="Permalink to this headline">¶</a></h1>
+<p>SVG images are incredibly useful: They are small in size, scale to any size and
+their appearance is always crystal-sharp regardless of the device.</p>
+<p>Cubane’s SVG icon system simply allows you to declare a set of SVG-based icons
+and to refer to those icons anywhere within your template.</p>
+<div class="section" id="creating-svg-icons">
+<span id="topics-svgicons-creating-svgicons"></span><h2>Creating SVG Icons<a class="headerlink" href="#creating-svg-icons" title="Permalink to this headline">¶</a></h2>
+<p>When creating SVG icons, we would advise using the same <code class="docutils literal"><span class="pre">viewBox</span></code> for all SVG
+files throughout; this will make it easier to place icons within a design more
+consistently.</p>
+<p>In addition, we suggest to align all icons on the same baseline and to maintain
+the same visual white space around an icon. This will greatly help to align
+icons within a design.</p>
+</div>
+<div class="section" id="loading-the-svg-icon-system">
+<span id="topics-svgicons-loading"></span><h2>Loading the SVG icon system<a class="headerlink" href="#loading-the-svg-icon-system" title="Permalink to this headline">¶</a></h2>
+<p>Cubane’s SVG icon system is implemented as a separate app, which is
+<code class="docutils literal"><span class="pre">cubane.svgicons</span></code>. In order to use it, you would need to load
+<code class="docutils literal"><span class="pre">cubane.svgicons</span></code> in your project setting’s list of installed apps:
+<code class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s1">&#39;cubane.svgicons&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;myApp&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The SVG icon system also provides some default CSS style for icons. If you wish
+to use it, simply embed all resources from <code class="docutils literal"><span class="pre">cubane.svgicons</span></code> within the
+default resource bucket that you are using for your website, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;frontend&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;cubane.svgicons&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;myApp&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="declaring-uni-coloured-svg-icons">
+<span id="topics-svgicons-declaring-uni-colored-svg-icons"></span><h2>Declaring uni-coloured SVG icons<a class="headerlink" href="#declaring-uni-coloured-svg-icons" title="Permalink to this headline">¶</a></h2>
+<p>In your app’s <code class="docutils literal"><span class="pre">__init__.py</span></code> file, where you declare Cubane’s resources,
+you can simply declare individual SVG files as SVG icons as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># website style</span>
+    <span class="s1">&#39;css/style.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SVG icons</span>
+    <span class="s1">&#39;svgicons/phone.svg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;svgicons/mail.svg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;svgicons/location.svg&#39;</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">As we will see later on, the name of each SVG icon file is important,
+because we will simply be able to refer to the <code class="docutils literal"><span class="pre">phone.svg</span></code> icon file via
+its name <code class="docutils literal"><span class="pre">phone</span></code>.</p>
+</div>
+<p>As discussed in the <a class="reference internal" href="media.html#topics-media-media-api-urls"><span class="std std-ref">Media API URLs</span></a>
+section, we can use pattern expansion to make this very compact:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># website style</span>
+    <span class="s1">&#39;css/style.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+
+    <span class="c1"># SVG icons</span>
+    <span class="s1">&#39;svgicons/*.svg&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Because the order in which Cubane processes SVG icon files is entirely
+arbitrary, we do not need to be concerned about the order in which SVG icon
+files are declared (which would be alphabetical when using pattern expansion).</p>
+<p>All SVG icons declared in such way are uni-coloured by default. This means that
+all shapes will automatically take the fill colour of the current text colour as
+declared in your CSS style. We will see how this works in just a moment.</p>
+</div>
+<div class="section" id="referring-to-svg-icons">
+<span id="topics-svgicons-referring-to-svg-icons"></span><h2>Referring to SVG icons<a class="headerlink" href="#referring-to-svg-icons" title="Permalink to this headline">¶</a></h2>
+<p>After having declared your SVG icons as resources, you can simply refer to an
+icon by its name within your templates, for example:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">svgicon_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        ...
+
+        <span class="cp">{%</span> <span class="k">svgiconref</span> <span class="s1">&#39;frontend/phone&#39;</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The argument contains the name of the resource bucket that contains the
+referenced icon which is <code class="docutils literal"><span class="pre">frontend</span></code> in the example above. The name of the
+bucket is followed by the name of the icon <code class="docutils literal"><span class="pre">phone</span></code>.</p>
+<p>Cubane will generate markup very similar to the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;svgicon svgicon-phone&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">svg</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">use</span> <span class="na">xlink:href</span><span class="o">=</span><span class="s">&quot;/static/cubane.svgicons.frontend.39388d.svg#svgicon-phone&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">use</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>In <em>Production</em> mode, the referenced external file
+<code class="docutils literal"><span class="pre">cubane.svgicons.frontend.39388d.svg</span></code> will have been generated during site
+deployment automatically and contains all SVG icons declared for the
+<code class="docutils literal"><span class="pre">frontend</span></code> resource bucket. The full reference will only present the SVG icon
+symbol <code class="docutils literal"><span class="pre">svgicon-phone</span></code> from within the file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Referring to SVG icons this way means that the browser will download an
+external file before any SVG icon can be presented. The browser can cache
+the external file once it has been downloaded.</p>
+<p class="last">In <em>Debug</em> mode, Cubane will generate a different path using the
+<a class="reference internal" href="media.html#topics-media-media-api-urls"><span class="std std-ref">Media API URLs</span></a> to refer to a particular SVG icon.</p>
+</div>
+</div>
+<div class="section" id="embedding-svg-icon-sets">
+<span id="topics-svgicons-embedding-svg-icon-sets"></span><h2>Embedding SVG icon sets<a class="headerlink" href="#embedding-svg-icon-sets" title="Permalink to this headline">¶</a></h2>
+<p>Another way of using SVG icons is to embed an SVG icon set within your template.
+This is usually your base template. It will contain the declaration of each SVG
+icon; however, no icon has actually been presented anywhere yet.</p>
+<p>Embedding SVG icons offer the benefit of faster rendering time since no
+external resource has to be downloaded first in order to present an icon on the
+screen. However, this approach – if not considered carefully – may overload
+your initial markup file extensively.</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">svgicon_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        ...
+
+        <span class="cp">{%</span> <span class="k">inline_svgicons</span> <span class="s1">&#39;frontend&#39;</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The first argument to the <code class="docutils literal"><span class="pre">inline_svgicons</span></code> template tag is the resource
+<em>bucket</em> from which you would like to include SVG icon resources.</p>
+<p>Cubane will generate markup very similar to the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">svg</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;display: none;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">symbol</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;svgicon-phone&quot;</span> <span class="na">viewBox</span><span class="o">=</span><span class="s">&quot;0 0 64 64&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;/</span><span class="nt">symbol</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">symbol</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;svgicon-mail&quot;</span> <span class="na">viewBox</span><span class="o">=</span><span class="s">&quot;0 0 64 64&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;/</span><span class="nt">symbol</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">symbol</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;svgicon-location&quot;</span> <span class="na">viewBox</span><span class="o">=</span><span class="s">&quot;0 0 64 64&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;/</span><span class="nt">symbol</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Each symbol declaration contains the original <code class="docutils literal"><span class="pre">viewBox</span></code> from the original SVG
+file and its SVG shape declaration (not shown). Further, the unique identifier
+for each symbol reassembles the name of each SVG icon, which was derived from
+its filename.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Cubane will remove any embedded style information for uni-coloured SVG
+icons automatically because the current text colour of the containing
+element will be used as the fill colour of the SVG icon.</p>
+</div>
+</div>
+<div class="section" id="using-embedded-svg-icons">
+<span id="topics-svgicons-using-embedded-svg-icons"></span><h2>Using embedded SVG icons<a class="headerlink" href="#using-embedded-svg-icons" title="Permalink to this headline">¶</a></h2>
+<p>After having declared SVG icons in your resources and made them available
+within your template via the <code class="docutils literal"><span class="pre">inline_svgicons</span></code> template tag, you can now
+present any embedded SVG icon by using the <code class="docutils literal"><span class="pre">svgicon</span></code> template tag:</p>
+<div class="highlight-html+django"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">load</span> <span class="nv">svgicon_tags</span> <span class="cp">%}</span>
+
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">&gt;</span>
+            <span class="cp">{%</span> <span class="k">svgicon</span> <span class="s1">&#39;phone&#39;</span> <span class="cp">%}</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+        <span class="cp">{%</span> <span class="k">inline_svgicons</span> <span class="s1">&#39;frontend&#39;</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Ultimately this will generate markup similar to the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;svgicon svgicon-phone&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">svg</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">use</span> <span class="na">xlink:href</span><span class="o">=</span><span class="s">&quot;#svgicon-phone&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">use</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Please note that the markup for any SVG icon is contained within the template
+only once, even if the same SVG icon is used multiple times. Further, the fill
+colour of an SVG icon is set to the current text colour. For example, if the
+text colour of the <code class="docutils literal"><span class="pre">.header</span></code> container would be set to <code class="docutils literal"><span class="pre">red</span></code>, then any shape
+of the <code class="docutils literal"><span class="pre">phone</span></code> SVG icon would also be filled with the colour <code class="docutils literal"><span class="pre">red</span></code>.</p>
+</div>
+<div class="section" id="using-multi-coloured-svg-icons">
+<span id="topics-svgicons-using-multi-colored-svg-icons"></span><h2>Using multi-coloured SVG Icons<a class="headerlink" href="#using-multi-coloured-svg-icons" title="Permalink to this headline">¶</a></h2>
+<p>By default, SVG icons are uni-coloured, which means that the current text colour
+will define what the actual fill colour is used when presenting an SVG icon.</p>
+<p>SVG icons can be declared as multi-coloured SVG icons, which means that the icon
+will retain its style information; independently of the current text colour.</p>
+<p>You can simply declare multi-coloured SVG icons by using the <code class="docutils literal"><span class="pre">with-style</span></code>
+prefix operator when declaring an SVG icon:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># website style</span>
+    <span class="s1">&#39;css/style.css&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+
+    <span class="c1"># multi-coloured SVG icons</span>
+    <span class="s1">&#39;with-style|svgicons/phone.svg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;with-style|svgicons/mail.svg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;with-style|svgicons/location.svg&#39;</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">with-style</span></code> operator is prefixed to the resource path by using the
+<em>pipe</em> character:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>[&lt;resource-prefix&gt;] | &lt;resource-path&gt;
+</pre></div>
+</div>
+<p>You can also use pattern expansion in combination with the <code class="docutils literal"><span class="pre">with-style</span></code>
+prefix operator, like in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># multi-coloured SVG icons</span>
+    <span class="s1">&#39;with-style|styled-svgicons/*.svg&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>If you are using uni-coloured <em>and</em> multi-coloured SVG icons in your project,
+you could declare both types of icons by using pattern expansion based on two
+different folders, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;svgicons/*.svg&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;with-style|styled-svgicons/*.svg&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>You would present a multi-coloured SVG icon in the same way as before by using
+the <code class="docutils literal"><span class="pre">svgicon</span></code> or <code class="docutils literal"><span class="pre">svgiconref</span></code> template tags.</p>
+<p>The system automatically determines if the icon is presented as a uni-coloured
+SVG icon (using the current text colour as the fill colour) or as a
+multi-coloured SVG icon (using the style information embedded within the SVG
+icon itself).</p>
+<p>Uni-coloured and multi-coloured SVG icons can be mixed within the same resource
+bucket and can be used when embedded within a template or referred to through
+an external file.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="media.html" class="btn btn-neutral float-right" title="Working with Media" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fonts.html" class="btn btn-neutral" title="Working with Fonts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cubane.org.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+    <div class="wy-nav-contact">
+        <a class="wy-nav-contact-email" href="mailto:hello@cubane.org">hello@cubane.org</a>
+        <a class="wy-nav-contact-twitter" href="http://twitter.com/CubaneLtd" target="_blank">
+            <img src="../_static/twitter.svg" alt="Cubane on GitHub"/>
+        </a>
+
+        <a class="wy-nav-contact-github" href="https://github.com/cubaneorg/cubane" target="_blank">
+            <img src="../_static/github.svg" alt="Cubane on GitHub"/>
+        </a>
+    </div>
+  </div>
+
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
