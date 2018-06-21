@@ -4,6 +4,8 @@ python: "2.7"
 
 os: linux
 
+sudo: required
+
 before_install:
 - apt-get install openjdk-8-jre
 - apt-get install python-psycopg2
