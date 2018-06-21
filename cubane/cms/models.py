@@ -465,6 +465,19 @@ class PageBase(
             self._cached_gallery = list([m.media for m in media])
 
         return self._cached_gallery
+        
+        
+    @property
+    def page_path(self):
+        """
+        Returns a list of all pages with in a hierarchy starting with root element. 
+        """
+        items = []
+        p = self
+        while p is not None:
+            items.insert(0, p)
+            p = p.parent
+        return items
 
 
     def get_filepath(self):
@@ -825,6 +838,17 @@ class ChildPage(PageBase):
         title since there is no way to change the navigation title.
         """
         return self.title
+        
+    
+    @property
+    def page_path(self):
+        """
+        Returns a list of all pages with in a hierarchy starting with root element. 
+        """
+        if self.page is not None:
+            return self.page.page_path + [self]
+        else:
+            return [self]
 
 
     objects = ChildPageManager()
