@@ -70,7 +70,7 @@ The Cubane philosophy
 Building websites that deliver a great user experience for visitors and content
 editors alike - but are also high performant at the same time - is a complex
 task; To do it continuously on a deadline is really only possible if you have a
-set of tools that get you there - at leats halfway.
+set of tools that get you there.
 
 
 What's Next
