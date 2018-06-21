@@ -15,7 +15,7 @@ before_install:
 - sudo apt-get install optipng
 
 install:
-- pip install -r cubane/requirements/prod.txt
+- python setup.py install
 
 before_script:
 - cd cubane/testapp
