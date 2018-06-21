@@ -4,13 +4,15 @@ python: "2.7"
 
 os: linux
 
+sudo: required
+
 before_install:
-- apt-get install openjdk-8-jre
-- apt-get install python-psycopg2
-- apt-get install libmagickwand-dev
-- apt-get install ghostscript
-- apt-get install libjpeg-turbo-progs
-- apt-get install optipng
+- sudo apt-get install -y openjdk-8-jre
+- sudo apt-get install python-psycopg2
+- sudo apt-get install libmagickwand-dev
+- sudo apt-get install ghostscript
+- sudo apt-get install libjpeg-turbo-progs
+- sudo apt-get install optipng
 
 install:
 - pip install -r cubane/requirements/prod.txt
