@@ -238,7 +238,7 @@ class SettingsDefaultEnvTestCase(CubaneTestCase):
 
     def test_should_use_public_html_folder_in_production(self):
         env = default_env(__name__, 'foo.com', 'root@localhost', debug=False)
-        base = os.path.abspath(os.path.join(env.settings.BASE_PATH, '..', '..', '..'))
+        base = os.path.abspath(os.path.join(env.settings.BASE_PATH, '..', '..'))
         self.assertEqual(
             '/public_html/media',
             env.settings.MEDIA_ROOT.replace(base, '')

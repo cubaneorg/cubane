@@ -36,8 +36,9 @@ Thumbs.db
 # manage.py
 manage.py
 
-# testapp media folder
+# testapp media folder and public_html created during testing
 cubane/testapp/media
+public_html/
 
 # documentation build folder
 doc/_build
