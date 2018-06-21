@@ -1,9 +1,21 @@
-from setuptools import setup
+# coding=UTF-8
+from __future__ import unicode_literals
+import cubane
+import setuptools
 
-setup(
+
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+version = '.'.join([unicode(x) for x in cubane.VERSION[:3]])
+
+
+setuptools.setup(
     name='Cubane',
     description='Website/CMS/Shop and Backend Framework for Django.',
-    version='1.0.0',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    version=version,
     url='https://github.com/cubaneorg/cubane',
     author='Cubane Organisation',
     author_email='hello@cubane.org',
@@ -11,7 +23,7 @@ setup(
     classifiers=[
       'Development Status :: 5 - Production/Stable',
       'Intended Audience :: Developers',
-      'License :: OSI Approved :: GNU GENERAL PUBLIC LICENSE V3 (GPLV3)',
+      'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
       'Programming Language :: Python',
       'Programming Language :: Python :: 2',
       'Programming Language :: Python :: 2.7',
@@ -25,12 +37,24 @@ setup(
     ],
     packages=['cubane'],
     install_requires=[
-      'PyYAML>=3.11',
-      'sh>=1.11'
-    ],
-    entry_points={
-      'console_scripts': [
-          'encrypt=crytto.main:run'
-      ]
-    }
+        'Django>=1.10,<=1.11',
+        'psycopg2>=2.5.4',
+        'beautifulsoup4>=4.5.3',
+        'lxml>=3.7.2',
+        'django-htmlmin>=0.9.0',
+        'Wand>=0.4.4',
+        'requests>=2.12.5',
+        'requests[security]',
+        'pycrypto>=2.6.1',
+        'oauth2>=1.9.0.post1',
+        'mailsnake>=1.6.4',
+        'ipaddr>=2.1.11',
+        'ifaddr>=0.1.4',
+        'pydns>=2.3.6',
+        'pyspf==2.0.11',
+        'chardet>=2.3.0',
+        'stripe>=1.46.0',
+        'pyBarcode>=0.7',
+        'idna>=2.5'
+    ]
 )

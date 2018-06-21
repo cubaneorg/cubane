@@ -41,3 +41,8 @@ cubane/testapp/media
 
 # documentation build folder
 doc/_build
+
+# setup tools build and dist folders
+build/
+dist/
+Cubane.egg-info/

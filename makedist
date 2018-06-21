@@ -1,0 +1,12 @@
+#!/bin/sh
+rm -rf build/
+rm -rf dist/
+python setup.py sdist bdist_wheel
+
+if [ "$1" == "test" ]; then
+    twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+fi
+
+if [ "$1" == "production" ]; then
+    twine upload dist/*
+fi
