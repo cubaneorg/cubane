@@ -1,6 +1,6 @@
 # coding=UTF-8
 from __future__ import unicode_literals
-import cubane
+from cubane.version import VERSION
 import setuptools
 
 
@@ -12,7 +12,7 @@ with open("cubane/requirements/common.txt", "r") as fh:
     requirements = fh.read().splitlines()
 
 
-version = '.'.join([unicode(x) for x in cubane.VERSION[:3]])
+version = '.'.join([unicode(x) for x in VERSION[:3]])
 
 
 setuptools.setup(
