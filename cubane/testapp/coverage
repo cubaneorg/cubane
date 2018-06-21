@@ -7,5 +7,8 @@ else
   echo "Run full test with ./test full. This test suite will NOT cover all tests but runs significantly faster than running the full suite."
 fi
 
-python manage.py test cubane
-export DEV_TEST_FULL=0
+find . -name \*.pyc -delete
+coverage run --source='../' manage.py test cubane.tests
+coverage report -m
+coverage erase
+export DEV_TEST_FULL

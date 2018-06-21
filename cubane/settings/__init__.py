@@ -494,7 +494,7 @@ def default_env(
     #
     m.CACHE_ENABLED = True
     m.STATIC_URL = '/static/'
-    m.PUBLIC_HTML_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', 'public_html'))
+    m.PUBLIC_HTML_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', '..', 'public_html'))
     m.CACHE_ROOT = os.path.join(m.PUBLIC_HTML_ROOT, 'cache')
     m.STATIC_ROOT = os.path.join(m.PUBLIC_HTML_ROOT, 'static')
     m.STATICFILES_DIRS = (
@@ -508,7 +508,7 @@ def default_env(
     if m.DEBUG:
         m.MEDIA_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, 'media'))
     else:
-        m.MEDIA_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', 'public_html', 'media'))
+        m.MEDIA_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', '..', 'public_html', 'media'))
     m.MEDIA_URL = 'media/'
     m.MEDIA_API_URL = 'media-api/'
 
