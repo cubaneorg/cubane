@@ -62,16 +62,33 @@ class Command(RunserverCommand):
             help='Allows serving static files even if DEBUG is False.',
         )
 
+
+    def run(self, **options):
+        """
+        Runs the server, using the autoreloader if needed
+        """
+        if settings.DEBUG:
+            # install if database does not exist yet
+            from django.db import connection
+            try:
+                connection.cursor()
+            except:
+                # database does not exist yet, install...
+                call_command('install')
+
+            # fonts
+            if 'cubane.fonts' in settings.INSTALLED_APPS:
+                call_command('loadfonts')
+
+        super(Command, self).run(**options)
+
+
     def get_handler(self, *args, **options):
         """
         Returns the static files serving handler wrapping the default handler,
         if static files should be served. Otherwise just returns the default
         handler.
         """
-        # fonts
-        if settings.DEBUG and 'cubane.fonts' in settings.INSTALLED_APPS:
-            call_command('loadfonts')
-
         # serve static content
         print 'Serving static content.'
 
