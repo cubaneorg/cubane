@@ -7,6 +7,7 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+
 requirements = []
 with open("cubane/requirements/common.txt", "r") as fh:
     requirements = fh.read().splitlines()
@@ -41,11 +42,5 @@ setuptools.setup(
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=['cubane'],
-    install_requires=requirements,
-    dependency_links=[
-        'https://files.pythonhosted.org/packages/88/4d/440c273b6a136b58fad9f779847cc90179d627f8a2f2cd8b36313664cf1b/pyspf-2.0.12t.tar.gz'
-    ]
+    install_requires=requirements
 )
-
-
-

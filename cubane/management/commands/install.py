@@ -156,12 +156,12 @@ class Command(BaseCommand):
             profile.save()
 
             # print out the username/password
-            print
-            print '    ****************************'
-            print '    * Username: %-14s *' % user.username
-            print '    * Password: %-14s *' % password
-            print '    ****************************'
-            print
+            print('')
+            print('    ****************************')
+            print('    * Username: %-14s *' % user.username)
+            print('    * Password: %-14s *' % password)
+            print('    ****************************')
+            print('')
 
 
     def add_arguments(self, parser):
