@@ -365,8 +365,8 @@ class CMSLinkTagTestCase(CubaneTestCase):
 
 
 class CMSSlotTestCase(CubaneTestCase):
-    CONTENT_LAZYLOAD_IMAGE_REF          = '<span class="lazy-load"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="Test" data-title="Test" data-svg="0" data-inline="0"><img src="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="Test" title="Test"></noscript></span></span>'
-    CONTENT_LAZYLOAD_IMAGE_REF_LIGHTBOX = '<a class="lazy-load lightbox" href="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" title="Test"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="Test" data-title="Test" data-svg="0" data-inline="0"><img src="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="Test" title="Test"></noscript></span></a>'
+    CONTENT_LAZYLOAD_IMAGE_REF          = '<span class="lazy-load"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="Test" data-title="Test" data-svg="0" data-inline="0"><img src="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="Test" title="Test"></noscript></span></span>'
+    CONTENT_LAZYLOAD_IMAGE_REF_LIGHTBOX = '<a class="lazy-load lightbox" href="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" title="Test"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="Test" data-title="Test" data-svg="0" data-inline="0"><img src="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="Test" title="Test"></noscript></span></a>'
 
 
     def test_should_return_error_if_slot_does_not_exist(self):
@@ -499,7 +499,7 @@ class CMSSlotTestCase(CubaneTestCase):
 
     def test_should_rewrite_page_links(self):
         self.assertEqual(
-            '<a href="http://testapp.cubane.innershed.com/foo/">Foo</a>',
+            '<a href="http://www.testapp.cubane.innershed.com/foo/">Foo</a>',
             self._render_link('#link[Page:1]', {
                 'Page': {
                     '1': Page(id=1, slug='foo')
@@ -565,7 +565,7 @@ class CMSSlotTestCase(CubaneTestCase):
 
 
     def _image_markup(self, lightbox=False, media_id=1):
-        return '<img src="http://testapp.cubane.innershed.com/media/originals/0/%(id)s/test.jpg" alt="Test" width="64" data-width="64" data-height="64" data-cubane-lightbox="%(lightbox)s" data-cubane-media-id="%(id)s" data-cubane-media-size="auto" />' % {
+        return '<img src="http://www.testapp.cubane.innershed.com/media/originals/0/%(id)s/test.jpg" alt="Test" width="64" data-width="64" data-height="64" data-cubane-lightbox="%(lightbox)s" data-cubane-media-id="%(id)s" data-cubane-media-size="auto" />' % {
             'id': media_id,
             'lightbox': 'true' if lightbox else 'false'
         }

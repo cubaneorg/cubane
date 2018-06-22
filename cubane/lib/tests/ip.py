@@ -61,7 +61,7 @@ class LibIPTestCase(CubaneTestCase):
 
 
     def assertIP(self, ip, family):
-        if not ip.startswith('169.254.'):
+        if not ip.startswith('169.254.') and not ip.startswith('192.168.') and not ip.startswith('10.'):
             try:
                 socket.inet_pton(family, ip)
             except socket.error:

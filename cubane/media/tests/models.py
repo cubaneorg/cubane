@@ -20,7 +20,6 @@ class CMSMediaModelsGetArtDirectionForShapeTestCase(CubaneTestCase):
     """
     cubane.media.get_art_direction_for_shape()
     """
-    """
     def test_empty_art_direction_should_yield_empty_list_of_directives(self):
         self.assertEqual(
             [],
@@ -83,17 +82,13 @@ class CMSMediaModelsGetArtDirectionForShapeTestCase(CubaneTestCase):
                 'phone': 1.0
             })
         )
-    """
-    pass
 
 
-"""
 @CubaneTestCase.complex()
 class CMSMediaModelsMediaFolderTestCase(CubaneTestCase):
     def test_get_form_should_return_default_form(self):
         m = MediaFolder()
         self.assertTrue(issubclass(m.get_form(), MediaFolderForm))
-"""
 
 
 @CubaneTestCase.complex()
@@ -107,7 +102,6 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
             self.m.delete()
 
 
-    """
     def test_save_should_generate_uid_if_not_present(self):
         self.m.save()
         self.assertIsNotNone(self.m.uid)
@@ -117,7 +111,6 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
         self.m.uid = 'uuid'
         self.m.save()
         self.assertEqual('uuid', self.m.uid)
-    """
 
 
     def test_save_should_rename_filename_on_disk_if_caption_changed(self):
@@ -137,7 +130,6 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
         self.assertTrue(os.path.isfile(self.m.original_path))
 
 
-    """
     def test_save_should_rename_filename_to_unnamed_on_disk_if_caption_changed_to_empty_string(self):
         cms = get_cms()
         self.m = cms.create_media_from_file(self.get_test_image_path('test.jpg'), 'Test')
@@ -297,14 +289,14 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
     def test_original_path_should_combine_base_path_with_bucket_id_pk_and_filename(self):
         self.m.pk = 433
         self.m.filename = 'test.jpg'
-        self.assertEqual('/originals/0/433/test.jpg', self.m.original_path.replace(self.get_testapp_media_path(), ''))
+        self.assertTrue(self.m.original_path.endswith('/originals/0/433/test.jpg'))
 
 
     def test_original_url_should_combine_bucket_id_pk_and_filename_matching_physical_path(self):
         self.m.pk = 433
         self.m.filename = 'test.jpg'
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/media/originals/0/433/test.jpg',
+            'http://www.testapp.cubane.innershed.com/media/originals/0/433/test.jpg',
             self.m.original_url
         )
 
@@ -478,7 +470,7 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
         self.m.width = 600
         self.m.height = 600
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/media/shapes/original/large/0/1/',
+            'http://www.testapp.cubane.innershed.com/media/shapes/original/large/0/1/',
             self.m.get_image_url_or_smaller('x-large')
         )
 
@@ -520,22 +512,23 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
         self.m.caption = 'Test'
         self.m.is_image = True
         self.assertEqual({
-            'url': 'http://testapp.cubane.innershed.com/media/shapes/original/large/0/1/test.jpg',
+            'url': 'http://www.testapp.cubane.innershed.com/media/shapes/original/large/0/1/test.jpg',
+            'original_url': u'http://www.testapp.cubane.innershed.com/media/originals/0/1/test.jpg',
             'caption': 'Test',
             'shapes': {
                 'original': {
-                    'small': 'http://testapp.cubane.innershed.com/media/shapes/original/small/0/1/test.jpg',
-                    'large': 'http://testapp.cubane.innershed.com/media/shapes/original/large/0/1/test.jpg',
-                    'xx-small': 'http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/test.jpg',
-                    'medium': 'http://testapp.cubane.innershed.com/media/shapes/original/medium/0/1/test.jpg',
-                    'x-small': 'http://testapp.cubane.innershed.com/media/shapes/original/x-small/0/1/test.jpg'
+                    'small': 'http://www.testapp.cubane.innershed.com/media/shapes/original/small/0/1/test.jpg',
+                    'large': 'http://www.testapp.cubane.innershed.com/media/shapes/original/large/0/1/test.jpg',
+                    'xx-small': 'http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/test.jpg',
+                    'medium': 'http://www.testapp.cubane.innershed.com/media/shapes/original/medium/0/1/test.jpg',
+                    'x-small': 'http://www.testapp.cubane.innershed.com/media/shapes/original/x-small/0/1/test.jpg'
                 },
                 'landscape': {
-                    'small': 'http://testapp.cubane.innershed.com/media/shapes/landscape/small/0/1/test.jpg',
-                    'large': 'http://testapp.cubane.innershed.com/media/shapes/landscape/large/0/1/test.jpg',
-                    'xx-small': 'http://testapp.cubane.innershed.com/media/shapes/landscape/xx-small/0/1/test.jpg',
-                    'medium': 'http://testapp.cubane.innershed.com/media/shapes/landscape/medium/0/1/test.jpg',
-                    'x-small': 'http://testapp.cubane.innershed.com/media/shapes/landscape/x-small/0/1/test.jpg'
+                    'small': 'http://www.testapp.cubane.innershed.com/media/shapes/landscape/small/0/1/test.jpg',
+                    'large': 'http://www.testapp.cubane.innershed.com/media/shapes/landscape/large/0/1/test.jpg',
+                    'xx-small': 'http://www.testapp.cubane.innershed.com/media/shapes/landscape/xx-small/0/1/test.jpg',
+                    'medium': 'http://www.testapp.cubane.innershed.com/media/shapes/landscape/medium/0/1/test.jpg',
+                    'x-small': 'http://www.testapp.cubane.innershed.com/media/shapes/landscape/x-small/0/1/test.jpg'
                 }
             },
             'id': 1,
@@ -543,7 +536,6 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
             'is_svg': False,
             'lastmod': None
         }, self.m.to_dict())
-    """
 
 
     def _assert_media_filter(self, widths, image_size, expected_widths):
@@ -576,6 +568,6 @@ class CMSMediaModelsMediaTestCase(CubaneTestCase):
         self.m.width = 2400
         self.m.height = 2400
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/media/shapes/original/%s/0/1/' % url_size,
+            'http://www.testapp.cubane.innershed.com/media/shapes/original/%s/0/1/' % url_size,
             getattr(self.m, '%s_url' % size)
         )

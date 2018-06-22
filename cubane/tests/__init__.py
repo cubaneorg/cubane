@@ -1,4 +1,5 @@
 # core
+from cubane.tests.testing import *
 from cubane.tests.backends import *
 from cubane.tests.context_processors import *
 from cubane.tests.decorators import *

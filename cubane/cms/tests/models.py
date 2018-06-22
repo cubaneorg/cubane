@@ -81,7 +81,7 @@ class CMSModelsEditableContentMixinTestCase(CubaneTestCase):
         self.assertIn('data-path="/0/1/"', html)
         self.assertIn('data-blank="0"', html)
         self.assertIn('data-sizes="xx-small"', html);
-        self.assertIn('<img src="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="Test" title="Test">', html)
+        self.assertIn('<img src="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="Test" title="Test">', html)
 
 
     def test_content_by_slot_with_empty_data(self):
@@ -162,7 +162,7 @@ class CMSModelsPageBaseTestCase(CubaneTestCase):
 
     def test_get_absolute_url_should_reflect_slug(self):
         self.page.slug = 'test-page'
-        self.assertEqual('http://testapp.cubane.innershed.com/test-page/', self.page.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/test-page/', self.page.get_absolute_url())
 
 
     def test_get_filepath_should_return_path_to_cache_for_empty_slug(self):
@@ -277,21 +277,21 @@ class CMSModelsPageAbstractTestCase(CubaneTestCase):
     def test_get_absolute_url_should_return_root_url_for_homepage(self):
         self.page.is_homepage = True
         self.page.slug = 'test-page'
-        self.assertEqual('http://testapp.cubane.innershed.com/', self.page.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/', self.page.get_absolute_url())
 
 
     @override_settings(APPEND_SLASH=True)
     def test_get_absolute_url_should_return_full_slug_ending_with_slash_with_append_slash_option(self):
         self.page.is_homepage = False
         self.page.slug = 'test-page'
-        self.assertEqual('http://testapp.cubane.innershed.com/test-page/', self.page.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/test-page/', self.page.get_absolute_url())
 
 
     @override_settings(APPEND_SLASH=False)
     def test_get_absolute_url_should_return_full_slug_ending_with_slash_without_append_slash_option(self):
         self.page.is_homepage = False
         self.page.slug = 'test-page'
-        self.assertEqual('http://testapp.cubane.innershed.com/test-page', self.page.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/test-page', self.page.get_absolute_url())
 
 
 class CMSModelsPageTestCase(CubaneTestCase):
@@ -357,7 +357,7 @@ class CMSModelsPageTestCase(CubaneTestCase):
         self.assertEqual({
             'foo': 'bar',
             'title': 'Hello World',
-            'url': 'http://testapp.cubane.innershed.com/hello-world/',
+            'url': 'http://www.testapp.cubane.innershed.com/hello-world/',
             'url_path': '/hello-world/',
             'slug': 'hello-world',
             'id': 1
@@ -454,22 +454,22 @@ class CMSModelsChildPageTestCase(CubaneTestCase):
 
     @override_settings(APPEND_SLASH=True)
     def test_get_absolute_url_for_homepage_child_should_obmit_slug_of_parent_page_with_append_slash(self):
-        self.assertEqual('http://testapp.cubane.innershed.com/home-child/', self.homechild.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/home-child/', self.homechild.get_absolute_url())
 
 
     @override_settings(APPEND_SLASH=True)
     def test_get_absolute_url_for_ordinary_child_should_contain_slug_of_parent_page_with_append_slash(self):
-        self.assertEqual('http://testapp.cubane.innershed.com/page/child/', self.child.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/page/child/', self.child.get_absolute_url())
 
 
     @override_settings(APPEND_SLASH=False)
     def test_get_absolute_url_for_homepage_child_should_obmit_slug_of_parent_page_without_append_slash(self):
-        self.assertEqual('http://testapp.cubane.innershed.com/home-child', self.homechild.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/home-child', self.homechild.get_absolute_url())
 
 
     @override_settings(APPEND_SLASH=False)
     def test_get_absolute_url_for_ordinary_child_should_contain_slug_of_parent_page_without_append_slash(self):
-        self.assertEqual('http://testapp.cubane.innershed.com/page/child', self.child.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/page/child', self.child.get_absolute_url())
 
 
 class CMSModelsEntityTestCase(CubaneTestCase):

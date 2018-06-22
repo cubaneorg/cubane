@@ -473,7 +473,7 @@ class IShopBasketItemIncreaseQuantityByTestCase(CubaneTestCase):
 class IShopBasketItemGetAbsoluteUrlTestCase(CubaneTestCase):
     def test_should_return_absolute_url_for_corresponding_product(self):
         item = BasketItem(Product(id=1, slug='foo'))
-        self.assertEqual('http://testapp.cubane.innershed.com/shop/product/foo-1/', item.get_absolute_url())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/foo-1/', item.get_absolute_url())
 
 
 class IShopBasketItemGetTotalDiscountableTestCase(CubaneTestCase):
@@ -543,9 +543,9 @@ class IShopBasketItemAsDictTestCase(CubaneTestCase):
                 'total_product': Decimal('50.00'),
                 'total_product_without_deposit': Decimal('50.00'),
                 'total_without_deposit': Decimal('150.00'),
-                'url': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % self.item.product.pk,
-                'get_absolute_url': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % self.item.product.pk,
-                'get_absolute_url_with_varieties': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/?colour=%d' % (self.item.product.pk, self.option_blue.pk),
+                'url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % self.item.product.pk,
+                'get_absolute_url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % self.item.product.pk,
+                'get_absolute_url_with_varieties': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/?colour=%d' % (self.item.product.pk, self.option_blue.pk),
                 'labels': None,
                 'varieties': [{
                     'variety_option': {
@@ -888,9 +888,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
                     'total_product': Decimal('50.00'),
                     'total_product_without_deposit': Decimal('50.00'),
                     'total_without_deposit': Decimal('100.00'),
-                    'url': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % self.product.pk,
-                    'get_absolute_url': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % self.product.pk,
-                    'get_absolute_url_with_varieties': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/?colour=%d' % (self.product.pk, self.option_blue.pk),
+                    'url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % self.product.pk,
+                    'get_absolute_url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % self.product.pk,
+                    'get_absolute_url_with_varieties': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/?colour=%d' % (self.product.pk, self.option_blue.pk),
                     'labels': None,
                     'varieties': [
                         {
@@ -970,9 +970,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
                     'total_product': Decimal('11.00'),
                     'total_product_without_deposit': Decimal('11.00'),
                     'total_without_deposit': Decimal('11.00'),
-                    'url': 'http://testapp.cubane.innershed.com/shop/product/click-and-collect-%s/' % self.click_and_collect_product.pk,
-                    'get_absolute_url': 'http://testapp.cubane.innershed.com/shop/product/click-and-collect-%s/' % self.click_and_collect_product.pk,
-                    'get_absolute_url_with_varieties': 'http://testapp.cubane.innershed.com/shop/product/click-and-collect-%s/' % self.click_and_collect_product.pk,
+                    'url': 'http://www.testapp.cubane.innershed.com/shop/product/click-and-collect-%s/' % self.click_and_collect_product.pk,
+                    'get_absolute_url': 'http://www.testapp.cubane.innershed.com/shop/product/click-and-collect-%s/' % self.click_and_collect_product.pk,
+                    'get_absolute_url_with_varieties': 'http://www.testapp.cubane.innershed.com/shop/product/click-and-collect-%s/' % self.click_and_collect_product.pk,
                     'labels': None,
                     'varieties': [],
                     'variety_assignments': [],
@@ -1000,9 +1000,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
                     'total_product': Decimal('13.00'),
                     'total_product_without_deposit': Decimal('13.00'),
                     'total_without_deposit': Decimal('13.00'),
-                    'url': 'http://testapp.cubane.innershed.com/shop/product/pre-order-product-%d/' % self.pre_order_product.pk,
-                    'get_absolute_url': 'http://testapp.cubane.innershed.com/shop/product/pre-order-product-%d/' % self.pre_order_product.pk,
-                    'get_absolute_url_with_varieties': 'http://testapp.cubane.innershed.com/shop/product/pre-order-product-%d/' % self.pre_order_product.pk,
+                    'url': 'http://www.testapp.cubane.innershed.com/shop/product/pre-order-product-%d/' % self.pre_order_product.pk,
+                    'get_absolute_url': 'http://www.testapp.cubane.innershed.com/shop/product/pre-order-product-%d/' % self.pre_order_product.pk,
+                    'get_absolute_url_with_varieties': 'http://www.testapp.cubane.innershed.com/shop/product/pre-order-product-%d/' % self.pre_order_product.pk,
                     'labels': None,
                     'varieties': [],
                     'variety_assignments': [],
@@ -1545,9 +1545,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
             self.assertEqual(Decimal('240.00'), item.total)
             self.assertEqual(Decimal('240.00'), item.total_without_deposit)
             self.assertEqual(Decimal('240.00'), item.total_discountable)
-            self.assertEqual('http://testapp.cubane.innershed.com/shop/product/renamed-product-1/', item.get_absolute_url())
-            self.assertEqual('http://testapp.cubane.innershed.com/shop/product/renamed-product-1/?size=%d' % self.size_large.pk, item.get_absolute_url_with_varieties())
-            self.assertEqual('http://testapp.cubane.innershed.com/shop/product/renamed-product-1/', item.url)
+            self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/renamed-product-1/', item.get_absolute_url())
+            self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/renamed-product-1/?size=%d' % self.size_large.pk, item.get_absolute_url_with_varieties())
+            self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/renamed-product-1/', item.url)
             self.assertEqual(Decimal('240.00'), original_basket.sub_total)
             self.assertEqual(Decimal('17.00'), original_basket.delivery)
             self.assertEqual(Decimal('30.00'), original_basket.discount_value)
@@ -1580,9 +1580,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
             self.assertEqual(Decimal('120.00'), item.total)
             self.assertEqual(Decimal('120.00'), item.total_without_deposit)
             self.assertEqual(Decimal('120.00'), item.total_discountable)
-            self.assertEqual('http://testapp.cubane.innershed.com/shop/product/foo-1/', item.get_absolute_url())
-            self.assertEqual('http://testapp.cubane.innershed.com/shop/product/foo-1/?size=%d' % self.size_large.pk, item.get_absolute_url_with_varieties())
-            self.assertEqual('http://testapp.cubane.innershed.com/shop/product/foo-1/', item.url)
+            self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/foo-1/', item.get_absolute_url())
+            self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/foo-1/?size=%d' % self.size_large.pk, item.get_absolute_url_with_varieties())
+            self.assertEqual('http://www.testapp.cubane.innershed.com/shop/product/foo-1/', item.url)
             self.assertEqual(Decimal('120.00'), basket.sub_total)
             self.assertEqual(Decimal('0.00'), basket.delivery)
             self.assertEqual(Decimal('15.00'), basket.discount_value)
@@ -3576,9 +3576,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
                     'total_product': Decimal('50.00'),
                     'total_product_without_deposit': Decimal('50.00'),
                     'total_without_deposit': Decimal('50.00'),
-                    'url': 'http://testapp.cubane.innershed.com/shop/product/foo-%s/' % self.product.pk,
-                    'get_absolute_url': 'http://testapp.cubane.innershed.com/shop/product/foo-%s/' % self.product.pk,
-                    'get_absolute_url_with_varieties': 'http://testapp.cubane.innershed.com/shop/product/foo-%s/?colour=%d' % (self.product.pk, self.option_blue.pk),
+                    'url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%s/' % self.product.pk,
+                    'get_absolute_url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%s/' % self.product.pk,
+                    'get_absolute_url_with_varieties': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%s/?colour=%d' % (self.product.pk, self.option_blue.pk),
                     'labels': None,
                     'varieties': [
                         {'variety_option': {
@@ -3617,9 +3617,9 @@ class IShopBasketTestCase(CubaneTestCase, TestBasketMixin):
                     'total_product': Decimal('35.00'),
                     'total_product_without_deposit': Decimal('35.00'),
                     'total_without_deposit': Decimal('70.00'),
-                    'url': 'http://testapp.cubane.innershed.com/shop/product/bar-%d/' % self.second_product.pk,
-                    'get_absolute_url': 'http://testapp.cubane.innershed.com/shop/product/bar-%d/' % self.second_product.pk,
-                    'get_absolute_url_with_varieties': 'http://testapp.cubane.innershed.com/shop/product/bar-%d/' % self.second_product.pk,
+                    'url': 'http://www.testapp.cubane.innershed.com/shop/product/bar-%d/' % self.second_product.pk,
+                    'get_absolute_url': 'http://www.testapp.cubane.innershed.com/shop/product/bar-%d/' % self.second_product.pk,
+                    'get_absolute_url_with_varieties': 'http://www.testapp.cubane.innershed.com/shop/product/bar-%d/' % self.second_product.pk,
                     'labels': None,
                     'varieties': [],
                     'variety_option_ids': []

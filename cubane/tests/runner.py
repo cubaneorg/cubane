@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.test.runner import DiscoverRunner
 from cubane.lib.fixtures import load_model_fixtures
 
+
 class CubaneTestRunner(DiscoverRunner):
     def setup_databases(self, **kwargs):
         # create database

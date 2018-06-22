@@ -37,7 +37,7 @@ def get_svg_content(filename, svg_markup, with_style=False):
     """
     xml = BeautifulSoup(svg_markup, 'xml')
     svg = xml.svg
-    viewbox = svg['viewBox']
+    viewbox = svg.get('viewBox')
 
     # extract style
     style = ''

@@ -45,7 +45,7 @@ class IShopModelsShopSettingsGetTermsTestCase(CubaneTestCase):
 
     def test_should_return_url_to_terms_page_if_terms_page_has_been_configured(self):
         s = Settings(terms_page=Page(slug='terms'))
-        self.assertEqual('http://testapp.cubane.innershed.com/terms/', s.get_terms())
+        self.assertEqual('http://www.testapp.cubane.innershed.com/terms/', s.get_terms())
 
 
 class IShopModelsShopSettingsSurveyBaseTestCase(CubaneTestCase):
@@ -267,7 +267,7 @@ class IShopModelsCategoryTestCase(CubaneTestCase):
     #
     def test_get_absolute_url_should_return_absolute_url_of_category_page(self):
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/shop/category/a-%d/' % self.a.pk,
+            'http://www.testapp.cubane.innershed.com/shop/category/a-%d/' % self.a.pk,
             self.a.get_absolute_url()
         )
 
@@ -335,7 +335,7 @@ class IShopModelsCategoryTestCase(CubaneTestCase):
     def test_to_dict_should_encode_category_as_dictionary(self):
         self.assertEqual(
             {
-                'url': 'http://testapp.cubane.innershed.com/shop/category/c-%d/' % self.c.pk,
+                'url': 'http://www.testapp.cubane.innershed.com/shop/category/c-%d/' % self.c.pk,
                 'slug': 'c',
                 'id': self.c.pk,
                 'title': ' C '
@@ -347,7 +347,7 @@ class IShopModelsCategoryTestCase(CubaneTestCase):
     def test_to_dict_should_encode_category_as_dictionary_with_extra_fields(self):
         self.assertEqual(
             {
-                'url': 'http://testapp.cubane.innershed.com/shop/category/c-%d/' % self.c.pk,
+                'url': 'http://www.testapp.cubane.innershed.com/shop/category/c-%d/' % self.c.pk,
                 'slug': 'c',
                 'foo': 'bar',
                 'id': self.c.pk,
@@ -858,7 +858,7 @@ class IShopModelsProductBaseTestCase(CubaneTestCase):
                 'id': self.p1.pk,
                 'slug': 'foo',
                 'title': 'Foo',
-                'url': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % self.p1.pk
+                'url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % self.p1.pk
             },
             self.p1.to_dict()
         )
@@ -870,7 +870,7 @@ class IShopModelsProductBaseTestCase(CubaneTestCase):
                 'id': self.p1.pk,
                 'slug': 'foo',
                 'title': 'Bar',
-                'url': 'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % self.p1.pk
+                'url': 'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % self.p1.pk
             },
             self.p1.to_dict({'title': 'Bar'})
         )
@@ -909,7 +909,7 @@ class IShopModelsProductBaseTestCase(CubaneTestCase):
         product.id = 1
         product.slug = 'foo'
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/shop/product/foo-%d/' % product.pk,
+            'http://www.testapp.cubane.innershed.com/shop/product/foo-%d/' % product.pk,
             product.get_absolute_url()
         )
 
@@ -1971,7 +1971,7 @@ class IShopModelsOrderTestCase(CubaneTestCase, TestBasketMixin):
         order = Order()
         order.secret_id = 'abcdef'
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/shop/order/status/abcdef/',
+            'http://www.testapp.cubane.innershed.com/shop/order/status/abcdef/',
             order.get_absolute_url()
         )
 
@@ -2355,7 +2355,7 @@ class IShopModelsFeaturedItemBaseTestCase(CubaneTestCase):
         item.product.slug = 'foo'
         item.product_id = item.product.pk
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/shop/product/foo-1/',
+            'http://www.testapp.cubane.innershed.com/shop/product/foo-1/',
             item.url
         )
 
@@ -2367,7 +2367,7 @@ class IShopModelsFeaturedItemBaseTestCase(CubaneTestCase):
         item.category.slug = 'foo'
         item.category_id = item.category.pk
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/shop/category/foo-1/',
+            'http://www.testapp.cubane.innershed.com/shop/category/foo-1/',
             item.url
         )
 
@@ -2379,7 +2379,7 @@ class IShopModelsFeaturedItemBaseTestCase(CubaneTestCase):
         item.page.slug = 'foo'
         item.page_id = item.page.pk
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/foo/',
+            'http://www.testapp.cubane.innershed.com/foo/',
             item.url
         )
 

@@ -14,21 +14,21 @@ class MediaTemplateTagsRenderSVGImageTestCase(CubaneTestCase):
 
     def test_should_render_as_lazyload_markup(self):
         self.assertEqual(
-            '<span class="lazy-load"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="foo" data-title="foo" data-svg="1" data-inline="0"><img src="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="foo" title="foo"></noscript></span></span>',
+            '<span class="lazy-load"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="foo" data-title="foo" data-svg="1" data-inline="0"><img src="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="foo" title="foo"></noscript></span></span>',
             render_image(self.image)
         )
 
 
     def test_should_render_as_lazyload_inline_markup(self):
         self.assertEqual(
-            '<span class="lazy-load"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="foo" data-title="foo" data-svg="1" data-inline="1"><img src="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="foo" title="foo"></noscript></span></span>',
+            '<span class="lazy-load"><span class="lazy-load-shape-original" style="padding-bottom:100.0%;"><noscript data-shape="original" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="foo" data-title="foo" data-svg="1" data-inline="1"><img src="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="foo" title="foo"></noscript></span></span>',
             render_image(self.image, inline=True)
         )
 
 
     def test_should_render_given_shape_as_plain_img_tag(self):
         self.assertEqual(
-            '<span class="lazy-load"><span class="lazy-load-shape-header"><noscript data-shape="header" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="foo" data-title="foo" data-svg="1" data-inline="0"><img src="http://testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="foo" title="foo"></noscript></span></span>',
+            '<span class="lazy-load"><span class="lazy-load-shape-header"><noscript data-shape="header" data-path="/0/1/" data-blank="0" data-sizes="xx-small" data-alt="foo" data-title="foo" data-svg="1" data-inline="0"><img src="http://www.testapp.cubane.innershed.com/media/shapes/original/xx-small/0/1/" alt="foo" title="foo"></noscript></span></span>',
             render_image(self.image, 'header')
         )
 

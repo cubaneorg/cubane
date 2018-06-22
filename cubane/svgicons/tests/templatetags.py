@@ -4,6 +4,7 @@ from django.conf import settings
 from django.test.utils import override_settings
 from cubane.tests.base import CubaneTestCase
 from cubane.lib.resources import load_resource_version_identifier
+from cubane.lib.file import ensure_dir
 from cubane.svgicons import get_svgicons_filename
 from cubane.svgicons.templatetags.svgicon_tags import inline_svgicons
 from cubane.svgicons.templatetags.svgicon_tags import svgicon
@@ -44,6 +45,7 @@ class SvgIconsTemplateTagsInlineSvgIconsTestCase(CubaneTestCase):
         filename = get_svgicons_filename('frontend', identifier)
         path = os.path.join(settings.STATIC_ROOT, filename)
 
+        ensure_dir(path)
         with codecs.open(path, 'w', encoding='utf-8') as f:
             f.write('<svg>Foo</svg>')
 

@@ -559,7 +559,7 @@ class CMSViewsPaginationTestCase(CMSViewsPageContextBaseTestCase):
         cms = get_cms()
         response = cms.page_by_slug(request, slug='page/page-1')
         self.assertIsInstance(response, HttpResponsePermanentRedirect)
-        self.assertEqual('http://testapp.cubane.innershed.com/page/', response['Location'])
+        self.assertEqual('http://www.testapp.cubane.innershed.com/page/', response['Location'])
 
 
     def test_explicit_page_1_url_should_not_redirect_if_we_view_all(self):
@@ -770,7 +770,7 @@ class CMSViewsIsLegacyUrlTestCase(CMSViewsPageContextBaseTestCase):
         p = self.create_page('Page 3', seq=1, legacy_url='/testing.html')
         cms = get_cms()
         context = cms.get_page_context(create_fake_request(path='testing.html'), slug='testing.html')
-        self.assertEqual(context._redirect_url, 'http://testapp.cubane.innershed.com/page-3/')
+        self.assertEqual(context._redirect_url, 'http://www.testapp.cubane.innershed.com/page-3/')
         self.assertEqual(context._is_legacy_url, True)
 
 
@@ -1009,7 +1009,7 @@ class CMSViewsCMSTestCase(CMSViewsCMSBaseTestCase):
         cms = get_cms()
         request = create_fake_request(path='page/')
         context = cms.get_page_context(request, slug='page/')
-        self.assertEqual(cms.get_contact_page_url(context), 'http://testapp.cubane.innershed.com/page/')
+        self.assertEqual(cms.get_contact_page_url(context), 'http://www.testapp.cubane.innershed.com/page/')
 
 
     def test_redirects_legacy_url(self):
@@ -1019,7 +1019,7 @@ class CMSViewsCMSTestCase(CMSViewsCMSBaseTestCase):
         context = cms.get_page_context(request, slug='legacy.html')
         response = cms.dispatch(request, context)
         self.assertIsInstance(response, HttpResponsePermanentRedirect)
-        self.assertEqual(response._headers.get('location')[1], 'http://testapp.cubane.innershed.com/legacy/')
+        self.assertEqual(response._headers.get('location')[1], 'http://www.testapp.cubane.innershed.com/legacy/')
 
 
 class CMSViewsCMSPageBySlugTestCase(CMSViewsCMSBaseTestCase):
@@ -1367,7 +1367,7 @@ class CMSViewGetSitemapTestCase(CubaneTestCase):
         # one homepage, /
         homepage = self.sitemap.get('homepage').items()
         self.assertEqual(1, len(homepage))
-        self.assertEqual('http://testapp.cubane.innershed.com/', homepage[0].url)
+        self.assertEqual('http://www.testapp.cubane.innershed.com/', homepage[0].url)
 
         # homepage does not appear as normal page
         pages = list(self.sitemap.get('pages').items())
@@ -1477,6 +1477,6 @@ class CMSViewGetSitemapTestCase(CubaneTestCase):
         try:
             items = self.sitemap.get('custom').items()
             self.assertEqual(1, len(items))
-            self.assertEqual('http://testapp.cubane.innershed.com/non-standard-page/', items[0].url)
+            self.assertEqual('http://www.testapp.cubane.innershed.com/non-standard-page/', items[0].url)
         finally:
             self.cms.on_custom_sitemap = f

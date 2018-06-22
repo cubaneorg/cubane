@@ -220,17 +220,17 @@ def default_env(
     domain_name = domain_name.strip().lower()
 
 
-    # determine debug or production mode.
-    # default is production mode unless we find the environment variable
-    # DEV_MODE to be set to 1, in which case we assume DEBUG mode.
-    m.DEBUG = debug if debug is not None else os.environ.get('DEV_MODE', '0') == '1'
-    m.MINIFY_RESOURCES = not m.DEBUG
-
-
     #
     # Determine if we are running under TEST
     #
     m.TEST = test if test is not None else 'test' in sys.argv
+
+
+    # determine debug or production mode.
+    # default is production mode unless we find the environment variable
+    # DEV_MODE to be set to 1, in which case we assume DEBUG mode.
+    m.DEBUG = debug if debug is not None else os.environ.get('DEV_MODE', '0') == '1' and not m.TEST
+    m.MINIFY_RESOURCES = not m.DEBUG and not m.TEST
 
 
     #
@@ -505,7 +505,7 @@ def default_env(
     #
     # Media
     #
-    if m.DEBUG:
+    if m.DEBUG or m.TEST:
         m.MEDIA_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, 'media'))
     else:
         m.MEDIA_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', 'public_html', 'media'))

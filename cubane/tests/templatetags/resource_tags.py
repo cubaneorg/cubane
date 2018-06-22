@@ -127,11 +127,13 @@ class ResourceTagsResourcesNodeRenderTestCase(CubaneTestCase):
         self.assertRaises(template.TemplateSyntaxError, resources_node.render, {})
 
 
+    @override_settings(DEBUG=True, MINIFY_RESOURCES=False)
     def test_should_render_inlined_content(self):
         resources_node = ResourcesNode('inline', 'css', 'screen', inline=True)
         self.assertTrue(True if '.lazy-load' in resources_node.render({}) else False)
 
 
+    @override_settings(DEBUG=True, MINIFY_RESOURCES=False)
     def test_should_render_not_inlined_content(self):
         resources_node = ResourcesNode('frontend', 'css', 'screen')
         self.assertTrue(True if 'static/cubane/default_frontend/css/default_frontend.css' in resources_node.render({}) else False)

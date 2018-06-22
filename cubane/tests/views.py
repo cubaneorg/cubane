@@ -4681,7 +4681,7 @@ class LibRobotsTxtTestCase(CubaneTestCase):
         request = self.factory.get('/sitemap.xml')
 
         self.assertEqual(
-            'User-agent: *\nDisallow: /admin/\nSitemap: http://%s/sitemap.xml\n' % settings.DOMAIN_NAME,
+            'User-agent: *\nDisallow: /admin/\nSitemap: http://www.%s/sitemap.xml\n' % settings.DOMAIN_NAME,
             robots_txt(request).content
         )
 

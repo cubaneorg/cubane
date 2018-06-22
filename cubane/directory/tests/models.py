@@ -288,7 +288,7 @@ class CMSDirectoryModelsDirectoryContentBaseTestCase(CMSDirectoryModelsTestCase)
 
     def test_url_should_return_absolute_url(self):
         self.assertEqual(
-            'http://testapp.cubane.innershed.com/test-directory-content/test-1/',
+            'http://www.testapp.cubane.innershed.com/test-directory-content/test-1/',
             TestDirectoryContent(id=1, slug='test').url
         )
 

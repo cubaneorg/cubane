@@ -168,21 +168,21 @@ class LibMakeAbsoluteURL(CubaneTestCase):
     cubane.lib.url.make_absolute_url()
     """
     def test_should_return_absolute_url(self):
-        self.assertEqual(make_absolute_url('/test/'), 'http://%s/test/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/test/'), 'http://www.%s/test/' % settings.DOMAIN_NAME)
 
 
     def test_should_prepend_slashes(self):
-        self.assertEqual(make_absolute_url('test/'), 'http://%s/test/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('test/'), 'http://www.%s/test/' % settings.DOMAIN_NAME)
 
 
     @override_settings(APPEND_SLASH=True)
     def test_should_append_slashes(self):
-        self.assertEqual(make_absolute_url('/test'), 'http://%s/test/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/test'), 'http://www.%s/test/' % settings.DOMAIN_NAME)
 
 
     @override_settings(APPEND_SLASH=False)
     def test_should_not_append_slash_if_not_configured(self):
-        self.assertEqual(make_absolute_url('/test'), 'http://%s/test' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/test'), 'http://www.%s/test' % settings.DOMAIN_NAME)
 
 
     @override_settings(SSL=True)
@@ -196,20 +196,20 @@ class LibMakeAbsoluteURL(CubaneTestCase):
 
 
     def test_should_add_slash(self):
-        self.assertEqual(make_absolute_url('test/'), 'http://%s/test/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('test/'), 'http://www.%s/test/' % settings.DOMAIN_NAME)
 
 
     def test_should_not_add_slash_for_filenames_with_extensions(self):
-        self.assertEqual(make_absolute_url('test.xml'), 'http://%s/test.xml' % settings.DOMAIN_NAME)
-        self.assertEqual(make_absolute_url('test.html'), 'http://%s/test.html' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('test.xml'), 'http://www.%s/test.xml' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('test.html'), 'http://www.%s/test.html' % settings.DOMAIN_NAME)
 
 
     def test_should_add_domain_to_url(self):
-        self.assertEqual(make_absolute_url('/test/', 'test.com'), 'http://test.com/test/')
+        self.assertEqual(make_absolute_url('/test/', 'test.com'), 'http://www.test.com/test/')
 
 
     def test_should_return_https_in_absolute_url(self):
-        self.assertEqual(make_absolute_url('/test/', https=True), 'https://%s/test/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/test/', https=True), 'https://www.%s/test/' % settings.DOMAIN_NAME)
 
 
     def test_should_ignore_absolute_url(self):
@@ -217,15 +217,15 @@ class LibMakeAbsoluteURL(CubaneTestCase):
 
 
     def test_should_not_append_slash_to_querystring_but_before(self):
-        self.assertEqual(make_absolute_url('/test?test=test', 'test.com'), 'http://test.com/test/?test=test')
+        self.assertEqual(make_absolute_url('/test?test=test', 'test.com'), 'http://www.test.com/test/?test=test')
 
 
     def test_should_ignore_appending_slash_if_slash_present_before_querystring(self):
-        self.assertEqual(make_absolute_url('/test/?test=test', 'test.com'), 'http://test.com/test/?test=test')
+        self.assertEqual(make_absolute_url('/test/?test=test', 'test.com'), 'http://www.test.com/test/?test=test')
 
 
     def test_should_append_slash_before_querystring_if_root_element(self):
-        self.assertEqual(make_absolute_url('/?test=test', 'test.com'), 'http://test.com/?test=test')
+        self.assertEqual(make_absolute_url('/?test=test', 'test.com'), 'http://www.test.com/?test=test')
 
 
     @override_settings(DEBUG=True)
@@ -242,17 +242,17 @@ class LibMakeAbsoluteURL(CubaneTestCase):
 
 
     def test_should_return_absolute_url_for_homepage(self):
-        self.assertEqual(make_absolute_url('/'), 'http://%s/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/'), 'http://www.%s/' % settings.DOMAIN_NAME)
 
 
     @override_settings(APPEND_SLASH=True)
     def test_should_return_absolute_url_for_homepage_with_append_slash(self):
-        self.assertEqual(make_absolute_url('/'), 'http://%s/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/'), 'http://www.%s/' % settings.DOMAIN_NAME)
 
 
     @override_settings(SSL=True)
     def test_should_return_absolute_url_for_homepage_with_ssl(self):
-        self.assertEqual(make_absolute_url('/'), 'https://%s/' % settings.DOMAIN_NAME)
+        self.assertEqual(make_absolute_url('/'), 'https://www.%s/' % settings.DOMAIN_NAME)
 
 
     @override_settings(PREPEND_WWW=True)
@@ -265,7 +265,10 @@ class LibGetAbsoluteURLTestCase(CubaneTestCase):
     cubane.lib.url.get_absolute_url()
     """
     def test_reverse_name_should_return_absolute_url(self):
-        self.assertEqual(get_absolute_url('test_get_absolute_url', ['value'], https=True), 'https://%s/test-get-absolute-url/value/' % settings.DOMAIN_NAME)
+        self.assertEqual(
+            get_absolute_url('test_get_absolute_url', ['value'], https=True),
+            'https://www.%s/test-get-absolute-url/value/' % settings.DOMAIN_NAME
+        )
 
 
 class LibGetCompatibleUrlTestCase(CubaneTestCase):

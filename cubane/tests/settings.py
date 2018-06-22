@@ -228,7 +228,7 @@ class SettingsDefaultEnvTestCase(CubaneTestCase):
     # MEDIA_ROOT
     #
     def test_should_use_media_folder_in_debug(self):
-        env = default_env(__name__, 'foo.com', 'root@localhost', debug=True)
+        env = default_env(__name__, 'foo.com', 'root@localhost', debug=True, test=False)
         base = os.path.abspath(env.settings.BASE_PATH)
         self.assertEqual(
             '/media',
@@ -237,7 +237,7 @@ class SettingsDefaultEnvTestCase(CubaneTestCase):
 
 
     def test_should_use_public_html_folder_in_production(self):
-        env = default_env(__name__, 'foo.com', 'root@localhost', debug=False)
+        env = default_env(__name__, 'foo.com', 'root@localhost', debug=False, test=False)
         base = os.path.abspath(os.path.join(env.settings.BASE_PATH, '..', '..'))
         self.assertEqual(
             '/public_html/media',
