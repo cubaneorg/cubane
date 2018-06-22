@@ -76,5 +76,5 @@ set of tools that get you there.
 What's Next
 ===========
 
-Now that you know what Cubane is about, how about trying to :doc:`install
-</tutorials/install>` it?
+Now that you know what Cubane is about, how about trying to :ref:`install
+<tutorials/install>` it?

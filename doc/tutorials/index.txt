@@ -32,14 +32,9 @@ quickly.
    :maxdepth: 1
 
    introduction
-   install
-   tutorial01
-   tutorial02
-   tutorial03
-   tutorial04
-   tutorial05
-   whatsnext
-   contributing
+   01_install
+   02_create_project
+
 
 .. seealso::
 

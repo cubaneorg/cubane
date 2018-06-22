@@ -28,4 +28,3 @@ individual topics:
    tutorials/index
    topics/index
    ref/index
-   faq/index

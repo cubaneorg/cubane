@@ -1,3 +1,5 @@
+.. _tutorials/install:
+
 ===================
 Quick install guide
 ===================
@@ -74,5 +76,5 @@ Python prompt, try to import Cubane:
 What's Next
 ===========
 
-You've installed Python, Django and Cubane successfully. You can now :doc:`move onto
-the tutorial </tutorials/tutorial01>`.
+You've installed Python and Cubane successfully. You can now :ref:`create your
+first Cubane project <tutorials/create_project>`.

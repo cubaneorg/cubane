@@ -1,5 +1,5 @@
-.. _topics/settings:
 .. module:: cubane.settings
+.. _topics/settings:
 
 ========
 Settings

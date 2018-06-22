@@ -1,6 +1,8 @@
-=========================================
-Writing your first cubane website, part 1
-=========================================
+.. _tutorials/create_project:
+
+===========================
+Create a new Cubane Project
+===========================
 
 This tutorial guides you through the creation of a new website. As we
 follow the tutorial along, we will step by step incorporate new structural
@@ -10,11 +12,17 @@ Let's start by choosing a project. Feel free to pick a theme by yourself; for
 the purpose of this tutorial, we will assume that we are tasked to build a new
 website for, let's say **The history of programming languages**.
 
+To create a new project, run the following command:
+
+.. code-block:: console
+
+    $ cubane --create example example.com bugs@example.com
+
 Our site shall *list* commonly used programming languages, will inform its
 visitors about the history of each language and will also offer a number of
 books for each language.
 
-We'll assume you have :doc:`cubane installed </tutorials/install>` already. You can
+We'll assume you have :ref:`cubane installed <tutorials/install>` already. You can
 tell if Cubane is installed and which version by running the following command:
 
 .. code-block:: console

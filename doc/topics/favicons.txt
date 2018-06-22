@@ -1,8 +1,8 @@
 .. _topics/favicons:
 
-=========================
+==========================
 Generating Favourite Icons
-=========================
+==========================
 
 A *favicon* (short for *favourite icon*) is an image file that browsers
 associate with a particular website.
