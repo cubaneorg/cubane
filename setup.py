@@ -41,5 +41,11 @@ setuptools.setup(
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=['cubane'],
-    install_requires=requirements
+    install_requires=requirements,
+    dependency_links=[
+        'https://files.pythonhosted.org/packages/88/4d/440c273b6a136b58fad9f779847cc90179d627f8a2f2cd8b36313664cf1b/pyspf-2.0.12t.tar.gz'
+    ]
 )
+
+
+
