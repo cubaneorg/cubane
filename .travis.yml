@@ -11,7 +11,7 @@ env:
 - DJANGO=1.11
 
 before_install:
-- sudo apt-get install -y openjdk-8-jre
+- sudo apt-get install openjdk-8-jre
 - sudo apt-get install python-psycopg2
 - sudo apt-get install libmagickwand-dev
 - sudo apt-get install ghostscript
@@ -20,6 +20,7 @@ before_install:
 
 install:
 - python setup.py install
+- pip install -r cubane/requirements/dev.txt
 
 before_script:
 - cd cubane/testapp
