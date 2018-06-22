@@ -87,7 +87,7 @@ a {
     left: 0;
     font-weight: normal;
     color: white;
-    font-size: 52px;
+    font-size: 30px;
     line-height: 30px;
     font-weight: 500;
     text-align: center;
@@ -124,9 +124,25 @@ a {
 
 .panel-content .cubane-logo {
     max-height: 180px;
-    height: 170px;
+    height: 150px;
     background: url(/static/cubane/backend/img/cubane-logo.svg);
     background-repeat: no-repeat;
+}
+
+.panel-content p {
+    color: white;
+    font-size: 18px;
+    line-height: 1.5em;
+}
+
+.cubane-login-intro {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+    .panel-content {
+        padding: 10px 10px 10px 10px !important;
+    }
 }
 
 
@@ -182,19 +198,45 @@ a {
     display: none;
 }
 
-.login-form .btn-primary {
+.login-form .btn-primary.btn-primary-big {
     height: 60px;
     font-size: 22px;
+}
+
+.login-form .btn {
+    font-size: 20px;
+    height: 40px;
+    line-height: 30px;
+    margin-bottom: 20px;
+    white-space: nowrap;
 }
 
 .login-form #id_username {
     background-image: url('/static/cubane/backend/img/account.svg');
 }
 
-.login-form #id_password {
+.login-form #id_password,
+.login-form #id_password_confirm {
     background-image: url('/static/cubane/backend/img/password.svg');
     background-size: 20px 20px;
     background-position: 15px center;
+}
+
+@media (max-width: 767px) {
+    .login-form .form-actions {
+        display: block !important;
+    }
+
+    .login-form .btn {
+        font-size: 16px;
+        display: block;
+        width: 100%;
+        float: none;
+    }
+
+    .login-form .form-content {
+        margin: 0 !important;
+    }
 }
 
 

@@ -12,7 +12,7 @@
             {% include 'cubane/backend/form/form_start.html' %}
                 {% if not permissions or permissions.edit or permissions.create %}
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">{% if not no_form_icons %}{% if icon %}<i class="icon-white {{ icon }}"></i> {% else %}<i class="icon-white icon-ok"></i>{% endif %} {% endif %}{% if submit %}{{ submit }}{% else %}Save{% endif %}</button>
+                        <button type="submit" class="btn btn-primary btn-primary-big">{% if not no_form_icons %}{% if icon %}<i class="icon-white {{ icon }}"></i> {% else %}<i class="icon-white icon-ok"></i>{% endif %} {% endif %}{% if submit %}{{ submit }}{% else %}Save{% endif %}</button>
                         {% if not no_form_cancel %}
                         <button type="reset" class="btn">{% if not no_form_icons %}<i class="icon icon-remove"></i> {% endif %}Cancel</button>
                         {% endif %}
