@@ -288,12 +288,13 @@ class CMSCacheInvalidateTestCase(CubaneTestCase):
         )
 
 
-    def test_should_not_add_end_tag_to_source_for_minify_html_content(self):
+    def test_should_not_add_end_tag_to_source_or_self_closing_for_minify_html_content(self):
         self.cache.add('index.html', None, None, '<source src="https://video.m4v" type="video/m4v">', minify_html=True)
         self.cache.write()
         self.assertFileContent(
             os.path.join(settings.CACHE_ROOT, 'index.html'),
-            '<html><head></head><body><source src="https://video.m4v" type="video/m4v"></body></html>'
+            '<html><head></head><body><source src="https://video.m4v" type="video/m4v"></body></html>',
+            '<html><head></head><body><source src="https://video.m4v" type="video/m4v"/></body></html>'
         )
 
 

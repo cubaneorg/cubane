@@ -60,12 +60,20 @@ class CubaneTestCase(TestCase):
             ))
 
 
-    def assertFileContent(self, filename, content):
+    def assertFileContent(self, filename, content, alternative_content=None):
         """
         Assert that the given file exists, is readable and contains the given content.
         """
         with file(filename) as f:
-            self.assertEqual(content, f.read())
+            actual_content = f.read()
+
+            if alternative_content is None:
+                self.assertEqual(content, actual_content)
+            else:
+                self.assertTrue(
+                    content             == actual_content or
+                    alternative_content == actual_content
+                )
 
 
     def get_latest_email(self):

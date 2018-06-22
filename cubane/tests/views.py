@@ -4137,9 +4137,11 @@ class LibModelViewGetFoldersTestCase(CubaneTestCase):
         view = MediaView()
         try:
             folders = view.get_folders(self.request)
-            self.assertEqual(
-                [('/', [('A', ['A.1', 'A.2']), 'a', 'B', 'b'])],
-                self._tree_repr(folders)
+            rep = self._tree_repr(folders)
+
+            self.assertTrue(
+                rep == [('/', [('A', ['A.1', 'A.2']), 'a', 'B', 'b'])] or
+                rep == [('/', [('a', 'A', ['A.1', 'A.2']), 'b', 'B'])]
             )
         finally:
             f5.delete()
