@@ -4139,9 +4139,17 @@ class LibModelViewGetFoldersTestCase(CubaneTestCase):
             folders = view.get_folders(self.request)
             rep = self._tree_repr(folders)
 
+            a = [('/', [('A', ['A.1', 'A.2']), 'a', 'B', 'b'])]
+            b = [('/', ['a', ('A', ['A.1', 'A.2']), 'b', 'B'])]
+
             self.assertTrue(
-                rep == [('/', [('A', ['A.1', 'A.2']), 'a', 'B', 'b'])] or
-                rep == [('/', [('a', 'A', ['A.1', 'A.2']), 'b', 'B'])]
+                rep == a or
+                rep == b,
+                'Was \'%s\' but should be \'%s\' OR \'%s\'.' % (
+                    rep,
+                    a,
+                    b
+                )
             )
         finally:
             f5.delete()
