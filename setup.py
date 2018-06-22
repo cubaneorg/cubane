@@ -36,8 +36,12 @@ setuptools.setup(
       'Topic :: Internet :: WWW/HTTP :: Site Management',
       'Topic :: Software Development :: Libraries',
       'Topic :: Software Development :: Libraries :: Application Frameworks',
-      'Topic :: Software Development :: Libraries :: Python Modules',
+      'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     packages=setuptools.find_packages(),
+    include_package_data=True,
+    scripts=[
+        'cubane/bin/cubane'
+    ],
     install_requires=requirements
 )

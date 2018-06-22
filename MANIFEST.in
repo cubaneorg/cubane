@@ -1,0 +1,10 @@
+include LICENSE
+include LICENSE-3RD-PARTY
+include MANIFEST.in
+graft cubane
+graft doc
+prune doc/_build
+prune public_html
+prune cubane/testapp/media
+global-exclude __pycache__
+global-exclude *.py[co]
