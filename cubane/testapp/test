@@ -8,4 +8,7 @@ else
 fi
 
 python manage.py test cubane
+exit_code=$?
 export DEV_TEST_FULL=0
+
+exit $exit_code
