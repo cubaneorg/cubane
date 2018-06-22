@@ -22,7 +22,6 @@ ROOT_URLCONF = '$TARGET_NAME$.urls'
 #
 env.add_apps([
     'cubane',
-    'cubane.legacy.jquery',
     'cubane.backend',
     'cubane.backend.accounts',
     'cubane.cms',
