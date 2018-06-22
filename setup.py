@@ -1,6 +1,6 @@
 # coding=UTF-8
 from __future__ import unicode_literals
-from cubane import VERSION
+from cubane import VERSION_STRING
 import setuptools
 
 
@@ -13,15 +13,12 @@ with open("cubane/requirements/common.txt", "r") as fh:
     requirements = fh.read().splitlines()
 
 
-version = '.'.join([unicode(x) for x in VERSION[:3]])
-
-
 setuptools.setup(
     name='Cubane',
     description='Website/CMS/Shop and Backend Framework for Django.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    version=version,
+    version=VERSION_STRING,
     url='https://github.com/cubaneorg/cubane',
     author='Cubane Organisation',
     author_email='hello@cubane.org',
@@ -41,6 +38,6 @@ setuptools.setup(
       'Topic :: Software Development :: Libraries :: Application Frameworks',
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    packages=['cubane'],
+    packages=setuptools.find_packages(),
     install_requires=requirements
 )

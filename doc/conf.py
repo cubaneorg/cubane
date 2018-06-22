@@ -13,6 +13,7 @@
 # serve to show the default.
 from __future__ import unicode_literals
 from os.path import abspath, dirname, join
+from cubane import VERSION_STRING
 import sys
 
 
@@ -61,7 +62,8 @@ author = u'Cubane.org and contributors'
 # built documents.
 #
 # The short X.Y version.
-version = u'1.0'
+version = VERSION_STRING
+
 # The full version, including alpha/beta/rc tags.
 release = u'1.0'
 
