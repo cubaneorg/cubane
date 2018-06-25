@@ -1322,7 +1322,7 @@ class Backend(TemplateView):
                 'dashboard_messages': dashboard_messages,
                 'welcome_message': self.get_welcome_message(request.user),
                 'provided_by': self.get_provided_by(request),
-                'version': cubane.__version__
+                'version': cubane.VERSION_STRING
             }
         else:
             # no dashboard -> go to first section
