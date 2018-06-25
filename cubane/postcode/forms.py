@@ -20,7 +20,7 @@ class PostcodeLookupField(forms.CharField):
         label='Postcode',
         address1='id_address1',
         address2='id_address2',
-        address3=None,
+        address3='id_address3',
         address4=None,
         locality=None,
         city='id_city',

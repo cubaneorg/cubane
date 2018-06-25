@@ -13,42 +13,15 @@ class GetAddressPostcodeLookup(PostcodeLookup):
                 "latitude": 54.52716539999999,
                 "longitude": -1.5611093,
                 "addresses": [
-                "1 Wycombe Street, , , , , Darlington, County Durham",
-                "2 Wycombe Street, , , , , Darlington, County Durham",
-                "3 Wycombe Street, , , , , Darlington, County Durham",
-                "4 Wycombe Street, , , , , Darlington, County Durham",
-                "5 Wycombe Street, , , , , Darlington, County Durham",
-                "6 Wycombe Street, , , , , Darlington, County Durham",
-                "7 Wycombe Street, , , , , Darlington, County Durham",
-                "8 Wycombe Street, , , , , Darlington, County Durham",
-                "9 Wycombe Street, , , , , Darlington, County Durham",
-                "10 Wycombe Street, , , , , Darlington, County Durham",
-                "11 Wycombe Street, , , , , Darlington, County Durham",
-                "12 Wycombe Street, , , , , Darlington, County Durham",
-                "14 Wycombe Street, , , , , Darlington, County Durham",
-                "15 Wycombe Street, , , , , Darlington, County Durham",
-                "16 Wycombe Street, , , , , Darlington, County Durham",
-                "17 Wycombe Street, , , , , Darlington, County Durham",
-                "18 Wycombe Street, , , , , Darlington, County Durham",
-                "19 Wycombe Street, , , , , Darlington, County Durham",
-                "20 Wycombe Street, , , , , Darlington, County Durham",
-                "21 Wycombe Street, , , , , Darlington, County Durham",
-                "22 Wycombe Street, , , , , Darlington, County Durham",
-                "23 Wycombe Street, , , , , Darlington, County Durham",
-                "24 Wycombe Street, , , , , Darlington, County Durham",
-                "25 Wycombe Street, , , , , Darlington, County Durham",
-                "26 Wycombe Street, , , , , Darlington, County Durham",
-                "27 Wycombe Street, , , , , Darlington, County Durham",
-                "28 Wycombe Street, , , , , Darlington, County Durham",
-                "29 Wycombe Street, , , , , Darlington, County Durham",
-                "30 Wycombe Street, , , , , Darlington, County Durham",
-                "31 Wycombe Street, , , , , Darlington, County Durham",
-                "32 Wycombe Street, , , , , Darlington, County Durham",
-                "33 Wycombe Street, , , , , Darlington, County Durham",
-                "34 Wycombe Street, , , , , Darlington, County Durham",
-                "35 Wycombe Street, , , , , Darlington, County Durham",
-                "37 Wycombe Street, , , , , Darlington, County Durham",
-                "39 Wycombe Street, , , , , Darlington, County Durham"
+                "1 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "2 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "3 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "4 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "5 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "6 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "7 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "8 Street, Address2, Address3, Address4, Locality, Town/City, County",
+                "9 Street, Address2, Address3, Address4, Locality, Town/City, County"
             ]}'''
             return self._normalize_addresses(postcode, json)
 
@@ -63,6 +36,34 @@ class GetAddressPostcodeLookup(PostcodeLookup):
             return None
 
 
+    def _get_address_lines(self, address_chunks):
+        # we only support address line 1, 2 and 3 and no locality
+        head = []
+        tail = None
+        for line in address_chunks[:5]:
+            if line:
+                if tail is None:
+                    head.append(line)
+                else:
+                    tail.append(line)
+            elif tail is None:
+                tail = []
+
+        while len(head) < 3:
+            head.append('')
+
+        if tail:
+            i = 2
+            for line in reversed(tail):
+                if head[i] == '':
+                    head[i] = line
+                    i -= 1
+                if i < 0:
+                    break
+
+        return head
+
+
     def _normalize_addresses(self, postcode, json):
         addresses = []
         try:
@@ -74,18 +75,16 @@ class GetAddressPostcodeLookup(PostcodeLookup):
             return addresses
 
         for address in decoded_json['addresses']:
-            address_chunks = address.split(',')
+            address_chunks = [x.strip() for x in address.split(',')]
+            lines = self._get_address_lines(address_chunks)
 
             address_dict = {}
-            address_dict['address_line_1']   = address_chunks[0]
-            address_dict['address_line_2']   = address_chunks[1]
-            address_dict['address_line_3']   = address_chunks[2]
-            address_dict['address_line_4']   = address_chunks[3]
-            address_dict['address_locality'] = address_chunks[4]
+            address_dict['address_line_1']   = lines[0] if len(lines) > 0 else ''
+            address_dict['address_line_2']   = lines[1] if len(lines) > 1 else ''
+            address_dict['address_line_3']   = lines[2] if len(lines) > 2 else ''
             address_dict['address_city']     = address_chunks[5]
-            address_dict['address_postcode'] = self.clean_postcode(postcode)
             address_dict['address_county']   = address_chunks[6]
+            address_dict['address_postcode'] = self.clean_postcode(postcode)
             address_dict['address_full']     = ', '.join(x.strip() for x in address_chunks if x.strip())
-
             addresses.append(address_dict)
         return addresses
