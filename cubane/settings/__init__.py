@@ -322,6 +322,7 @@ def default_env(
     m.CMS_ADV_EDITOR_PLUGINS = False
     m.CMS_DEFAULT_SLOTNAME = 'content'
     m.CMS_BACKEND_SITEMAP = False
+    m.CMS_META_TITLE_SEPARATOR = ' | '
 
 
     #

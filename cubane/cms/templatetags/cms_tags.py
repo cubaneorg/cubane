@@ -719,7 +719,7 @@ def meta_title(context, page=None):
     if page == None:
         page = context.get('current_page')
 
-    settings = context.get('settings')
+    cms_settings = context.get('settings')
     if page:
         if isinstance(page, basestring):
             title = page
@@ -728,18 +728,18 @@ def meta_title(context, page=None):
 
         if title:
             title = title.strip()
-            if settings:
-                if settings.meta_name:
-                    meta_name = settings.meta_name
+            if cms_settings:
+                if cms_settings.meta_name:
+                    meta_name = cms_settings.meta_name
                 else:
-                    meta_name = settings.name
+                    meta_name = cms_settings.name
 
                 if meta_name and not title.endswith(meta_name):
-                    title += ' | ' + meta_name.strip()
+                    title += settings.CMS_META_TITLE_SEPARATOR + meta_name.strip()
 
             return title
-    elif settings and settings.name:
-        return settings.name.strip()
+    elif cms_settings and cms_settings.name:
+        return cms_settings.name.strip()
 
     return ''
 
