@@ -734,8 +734,10 @@ def meta_title(context, page=None):
                 else:
                     meta_name = cms_settings.name
 
-                if meta_name and not title.endswith(meta_name):
-                    title += settings.CMS_META_TITLE_SEPARATOR + meta_name.strip()
+                if meta_name:
+                    meta_name = meta_name.strip()
+                    if not title.endswith(meta_name):
+                        title += settings.CMS_META_TITLE_SEPARATOR + meta_name.strip()
 
             return title
     elif cms_settings and cms_settings.name:

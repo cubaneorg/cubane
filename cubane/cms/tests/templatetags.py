@@ -152,7 +152,7 @@ class CMSCMSTemplateTagsMetaTitleTestCase(CubaneTestCase):
             'Foo | Bar',
             meta_title({
                 'current_page': self._page(meta_title='Foo | Bar'),
-                'settings': self._settings('Bar')
+                'settings': self._settings('  Bar')
             })
         )
 
@@ -162,6 +162,17 @@ class CMSCMSTemplateTagsMetaTitleTestCase(CubaneTestCase):
             'Foo | Bar',
             meta_title({
                 'current_page': self._page(title='Foo | Bar'),
+                'settings': self._settings('  Bar')
+            })
+        )
+
+
+    @override_settings(CMS_META_TITLE_SEPARATOR=' - ')
+    def test_should_allow_overriding_separator(self):
+        self.assertEqual(
+            'Foo - Bar',
+            meta_title({
+                'current_page': self._page(meta_title='Foo'),
                 'settings': self._settings('Bar')
             })
         )
