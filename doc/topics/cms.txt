@@ -3,3 +3,449 @@
 ==================
 Content Management
 ==================
+
+The content management aspect of Cubane is based around a separate app and the
+ability to derive your own model instances that are representing editable
+content.
+
+
+
+
+.. _topics/cms/using_the_content_management_system:
+
+Using the content management system
+===================================
+
+Cubane's content management system is implemented as a separate app, which is
+``cubane.cms``. In order to use it, you would need to load ``cubane.cms`` in
+your project setting's list of installed apps :settings:`INSTALLED_APPS`:
+
+.. code-block:: python
+
+    INSTALLED_APPS = [
+        ...
+        'cubane.cms',
+        'myApp',
+        ...
+    ]
+
+In addition, your ``urls.py`` file need to be changed to include URL patterns
+for the content management system. The following example adds support for
+content management as well as ``robots.txt`` and ``sitemap.xml``:
+
+.. code-block:: python
+
+    from django.conf.urls import url, include
+    from django.contrib.sitemaps import views as sitemaps_views
+    from cubane.backend.views import Backend
+    from cubane.cms.views import get_cms
+    from cubane.urls import *
+    from cubane import views as cubane_views
+
+    backend = Backend()
+    cms = get_cms()
+
+    setup_default_urls(__name__)
+
+    urlpatterns += [
+        # admin
+        url(r'^admin/', include(backend.urls)),
+
+        # sitemap and robots
+        url(r'^sitemap\.xml$', sitemaps_views.sitemap, {'sitemaps': cms.sitemaps}),
+        url(r'^robots\.txt$', cubane_views.robots_txt),
+
+        # cms
+        url(r'^', include(cms.urls)),
+    ]
+
+A new instance of the content management system is created via:
+
+.. code-block:: python
+
+    cms = get_cms()
+
+This is very similar to how the backend system is integrated.
+
+.. note::
+
+    Please note, you can use the function :func:`cubane.cms.views.get_cms`
+    whenever you need an instance to the :class:`cubane.cms.views.CMS`
+    instance. The function will always return the same (shared) instance.
+
+.. code-block:: python
+
+    url(r'^', include(cms.urls)),
+
+The url pattern for the content management system is then allowing requests to
+be dispatched to the CMS system.
+
+.. note::
+
+    The URL pattern include statement for the content management app is
+    catching all request URLs. This means that any pattern that is declared
+    afterwards will never match.
+
+
+
+
+.. _topics/cms/cms_class:
+
+CMS Class
+=========
+
+Cubane's content management system is provided by the
+:class:`cubane.cms.views.CMS` class. You need to provide your own class that
+derives from :class:`cubane.cms.views.CMS`. Usually you declare such class in
+your main ``views.py`` file for example:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        pass
+
+By introducing your own class, you can alter the behaviour of the CMS system by
+overriding various methods. The CMS class is declared via the Django setting
+variable :settings:`CMS` for your application in the following way:
+
+.. code-block:: python
+
+    CMS = 'myapp.views.MyCMS'
+
+The given string value is referring to the actual class that is used by Cubane
+for representing the CMS system. The path must include the full path to the
+class including modules and sub-modules.
+
+Whenever an instance to the CMS class is required, the function
+:func:`cubane.cms.views.get_cms` can be used to return a (shared) instance.
+
+.. note::
+
+    If you need to refer to an instance of your CMS class programmatically in
+    your code, then you can use the function :func:`cubane.cms.views.get_cms`
+    to obtain a shared reference.
+
+
+
+
+.. _topics/cms/settings:
+
+Settings
+========
+
+When enabling the content-management system, a settings class needs to be
+created which will store all site-wide settings.
+
+When creating a new settings class, it needs to be derived from
+:class:`cubane.cms.models.SettingsBase` (or
+:class:`cubane.ishop.models.ShopSettings` when used together with the shop
+component of Cubane).
+
+.. code-block:: python
+
+    from cubane.cms.models import SettingsBase
+
+    class Settings(SettingsBase):
+        # TODO: Add additional settings fields here...
+
+        @classmethod
+        def get_form(cls):
+            from myapp.forms import SettingsForm
+            return SettingsForm
+
+You may extend and add your own site-wide settings options to the Settings
+class. When declaring the corresponding form, the form needs to be extended
+from :class:`cubane.cms.forms.SettingsForm`:
+
+.. code-block:: python
+
+    from cubane.cms.forms import SettingsForm
+
+    class SettingsForm(SettingsForm):
+        class Meta:
+            model = Settings
+            fields = '__all__'
+
+Finally, you need to tell Cubane which class to use for your settings. Declare
+the Django settings variable :settings:`CMS_SETTINGS_MODEL` in your Django
+application settings:
+
+.. code-block:: python
+
+    CMS_SETTINGS_MODEL = 'myapp.models.Settings'
+
+The given string value is referring to the actual class that is used by Cubane
+for website-wide settings. The path must include the full path to the class
+including modules and sub-modules.
+
+.. note::
+
+    A shared reference to the settings instance can be obtained via the CMS
+    instance:
+
+    .. code-block:: python
+
+        from cubane.cms.views import get_cms
+
+        ...
+
+        cms = get_cms()
+        print(cms.settings)
+
+    If you need to refer to the settings model programmatically in your code,
+    for example in order to declare a foreign key then you can use
+    :func:`cubane.cms.views.get_settings_model`.
+
+
+
+
+.. _topics/cms/pages:
+
+Pages
+=====
+
+Cubane provides a number of primitives that can be extended to support various
+structures for your content. The simplest of those structures is a page.
+
+In its simplest form, a page represents a navigable page with a title and
+content. A page has a URL and one or more content slots.
+
+When a request is made, let's say ``/about-us/``, then the content
+management system will determine what page corresponds to this url. In its
+simplest form, the URL ``/about-us/`` corresponds to the page with the slug
+``about-us``.
+
+Cubane provides a page model by default, which is
+:class:`cubane.cms.models.Page`. However, we recommend to declare your own
+page model, so that you can add additional properties to CMS pages later in
+the process.
+
+To do this, you need to following the same principal that we've applied
+when we set up the settings model.
+
+First, you need to declare a custom page model that is derived from
+:class:`cubane.cms.models.PageAbstract`:
+
+.. code-block:: python
+
+    from cubane.cms.models import PageAbstract
+
+    class CustomPage(PageAbstract):
+        # TODO: Add additional page properties here...
+
+        @classmethod
+        def get_form(cls):
+            from myapp.forms import CustomPageForm
+            return CustomPageForm
+
+Likewise a corresponding form needs to be declared:
+
+.. code-block:: python
+
+    from cubane.cms.forms import PageForm
+
+    class CustomPageForm(PageForm):
+        class Meta:
+            model = Settings
+            fields = '__all__'
+
+Finally we need to point Cubane to the exact class name that shall be used as
+the page model for the CMS via the Django's application setting variable
+:settings:`CMS_PAGE_MODEL`:
+
+.. code-block:: python
+
+    CMS_PAGE_MODEL = 'myapp.models.CustomPage'
+
+Again, the given string value is referring to the actual class that is used by
+Cubane for the page model. The path must include the full path to the class
+including modules and sub-modules.
+
+.. notes::
+
+    If you need to refer to the page model programmatically in your code, for
+    example in order to declare a foreign key then you can use
+    :func:`cubane.cms.get_page_model` or :func:`cubane.cms.get_page_model_name`
+    respectively.
+
+
+
+
+.. _topics/cms/page_templates:
+
+Page Templates
+==============
+
+When creating a CMS page in the backend system, a page template is chosen. The
+idea is that multiple ways for presenting a page can be offered to content
+editors.
+
+You may have a layout for a certain type of content and another layout for a
+different use-case.
+
+Page templates are declared via the Django application setting variable
+:settings:`CMS_TEMPLATES` in the following way:
+
+.. code-block:: python
+
+    CMS_TEMPLATES = (
+        ('myapp/page.html',         'Page'),
+        ('myapp/landing_page.html', 'Landing Page')
+    )
+
+CMS templates are declared like choices: The first column declares the path to
+the corresponding template file while the second column declares the name of
+the template as it is being presented by the backend system.
+
+.. note::
+
+    You should not change the path to a template once it has been established.
+    Changing the path will break all existing pages that are still referring to
+    the old path.
+
+
+
+
+.. _topics/cms/page_slots:
+
+Page Slots
+==========
+
+A CMS page may render a number of content slots. Each content slot can contain
+arbitrary HTML markup and can be edited by content editors through the backend
+system by using a rich *WYSIWYG* editor.
+
+Each content slot must be declared via the Django's application settings
+variable :settings:`CMS_SLOTNAMES` in the following way:
+
+.. code-block:: python
+
+    CMS_SLOTNAMES = [
+        'content',
+        'aside'
+    ]
+
+Slot names can be chosen freely. However, it is good practice to declare a slot
+with the exact name ``content`` to be used as your primary content slot. Some
+aspects of Cubane depend on the existence of such slot as further described in
+section :ref:`topics/cms/page_title`.
+
+Once a slot has been declared that way, it can be rendered by using the ``slot``
+render tag as part of the ``cms_tags`` template library:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <main>{% slot 'content' %}</main>
+
+            <aside>{% slot 'aside' %}</aside>
+        </body>
+    </html>
+
+In this example, the page presents two slots, one with the name ``content`` and
+one with the name ``aside``.
+
+.. note::
+
+    The matching name of the slot and its enclosing HTML tag is coincidental.
+    Slot name and enclosing markup can be chosen freely and are independent of
+    each other.
+
+The ``slot`` tag renders a slot with the given name based on the current page.
+When editing page content via the backend system, a user may switch between all
+content slots on the page and can edit their content freely.
+
+Not all slots as declared via :settings:`CMS_SLOTNAMES` must be rendered by a
+page template. Also certain slots may not be rendered under certain
+circumstances.
+
+
+
+
+.. _topics/cms/page_title:
+
+Page Title
+==========
+
+A page stores the main title of the page alongside other useful meta data
+such as the meta title and the meta description.
+
+Most commonly the title of a page is presented somewhere on the page -- usually
+in between ``h1`` tags, for example:
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>{{ current_page.title }}</h1>
+        </body>
+    </html>
+
+A page must always have a title; the page title cannot be ``None`` or empty.
+
+Paired with content slots this may raise the following issue: Content editors
+can simply create headline tags within a slot, so they might introduce another
+headline of the same level (``h1``) which already exists.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>{{ current_page.title }}</h1>
+            {% slot 'content' 1 %}
+        </body>
+    </html>
+
+We do not want to have two ``h1`` headlines following each other. On the other
+hand, we also do not want content editors having to remember to start headlines
+from level 2 onwards.
+
+As a solution, we may pass on an additional argument to the ``slot`` template
+tag as a numeric *offset* by which headlines that are rendered for the slot are
+automatically transposed.
+
+Therefore, an offset of ``1`` would transpose an ``h1`` tag into an ``h2`` tag
+and an ``h2`` tag into an ``h3`` tag and so forth.
+
+Likewise, an offset of ``2`` would transpose an ``h1`` tag into an ``h3`` tag
+and and ``h2`` tag into an ``h4`` tag.
+
+.. note::
+
+    The same can be archived by using HTML5 sections, where each section can
+    have its own heading hierarchy.
+
+
+
+
+.. _topics/cms/page_meta_title:
+
+Page Meta Title
+===============
+
+The meta title of a page is optional and content editors may provide it or not.
+The meta title can be rendered by a template via the ``meta_title`` template
+tag as part of the ``cms_tags`` template library:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>{% meta_title %}</title>
+        </head>
+        ...
+    </html>
+
+The ``meta_title`` template tag renders the current page's meta title if
+provided. If no meta title is provided then the regular page title is used
+instead.
