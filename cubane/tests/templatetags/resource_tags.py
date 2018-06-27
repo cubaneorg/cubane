@@ -72,26 +72,26 @@ class ResourceTagsResourcesNodeIncludeTestCase(CubaneTestCase):
     cubane.templatetags.resource_tags.ResourcesNode.include()
     """
     def test_should_include_css_with_media_print(self):
-        resources_node = ResourcesNode('target', 'css', 'print')
+        resources_node = ResourcesNode("'target'", 'css', 'print')
         included = resources_node.include('test.css', 'print')
         self.assertEqual(included.strip(), '<link href="/static/test.css" rel="stylesheet" media="print"/>')
 
 
     def test_should_include_css_with_media_screen(self):
-        resources_node = ResourcesNode('target', 'css')
+        resources_node = ResourcesNode("'target'", 'css')
         included = resources_node.include('test.css')
         self.assertEqual(included.strip(), '<link href="/static/test.css" rel="stylesheet" media="screen"/>')
 
 
     def test_should_include_js(self):
-        resources_node = ResourcesNode('target', 'js')
+        resources_node = ResourcesNode("'target'", 'js')
         included = resources_node.include('test.js')
         self.assertEqual(included.strip(), '<script src="/static/test.js"></script>')
 
 
     @override_settings(MINIFY_RESOURCES=True)
     def test_should_include_async_css(self):
-        resources_node = ResourcesNode('target', 'css')
+        resources_node = ResourcesNode("'target'", 'css')
         included = resources_node.include('test.css', css_media=True, is_async=True)
         self.assertTrue('stylesheet.href = "/static/test.css"' in included)
         self.assertTrue('href="/static/test.css"' in included)
@@ -102,13 +102,13 @@ class ResourceTagsResourcesNodeInlineIncludeTestCase(CubaneTestCase):
     cubane.templatags.resource_tags.ResourcesNode.inline_include()
     """
     def test_should_generate_inlined_css_with_screen_media_by_default(self):
-        resources_node = ResourcesNode('target', 'css')
+        resources_node = ResourcesNode("'target'", 'css')
         style = resources_node.inline_include('test')
         self.assertEqual(style.strip(), '<style media="screen">test</style>')
 
 
     def test_should_generate_inlined_js(self):
-        resources_node = ResourcesNode('target', 'js')
+        resources_node = ResourcesNode("'target'", 'js')
         js = resources_node.inline_include('test')
         self.assertEqual(js.strip(), '<script>test</script>')
 
@@ -118,24 +118,24 @@ class ResourceTagsResourcesNodeRenderTestCase(CubaneTestCase):
     cubane.templatetags.resources_tags.ResourcesNode.render()
     """
     def test_should_not_render_when_target_is_not_in_settings(self):
-        resources_node = ResourcesNode('target', 'css')
+        resources_node = ResourcesNode("'target'", 'css')
         self.assertEqual(resources_node.render({}), '')
 
 
     def test_should_raise_exception_if_css_media_not_in_settings(self):
-        resources_node = ResourcesNode('target', 'css', 'css_media')
+        resources_node = ResourcesNode("'target'", 'css', "'css_media'")
         self.assertRaises(template.TemplateSyntaxError, resources_node.render, {})
 
 
     @override_settings(DEBUG=True, MINIFY_RESOURCES=False)
     def test_should_render_inlined_content(self):
-        resources_node = ResourcesNode('inline', 'css', 'screen', inline=True)
+        resources_node = ResourcesNode("'inline'", 'css', "'screen'", inline=True)
         self.assertTrue(True if '.lazy-load' in resources_node.render({}) else False)
 
 
     @override_settings(DEBUG=True, MINIFY_RESOURCES=False)
     def test_should_render_not_inlined_content(self):
-        resources_node = ResourcesNode('frontend', 'css', 'screen')
+        resources_node = ResourcesNode("'frontend'", 'css', "'screen'")
         self.assertTrue(True if 'static/cubane/default_frontend/css/default_frontend.css' in resources_node.render({}) else False)
 
 
@@ -144,7 +144,7 @@ class ResourceTagsResourcesNodeRenderTestCase(CubaneTestCase):
     @patch('cubane.templatetags.resource_tags.load_resource_version_identifier')
     def test_should_render_inlined_content_using_minified_path(self, load_resource_version_identifier, get_resource):
         load_resource_version_identifier.return_value = None
-        resources_node = ResourcesNode('inline', 'css', 'screen', inline=True)
+        resources_node = ResourcesNode("'inline'", 'css', "'screen'", inline=True)
         resources_node.render({})
         get_resource.assert_called_with('cubane.inline.screen.min.css')
 
@@ -154,7 +154,7 @@ class ResourceTagsResourcesNodeRenderTestCase(CubaneTestCase):
     @patch('cubane.templatetags.resource_tags.load_resource_version_identifier')
     def test_should_render_inlined_content_using_minified_path_including_revision_identifier(self, load_resource_version_identifier, get_resource):
         load_resource_version_identifier.return_value = 'foo'
-        resources_node = ResourcesNode('inline', 'css', 'screen', inline=True)
+        resources_node = ResourcesNode("'inline'", 'css', "'screen'", inline=True)
         resources_node.render({})
         get_resource.assert_called_with('cubane.inline.screen.foo.min.css')
 
@@ -163,7 +163,7 @@ class ResourceTagsResourcesNodeRenderTestCase(CubaneTestCase):
     @patch('cubane.templatetags.resource_tags.load_resource_version_identifier')
     def test_should_render_not_inlined_content_using_minified_path(self, load_resource_version_identifier):
         load_resource_version_identifier.return_value = None
-        resources_node = ResourcesNode('frontend', 'css', 'screen')
+        resources_node = ResourcesNode("'frontend'", 'css', "'screen'")
         self.assertTrue(True if 'static/cubane.frontend.screen.min.css' in resources_node.render({}) else False)
 
 
@@ -171,7 +171,7 @@ class ResourceTagsResourcesNodeRenderTestCase(CubaneTestCase):
     @patch('cubane.templatetags.resource_tags.load_resource_version_identifier')
     def test_should_render_not_inlined_content_using_minified_path_including_revision_identifier(self, load_resource_version_identifier):
         load_resource_version_identifier.return_value = 'foo'
-        resources_node = ResourcesNode('frontend', 'css', 'screen')
+        resources_node = ResourcesNode("'frontend'", 'css', "'screen'")
         self.assertTrue(True if 'static/cubane.frontend.screen.foo.min.css' in resources_node.render({}) else False)
 
 

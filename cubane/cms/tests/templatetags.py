@@ -503,6 +503,20 @@ class CMSSlotTestCase(CubaneTestCase):
         )
 
 
+    def test_should_fallback_to_original_shape_if_specified_shape_does_not_exist(self):
+        page = Page()
+        page.set_slot_content('content', self._image_markup())
+        html = self._render("{% load cms_tags %}{% slot 'content' 0 'shape-does-not-exist' %}", {
+            'page': page,
+            'images': {
+                1: Media(id=1, caption='Test', width=64, height=64)
+            }
+        })
+        self.assertMarkup(html, 'noscript', {
+            'data-shape': 'original'
+        })
+
+
     def test_should_raise_error_for_missing_slotname_argument(self):
         with self.assertRaisesRegexp(TemplateSyntaxError, 'takes at least one argument'):
             self._render("{% load cms_tags %}{% slot %}")
