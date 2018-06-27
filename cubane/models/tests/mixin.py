@@ -52,6 +52,21 @@ class CubaneModelsSEOMixinTestCase(CubaneTestCase):
         self.assertEqual('', s.meta_description)
 
 
+    @override_settings(CMS_SLOTNAMES=['b'])
+    def test_meta_description_should_be_based_on_configured_slot(self):
+        s = Page(_meta_description=None)
+        s.set_slot_content('b', '<h1>Einstein:</h1><p>A human being is a part of a whole, called by us _universe_, a part limited in time and space. He experiences himself, his thoughts and feelings as something separated from the rest... a kind of optical delusion of his consciousness. This delusion is a kind of prison for us, restricting us to our personal desires and to affection for a few persons nearest to us. Our task must be to free ourselves from this prison by widening our circle of compassion to embrace all living creatures and the whole of nature in its beauty.</p>')
+        self.assertEqual('Einstein: A human being is a part of a whole, called by us _universe_, a part limited in time and space. He experiences himself, his thoughts and feelings as something', s.meta_description)
+
+
+    @override_settings(CMS_SLOTNAMES=['c', 'b'])
+    def test_meta_description_can_be_based_on_multiple_slots(self):
+        s = Page(_meta_description=None)
+        s.set_slot_content('c', '<h1>Foo</h1>')
+        s.set_slot_content('b', '<p>Bar</p>')
+        self.assertEqual('Foo Bar', s.meta_description)
+
+
     def test_meta_keywords_should_return_meta_keywords_if_available(self):
         s = Page(_meta_keywords='einstein, relativity, speed of light')
         self.assertEqual('einstein, relativity, speed of light', s.meta_keywords)
@@ -81,6 +96,14 @@ class CubaneModelsSEOMixinTestCase(CubaneTestCase):
     def test_meta_keywords_should_return_empty_string_if_no_meta_keywrods_nor_slot_content_is_available(self):
         s = PageMock(_meta_keywords=None)
         self.assertEqual('', s.meta_keywords)
+
+
+    @override_settings(CMS_SLOTNAMES=['c', 'b'])
+    def test_meta_keywords_should_generate_from_slot_content_as_specified(self):
+        s = Page()
+        s.set_slot_content('c', '<h1>Wonderful</h1>')
+        s.set_slot_content('b', '<p>World</p>')
+        self.assertEqual('world, wonderful', s.meta_keywords)
 
 
 @CubaneTestCase.complex()

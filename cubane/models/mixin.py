@@ -1,5 +1,6 @@
 # coding=UTF-8
 from __future__ import unicode_literals
+from django.conf import settings
 from django.db import models
 from django.utils.text import Truncator
 from django.utils.html import mark_safe
@@ -64,7 +65,7 @@ class SEOMixin(models.Model):
         if self._meta_description != None:
             return self._meta_description
         elif hasattr(self, 'get_slot_content'):
-            return Truncator(text_from_html(self.get_slot_content('content'))).words(30, truncate='')
+            return Truncator(text_from_html(self.get_combined_slot_content(settings.CMS_SLOTNAMES))).words(30, truncate='')
         else:
             return ''
 
@@ -74,7 +75,7 @@ class SEOMixin(models.Model):
         if self._meta_keywords != None:
             return self._meta_keywords
         elif hasattr(self, 'get_slot_content'):
-            return self.get_generated_keywords(text_from_html(self.get_slot_content('content')))
+            return self.get_generated_keywords(text_from_html(self.get_combined_slot_content(settings.CMS_SLOTNAMES)))
         else:
             return ''
 
