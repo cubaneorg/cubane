@@ -184,6 +184,8 @@ class ImageNode(template.Node):
                shape != 'original':
                 # show error within template that we do not know the shape
                 return template_error('Shape \'%s\' not defined.' % shape)
+        else:
+            shape = 'original'
 
         if image:
             return render_image(
@@ -218,6 +220,8 @@ class BackgroundImageNode(template.Node):
         if shape:
             if shape not in settings.IMAGE_SHAPES and shape != 'original':
                 return template_error("Shape '%s' not defined." % shape)
+        else:
+            shape = 'original'
 
         return render_background_image_attr(image, shape, self.height, attr)
 
@@ -237,6 +241,8 @@ class SvgImageNode(template.Node):
         if shape:
             if shape not in settings.IMAGE_SHAPES and shape != 'original':
                 return template_error("Shape '%s' not defined." % shape)
+        else:
+            shape = 'original'
 
         return render_svg_image(image, shape, clippath)
 
