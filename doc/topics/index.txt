@@ -18,7 +18,7 @@ follow up on more and more details based on things discussed before.
     media
     settings
     backend/index
-    cms
+    cms/index
     enquiry
     cache
     favicons

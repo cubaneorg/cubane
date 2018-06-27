@@ -1,208 +1,6 @@
-.. _topics/cms:
-
-==================
-Content Management
-==================
-
-The content management aspect of Cubane is based around a separate app and the
-ability to derive your own model instances that are representing editable
-content.
-
-
-
-
-.. _topics/cms/using_the_content_management_system:
-
-Using the content management system
-===================================
-
-Cubane's content management system is implemented as a separate app, which is
-``cubane.cms``. In order to use it, you would need to load ``cubane.cms`` in
-your project setting's list of installed apps :settings:`INSTALLED_APPS`:
-
-.. code-block:: python
-
-    INSTALLED_APPS = [
-        ...
-        'cubane.cms',
-        'myApp',
-        ...
-    ]
-
-In addition, your ``urls.py`` file need to be changed to include URL patterns
-for the content management system. The following example adds support for
-content management as well as ``robots.txt`` and ``sitemap.xml``:
-
-.. code-block:: python
-
-    from django.conf.urls import url, include
-    from django.contrib.sitemaps import views as sitemaps_views
-    from cubane.backend.views import Backend
-    from cubane.cms.views import get_cms
-    from cubane.urls import *
-    from cubane import views as cubane_views
-
-    backend = Backend()
-    cms = get_cms()
-
-    setup_default_urls(__name__)
-
-    urlpatterns += [
-        # admin
-        url(r'^admin/', include(backend.urls)),
-
-        # sitemap and robots
-        url(r'^sitemap\.xml$', sitemaps_views.sitemap, {'sitemaps': cms.sitemaps}),
-        url(r'^robots\.txt$', cubane_views.robots_txt),
-
-        # cms
-        url(r'^', include(cms.urls)),
-    ]
-
-A new instance of the content management system is created via:
-
-.. code-block:: python
-
-    cms = get_cms()
-
-This is very similar to how the backend system is integrated.
-
-.. note::
-
-    Please note, you can use the function :func:`cubane.cms.views.get_cms`
-    whenever you need an instance to the :class:`cubane.cms.views.CMS`
-    instance. The function will always return the same (shared) instance.
-
-.. code-block:: python
-
-    url(r'^', include(cms.urls)),
-
-The url pattern for the content management system is then allowing requests to
-be dispatched to the CMS system.
-
-.. note::
-
-    The URL pattern include statement for the content management app is
-    catching all request URLs. This means that any pattern that is declared
-    afterwards will never match.
-
-
-
-
-.. _topics/cms/cms_class:
-
-CMS Class
-=========
-
-Cubane's content management system is provided by the
-:class:`cubane.cms.views.CMS` class. You need to provide your own class that
-derives from :class:`cubane.cms.views.CMS`. Usually you declare such class in
-your main ``views.py`` file for example:
-
-.. code-block:: python
-
-    from cubane.cms.views import CMS
-
-    class MyCMS(CMS):
-        pass
-
-By introducing your own class, you can alter the behaviour of the CMS system by
-overriding various methods. The CMS class is declared via the Django setting
-variable :settings:`CMS` for your application in the following way:
-
-.. code-block:: python
-
-    CMS = 'myapp.views.MyCMS'
-
-The given string value is referring to the actual class that is used by Cubane
-for representing the CMS system. The path must include the full path to the
-class including modules and sub-modules.
-
-Whenever an instance to the CMS class is required, the function
-:func:`cubane.cms.views.get_cms` can be used to return a (shared) instance.
-
-.. note::
-
-    If you need to refer to an instance of your CMS class programmatically in
-    your code, then you can use the function :func:`cubane.cms.views.get_cms`
-    to obtain a shared reference.
-
-
-
-
-.. _topics/cms/settings:
-
-Settings
-========
-
-When enabling the content-management system, a settings class needs to be
-created which will store all site-wide settings.
-
-When creating a new settings class, it needs to be derived from
-:class:`cubane.cms.models.SettingsBase` (or
-:class:`cubane.ishop.models.ShopSettings` when used together with the shop
-component of Cubane).
-
-.. code-block:: python
-
-    from cubane.cms.models import SettingsBase
-
-    class Settings(SettingsBase):
-        # TODO: Add additional settings fields here...
-
-        @classmethod
-        def get_form(cls):
-            from myapp.forms import SettingsForm
-            return SettingsForm
-
-You may extend and add your own site-wide settings options to the Settings
-class. When declaring the corresponding form, the form needs to be extended
-from :class:`cubane.cms.forms.SettingsForm`:
-
-.. code-block:: python
-
-    from cubane.cms.forms import SettingsForm
-
-    class SettingsForm(SettingsForm):
-        class Meta:
-            model = Settings
-            fields = '__all__'
-
-Finally, you need to tell Cubane which class to use for your settings. Declare
-the Django settings variable :settings:`CMS_SETTINGS_MODEL` in your Django
-application settings:
-
-.. code-block:: python
-
-    CMS_SETTINGS_MODEL = 'myapp.models.Settings'
-
-The given string value is referring to the actual class that is used by Cubane
-for website-wide settings. The path must include the full path to the class
-including modules and sub-modules.
-
-.. note::
-
-    A shared reference to the settings instance can be obtained via the CMS
-    instance:
-
-    .. code-block:: python
-
-        from cubane.cms.views import get_cms
-
-        ...
-
-        cms = get_cms()
-        print(cms.settings)
-
-    If you need to refer to the settings model programmatically in your code,
-    for example in order to declare a foreign key then you can use
-    :func:`cubane.cms.views.get_settings_model`.
-
-
-
-
 .. _topics/cms/pages:
 
+=====
 Pages
 =====
 
@@ -263,7 +61,7 @@ Again, the given string value is referring to the actual class that is used by
 Cubane for the page model. The path must include the full path to the class
 including modules and sub-modules.
 
-.. notes::
+.. notes:
 
     If you need to refer to the page model programmatically in your code, for
     example in order to declare a foreign key then you can use
@@ -327,10 +125,11 @@ variable :settings:`CMS_SLOTNAMES` in the following way:
         'aside'
     ]
 
-Slot names can be chosen freely. However, it is good practice to declare a slot
-with the exact name ``content`` to be used as your primary content slot. Some
-aspects of Cubane depend on the existence of such slot as further described in
-section :ref:`topics/cms/page_meta_description`.
+Slot names can be chosen freely, but they should be declared more or less in
+the order in which they are presented. This may have consequences for some
+aspects of CMS system, such as the automatic generation of a page's meta
+description as further described in section
+:ref:`topics/cms/page_meta_description`.
 
 Once a slot has been declared that way, it can be rendered by using the ``slot``
 render tag as part of the ``cms_tags`` template library:
@@ -347,8 +146,8 @@ render tag as part of the ``cms_tags`` template library:
         </body>
     </html>
 
-In this example, the page presents two slots, one with the name ``content`` and
-one with the name ``aside``.
+In this example, the page template renders two slots, one with the name
+``content`` and one with the name ``aside``.
 
 .. note::
 
@@ -356,9 +155,9 @@ one with the name ``aside``.
     Slot name and enclosing markup can be chosen freely and are independent of
     each other.
 
-The ``slot`` tag renders a slot with the given name based on the current page.
-When editing page content via the backend system, a user may switch between all
-content slots on the page and can edit their content freely.
+The ``slot`` template tag renders a slot with the given name based on the
+current page. When editing page content via the backend system, a user may
+switch between all content slots on the page and can edit their content freely.
 
 Not all slots as declared via :settings:`CMS_SLOTNAMES` must be rendered by a
 page template. Also certain slots may not be rendered under certain
@@ -461,7 +260,7 @@ The ``meta_title`` tag will automatically construct the entire string based on
 the current page's meta title as well as any information that is provided as
 the :attr:`cubane.cms.models.Settings.meta_name` field as declared by the class
 :class:`cubane.cms.models.Settings`. If no meta name is declared then the
-company name based on the :attr:`cubane.cms.models.Settings.name` is used
+company name based on the :attr:`cubane.cms.models.Settings.name` field is used
 instead.
 
 If the current page's meta title already ends with the meta name that is
@@ -484,7 +283,94 @@ Content editors can specify the meta description for a page, but it is an
 optional field. If the meta description is *not* specified, the system will
 automatically generate the meta description based on the content of the page.
 
-.. note::
+This process is based on the content of all page slots that have content
+defined for the page. The content is concatenated in the order in which slot
+names have been declared via :settings:`CMS_SLOTNAMES`.
 
-    More precisely, the meta description will be generated based on the content
-    within the slot that is named ``content`` if such slot exist.
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>{% meta_title %}</title>
+            <meta name="description" content="{{ current_page.meta_description }}">
+        </head>
+        ...
+    </html>
+
+
+
+
+.. _topics/cms/page_meta_keywords:
+
+Page Meta Keywords
+==================
+
+In the same way as the meta description, meta keywords can be specified by
+content editors, but meta keywords are optional. If meta keywords are not
+specified, then the system will automatically generate those based on the
+content of the page.
+
+This process is based on the content of all page slots that have content
+defined for the page and are declared via :settings:`CMS_SLOTNAMES`.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>{% meta_title %}</title>
+            <meta name="description" content="{{ current_page.meta_description }}">
+            <meta name="keywords" content="{{ current_page.meta_keywords }}">
+        </head>
+        ...
+    </html>
+
+
+
+
+.. _topics/cms/default_page_roles:
+
+Default Page Roles
+==================
+
+Some CMS pages are so called default pages. For example one page is dedicated
+to be the homepage of the website. Another page may be dedicated to be the page
+that is rendered whenever content cannot be found (HTML status code 404).
+
+When rendering templates, the following helper variables are available for
+testing for default page roles:
+
+===================  ===========================================================
+Template Variable    Description
+===================  ===========================================================
+is_homepage          ``True`` if the current page is the homepage.
+is_contact_page      ``True`` if the current page is the contact page.
+is_404_page          ``True`` if the current page is the 404 not found page.
+is_enquiry_template  ``True`` if the current page is used as the enquiry
+                     confirmation email template.
+===================  ===========================================================
+
+The following example demonstrates how one of those variables could be tested
+in order to change the way a template renders content based on the role of the
+current page:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if is_homepage %}
+                {% include 'myapp/elements/homepage_header.html' %}
+            {% endif %}
+        </body>
+    </html>
+
+It is good practice to render page content based on different page roles
+automatically instead of relying on different page templates. If a page is
+configured to be the homepage then the page should render itself as the
+homepage and should not rely on content editors having to change the
+corresponding page template as well.

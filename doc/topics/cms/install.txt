@@ -1,0 +1,187 @@
+.. _topics/cms/install:
+
+===================================
+Using the content management system
+===================================
+
+Cubane's content management system is implemented as a separate app, which is
+``cubane.cms``. In order to use it, you would need to load ``cubane.cms`` in
+your project setting's list of installed apps :settings:`INSTALLED_APPS`:
+
+.. code-block:: python
+
+    INSTALLED_APPS = [
+        ...
+        'cubane.cms',
+        'myApp',
+        ...
+    ]
+
+In addition, your ``urls.py`` file need to be changed to include URL patterns
+for the content management system. The following example adds support for
+content management as well as ``robots.txt`` and ``sitemap.xml``:
+
+.. code-block:: python
+
+    from django.conf.urls import url, include
+    from django.contrib.sitemaps import views as sitemaps_views
+    from cubane.backend.views import Backend
+    from cubane.cms.views import get_cms
+    from cubane.urls import *
+    from cubane import views as cubane_views
+
+    backend = Backend()
+    cms = get_cms()
+
+    setup_default_urls(__name__)
+
+    urlpatterns += [
+        # admin
+        url(r'^admin/', include(backend.urls)),
+
+        # sitemap and robots
+        url(r'^sitemap\.xml$', sitemaps_views.sitemap, {'sitemaps': cms.sitemaps}),
+        url(r'^robots\.txt$', cubane_views.robots_txt),
+
+        # cms
+        url(r'^', include(cms.urls)),
+    ]
+
+A new instance of the content management system is created via:
+
+.. code-block:: python
+
+    cms = get_cms()
+
+This is very similar to how the backend system is integrated.
+
+.. note::
+
+    Please note, you can use the function :func:`cubane.cms.views.get_cms`
+    whenever you need an instance to the :class:`cubane.cms.views.CMS`
+    instance. The function will always return the same (shared) instance.
+
+.. code-block:: python
+
+    url(r'^', include(cms.urls)),
+
+The url pattern for the content management system is then allowing requests to
+be dispatched to the CMS system.
+
+.. note::
+
+    The URL pattern include statement for the content management app is
+    catching all request URLs. This means that any pattern that is declared
+    afterwards will never match.
+
+
+
+
+.. _topics/cms/cms_class:
+
+CMS Class
+=========
+
+Cubane's content management system is provided by the
+:class:`cubane.cms.views.CMS` class. You need to provide your own class that
+derives from :class:`cubane.cms.views.CMS`. Usually you declare such class in
+your main ``views.py`` file for example:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        pass
+
+By introducing your own class, you can alter the behaviour of the CMS system by
+overriding various methods. The CMS class is declared via the Django setting
+variable :settings:`CMS` for your application in the following way:
+
+.. code-block:: python
+
+    CMS = 'myapp.views.MyCMS'
+
+The given string value is referring to the actual class that is used by Cubane
+for representing the CMS system. The path must include the full path to the
+class including modules and sub-modules.
+
+Whenever an instance to the CMS class is required, the function
+:func:`cubane.cms.views.get_cms` can be used to return a (shared) instance.
+
+.. note::
+
+    If you need to refer to an instance of your CMS class programmatically in
+    your code, then you can use the function :func:`cubane.cms.views.get_cms`
+    to obtain a shared reference.
+
+
+
+
+.. _topics/cms/settings:
+
+Settings
+========
+
+When enabling the content-management system, a settings class needs to be
+created which will store all site-wide settings.
+
+When creating a new settings class, it needs to be derived from
+:class:`cubane.cms.models.SettingsBase` (or
+:class:`cubane.ishop.models.ShopSettings` when used together with the shop
+component of Cubane).
+
+.. code-block:: python
+
+    from cubane.cms.models import SettingsBase
+
+    class Settings(SettingsBase):
+        # TODO: Add additional settings fields here...
+
+        @classmethod
+        def get_form(cls):
+            from myapp.forms import SettingsForm
+            return SettingsForm
+
+You may extend and add your own site-wide settings options to the Settings
+class. When declaring the corresponding form, the form needs to be extended
+from :class:`cubane.cms.forms.SettingsForm`:
+
+.. code-block:: python
+
+    from cubane.cms.forms import SettingsForm
+
+    class SettingsForm(SettingsForm):
+        class Meta:
+            model = Settings
+            fields = '__all__'
+
+Finally, you need to tell Cubane which class to use for your settings. Declare
+the Django settings variable :settings:`CMS_SETTINGS_MODEL` in your Django
+application settings:
+
+.. code-block:: python
+
+    CMS_SETTINGS_MODEL = 'myapp.models.Settings'
+
+The given string value is referring to the actual class that is used by Cubane
+for website-wide settings. The path must include the full path to the class
+including modules and sub-modules.
+
+.. note::
+
+    A shared reference to the settings instance can be obtained via the CMS
+    instance:
+
+    .. code-block:: python
+
+        from cubane.cms.views import get_cms
+
+        ...
+
+        cms = get_cms()
+        print(cms.settings)
+
+    If you need to refer to the settings model programmatically in your code,
+    for example in order to declare a foreign key then you can use
+    :func:`cubane.cms.views.get_settings_model`.
