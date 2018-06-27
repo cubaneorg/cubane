@@ -439,6 +439,11 @@ class PageForm(PageFormBase):
         if edit or self.is_duplicate:
             self.fields['nav'].initial = instance.nav
 
+        # parent page only available if hierarchical pages is enabled
+        if not settings.PAGE_HIERARCHY:
+            self.remove_field('parent')
+            self.update_sections()
+
         # 404 page cannot be disabled!
         cms_settings = get_cms_settings()
         if instance and cms_settings.default_404 and instance.pk == cms_settings.default_404.pk:
