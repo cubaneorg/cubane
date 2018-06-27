@@ -101,10 +101,10 @@ class ResourceTagsResourcesNodeInlineIncludeTestCase(CubaneTestCase):
     """
     cubane.templatags.resource_tags.ResourcesNode.inline_include()
     """
-    def test_should_generate_inlined_css(self):
+    def test_should_generate_inlined_css_with_screen_media_by_default(self):
         resources_node = ResourcesNode('target', 'css')
         style = resources_node.inline_include('test')
-        self.assertEqual(style.strip(), '<style>test</style>')
+        self.assertEqual(style.strip(), '<style media="screen">test</style>')
 
 
     def test_should_generate_inlined_js(self):

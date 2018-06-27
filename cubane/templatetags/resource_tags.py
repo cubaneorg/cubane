@@ -105,7 +105,7 @@ class ResourcesNode(template.Node):
         return additional_data
 
 
-    def inline_include(self, content, additional_data=None):
+    def inline_include(self, content, additional_data=None, css_media=None):
         """
         Generate inline resource statement for embedding the given content
         within the page.
@@ -113,7 +113,14 @@ class ResourcesNode(template.Node):
         from cubane.lib.serve import serve_static_with_context
         content = serve_static_with_context(content)
         if self.ext == 'css':
-            return '<style%s>%s</style>\n' % (self.render_additional_data(additional_data), mark_safe(content))
+            if not css_media:
+                css_media = 'screen'
+
+            return '<style%s%s>%s</style>\n' % (
+                self.render_additional_data(additional_data),
+                ' media="%s"' % css_media if css_media else '',
+                mark_safe(content)
+            )
         else:
             return '<script%s>%s</script>\n' % (self.render_additional_data(additional_data), mark_safe(content))
 
@@ -164,7 +171,7 @@ class ResourcesNode(template.Node):
                     )
                 )
 
-            return self.inline_include(content, additional_data)
+            return self.inline_include(content, additional_data, css_media)
         else:
             if not settings.MINIFY_RESOURCES:
                 resources = get_resources(target, self.ext, css_media)
