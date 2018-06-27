@@ -1,0 +1,150 @@
+.. _topics/cms/navigation:
+
+==========
+Navigation
+==========
+
+The CMS system provides a simple navigation system by which pages can be
+organised into one or more navigation sections. For example, any given page may
+appear in the header navigation, the footer navigation or both at the same time.
+
+Navigation sections are declared in the following way as part of the
+application settings:
+
+.. code-block:: python
+
+    CMS_NAVIGATION = (
+        ('header', 'Header'),
+        ('footer', 'Footer'),
+    )
+
+Navigation section are declared like choices where the first element declares
+the internal name of the navigation section and the second element declares the
+visual name of the navigation section that is presented to users in the backend
+system.
+
+In the example above, two navigation sections are declared: One called
+``Header`` and another one called ``Footer``. Content editors can now assign
+pages to one of those navigation sections (or both).
+
+As a consequence, the following structures are available in the template when
+rendering a page:
+
+=================  =============================================================
+Template Variable  Description
+=================  =============================================================
+nav                A structure that contains all navigation sections and
+                   navigation items per section.
+pages              A list of all pages that have a unique page identifier
+                   assigned.
+active_nav         The navigation item that is currently active.
+=================  =============================================================
+
+The following sections discuss those aspects in more details.
+
+
+
+
+.. _topics/cms/navigation/nav_sections:
+
+Navigation Sections
+===================
+
+The ``nav`` template variable contains all declared navigation sections by its
+internal name. For example, if we had declared the following navigation
+sections:
+
+.. code-block:: python
+
+    CMS_NAVIGATION = (
+        ('header', 'Header'),
+        ('footer', 'Footer'),
+    )
+
+Then the following template would render a list of links for all pages that are
+assigned to the ``header`` navigation:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if nav.header %}
+                <ul class="nav">
+                    {% for item in nav.header %}
+                        <li{% if item.active %} class="active"{% endif %}>
+                            <a href="{{ item.url }}" title="{{ item.page_title }}">{{ item.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </body>
+    </html>
+
+The same would work with the ``footer`` navigation respectively. The list
+contains navigation items where each item is derived from the underlying page.
+
+.. seealso::
+
+    The navigation structure is constructed by a so called navigation builder,
+    which can be altered, for example to control how navigation items are
+    created. Please refer to section :ref:`topics/cms/navigation/builder` for more
+    information.
+
+The order in which items are listed is the order in which the underlying pages
+are organised. The order for pages can be changed by content editors by using
+the backend system.
+
+Therefore there is a specific order to pages across all navigation sections. By
+default, the order of items within each navigation section cannot be changed in
+isolation.
+
+
+
+
+.. _topics/cms/navigation/nav_items:
+
+Navigation Items
+================
+
+A navigation item is representing most aspect of the underlying page including
+its title and its URL but does not contain all information that reassembles the
+underlying page such as page content.
+
+Most noticeable, a navigation item has a ``page_title`` property which contains
+the exact title of the underlying page. In a similar way the property
+``nav_title`` is referring to a shorthand name of the page that is specifically
+be used for the purpose of presenting the page within the concept of a
+navigation system. However, this field is optional and might be ``None`` or
+empty.
+
+The property ``title`` simply returns the navigation title (``nav_title``) if a
+value has been provided for it; otherwise the page title is used instead.
+
+The property ``active`` is ``True`` if the current page is the page that the
+navigation item is referring to.
+
+.. seealso::
+
+    The construction of navigation items can be altered. Please refer to
+    section :ref:`topics/cms/navigation/builder` for more information.
+
+
+
+.. _topics/cms/navigation/nav_items:
+
+Navigation Item Children
+========================
+
+Pages can be organised within a hierarchy. Therefore a page can be a parent
+page of another page.
+
+
+
+
+.. _topics/cms/navigation/builder:
+
+Navigation Builder
+==================
+

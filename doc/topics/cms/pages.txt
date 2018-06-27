@@ -163,6 +163,29 @@ Not all slots as declared via :settings:`CMS_SLOTNAMES` must be rendered by a
 page template. Also certain slots may not be rendered under certain
 circumstances.
 
+You can test if a slot if empty or not in the following way:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if 'content' in slots or preview %}
+                <div class="content-slot">{% slot 'content' %}</div>
+            {% endif %}
+        </body>
+    </html>
+
+In this example, the slot with the name ``content`` will only be rendered if
+the slot is not empty. The reason why we have this if-statement here is that we
+do not want to render the enclosing div element if the slot is indeed empty.
+
+.. note::
+
+    The if condition is also testing for preview mode which is further
+    explained in section :ref:`topics/cms/preview`.
+
 
 
 
@@ -374,3 +397,38 @@ automatically instead of relying on different page templates. If a page is
 configured to be the homepage then the page should render itself as the
 homepage and should not rely on content editors having to change the
 corresponding page template as well.
+
+
+
+
+.. _topics/cms/preview:
+
+Preview
+=======
+
+Any CMS-enabled page can be rendered for preview mode in the backend system. In
+fact, the preview is used to select particular page slots in order to edit
+their content.
+
+When rendering page slots via the ``slot`` template tag, then it it
+particularly important to always render to slot if the page is presented in
+preview mode: For example, a slot may only be rendered under a certain
+condition, but in preview mode you would want to always render a slot;
+otherwise users will not be able to select the slot to begin with.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if 'content' in slots or preview %}
+                <div class="content-slot">{% slot 'content' %}</div>
+            {% endif %}
+        </body>
+    </html>
+
+The example demonstrates a condition under which the slot is rendered: The slot
+is only rendered if the slot has actual content assigned to it. However we also
+render the slot if we are in preview mode; otherwise no-one would be able to
+assign content to the slot to start with.
