@@ -382,7 +382,7 @@ class CMSSlotTestCase(CubaneTestCase):
 
     def test_should_return_error_if_slot_does_not_exist(self):
         self.assertEqual(
-            "[Slot 'none' does not exist]",
+            "[Slot 'none' does not exist (referenced via 'none')]",
             self._render("{% load cms_tags %}{% slot 'none' %}")
         )
 

@@ -238,7 +238,7 @@ class SlotNode(template.Node):
 
         # make sure that this slot actually exists
         if slotname not in settings.CMS_SLOTNAMES:
-            return template_error("Slot '%s' does not exist (referenced via \'%s\')" % (slotname, self.slotname))
+            return template_error("Slot '%s' does not exist (referenced via %s)" % (slotname, self.slotname))
 
         # switch page to child_page if present
         if child_page:
