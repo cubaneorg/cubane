@@ -887,6 +887,16 @@ class ChildPage(PageBase):
             return None
 
 
+class Post(ChildPage):
+    """
+    The name ChildPage is confusing in relation to page hierarchies, which is
+    why we are introducing a separate name 'Post' for this concept all
+    together. It also makes clear that a page may have many posts.
+    """
+    class Meta:
+        abstract = True
+
+
 class EntityManager(models.Manager):
     def get_queryset(self):
         """

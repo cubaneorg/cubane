@@ -20,5 +20,5 @@ example the shop system.
 
     install
     pages
-    childpages
+    posts
     nav

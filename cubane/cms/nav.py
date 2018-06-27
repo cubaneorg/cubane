@@ -30,6 +30,14 @@ class CMSNavigationBuilder(object):
         self.pages = self.cache_context.cached('PAGES', self.get_pages)
 
 
+    def get_objects(self, objects):
+        """
+        Return a queryset that returns all pages on which bases navigation items
+        are constructed.
+        """
+        return objects
+
+
     def get_pages(self):
         """
         Return a list of navigate-able content pages
@@ -44,13 +52,15 @@ class CMSNavigationBuilder(object):
         )
         pages = list(
             page_model.filter_visibility(
-                page_model.objects.select_related(*related_fields).filter(
-                    Q(_nav__isnull=False) |       # appears in at least one
-                                                  # navigation section
-                    Q(identifier__isnull=False),  # OR has an identifier
-                    disabled=False                # not disabled
-                ).order_by(
-                    'seq', 'title'
+                self.get_objects(
+                    page_model.objects.select_related(*related_fields).filter(
+                        Q(_nav__isnull=False) |       # appears in at least one
+                                                      # navigation section
+                        Q(identifier__isnull=False),  # OR has an identifier
+                        disabled=False                # not disabled
+                    ).order_by(
+                        'seq', 'title'
+                    )
                 )
             )
         )
@@ -173,6 +183,9 @@ class CMSNavigationBuilder(object):
                 if hasattr(page, field):
                     item_fields[field] = getattr(page, field)
 
+        # child pages / posts
+        child_pages = self.get_nav_child_pages(page, nav_name)
+
         item_fields.update({
             'id': page.id,
             'identifier': page.identifier if hasattr(page, 'identifier') else None,
@@ -188,7 +201,8 @@ class CMSNavigationBuilder(object):
             'entity_type': page.entity_type if hasattr(page, 'entity_type') else None,
             'children': children,
             'nav_children': nav_children,
-            'child_pages': self.get_nav_child_pages(page, nav_name),
+            'child_pages': child_pages,   # legacy
+            'posts': child_pages,
             'nav_image': page.nav_image if hasattr(page, 'nav_image_id') else None,
             'updated_on': getattr(page, 'nav_updated_on', None)
         })
@@ -202,13 +216,11 @@ class CMSNavigationBuilder(object):
         list of all pages (cached).
         """
         # get children
-        if isinstance(parent, PageBase):
+        if isinstance(parent, PageBase) and settings.PAGE_HIERARCHY:
             children = filter(lambda p: isinstance(p, PageBase) and p.parent_id == parent.id, self.pages)
 
             if nav_name:
                 children = filter(lambda p: nav_name in p.nav, children)
-        elif isinstance(parent, category_model):
-            children = filter(lambda c: isinstance(c, category_model) and c.parent_id == parent.id, self.pages)
         else:
             children = []
 
