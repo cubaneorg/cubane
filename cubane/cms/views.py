@@ -1317,7 +1317,7 @@ class CustomSitemap(AbsoluteUrlSitemap):
         self._cached_pages = []
 
 
-    def add_url(url, lastmod, cached=False):
+    def add_url(self, url, lastmod, cached=False):
         if lastmod == None:
             lastmod = datetime.now()
 
@@ -1335,7 +1335,7 @@ class CustomSitemap(AbsoluteUrlSitemap):
     def items(self):
         self._items = []
         self._cached_pages = []
-        self._cms.self)
+        self._cms.on_custom_sitemap(self)
         return self._items
 
 
