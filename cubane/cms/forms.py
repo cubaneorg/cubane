@@ -505,7 +505,7 @@ class EntityForm(BaseModelForm):
 
 class ChildPageForm(PageFormBase):
     """
-    Base class for editing cms page entities. Derive from this form in order to
+    Base class for editing CMS page entities. Derive from this form in order to
     create new forms for your specific business objects.
     """
     class Meta:
@@ -557,6 +557,13 @@ class ChildPageForm(PageFormBase):
                     self.field_error('slug', PageForm.ERROR_SLUG_SYSTEM_NAME)
 
         return d
+
+
+class PostForm(ChildPageForm):
+    """
+    Introducing another term instead of ChildPage.
+    """
+    pass
 
 
 class SettingsForm(BaseModelForm):

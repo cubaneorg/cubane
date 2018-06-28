@@ -315,6 +315,18 @@ class ChildPagesNode(template.Node):
         """
         Render list of child pages for the current page.
         """
+        def _get_post_template(prefix, slug):
+            t = None
+            template_filename = 'cubane/cms/%s/%s.html' % (prefix, slug)
+
+            try:
+                if slug:
+                    t = get_template(template_filename)
+            except TemplateDoesNotExist:
+                pass
+
+            return t, template_filename
+
         page = value_or_none('page', context)
         child_page_slug = value_or_literal(self.child_page_slug, context)
         child_pages = None
@@ -328,13 +340,9 @@ class ChildPagesNode(template.Node):
 
         if child_pages:
             # resolve template for rendering entities
-            t = None
-            template_filename = 'cubane/cms/child_pages/%s.html' % child_page_slug
-            try:
-                if child_page_slug:
-                    t = get_template(template_filename)
-            except TemplateDoesNotExist:
-                pass
+            t, template_filename = _get_post_template('posts', child_page_slug)
+            if t is None:
+                t, template_filename = _get_post_template('child_pages', child_page_slug)
 
             # if we cannot find the template, tell the user about it
             if t == None:
@@ -498,6 +506,18 @@ def child_pages(parser, token):
         entity_slug = bits[2]
 
     return ChildPagesNode(entities, entity_slug)
+
+
+@register.tag('posts')
+def posts(parser, token):
+    """
+    Renders a list of posts, such as projects that belong to the
+    current page. This is a replacement of the child_pages template tag, in
+    order to replace the term child-page.
+
+    Syntax: {% posts [<posts>] [post_slug] %}
+    """
+    return child_pages(parser, token)
 
 
 @register.tag('contact_map')

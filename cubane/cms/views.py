@@ -1130,21 +1130,29 @@ class PageContext(object):
                 'hierarchical_pages': list(get_page_model().objects.filter(parent_id=current_page.pk).exclude(disabled=True).order_by('seq'))
             })
 
-        # child pages
+        # child pages / posts
         if self.child_page_model:
             child_page_slug = slugify(self.child_page_model.__name__)
 
             context.update({
                 'verbose_name': self.child_page_model._meta.verbose_name,
                 'verbose_name_plural': self.child_page_model._meta.verbose_name_plural,
+
+                # deprecated
                 'child_page': self.child_page,
                 'child_page_model': self.child_page_model.__name__,
                 'child_page_slug': child_page_slug,
                 'child_pages': self.child_pages,
                 'paged_child_pages': self.paged_child_pages,
+
+                # posts and paginator
+                'post_slug': child_page_slug,
+                'posts': self.child_pages,
+                'paged_posts': self.paged_child_pages,
                 'paginator': self.paginator
             })
 
+            # deprecated, only available under the old name
             context.get('nav').update({
                 'child_pages': self.get_child_page_navigation(self.child_page_objects, self.child_page)
             })

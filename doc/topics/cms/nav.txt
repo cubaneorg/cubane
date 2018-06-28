@@ -178,21 +178,21 @@ With page hierarchy enabled, the navigation system introduces a number of
 additional properties for each navigation item related to the child pages for
 each page:
 
-``children``:
+``children``
 
     List of all navigation items describing all direct child pages of the given
     parent navigation item. Each navigation item may represents its direct
     child element via its ``children`` property. Any given node contains all
     child pages regardless of its assignment to navigation sections.
 
-``nav_children``:
+``nav_children``
 
     List of all navigation items describing all direct child pages of the given
     parent navigation item that also are assigned to the same navigation
     section. Each navigation item may represents its direct child element via
     its ``nav_children`` property.
 
-``active_child``:
+``active_child``
 
     ``True`` if any child navigation item is active (e.g. its ``active``
     property is ``True``).

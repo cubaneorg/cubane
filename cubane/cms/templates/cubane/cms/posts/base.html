@@ -1,0 +1,37 @@
+{% load format_tags %}
+
+{% block listing %}{% endblock %}
+
+{% if paginator %}
+    <div class="pagination-header">
+        <div class="pagination-info">
+            Page <span class="pagination-page-number">{{ child_pages.number }}</span> of 
+            <span class="pagination-max-page-number">{{ paginator.num_pages }}</span>,
+            <span class="pagination-count-items">{{ paginator.count }}</span> item{{ paginator.count|pluralize }} in total.
+        </div>
+        
+        {% if paginator.num_pages > 1 or paginator.view_all %}
+            <div class="pagination">
+                <ul>
+                    {% if child_pages.has_previous %}
+                        <li><a class="prev" href="{{ child_pages.prev_url }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#prev-page">&larr;</a></li>
+                    {% endif %}
+                    
+                    {% for p in child_pages.pages %}
+                        <li class="{% if p.page == child_pages.number %}active{% endif %}"><a href="{{ p.url }}">{{ p.page }}</a></li>
+                    {% endfor %}
+                    
+                    {% if child_pages.has_next %}
+                        <li><a class="next" href="{{ child_pages.next_url }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#next-page">&rarr;</a></li>
+                    {% endif %}
+                    
+                    <li><a href="{{ child_pages.view_all_url }}">{{ paginator.view_all_label }}</a></li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
