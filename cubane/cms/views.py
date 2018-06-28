@@ -1317,22 +1317,25 @@ class CustomSitemap(AbsoluteUrlSitemap):
         self._cached_pages = []
 
 
-    def add(self, name, args=[], lastmod=None, cached=False):
+    def add_url(url, lastmod, cached=False):
         if lastmod == None:
             lastmod = datetime.now()
 
-        # create one new Url Item and store it in sitemaps and if to be cached in the cached pages
-        newItem = CustomSitemapItem(reverse_lazy(name, args=args), lastmod)
+        item = CustomSitemapItem(url, lastmod)
+        self._items.append(item)
 
-        self._items.append(newItem)
         if cached:
-            self._cached_pages.append(newItem)
+            self._cached_pages.append(item)
+
+
+    def add(self, name, args=[], lastmod=None, cached=False):
+        self.add_url(reverse_lazy(name, args=args), lastmod, cached)
 
 
     def items(self):
         self._items = []
         self._cached_pages = []
-        self._cms.on_custom_sitemap(self)
+        self._cms.self)
         return self._items
 
 

@@ -59,6 +59,11 @@ section first. In the example above, we implemented our backend section
             ...
         ]
 
+.. seealso::
+
+    Please refer to section :ref:`topics/modules` for more information about
+    Cubane's extension system.
+
 The ``title`` field declares the visual name of the section as it is presented
 within the backend system, which is ``Book Shop`` in our case.
 

@@ -265,6 +265,11 @@ own extension of the navigation builder.
 This is a common pattern that is used throughout Cubane for extending various
 aspects if the core system.
 
+.. seealso::
+
+    Please refer to section :ref:`topics/modules` for more information about
+    Cubane's extension system.
+
 The extension is simply derived from ``object`` and then overrides methods as
 required:
 

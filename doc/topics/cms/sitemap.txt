@@ -1,0 +1,127 @@
+.. _topics/cms/sitemap:
+
+=======
+Sitemap
+=======
+
+The CMS system provides an automatic way of generating a sitemap.xml. In order
+to enable the generation of the sitemap, simply hook up the following URL
+patterns in your ``urls.py``::
+
+    url(r'^sitemap\.xml$', sitemaps_views.sitemap, {'sitemaps': cms.sitemaps}),
+
+Usually this goes together with a robots.txt file::
+
+    url(r'^robots\.txt$', cubane_views.robots_txt),
+
+Putting it all together, a typical ``urls.py`` file may look like this:
+
+.. code-block:: python
+
+    from django.conf.urls import url, include
+    from django.contrib.sitemaps import views as sitemaps_views
+    from cubane.backend.views import Backend
+    from cubane.cms.views import get_cms
+    from cubane.urls import *
+    from cubane import views as cubane_views
+
+    backend = Backend()
+    cms = get_cms()
+
+    setup_default_urls(__name__)
+
+    urlpatterns += [
+        # admin
+        url(r'^admin/', include(backend.urls)),
+
+        # sitemap and robots
+        url(r'^sitemap\.xml$', sitemaps_views.sitemap, {'sitemaps': cms.sitemaps}),
+        url(r'^robots\.txt$', cubane_views.robots_txt),
+
+        # cms
+        url(r'^', include(cms.urls)),
+    ]
+
+The CMS system automatically generates entries for all pages and posts.
+However, you can extend the sitemap in order to incorporate your own additional
+pages. In fact, other Cubane apps like the shop system for example are
+extending the sitemap to include product pages for example.
+
+
+
+
+.. _topics/cms/sitemap/extension:
+
+Extending Sitemap
+=================
+
+Sitemaps are constructed by the :meth:`cubane.cms.vies.CMS.get_sitemaps` method
+of the :class:`cubane.cms.views.CMS` class. This method is ultimately called
+when *hooking up* sitemaps in your ``urls.py`` via the ``sitemaps`` property of
+the ``cms`` object (see example above).
+
+In addition, there is also the :meth:`cubane.cms.vies.CMS.on_custom_sitemap`
+method of the :class:`cubane.cms.views.CMS` class which can be overridden in
+order to add custom sitemap entries more easily.
+
+A django app can extend the :class:`cubane.cms.views.CMS` class by declaring
+the ``install_cms`` function in the ``__init__.py`` file of the app's root folder:
+
+.. code-block:: python
+
+    def install_cms(cms):
+        from myapp.views import CMSExtensions
+        return cms.register_extension(CMSExtensions)
+
+Your extension needs to be declared in the following way:
+
+.. code-block:: python
+
+    class CMSExtensions(object):
+        def on_custom_sitemap(self, sitemap):
+            super(CMSExtensions, self).on_custom_sitemap(sitemap)
+            sitemap.add_url('/my-custom-url/')
+
+However, if you are using the CMS system directly, you would have
+
+.. seealso::
+
+    Please refer to section :ref:`topics/modules` for more information about
+    Cubane's extension system.
+
+As demonstrated in this example, the function
+:meth:`cubane.cms.views.CMS.on_custom_sitemap` is passed an instance of
+:class:`cubane.cms.views.CustomSitemap` which can be used to add additional
+sitemap entries by calling :meth:`cubane.cms.views.CustomSitemap.add` or
+:meth:`cubane.cms.views.CustomSitemap.add_url`.
+
+Another strategy is to create your own sitemap generators by overriding the
+method :meth:`cubane.cms.vies.CMS.get_sitemaps`. This method returns a
+dictionary of sitemaps generators based on `Django's sitemap Framework
+<https://docs.djangoproject.com/en/1.11/ref/contrib/sitemaps/>`_.
+
+
+
+
+.. _topics/cms/sitemap/cache:
+
+Cacheable Sitemap entries
+=========================
+
+Cubane provides a caching system by which full rendered pages are cached on the
+disk and are then delivered by the web-server directly without invoking python,
+Django or Cubane.
+
+For this purpose, when generating additional entries for the sitemap, they can
+be marked as cacheable or not.
+
+By default, custom entries that are added to the sitemap are *not* cached. If
+an entry should be cached then the ``cached`` argument of the
+:meth:`cubane.cms.views.CustomSitemap.add` or
+:meth:`cubane.cms.views.CustomSitemap.add_url` method needs to be set to
+``True``.
+
+For example:
+
+.. code-block:: python
+

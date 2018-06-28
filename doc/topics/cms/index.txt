@@ -22,3 +22,5 @@ example the shop system.
     pages
     posts
     nav
+    sitemap
+    cache
