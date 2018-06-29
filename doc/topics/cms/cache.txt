@@ -1,5 +1,177 @@
-.. _topics/cache:
+.. _topics/cms/cache:
 
+=====
+Cache
+=====
+
+By default, the cache system is enabled. However, in order to actually generate
+cache entries, the following management script needs to be executed:
+
+.. code-block:: console
+
+    $ python manage.py publish
+
+This will then generate all pages for which a cache entry exists. By default, all
+CMS-related pages are cached.
+
+Cached files are being written to ``public_html/cache/``. By default, the path
+to the ``public_html`` folder is set up to be relative to the main installation
+folder of your application::
+
+    ../../public_html/
+
+For example, if your application is installed in the folder ``~/app/myapp/``
+then the ``public_html`` folder is configured to be ``~/public_html/``.
+Therefore the cache is generated in ``~/public_html/cache/``.
+
+The path to the cache folder can be customised via the :settings:`CACHE_ROOT`
+settings variable.
+
+
+
+
+.. _topics/cms/cache/webserver_integration:
+
+Web-server Integration
+======================
+
+The idea is this: If there is a corresponding cached file in the cache folder
+for any given page, then such page should be served by the web-server directly
+without invoking WSGI, python, Django and Cubane. This is obviously orders of
+magnitude faster.
+
+A cached file should only be served if all of the items below hold true:
+
+- The request is a ``GET`` or ``HEAD`` request.
+- The request has an empty query string.
+- A corresponding cached file exists in the cache folder
+
+If your web-server is apache 2, then the following configuration options may be
+used to express such logic:
+
+.. parsed-literal::
+
+    # redirect non-www. to www.
+    RewriteCond %{HTTP_HOST} !^www\.
+    RewriteRule ^(.*)$ https://www.%{HTTP_HOST}$1 [R=301,L]
+
+    # simple GET requests without query strings are cached (if file exists)
+    RewriteCond %{THE_REQUEST} ^(GET|HEAD)
+    RewriteCond %{QUERY_STRING} ^$
+    RewriteCond %{REQUEST_URI} ^([^.]+)$
+    RewriteCond %{DOCUMENT_ROOT}/cache/%1index.html -f
+    RewriteRule ^[^.]+$ /cache/%1index.html [QSA,L]
+
+    # accessing cache directly is forbidden
+    RewriteCond %{REQUEST_URI} ^/cache/.*$
+    RewriteRule ^/cache/.*$ - [F]
+
+The first block redirects to https://www.example.com/ if the request URL does
+not start with ``www``, e.g. https://example.com (we assume that HTTPS is used).
+
+The second block is the actual URL rewrite based on the conditions we've
+identified above: If the request is a ``GET`` or ``HEAD`` request with an empty
+query string and a corresponding cached file exists, then the URL is rewritten
+to point to that very same (cached) file.
+
+The last block prevents any files to be served directly. E.g.
+``https://www.example.com/cache/index.html`` should not be served directly
+unless it was constructed by the redirect rule.
+
+
+
+
+.. _topics/cms/cache/invalidate:
+
+Invalidation
+============
+
+The cache can be invalidated by simply running the following management script:
+
+.. code-block:: console
+
+    $ python manage.py invalidate
+
+When invalidating the cache, all cached files are renamed by prefixing the
+files with a dot character (``.``). This process ensures that
+
+- All cached files will no longer match, therefore any incoming request will be
+  dispatched via python, Django and Cubane.
+
+- The content of all cached files still exist and can be placed back very
+  quickly.
+
+
+
+
+.. _topics/cms/cache/detecting_changes:
+
+Detecting Changes
 =================
-Sitemap and Cache
-=================
+
+When generating the cache, a page may not be generated again if the following
+conditions are both holding true:
+
+- The cached file has been invalidated but still exists (prefixed with a dot
+  character).
+
+- The content might have changed due to an analysis of last modification
+  timestamps.
+
+If the content did not change then the previously generated cache file is
+simply renamed back to its original file name.
+
+Otherwise, if the content did change, then the old file is replaced with new
+content that is generated for the entire page.
+
+Before rendering a page, a template context is derived which contains
+information about model instances such as the current page, navigation items,
+footer elements and other entities.
+
+Cubane makes the following assumptions:
+
+- Is is safe to materialise all database queries that are provided via the
+  template context prior to rendering the page.
+
+- A template context does not contain any information that is not relevant for
+  rendering the correspondig page.
+
+- All relevant model instances have been derived from
+  :class:`cubane.models.DateTimeBase` or have a timestamp property with the
+  name ``updated_on`` indicating the date and time when the last modification
+  of the entity has been made.
+
+
+
+
+
+
+
+.. _topics/cms/cache/add:
+
+Adding cached entries
+=====================
+
+Additional cached entries might be added by adding the corresponding pages to
+the sitemap with the ``cached`` argument set to ``True``.
+
+By default, custom entries that are added to the sitemap are *not* cached. If
+an entry should be cached then the ``cached`` argument of the
+:meth:`cubane.cms.views.CustomSitemap.add` or
+:meth:`cubane.cms.views.CustomSitemap.add_url` method needs to be set to
+``True``.
+
+For example:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def on_custom_sitemap(self, sitemap):
+            super(MyCMS, self).on_custom_sitemap(sitemap)
+            sitemap.add_url('/my-custom-url/', cached=True)
+
+Then the cache system will generate a cached version of the corresponding page
+with the URL ``/my-custom-url/`` once the ``publish`` management command is
+executed.

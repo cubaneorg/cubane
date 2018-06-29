@@ -64,30 +64,17 @@ In addition, there is also the :meth:`cubane.cms.vies.CMS.on_custom_sitemap`
 method of the :class:`cubane.cms.views.CMS` class which can be overridden in
 order to add custom sitemap entries more easily.
 
-A django app can extend the :class:`cubane.cms.views.CMS` class by declaring
-the ``install_cms`` function in the ``__init__.py`` file of the app's root folder:
+Your CMS class derived from :class:`cubane.cms.views.CMS` can override one of
+those methods in order to customise sitemaps:
 
 .. code-block:: python
 
-    def install_cms(cms):
-        from myapp.views import CMSExtensions
-        return cms.register_extension(CMSExtensions)
+    from cubane.cms.views import CMS
 
-Your extension needs to be declared in the following way:
-
-.. code-block:: python
-
-    class CMSExtensions(object):
+    class MyCMS(CMS):
         def on_custom_sitemap(self, sitemap):
-            super(CMSExtensions, self).on_custom_sitemap(sitemap)
+            super(MyCMS, self).on_custom_sitemap(sitemap)
             sitemap.add_url('/my-custom-url/')
-
-However, if you are using the CMS system directly, you would have
-
-.. seealso::
-
-    Please refer to section :ref:`topics/modules` for more information about
-    Cubane's extension system.
 
 As demonstrated in this example, the function
 :meth:`cubane.cms.views.CMS.on_custom_sitemap` is passed an instance of
@@ -125,3 +112,12 @@ For example:
 
 .. code-block:: python
 
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def on_custom_sitemap(self, sitemap):
+            super(MyCMS, self).on_custom_sitemap(sitemap)
+            sitemap.add_url('/my-custom-url/', cached=True)
+
+Then the cache system (if enabled) will generate a cached version of the
+corresponding page with the URL ``/my-custom-url/``.
