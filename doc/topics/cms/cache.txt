@@ -92,6 +92,9 @@ The cache can be invalidated by simply running the following management script:
 
     $ python manage.py invalidate
 
+Also the cache is invalidated whenever any relevant entity is changed by using
+the backend system.
+
 When invalidating the cache, all cached files are renamed by prefixing the
 files with a dot character (``.``). This process ensures that
 
@@ -130,19 +133,47 @@ footer elements and other entities.
 
 Cubane makes the following assumptions:
 
-- Is is safe to materialise all database queries that are provided via the
+- It is safe to materialise all database queries that are provided via the
   template context prior to rendering the page.
 
-- A template context does not contain any information that is not relevant for
-  rendering the correspondig page.
+- A template context only contains information that is relevant to rendering
+  the corresponding page.
 
 - All relevant model instances have been derived from
   :class:`cubane.models.DateTimeBase` or have a timestamp property with the
   name ``updated_on`` indicating the date and time when the last modification
   of the entity has been made.
 
+Based on such context, cubane will scan through all entities and determines
+that latest timestamp value it can find of any entity. This may represent a
+timestamp of one of the following items:
+
+- The current page
+- Any related page
+- Any item that is presented in any navigation section
+- The general timestamp when the last code deployment has happened.
+- A general timestamp when an item has been deleted the last time.
+
+Based on this data, Cubane will work out if the largest timestamp that has been
+derived from a template context is before or after the timestamp of the cached
+file. If the cached file's timestamp is later then the cached file is restored
+without having to render the page again. Otherwise the page is rendered again
+replacing any cached content.
 
 
+
+
+.. _topics/cms/cache/clear:
+
+Clear Cache
+===========
+
+The entire cache can be removed entirely by running the following management
+command:
+
+.. code-block:: console
+
+    $ python manage.py clearcache
 
 
 
@@ -175,3 +206,30 @@ For example:
 Then the cache system will generate a cached version of the corresponding page
 with the URL ``/my-custom-url/`` once the ``publish`` management command is
 executed.
+
+
+
+
+.. _topics/cms/cache/backend_integration:
+
+Backend Integration
+===================
+
+By default, the CMS system will add a ``Publish`` button. The publish button is
+only visible if the cache has been invalidated. Once the button has been
+pressed the cache system will generate all cache items and the button will
+disappear again.
+
+The button is not visible if the cache system has been disabled via the
+:settings:`CACHE_ENABLED` settings variable.
+
+Sometimes you may not want to have such button at all. For example, you could
+simply execute the ``publish`` command as a cron-job periodically, so that the
+cache system will always publish automatically after a certain period of time.
+
+This is safe to do since you cannot run the ``publish`` command multiple times
+simultaneously. Running the management script will terminate any script what
+might be running at the moment and will then continue to execute.
+
+The button can be removed even with the cache system still being activated by
+setting the settings variable :settings:`CACHE_PUBLISH_ENABLED` to ``False``.

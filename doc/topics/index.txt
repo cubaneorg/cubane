@@ -1,6 +1,6 @@
-============
-Using Cubane
-============
+======
+Topics
+======
 
 We will discuss key topics on how to use Cubane effectively. This section
 provides an in-depth understanding of various topics, like how to work with

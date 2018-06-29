@@ -1,5 +1,5 @@
 .. _topics/deploy:
 
-================
-Deploying Cubane
-================
+==========
+Deployment
+==========

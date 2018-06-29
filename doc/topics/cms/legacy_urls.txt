@@ -1,0 +1,78 @@
+.. _topics/cms/legacy_urls:
+
+===========
+Legacy URLs
+===========
+
+A legacy URL is an alternative URL for any given CMS page or other entity for
+which a URL exists.
+
+For example let's assume that we have a CMS page with the title ``Hello`` and
+the URL ``/hello/`` on our website example.com. Then the ``Hello`` page will
+come up whenever we visit https://www.example.com/hello/.
+
+Lets assume that we are rebuilding an existing site and that a similar (or the
+exact page) existed before. Unfortunately the page used to be called
+``Welcome`` with the URL ``/pages/welcome.html``.
+
+In order to hook this up correctly, we can create a legacy URL for our new page
+``Hello`` with a legacy URL of ``/pages/welcome.html``. Then any request that
+is being made to ``https://www.example.com/pages/welcome.html`` is
+automatically issuing a permanent redirect (301) to
+``https://www.example.com/hello/``.
+
+.. note::
+
+    All legacy URLs must start with ``/`` and must not include a domain name.
+
+For default entities such as CMS pages or shop product pages, legacy URLs are
+declared via the backend system and will work automatically.
+
+The legacy URL system as part of the CMS system is designed to construct a
+query based on the property with the name ``legacy_url``. If you add your own
+entities to the system with the support for legacy URLs, then you need to add
+the following property to your model:
+
+.. code-block:: python
+
+    legacy_url = models.CharField(
+        verbose_name='Legacy Url',
+        max_length=255,
+        null=True,
+        blank=True,
+        db_index=True,
+        help_text='Legacy document path or full URL. Provide the legacy ' + \
+                  'URL to this page; how it was used to be named on ' + \
+                  'the old site.'
+    )
+
+Cubane provides a mix-in class for you that you can simply use instead, for
+example:
+
+.. code-block:: python
+
+    from cubane.models import DateTimeBase
+    from cubane.models.mixin import LegacyUrlMixin
+
+    class MyEntity(DateTimeBase, LegacyUrlMixin):
+        ...
+
+In addition, the CMS system needs to know for which models legacy URLs are
+supported. You can simply override the method
+:meth:`cubane.cms.views.CMS.get_legacy_url_models` on the
+:class:`cubane.cms.views.CMS` class in the following way:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+    from myapp.models import MyCustomPageModel
+
+    class MyCMS(CMS):
+        def get_legacy_url_models(self):
+            return super(MyCMS, self).get_legacy_url_models() + [
+                MyCustomPageModel
+            ]
+
+By adding your model class ``MyCustomPageModel`` to the list of supported model
+classes for legacy URLs, the system will automatically start querying your
+model as well in case a legacy URL needs to be resolved.

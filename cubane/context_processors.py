@@ -89,7 +89,7 @@ def backend(request):
 
             # cache
             context.update({
-                'cms_cache_enabled': settings.CACHE_ENABLED
+                'cms_cache_enabled': settings.CACHE_ENABLED and settings.CACHE_PUBLISH_ENABLED
             })
             if settings.CACHE_ENABLED:
                 from cubane.cms.cache import Cache

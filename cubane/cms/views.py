@@ -32,6 +32,7 @@ from cubane.media.models import Media
 from cubane.media.views import load_media_gallery, save_media_gallery
 from cubane.media.views import get_img_tags
 from cubane.backend.views import BackendSection
+from cubane.backend.api import LinkBuilder
 from cubane.lib.url import normalise_slug, get_protocol, make_absolute_url
 from cubane.lib.module import get_class_from_string
 from cubane.lib.module import register_class_extensions

@@ -1973,8 +1973,8 @@ Please read more about Cubane's CMS system within the :ref:`topics/cms` section.
 ``CACHE_ENABLED``
 
     Cubane's CMS system provides a full page cache system that will speed up
-    page loads drastically. Cubane's cache system is designed by bypass the
-    executing of WSGI, python, and Django all together for most of a website's
+    page loads drastically. Cubane's cache system is designed to bypass the
+    execution of WSGI, python, and Django all together for most of a website's
     content.
 
     The cache system is enabled by default:
@@ -1982,6 +1982,24 @@ Please read more about Cubane's CMS system within the :ref:`topics/cms` section.
     .. code-block:: python
 
         CACHE_ENABLED = True
+
+
+.. settings:: CACHE_PUBLISH_ENABLED
+
+``CACHE_PUBLISH_ENABLED``
+
+    By default, a publish button is presented via the backend system that allows
+    content editors to trigger the regeneration of the cache system manually.
+
+    Even with the cache system still active, the publish button can be disabled.
+
+    The publish button is enabled by default and is shown within the backend
+    system whenever the cached data must be re-generated because content
+    potentially changed.
+
+    .. code-block:: python
+
+        CACHE_PUBLISH_ENABLED = True
 
 
 .. settings:: PAGE_HIERARCHY

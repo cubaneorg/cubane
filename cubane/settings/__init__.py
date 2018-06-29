@@ -494,6 +494,7 @@ def default_env(
     # Static and cache
     #
     m.CACHE_ENABLED = True
+    m.CACHE_PUBLISH_ENABLED = True
     m.STATIC_URL = '/static/'
     m.PUBLIC_HTML_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', 'public_html'))
     m.CACHE_ROOT = os.path.join(m.PUBLIC_HTML_ROOT, 'cache')

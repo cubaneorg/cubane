@@ -1,8 +1,8 @@
 .. _topics/resources:
 
-======================
-Working with Resources
-======================
+=========
+Resources
+=========
 
 Static assets are usually under the control of a developer and can be managed
 by Cubane's resource management system.
@@ -156,16 +156,10 @@ You declare resource buckets in your *application settings*, for example:
     RESOURCES = {
         'frontend': [
             'cubane.lightbox',
-            'myApp',
+            'myApp'
         ],
         'inline': [
-            'cubane.medialoader',
-        ],
-        'backend': [
-            ...
-        ],
-        'backend-inline': [
-            'cubane.medialoader',
+            'cubane.medialoader'
         ]
     }
 
@@ -178,18 +172,29 @@ apps ``cubane.lightbox`` and ``myApp`` combined, in that order.
     will process, combine and minify all resources from all apps in the order
     as specified.
 
-The bucket ``inline`` and ``backend-inline`` respectively contain the resources
-from only one app, which is ``cubane.medialoader``. The media loader is
-responsible for *lazy-loading* images and is therefore given its own bucket in
-order to inline its code into the website markup directly for better
-performance. You can read more about Cubane's media system within the
-:ref:`topics/media` section.
+The bucket ``inline`` only contains the resources from only one app, which is
+``cubane.medialoader``. The media loader is responsible for *lazy-loading*
+images and is therefore given its own bucket in order to inline its code into
+the website markup directly for better performance. You can read more about
+Cubane's media system within the :ref:`topics/media` section.
 
 .. note::
 
     The buckets ``backend`` and ``backend-inline`` are reserved for Cubane's
     default backend system. Apart from those, you can declare as many buckets
-    as you need.
+    as you need. If those reserved buckets are declared, then their content is
+    being added to the default resources that are loaded by the backend system.
+
+    For example, the following settings would load additional resources into
+    the resource bucket that is used by the backend system.
+
+    .. code-block:: python
+
+        RESOURCES = {
+            'backend': [
+                'myApp.backend_extensions'
+            ]
+        }
 
 
 
@@ -653,6 +658,32 @@ the file via an absolute path to the *media* folder.
 
 
 
+.. _topics/resources/external_resources:
+
+Declaring External Resources
+============================
+
+Usually, resources would become part of your code base and you would always
+refer to local files; however, sometimes you would want to include resources
+from external web servers.
+
+For this reason, resources can be declared by simply specifying an absolute URL, for example
+
+.. code-block:: python
+
+    RESOURCES = [
+        'https://example.com/files/js/calendar.js',
+        ...
+    ]
+
+In this example, the pipeline would automatically download the file
+``/files/js/calendar.js`` from example.com at deployment time. The downloaded
+file would then become part of the resource bucket which is ultimately minified
+together with other javascript resources.
+
+
+
+
 .. _topics/resources/pattern_expansion:
 
 Pattern Expansion
@@ -824,14 +855,3 @@ sources that are using RequireJS as a module loader.
     Please refer to the
     `RequireJS Documentation <http://requirejs.org/docs/start.html>` for more
     information on RequireJS.
-
-
-
-
-.. _topics/resources/extension:
-
-Extending the Resource System
-=============================
-
-TODO: Describe hooks that can be used to tap into the resource system, like the
-font system is doing it.

@@ -1,8 +1,8 @@
 .. _topics/svgicons:
 
-======================
-Working with SVG Icons
-======================
+=========
+SVG Icons
+=========
 
 SVG images are incredibly useful: They are small in size, scale to any size and
 their appearance is always crystal-sharp regardless of the device.

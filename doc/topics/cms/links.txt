@@ -1,0 +1,46 @@
+.. _topics/cms/links:
+
+=====
+Links
+=====
+
+When editing CMS slot content, the CMS content editor allows for links to be
+inserted into the document. A link may simply refer to an external URL.
+However, internal URLs are usually referred to by reference.
+
+This way if the URL for a page ever changed then all links to that page would
+simply continue to work since all links are simply referencing the underlying
+entity which did not change.
+
+When creating a link by using the backend system, the user would select the
+target page or entity by using drop down menus or browse buttons to chose a
+target item. This will then generate a link address in the following format:
+
+.. parsed-literal::
+
+    #link[<model-name>:<primary-key>]
+
+Where ``<model-name>`` refers to the name of the model that represents the
+entity and ``<primary-key>`` refers to the primary key of the entity.
+
+When rendering CMS content, content links in this format are automatically
+substituted with the full URL of the resolved entity.
+
+In order for this system to work for custom entities, you can register
+additional model classes to support CMS links.
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+    from myapp.models import MyCustomPageModel
+
+    class MyCMS(CMS):
+        def on_object_links(self, links):
+            links.add(MyCustomPageModel, MyCustomPageModel.objects.all())
+
+By overriding the method :meth:`cubane.cms.views.CMS.on_object_links` of the
+:class:`cubane.cms.views.CMS` class, additional model classes can be added to
+support linking. The first argument of the
+:meth:`cubane.cms.views.LinkBuilder.add` method of the
+:class:`cubane.cms.views.LinkBuilder` class takes the model class, the second
+argument represents a query-set on which basis a legacy URL is determined.

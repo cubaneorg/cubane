@@ -1,8 +1,8 @@
 .. _topics/media:
 
-==================
-Working with Media
-==================
+=====
+Media
+=====
 
 Media represents user content such as images and documents that were uploaded
 to the website to be presented on some page or is associated with a page or any
