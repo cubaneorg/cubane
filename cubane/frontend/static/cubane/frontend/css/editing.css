@@ -2,14 +2,59 @@
  * Panel
  */
 .cubane-frontend-panel {
+    display: flex;
+    justify-content: flex-end;
     position: fixed;
     bottom: 0;
+    left: 0;
     right: 0;
-    width: 140px;
     height: 80px;
-    background-color: #374142;
-    padding: 15px;
     z-index: 100001;
+}
+
+.cubane-frontend-panel .cubane-frontend-button {
+    height: 43px;
+    margin-right: 20px;
+    font-size: 16px;
+}
+
+.cubane-frontend-panel .cubane-frontend-button:last-child {
+    margin-right: 0;
+}
+
+.cubane-frontend-shortcut-create-panel,
+.cubane-frontend-shortcut-edit-panel {
+    padding: 17px 20px 20px 20px;
+    border-top: 3px solid #364242;
+    background-color: rgba(55, 54, 66, 0.85);
+}
+
+.cubane-frontend-edit-panel  {
+    padding: 15px;
+}
+
+.cubane-frontend-shortcut-edit-panel {
+    flex: 1;
+}
+
+.cubane-frontend-edit-panel {
+    background-color: #374142;
+    margin-left: 10px;
+}
+
+.cubane-frontend-edit-shortcut-label {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 40px;
+    margin-right: 20px;
+    height: 43px;
+    line-height: 43px;
+    color: white;
+    background-image: url('/static/cubane/frontend/img/edit-button-highlight.svg');
+    background-repeat: no-repeat;
+    background-size: 26px 26px;
+    background-position: center left 10px;
 }
 
 
@@ -18,10 +63,10 @@
  */
 .cubane-frontend-edit-button {
     display: block;
-    font-size: 22px;
-    line-height: 50px;
-    height: 50px;
     width: 100%;
+    height: 50px !important;
+    font-size: 22px !important;
+    line-height: 50px !important;
     padding: 0 10px 0 40px;
     background-image: url('/static/cubane/frontend/img/edit-button.svg');
     background-repeat: no-repeat;

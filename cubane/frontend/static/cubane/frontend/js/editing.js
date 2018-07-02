@@ -232,11 +232,11 @@
     /*
      * Create edit panel
      */
-    function createEditPanel() {
+    function createPanel(parentElement, cssClass) {
         var panel = document.createElement('div');
         panel.classList.add('cubane-frontend');
-        panel.classList.add('cubane-frontend-panel');
-        document.body.appendChild(panel);
+        panel.classList.add(cssClass);
+        parentElement.appendChild(panel);
         return panel;
     }
 
@@ -257,7 +257,8 @@
      * Create edit button
      */
     function createEditButton(panel) {
-        var btn = createButton('Edit');
+        var editLabel = document.querySelector('body').getAttribute('data-edit-label') || 'Edit';
+        var btn = createButton(editLabel);
         btn.classList.add('cubane-frontend-edit-button');
         btn.title = 'Enter Edit Mode';
 
@@ -293,9 +294,99 @@
      */
     function createControls() {
         slotContainer = createSlotContainer();
-        panel = createEditPanel();
-        btnEdit = createEditButton(panel);
-        $('body').addClass('cubane-frontend-editing');
+        panel = createPanel(document.body, 'cubane-frontend-panel');
+
+        if (isPageEditable()) {
+            // create buttons
+            var shortcutCreatePanel = createPanel(panel, 'cubane-frontend-shortcut-create-panel');
+            if (!createShotcutCreateButtons(shortcutCreatePanel)) {
+                shortcutCreatePanel.parentNode.removeChild(shortcutCreatePanel);
+            }
+
+            // shortcut edit buttons
+            var shortcutEditPanel = createPanel(panel, 'cubane-frontend-shortcut-edit-panel');
+            if (!createShotcutEditButtons(shortcutEditPanel)) {
+                shortcutEditPanel.parentNode.removeChild(shortcutEditPanel);
+            }
+        }
+
+        // main edit button
+        var editPanel = createPanel(panel, 'cubane-frontend-edit-panel');
+        btnEdit = createEditButton(editPanel);
+
+        document.querySelector('body').classList.add('cubane-frontend-editing');
+    }
+
+
+    /*
+     * Create shortcut create buttons
+     */
+    function createShotcutCreateButtons(panel) {
+        var elements = document.querySelectorAll('[create]');
+        var hasBtns = false;
+        for (var i = 0; i < elements.length; i++) {
+            var ref = getCreateReference(elements[i]);
+            if (ref && ref.title && ref.url) {
+                hasBtns = true;
+                createShortcutCreateButton(panel, ref);
+            }
+        }
+
+        return hasBtns;
+    }
+
+
+    /*
+     * Create shortcut create button
+     */
+    function createShortcutCreateButton(panel, ref) {
+        var btn = createButton(ref.title);
+        btn.classList.add('cubane-frontend-create-shortcut-button');
+        btn.title = ref.title;
+        btn.setAttribute('create', getCreateReferenceString(ref));
+        btn.addEventListener('click', onShortcutCreateButtonClicked);
+        panel.appendChild(btn);
+        return btn;
+    }
+
+
+    /*
+     * Create shortcut edit buttons
+     */
+    function createShotcutEditButtons(panel) {
+        // label
+        var label = document.createElement('label');
+        label.classList.add('cubane-frontend-edit-shortcut-label');
+        label.innerText = 'Edit';
+        panel.appendChild(label);
+
+        // buttons
+        var elements = document.querySelectorAll('[edit]');
+        var hasBtns = false;
+        for (var i = 0; i < elements.length; i++) {
+            var ref = getSlotReference(elements[i]);
+            if (ref && ref.shortcut && ref.helpText) {
+                hasBtns = true;
+                createShortcutEditButton(panel, ref);
+            }
+        }
+
+        return hasBtns;
+    }
+
+
+    /*
+     * Create shortcut edit button
+     */
+    function createShortcutEditButton(panel, ref) {
+        var btn = createButton(ref.helpText);
+        btn.classList.add('cubane-frontend-edit-shortcut-button');
+        btn.classList.add('cubane-frontend-secondary-button');
+        btn.title = ref.helpText;
+        btn.setAttribute('edit', getSlotReferenceString(ref));
+        btn.addEventListener('click', onShortcutEditButtonClicked);
+        panel.appendChild(btn);
+        return btn;
     }
 
 
@@ -534,6 +625,36 @@
 
 
     /*
+     * Clicking on shortcut create button
+     */
+    function onShortcutCreateButtonClicked(e) {
+        e.preventDefault();
+
+        enterEditMode();
+
+        var ref = getCreateReference(e.target);
+        var url = getCreateReferenceUrl(ref);
+
+        openDialog(url);
+    }
+
+
+    /*
+     * Clicking on shortcut edit button
+     */
+    function onShortcutEditButtonClicked(e) {
+        e.preventDefault();
+
+        enterEditMode();
+
+        var ref = getSlotReference(e.target);
+        var url = getSlotReferenceUrl(ref);
+
+        openDialog(url);
+    }
+
+
+    /*
      * Data saved
      */
     function onDataSaved() {
@@ -561,6 +682,38 @@
 
 
     /*
+     * Parse create reference
+     */
+    function getCreateReference(element) {
+        var create = element.getAttribute('create');
+        var parts = create.split('|');
+        return {
+            'title': parts[0],
+            'url': parts[1]
+        };
+    }
+
+
+    /*
+     * Reencode create reference
+     */
+    function getCreateReferenceString(ref) {
+        return ref.title + '|' + ref.url
+    }
+
+
+    /*
+     * Return the edit url for the given slot reference
+     */
+    function getCreateReferenceUrl(ref) {
+        return (
+            ref.url +
+            '&frontend-editing=true&index-dialog=true'
+        );
+    }
+
+
+    /*
      * Parse the slot reference of the given markup element and return its
      * components.
      */
@@ -568,12 +721,31 @@
         var edit = element.getAttribute('edit');
         var parts = edit.split('|');
 
+        var model = parts[0];
+        var shortcut = model.charAt(0) == '!';
+        if (shortcut) model = model.substr(1);
+
         return {
-            'model': parts[0],
+            'model': model,
             'pk': parts[1],
             'propertyName': parts[2],
-            'helpText': parts.length >= 4 ? parts[3] : undefined
+            'helpText': parts.length >= 4 ? parts[3] : undefined,
+            'shortcut': shortcut
         };
+    }
+
+
+    /*
+     * Reencode slot reference
+     */
+    function getSlotReferenceString(ref) {
+        return (
+            (ref.shortcut ? '!' : '') +
+            ref.model + '|' +
+            ref.pk + '|' +
+            ref.propertyName + '|' +
+            ref.helpText
+        );
     }
 
 

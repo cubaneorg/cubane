@@ -18,3 +18,12 @@
     background-color: #fff;
     color: #2574b7;
 }
+
+
+/*
+ * Secondary button
+ */
+.cubane-frontend-secondary-button {
+    background-color: #374142;
+    border: 1px solid #f49c3a;
+}

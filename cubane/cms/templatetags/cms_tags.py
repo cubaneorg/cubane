@@ -185,7 +185,7 @@ def render_meta_tag(name, value):
         return ''
 
 
-def get_edit_reference(request, instance, property_names, help_text=None):
+def get_edit_reference(request, instance, property_names, help_text=None, shortcut=False):
     """
     Return reference information about editing the given list of properties for the
     given object instance.
@@ -205,7 +205,8 @@ def get_edit_reference(request, instance, property_names, help_text=None):
                                     help_text = field.help_text
 
                     # construct reference
-                    return '%s|%s|%s%s' % (
+                    return '%s%s|%s|%s%s' % (
+                        '!' if shortcut else '',
                         model_to_hash(instance.__class__),
                         instance.pk,
                         ':'.join(property_names),
@@ -420,11 +421,12 @@ class EditNode(template.Node):
     """
     Renders additional information that enables frontend editing.
     """
-    def __init__(self, reference, property_names, help_text, css_class=None, nodelist=None):
+    def __init__(self, reference, property_names, help_text, css_class=None, shortcut=False, nodelist=None):
         self.reference = reference
         self.property_names = property_names
         self.help_text = help_text
         self.css_class = css_class
+        self.shortcut = shortcut
         self.nodelist = nodelist
 
 
@@ -446,7 +448,7 @@ class EditNode(template.Node):
                 property_names = filter(lambda x: x, property_names)
 
             # get edit reference
-            ref = get_edit_reference(request, instance, property_names, help_text)
+            ref = get_edit_reference(request, instance, property_names, help_text, self.shortcut)
             if ref:
                 if self.nodelist is not None:
                     inner_content = self.nodelist.render(context)
@@ -893,7 +895,7 @@ def cms_content(context, content, headline_transpose=0, image_shape=None):
     return mark_safe(content)
 
 
-def edit_or_compose(parser, token):
+def edit_or_compose(parser, token, shortcut=False):
     """
     Edit or compose template tags:
     following format:
@@ -929,11 +931,14 @@ def edit_or_compose(parser, token):
     if tag_name == 'compose':
         nodelist = parser.parse(('endcompose',))
         parser.delete_first_token()
+    elif tag_name == 'compose!':
+        nodelist = parser.parse(('endcompose!',))
+        parser.delete_first_token()
     else:
         nodelist = None
 
     # edit node
-    return EditNode(reference, property_names, help_text, css_class, nodelist)
+    return EditNode(reference, property_names, help_text, css_class, shortcut, nodelist)
 
 
 @register.tag('edit')
@@ -948,6 +953,18 @@ def edit(parser, token):
     return edit_or_compose(parser, token)
 
 
+@register.tag('edit!')
+def edit_shortcut(parser, token):
+    """
+    Inject additional hidden information that is used for frontend editing:
+
+    {% edit! object.property %} or
+    {% edit! object 'property' %} or
+    {% edit! object 'property1, property2...' %}"
+    """
+    return edit_or_compose(parser, token, shortcut=True)
+
+
 @register.tag('compose')
 def compose(parser, token):
     """
@@ -959,6 +976,19 @@ def compose(parser, token):
     {% endcompose %}
     """
     return edit_or_compose(parser, token)
+
+
+@register.tag('compose!')
+def compose_shortcut(parser, token):
+    """
+    Inject additional hidden information that is used for frontend editing by
+    wrapping the containing content into a separate 'div' tag:
+
+    {% compose! object.property %}
+        ...
+    {% endcompose %}
+    """
+    return edit_or_compose(parser, token, shortcut=True)
 
 
 @register.simple_tag()
