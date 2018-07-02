@@ -57,6 +57,18 @@
     background-position: center left 10px;
 }
 
+.cubane-frontend-create-shortcut-button {
+    padding-left: 30px;
+    background-image: url('/static/cubane/frontend/img/create.svg');
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: center left 10px;
+}
+
+.cubane-frontend-create-shortcut-button:hover {
+    background-image: url('/static/cubane/frontend/img/create-hover.svg');
+}
+
 
 /*
  * Main edit button
