@@ -87,7 +87,7 @@ def value_or_literal(name, context):
         try:
             return Variable(name).resolve(context)
         except VariableDoesNotExist:
-            return name
+            return None
 
 
 def value_or_none(name, context):

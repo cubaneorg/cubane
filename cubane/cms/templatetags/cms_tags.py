@@ -75,6 +75,9 @@ def rewrite_images(content, images, render_image, noscript=False, image_shape=se
     """
     Rewrite img tags to the responsive format for fast responsive websites.
     """
+    if image_shape not in settings.IMAGE_SHAPES:
+        image_shape = 'original'
+
     def rewrite_image(match):
         s = match.group(1)
 
@@ -235,7 +238,7 @@ class SlotNode(template.Node):
 
         # make sure that this slot actually exists
         if slotname not in settings.CMS_SLOTNAMES:
-            return template_error("Slot '%s' does not exist" % slotname)
+            return template_error("Slot '%s' does not exist (referenced via %s)" % (slotname, self.slotname))
 
         # switch page to child_page if present
         if child_page:
@@ -312,6 +315,18 @@ class ChildPagesNode(template.Node):
         """
         Render list of child pages for the current page.
         """
+        def _get_post_template(prefix, slug):
+            t = None
+            template_filename = 'cubane/cms/%s/%s.html' % (prefix, slug)
+
+            try:
+                if slug:
+                    t = get_template(template_filename)
+            except TemplateDoesNotExist:
+                pass
+
+            return t, template_filename
+
         page = value_or_none('page', context)
         child_page_slug = value_or_literal(self.child_page_slug, context)
         child_pages = None
@@ -325,13 +340,9 @@ class ChildPagesNode(template.Node):
 
         if child_pages:
             # resolve template for rendering entities
-            t = None
-            template_filename = 'cubane/cms/child_pages/%s.html' % child_page_slug
-            try:
-                if child_page_slug:
-                    t = get_template(template_filename)
-            except TemplateDoesNotExist:
-                pass
+            t, template_filename = _get_post_template('posts', child_page_slug)
+            if t is None:
+                t, template_filename = _get_post_template('child_pages', child_page_slug)
 
             # if we cannot find the template, tell the user about it
             if t == None:
@@ -495,6 +506,18 @@ def child_pages(parser, token):
         entity_slug = bits[2]
 
     return ChildPagesNode(entities, entity_slug)
+
+
+@register.tag('posts')
+def posts(parser, token):
+    """
+    Renders a list of posts, such as projects that belong to the
+    current page. This is a replacement of the child_pages template tag, in
+    order to replace the term child-page.
+
+    Syntax: {% posts [<posts>] [post_slug] %}
+    """
+    return child_pages(parser, token)
 
 
 @register.tag('contact_map')
@@ -719,7 +742,7 @@ def meta_title(context, page=None):
     if page == None:
         page = context.get('current_page')
 
-    settings = context.get('settings')
+    cms_settings = context.get('settings')
     if page:
         if isinstance(page, basestring):
             title = page
@@ -728,18 +751,20 @@ def meta_title(context, page=None):
 
         if title:
             title = title.strip()
-            if settings:
-                if settings.meta_name:
-                    meta_name = settings.meta_name
+            if cms_settings:
+                if cms_settings.meta_name:
+                    meta_name = cms_settings.meta_name
                 else:
-                    meta_name = settings.name
+                    meta_name = cms_settings.name
 
-                if meta_name and not title.endswith(meta_name):
-                    title += ' | ' + meta_name.strip()
+                if meta_name:
+                    meta_name = meta_name.strip()
+                    if not title.endswith(meta_name):
+                        title += settings.CMS_META_TITLE_SEPARATOR + meta_name.strip()
 
             return title
-    elif settings and settings.name:
-        return settings.name.strip()
+    elif cms_settings and cms_settings.name:
+        return cms_settings.name.strip()
 
     return ''
 

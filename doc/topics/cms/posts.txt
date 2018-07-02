@@ -1,0 +1,176 @@
+.. _topics/cms/posts:
+
+=====
+Posts
+=====
+
+A post is like a page but while a page may exist by itself a post is always
+assigned to a page and cannot exist by itself without a page as its parent.
+
+Usually many posts are assigned to the same page.
+
+This pattern can be found in many different scenarios such as blog posts,
+services, case studies, news articles etc.
+
+In order to use posts, a new type of post must be declared first. We will
+create a new class describing news articles. The idea is that we can then
+assign all news articles to a particular *News* page that is dedicated to list
+all news -- although there is no reason why you could not have multiple pages
+that are *hosting* news posts.
+
+.. code-block:: python
+
+    from cubane.cms.models import Post
+
+    class NewsArticle(Post):
+        class Meta:
+            ordering = ['-published_on']
+
+        @classmethod
+        def get_form(cls):
+            from myapp.forms import NewsArticleForm
+            return NewsArticleForm
+
+The model is declared like a page but derived from
+:class:`cubane.cms.models.Post` instead of
+:class:`cubane.cms.models.BaseAbstract`. The default ordering is based on
+``published_on``, so that *newest* articles are naturally presented first.
+
+Like a page, the news article model also requires the declaration of a
+corresponding form:
+
+.. code-block:: python
+
+    from cubane.cms.forms import PostForm
+
+    class NewsArticleForm(PostForm):
+        class Meta:
+            model = NewsArticle
+            fields = '__all__'
+
+And that's it. The content management system will automatically generate the
+corresponding sections in the backend system to manage news articles.
+
+In order to use them, at least one page needs to be created and configured to
+*host* news articles. Once this has been done, any number of news articles can
+be assigned to such page.
+
+.. seealso::
+
+    Posts share most properties of regular pages. Please refer to section
+    :ref:`topics/cms/pages` for more information about pages.
+
+
+
+
+.. _topics/cms/posts/post_listing:
+
+Post Listing
+============
+
+When rendering a page, a number of additional template variables will be made
+available automatically if the page has one or more posts assigned to it:
+
+``posts``
+
+    A queryset describing a list of all posts that are assigned to the current
+    page and are not disabled.
+
+``paged_posts``
+
+    A default pagination object that provides a paged view onto all posts that
+    are assigned to the current page. Pagination options such as page size can
+    be configured through the backend system by content editors.
+
+``post_slug``
+
+    The name of the underlying post class as a slug value. This may be used in
+    combination with the ``{% posts %}`` template tag as part of the
+    ``cms_tags`` template library as described in this section.
+
+The template tag ``{% posts %}`` can render a list of all posts (if any) as a
+paginated list of records. If the ``{% posts %}`` template tag is used then a
+new template file must be created that matches the name of the corresponding
+post class (as a slug)::
+
+    cubane/cms/posts/<post_slug>.html
+
+Replace the term ``<post_slug>`` with the slug of the name of the class that
+represents a post. Then the template should render a paginated list of items.
+For example, if slug for our class ``NewsArticle`` is ``newsarticle``,
+therefore we would need to create the following template file::
+
+    cubane/cms/posts/newsarticle.html
+
+The base template `cubane/cms/posts/base.html` can be extended to simplify the
+structure:
+
+.. code-block:: html+django
+
+    {% extends 'cubane/cms/posts/base.html' %}
+    {% load media_tags %}
+
+    {% block listing %}
+       {% if posts %}
+    	   <div class="posts">
+   		       {% for post in posts %}
+	   		       <a class="post" href="{{ post.url }}" title="{{ post.title }}">
+    	   		       <div class="post-title">{{ post.title }}</div>
+                       <div class="post-excerpt">{{ child_page.excerpt }}</div>
+		           </a>
+	           {% endfor %}
+	       </div>
+       {% endif %}
+    {% endblock %}
+
+The base template renders markup related to pagination while the ``listing``
+block can be overridden in order to customise the structure of each post.
+
+Usually, a link is rendered for each post, containing the title and a short
+excerpt text.
+
+.. note::
+
+    You do not necessarily have to follow this pattern, but keep in mind that
+    content editors can configure via the CMS settings if and how the listing
+    for a particular type of posts is paginated and your solution should
+    respect such configuration.
+
+
+
+
+.. _topics/cms/posts/post_urls:
+
+Post URLs
+=========
+
+The URL of a post is the combination of the slug of the corresponding page and
+the post itself. For example, if the page has the slug ``news`` and a
+particular post has the slug ``my-first-post`` then the resulting URL for the
+post is::
+
+    /news/my-first-post/
+
+Please note that changing page ownership for a post consequently changes the
+URL of the post.
+
+The URL pattern is different if the *hosting* page is the homepage: Then the
+resulting URL for the post with the slug ``my-first-post`` is::
+
+    /my-first-post/
+
+You cannot create two posts with the same slug that are assigned to the same
+page. Also, if the assigned page is the homepage, the slug cannot match any
+existing page either.
+
+
+
+
+.. _topics/cms/posts/posts_in_nav:
+
+Posts in Navigation
+===================
+
+The n navigation system provides a mechanism by which posts can also be
+integrated into the navigation system. Please refer to section
+:ref:`topics/cms/navigation/nav_item_posts` for more information.

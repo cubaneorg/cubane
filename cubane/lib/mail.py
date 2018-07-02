@@ -63,13 +63,14 @@ def cubane_send_mail_no_html(to, subject, text, attachments=None):
     msg.send()
 
 
-def cubane_send_mail(to, subject, html, attachments=None):
+def cubane_send_mail(to, subject, html, attachments=None, cc=None, bcc=None):
     """
     Send an email to the given recepient with given subject line and html
     content.
     """
     if 'cubane.cms' not in settings.INSTALLED_APPS:
         raise ValueError('cubane.cms required for sending cms page emails.')
+
     from cubane.cms.views import get_cms
     cms = get_cms()
 
@@ -85,7 +86,9 @@ def cubane_send_mail(to, subject, html, attachments=None):
         headers={
             'Reply-To': cms.settings.enquiry_reply,
             'From': cms.settings.enquiry_from
-        }
+        },
+        cc=cc,
+        bcc=bcc
     )
     msg.attach_alternative(html, 'text/html')
 
@@ -115,7 +118,7 @@ def cubane_send_mail_template(request, to, subject, template, template_context, 
     cubane_send_mail(to, subject, html, attachments)
 
 
-def cubane_send_cms_mail(request, to, subject, page, context=None):
+def cubane_send_cms_mail(request, to, subject, page, context=None, cc=None, bcc=None):
     """
     Send an email to the given recepient with given subject line.
     The email is send from the sender that is configured in the
@@ -131,7 +134,7 @@ def cubane_send_cms_mail(request, to, subject, page, context=None):
     html = cms.render_page(page, request=None, additional_context=context).content
 
     # send email
-    cubane_send_mail(to, subject, html)
+    cubane_send_mail(to, subject, html, cc=cc, bcc=bcc)
 
 
 def cubane_send_cms_enquiry_mail(request, to, subject, context=None):

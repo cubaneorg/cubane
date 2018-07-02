@@ -109,6 +109,9 @@ class EditableContentMixin(models.Model):
         """
         Sets the content of the slot with the given name for this page.
         """
+        if slotname not in settings.CMS_SLOTNAMES:
+            return
+
         data = self.get_data()
 
         # enforce dict
@@ -130,11 +133,23 @@ class EditableContentMixin(models.Model):
         """
         Return the html content of the slot with the given name for this page.
         """
+        if slotname not in settings.CMS_SLOTNAMES:
+            return ''
+
         data = self.get_data()
         if not data or not isinstance(data, dict):
             return ''
         else:
             return data.get(slotname, '')
+
+
+    def get_combined_slot_content(self, slotnames):
+        """
+        Return the html content of the given list of slots combined.
+        """
+        content = [self.get_slot_content(slotname) for slotname in slotnames]
+        content = filter(lambda x: x, content)
+        return ' '.join(content)
 
 
     def slotnames_with_content(self):
@@ -465,12 +480,12 @@ class PageBase(
             self._cached_gallery = list([m.media for m in media])
 
         return self._cached_gallery
-        
-        
+
+
     @property
     def page_path(self):
         """
-        Returns a list of all pages with in a hierarchy starting with root element. 
+        Returns a list of all pages with in a hierarchy starting with root element.
         """
         items = []
         p = self
@@ -838,12 +853,12 @@ class ChildPage(PageBase):
         title since there is no way to change the navigation title.
         """
         return self.title
-        
-    
+
+
     @property
     def page_path(self):
         """
-        Returns a list of all pages with in a hierarchy starting with root element. 
+        Returns a list of all pages with in a hierarchy starting with root element.
         """
         if self.page is not None:
             return self.page.page_path + [self]
@@ -870,6 +885,16 @@ class ChildPage(PageBase):
             return get_absolute_url('cubane.cms.page', [slug], path_only=path_only)
         else:
             return None
+
+
+class Post(ChildPage):
+    """
+    The name ChildPage is confusing in relation to page hierarchies, which is
+    why we are introducing a separate name 'Post' for this concept all
+    together. It also makes clear that a page may have many posts.
+    """
+    class Meta:
+        abstract = True
 
 
 class EntityManager(models.Manager):

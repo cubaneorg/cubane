@@ -57,9 +57,9 @@ class LibValueOrLiteralTestCase(CubaneTestCase):
         self.assertEqual(value_or_literal('test', c), 1)
 
 
-    def test_should_return_name(self):
+    def test_should_return_none_if_variable_does_not_exist(self):
         c = Context({'test': 1})
-        self.assertEqual(value_or_literal('name', c), 'name')
+        self.assertEqual(value_or_literal('name', c), None)
 
 
 class LibValueOrNoneTestCase(CubaneTestCase):

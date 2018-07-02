@@ -252,6 +252,18 @@ class CmsPageFormBaseTestCase(CmsFormsTestCase):
         self.assertEqual({'identifier': [PageForm.ERROR_IDENTIFIER_COLLISION]}, form.errors)
 
 
+    @override_settings(PAGE_HIERARCHY=False)
+    def test_should_hide_parent_page_field_if_no_hierarchy_is_enabled(self):
+        form = self._create_form(slug='test', edit=False)
+        self.assertFalse('parent' in form.fields)
+
+
+    @override_settings(PAGE_HIERARCHY=True)
+    def test_should_show_parent_page_field_if_hierarchy_is_enabled(self):
+        form = self._create_form(slug='test', edit=False)
+        self.assertTrue('parent' in form.fields)
+
+
     def _create_form(self, page=None, edit=False, is_duplicate=False, slug='page', identifier=None):
         form = PageForm({
             'slug': slug,

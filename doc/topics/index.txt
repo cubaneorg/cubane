@@ -12,15 +12,15 @@ follow up on more and more details based on things discussed before.
 .. toctree::
     :maxdepth: 1
 
+    modules
     resources
     fonts
     svgicons
     media
     settings
     backend/index
-    cms
+    cms/index
     enquiry
-    cache
     favicons
     deploy
     pull

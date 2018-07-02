@@ -45,8 +45,26 @@ class CMSModelsEditableContentMixinTestCase(CubaneTestCase):
 
 
     def test_get_slot_content_should_return_empty_for_non_existing_slot(self):
-        self.page.set_slot_content('content', '<h1>Test</h1>')
-        self.assertEqual('', self.page.get_slot_content('introduction'))
+        self.page.set_data({'does-not-exist': 'Foo'})
+        self.assertEqual('', self.page.get_slot_content('does-not-exist'))
+
+
+    def test_set_slot_content_should_not_allow_setting_content_for_slot_that_does_not_exist(self):
+        self.page.set_slot_content('does-not-exist', 'Foo')
+        self.assertEqual({}, self.page.get_data())
+
+
+    @override_settings(CMS_SLOTNAMES=['a', 'b'])
+    def test_get_combined_slot_content_should_return_content_of_multiple_slots_combined(self):
+        self.page.set_slot_content('a', 'Foo')
+        self.page.set_slot_content('b', 'Bar')
+        self.assertEqual('Foo Bar', self.page.get_combined_slot_content(['a', 'b']))
+
+
+    @override_settings(CMS_SLOTNAMES=['a', 'b'])
+    def test_get_combined_slot_content_should_ignore_empty_slot(self):
+        self.page.set_slot_content('a', 'Foo')
+        self.assertEqual('Foo', self.page.get_combined_slot_content(['a', 'b']))
 
 
     def test_slotnames_with_content(self):

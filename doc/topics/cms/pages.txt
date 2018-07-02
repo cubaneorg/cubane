@@ -1,0 +1,434 @@
+.. _topics/cms/pages:
+
+=====
+Pages
+=====
+
+Cubane provides a number of primitives that can be extended to support various
+structures for your content. The simplest of those structures is a page.
+
+In its simplest form, a page represents a navigable page with a title and
+content. A page has a URL and one or more content slots.
+
+When a request is made, let's say ``/about-us/``, then the content
+management system will determine what page corresponds to this url. In its
+simplest form, the URL ``/about-us/`` corresponds to the page with the slug
+``about-us``.
+
+Cubane provides a page model by default, which is
+:class:`cubane.cms.models.Page`. However, we recommend to declare your own
+page model, so that you can add additional properties to CMS pages later in
+the process.
+
+To do this, you need to following the same principal that we've applied
+when we set up the settings model.
+
+First, you need to declare a custom page model that is derived from
+:class:`cubane.cms.models.PageAbstract`:
+
+.. code-block:: python
+
+    from cubane.cms.models import PageAbstract
+
+    class CustomPage(PageAbstract):
+        # TODO: Add additional page properties here...
+
+        @classmethod
+        def get_form(cls):
+            from myapp.forms import CustomPageForm
+            return CustomPageForm
+
+Likewise a corresponding form needs to be declared:
+
+.. code-block:: python
+
+    from cubane.cms.forms import PageForm
+
+    class CustomPageForm(PageForm):
+        class Meta:
+            model = Settings
+            fields = '__all__'
+
+Finally we need to point Cubane to the exact class name that shall be used as
+the page model for the CMS via the Django's application setting variable
+:settings:`CMS_PAGE_MODEL`:
+
+.. code-block:: python
+
+    CMS_PAGE_MODEL = 'myapp.models.CustomPage'
+
+Again, the given string value is referring to the actual class that is used by
+Cubane for the page model. The path must include the full path to the class
+including modules and sub-modules.
+
+.. notes:
+
+    If you need to refer to the page model programmatically in your code, for
+    example in order to declare a foreign key then you can use
+    :func:`cubane.cms.get_page_model` or :func:`cubane.cms.get_page_model_name`
+    respectively.
+
+
+
+
+.. _topics/cms/page_templates:
+
+Page Templates
+==============
+
+When creating a CMS page in the backend system, a page template is chosen. The
+idea is that multiple ways for presenting a page can be offered to content
+editors.
+
+You may have a layout for a certain type of content and another layout for a
+different use-case.
+
+Page templates are declared via the Django application setting variable
+:settings:`CMS_TEMPLATES` in the following way:
+
+.. code-block:: python
+
+    CMS_TEMPLATES = (
+        ('myapp/page.html',         'Page'),
+        ('myapp/landing_page.html', 'Landing Page')
+    )
+
+CMS templates are declared like choices: The first column declares the path to
+the corresponding template file while the second column declares the name of
+the template as it is being presented by the backend system.
+
+.. note::
+
+    You should not change the path to a template once it has been established.
+    Changing the path will break all existing pages that are still referring to
+    the old path.
+
+
+
+
+.. _topics/cms/page_slots:
+
+Page Slots
+==========
+
+A CMS page may render a number of content slots. Each content slot can contain
+arbitrary HTML markup and can be edited by content editors through the backend
+system by using a rich *WYSIWYG* editor.
+
+Each content slot must be declared via the Django's application settings
+variable :settings:`CMS_SLOTNAMES` in the following way:
+
+.. code-block:: python
+
+    CMS_SLOTNAMES = [
+        'content',
+        'aside'
+    ]
+
+Slot names can be chosen freely, but they should be declared more or less in
+the order in which they are presented. This may have consequences for some
+aspects of CMS system, such as the automatic generation of a page's meta
+description as further described in section
+:ref:`topics/cms/page_meta_description`.
+
+Once a slot has been declared that way, it can be rendered by using the ``slot``
+render tag as part of the ``cms_tags`` template library:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <main>{% slot 'content' %}</main>
+
+            <aside>{% slot 'aside' %}</aside>
+        </body>
+    </html>
+
+In this example, the page template renders two slots, one with the name
+``content`` and one with the name ``aside``.
+
+.. note::
+
+    The matching name of the slot and its enclosing HTML tag is coincidental.
+    Slot name and enclosing markup can be chosen freely and are independent of
+    each other.
+
+The ``slot`` template tag renders a slot with the given name based on the
+current page. When editing page content via the backend system, a user may
+switch between all content slots on the page and can edit their content freely.
+
+Not all slots as declared via :settings:`CMS_SLOTNAMES` must be rendered by a
+page template. Also certain slots may not be rendered under certain
+circumstances.
+
+You can test if a slot if empty or not in the following way:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if 'content' in slots or preview %}
+                <div class="content-slot">{% slot 'content' %}</div>
+            {% endif %}
+        </body>
+    </html>
+
+In this example, the slot with the name ``content`` will only be rendered if
+the slot is not empty. The reason why we have this if-statement here is that we
+do not want to render the enclosing div element if the slot is indeed empty.
+
+.. note::
+
+    The if condition is also testing for preview mode which is further
+    explained in section :ref:`topics/cms/preview`.
+
+
+
+
+.. _topics/cms/page_title:
+
+Page Title
+==========
+
+A page stores the main title of the page alongside other useful meta data
+such as the meta title and the meta description.
+
+Most commonly the title of a page is presented somewhere on the page -- usually
+in between ``h1`` tags, for example:
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>{{ current_page.title }}</h1>
+        </body>
+    </html>
+
+A page must always have a title; the page title cannot be ``None`` or empty.
+
+Paired with content slots this may raise the following issue: Content editors
+can simply create headline tags within a slot, so they might introduce another
+headline of the same level (``h1``) which already exists.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>{{ current_page.title }}</h1>
+            {% slot 'content' 1 %}
+        </body>
+    </html>
+
+We do not want to have two ``h1`` headlines following each other. On the other
+hand, we also do not want content editors having to remember to start headlines
+from level 2 onwards.
+
+As a solution, we may pass on an additional argument to the ``slot`` template
+tag as a numeric *offset* by which headlines that are rendered for the slot are
+automatically transposed.
+
+Therefore, an offset of ``1`` would transpose an ``h1`` tag into an ``h2`` tag
+and an ``h2`` tag into an ``h3`` tag and so forth.
+
+Likewise, an offset of ``2`` would transpose an ``h1`` tag into an ``h3`` tag
+and and ``h2`` tag into an ``h4`` tag.
+
+.. note::
+
+    The same can be archived by using HTML5 sections, where each section can
+    have its own heading hierarchy.
+
+
+
+
+.. _topics/cms/page_meta_title:
+
+Page Meta Title
+===============
+
+The meta title of a page is optional and content editors may provide it or not.
+The meta title can be rendered by a template via the ``meta_title`` template
+tag as part of the ``cms_tags`` template library:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>{% meta_title %}</title>
+        </head>
+        ...
+    </html>
+
+The ``meta_title`` template tag renders the current page's meta title. If no
+meta title is provided then the regular page title is used instead.
+
+Usually, meta titles are written in a specific way, for example::
+
+    Pascal | The history of programming languages
+
+In this example, the term ``Pascal`` may refer to the meta title of the current
+page while the term ``The history of programming languages`` is referring to
+the name of the website as a whole.
+
+The ``meta_title`` tag will automatically construct the entire string based on
+the current page's meta title as well as any information that is provided as
+the :attr:`cubane.cms.models.Settings.meta_name` field as declared by the class
+:class:`cubane.cms.models.Settings`. If no meta name is declared then the
+company name based on the :attr:`cubane.cms.models.Settings.name` field is used
+instead.
+
+If the current page's meta title already ends with the meta name that is
+obtained from CMS settings then the meta name is *not* added another time.
+
+The separator character in between meta title components can be declared via
+the settings variable :settings:`CMS_META_TITLE_SEPARATOR`. By default, the
+separator string is set to `` | `` which is a pipe character surrounded by one
+single space character.
+
+
+
+
+.. _topics/cms/page_meta_description:
+
+Page Meta Description
+=====================
+
+Content editors can specify the meta description for a page, but it is an
+optional field. If the meta description is *not* specified, the system will
+automatically generate the meta description based on the content of the page.
+
+This process is based on the content of all page slots that have content
+defined for the page. The content is concatenated in the order in which slot
+names have been declared via :settings:`CMS_SLOTNAMES`.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>{% meta_title %}</title>
+            <meta name="description" content="{{ current_page.meta_description }}">
+        </head>
+        ...
+    </html>
+
+
+
+
+.. _topics/cms/page_meta_keywords:
+
+Page Meta Keywords
+==================
+
+In the same way as the meta description, meta keywords can be specified by
+content editors, but meta keywords are optional. If meta keywords are not
+specified, then the system will automatically generate those based on the
+content of the page.
+
+This process is based on the content of all page slots that have content
+defined for the page and are declared via :settings:`CMS_SLOTNAMES`.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>{% meta_title %}</title>
+            <meta name="description" content="{{ current_page.meta_description }}">
+            <meta name="keywords" content="{{ current_page.meta_keywords }}">
+        </head>
+        ...
+    </html>
+
+
+
+
+.. _topics/cms/default_page_roles:
+
+Default Page Roles
+==================
+
+Some CMS pages are so called default pages. For example one page is dedicated
+to be the homepage of the website. Another page may be dedicated to be the page
+that is rendered whenever content cannot be found (HTML status code 404).
+
+When rendering templates, the following helper variables are available for
+testing for default page roles:
+
+===================  ===========================================================
+Template Variable    Description
+===================  ===========================================================
+is_homepage          ``True`` if the current page is the homepage.
+is_contact_page      ``True`` if the current page is the contact page.
+is_404_page          ``True`` if the current page is the 404 not found page.
+is_enquiry_template  ``True`` if the current page is used as the enquiry
+                     confirmation email template.
+===================  ===========================================================
+
+The following example demonstrates how one of those variables could be tested
+in order to change the way a template renders content based on the role of the
+current page:
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if is_homepage %}
+                {% include 'myapp/elements/homepage_header.html' %}
+            {% endif %}
+        </body>
+    </html>
+
+It is good practice to render page content based on different page roles
+automatically instead of relying on different page templates. If a page is
+configured to be the homepage then the page should render itself as the
+homepage and should not rely on content editors having to change the
+corresponding page template as well.
+
+
+
+
+.. _topics/cms/preview:
+
+Preview
+=======
+
+Any CMS-enabled page can be rendered for preview mode in the backend system. In
+fact, the preview is used to select particular page slots in order to edit
+their content.
+
+When rendering page slots via the ``slot`` template tag, then it it
+particularly important to always render to slot if the page is presented in
+preview mode: For example, a slot may only be rendered under a certain
+condition, but in preview mode you would want to always render a slot;
+otherwise users will not be able to select the slot to begin with.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if 'content' in slots or preview %}
+                <div class="content-slot">{% slot 'content' %}</div>
+            {% endif %}
+        </body>
+    </html>
+
+The example demonstrates a condition under which the slot is rendered: The slot
+is only rendered if the slot has actual content assigned to it. However we also
+render the slot if we are in preview mode; otherwise no-one would be able to
+assign content to the slot to start with.

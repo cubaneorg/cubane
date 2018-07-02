@@ -1,0 +1,304 @@
+.. _topics/cms/navigation:
+
+==========
+Navigation
+==========
+
+The CMS system provides a simple navigation system by which pages can be
+organised into one or more navigation sections. For example, any given page may
+appear in the header navigation, the footer navigation or both at the same time.
+
+Navigation sections are declared in the following way as part of the
+application settings:
+
+.. code-block:: python
+
+    CMS_NAVIGATION = (
+        ('header', 'Header'),
+        ('footer', 'Footer'),
+    )
+
+Navigation section are declared like choices where the first element declares
+the internal name of the navigation section and the second element declares the
+visual name of the navigation section that is presented to users in the backend
+system.
+
+In the example above, two navigation sections are declared: One called
+``Header`` and another one called ``Footer``. Content editors can now assign
+pages to one of those navigation sections (or both).
+
+As a consequence, the following structures are available in the template when
+rendering a page:
+
+=================  =============================================================
+Template Variable  Description
+=================  =============================================================
+nav                A structure that contains all navigation sections and
+                   navigation items per section.
+pages              A list of all pages that have a unique page identifier
+                   assigned.
+active_nav         The navigation item that is currently active.
+=================  =============================================================
+
+The following sections discuss those aspects in more details.
+
+
+
+
+.. _topics/cms/navigation/nav_sections:
+
+Navigation Sections
+===================
+
+The ``nav`` template variable contains all declared navigation sections by its
+internal name. For example, if we had declared the following navigation
+sections:
+
+.. code-block:: python
+
+    CMS_NAVIGATION = (
+        ('header', 'Header'),
+        ('footer', 'Footer'),
+    )
+
+Then the following template would render a list of links for all pages that are
+assigned to the ``header`` navigation:
+
+.. code-block:: html+django
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if nav.header %}
+                <ul class="nav">
+                    {% for item in nav.header %}
+                        <li{% if item.active %} class="active"{% endif %}>
+                            <a href="{{ item.url }}" title="{{ item.page_title }}">{{ item.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </body>
+    </html>
+
+The same would work with the ``footer`` navigation respectively. The list
+contains navigation items where each item is derived from the underlying page.
+
+.. seealso::
+
+    The navigation structure is constructed by a so called navigation builder,
+    which can be altered, for example to control how navigation items are
+    created. Please refer to section :ref:`topics/cms/navigation/builder` for more
+    information.
+
+The order in which items are listed is the order in which the underlying pages
+are organised. The order for pages can be changed by content editors by using
+the backend system.
+
+Therefore there is a specific order to pages across all navigation sections. By
+default, the order of items within each navigation section cannot be changed in
+isolation.
+
+
+
+
+.. _topics/cms/navigation/nav_item:
+
+Navigation Item
+===============
+
+A navigation item is representing most aspects of the underlying page including
+its title and its URL but does not contain all information that reassembles the
+underlying page such as page content.
+
+Most noticeable, a navigation item has a ``page_title`` property which contains
+the exact title of the underlying page. In a similar way the property
+``nav_title`` is referring to a shorthand name of the page that is specifically
+be used for the purpose of presenting the page within the concept of a
+navigation system. However, this field is optional and might be ``None`` or
+empty.
+
+The property ``title`` simply returns the navigation title (``nav_title``) if a
+value has been provided for it; otherwise the page title is used instead.
+
+The property ``active`` is ``True`` if the current page is the page that the
+navigation item is referring to.
+
+.. seealso::
+
+    The construction of navigation items can be altered. Please refer to
+    section :ref:`topics/cms/navigation/builder` for more information.
+
+Putting it all together, a good template for rendering navigation items for a
+specific section is the following:
+
+.. code-block:: html+django
+
+    {% if nav.header %}
+        <ul class="nav">
+            {% for item in nav.header %}
+                <li{% if item.active %} class="active"{% endif %}>
+                    <a href="{{ item.url }}" title="{{ item.page_title }}">{{ item.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+Each list item has the css class ``active`` if the corresponding page is the
+current page. Further, the full page title is present via the ``title``
+attribute but the visible name of the link might be an alternative navigation
+title if present.
+
+
+
+
+.. _topics/cms/navigation/nav_item_hierarchy:
+
+Navigation Item Hierarchy
+=========================
+
+Pages can be organised within a hierarchy. Therefore a page can be a parent
+page of another page. By default this feature is disabled in order to keep
+everything very simple. Therefore by default there is only a number of pages
+next to each other without any hierarchy.
+
+However, page hierarchy can be enabled in application settings via the
+:settings:`PAGE_HIERARCHY` settings variable:
+
+.. code-block:: python
+
+    PAGE_HIERARCHY = True
+
+By enabling the page hierarchy feature, the backend allows content editors to
+arrange pages into a hierarchy by either choosing a specific parent page for
+each page or by using drag and drop to arrange pages into a hierarchy.
+
+With page hierarchy enabled, the navigation system introduces a number of
+additional properties for each navigation item related to the child pages for
+each page:
+
+``children``
+
+    List of all navigation items describing all direct child pages of the given
+    parent navigation item. Each navigation item may represents its direct
+    child element via its ``children`` property. Any given node contains all
+    child pages regardless of its assignment to navigation sections.
+
+``nav_children``
+
+    List of all navigation items describing all direct child pages of the given
+    parent navigation item that also are assigned to the same navigation
+    section. Each navigation item may represents its direct child element via
+    its ``nav_children`` property.
+
+``active_child``
+
+    ``True`` if any child navigation item is active (e.g. its ``active``
+    property is ``True``).
+
+
+
+
+.. _topics/cms/navigation/nav_item_posts:
+
+Navigation Item Posts
+=====================
+
+A similar concept to page hierarchy is called *Posts*. A page hierarchy allows
+for an arbitrarily deeply formed tree based of pages. All nodes in the tree are
+of the same type (a page).
+
+As described in section :ref:`topics/cms/pages`, a page is derived from
+:class:`cubane.cms.models.PageAbstract`.
+
+You can think of a *Post* to be a specialised version of a *Page*. In fact,
+:class:`cubane.cms.models.Post` is derived from
+:class:`cubane.cms.models.PageBase` which is also the root class for pages.
+
+There is a specific relationship between pages and posts: A page has many
+posts. Usually this means that the parent page is listing all posts that are
+assigned to the page.
+
+When rendering the navigation for a site, posts can also be represented as
+children of any given page. This behaviour must be enabled via the
+:settings:`CMS_NAVIGATION_INCLUDE_CHILD_PAGES` settings variable:
+
+.. code-block:: python
+
+    CMS_NAVIGATION_INCLUDE_CHILD_PAGES = True
+
+If enabled, each navigation item that are representing a page will contain the
+property ``posts`` which represents a list if all posts that are assigned to
+the corresponding page.
+
+
+
+
+.. _topics/cms/navigation/builder:
+
+Navigation Builder
+==================
+
+Any Django app can extend the CMS navigation builder including yours. In fact
+some default apps that belong to Cubane are doing exactly that in order to
+extend the navigation system.
+
+For example, the app ``cubane.ishop`` is extending the CMS navigation system to
+include shop categories as navigation items in order to make it possible to
+generate navigation structures based on product categories.
+
+In the same way, your app can extend the navigation system too, for example to
+add additional information to each navigation item.
+
+Simply declare a function with the name ``install_nav`` within the
+``__init__.py`` file of your Django app and then call the method
+:meth:`cubane.cms.nav.CMSNavigationBuilder.register_extension` passing in your
+own extension of the navigation builder.
+
+.. code-block:: python
+
+    def install_nav(nav):
+        from myapp.nav import MyNavigationExtension
+        return nav.register_extension(MyNavigationExtension)
+
+This is a common pattern that is used throughout Cubane for extending various
+aspects if the core system.
+
+.. seealso::
+
+    Please refer to section :ref:`topics/modules` for more information about
+    Cubane's extension system.
+
+The extension is simply derived from ``object`` and then overrides methods as
+required:
+
+.. code-block:: python
+
+    class MyNavigationExtension(object):
+        def get_objects(self, objects):
+            """
+            Override: Include 'navigation_image'
+            """
+            objects = super(MyNavigationExtension, self).get_objects(objects)
+            return objects.select_related('navigation_image')
+
+
+        def get_nav_item(self, page, nav_name=None):
+            """
+            Override: Add additional properties to a navigation item.
+            """
+            item = super(MyNavigationExtension, self).get_nav_item(page, nav_name)
+            item['navigation_image'] = page.navigation_image
+            return item
+
+The example demonstrates how an additional field is added to each navigation
+item (``navigation_image``) while the underlying query is also altered as well
+in order to avoid fetching images for each page individually.
+
+.. note::
+
+    Be aware that your app might not be the only one who is extending the
+    navigation system. Always use ``super()`` in order to play nice with
+    others; otherwise you may end up preventing other apps from overriding
+    methods.

@@ -152,7 +152,7 @@ class CMSCMSTemplateTagsMetaTitleTestCase(CubaneTestCase):
             'Foo | Bar',
             meta_title({
                 'current_page': self._page(meta_title='Foo | Bar'),
-                'settings': self._settings('Bar')
+                'settings': self._settings('  Bar')
             })
         )
 
@@ -162,6 +162,17 @@ class CMSCMSTemplateTagsMetaTitleTestCase(CubaneTestCase):
             'Foo | Bar',
             meta_title({
                 'current_page': self._page(title='Foo | Bar'),
+                'settings': self._settings('  Bar')
+            })
+        )
+
+
+    @override_settings(CMS_META_TITLE_SEPARATOR=' - ')
+    def test_should_allow_overriding_separator(self):
+        self.assertEqual(
+            'Foo - Bar',
+            meta_title({
+                'current_page': self._page(meta_title='Foo'),
                 'settings': self._settings('Bar')
             })
         )
@@ -371,7 +382,7 @@ class CMSSlotTestCase(CubaneTestCase):
 
     def test_should_return_error_if_slot_does_not_exist(self):
         self.assertEqual(
-            "[Slot 'none' does not exist]",
+            "[Slot 'none' does not exist (referenced via 'none')]",
             self._render("{% load cms_tags %}{% slot 'none' %}")
         )
 
@@ -490,6 +501,20 @@ class CMSSlotTestCase(CubaneTestCase):
             self._image_markup(lightbox=False, media_id='not-a-valid-pk'),
             self._render_image(lightbox=False, markup_media_id='not-a-valid-pk')
         )
+
+
+    def test_should_fallback_to_original_shape_if_specified_shape_does_not_exist(self):
+        page = Page()
+        page.set_slot_content('content', self._image_markup())
+        html = self._render("{% load cms_tags %}{% slot 'content' 0 'shape-does-not-exist' %}", {
+            'page': page,
+            'images': {
+                1: Media(id=1, caption='Test', width=64, height=64)
+            }
+        })
+        self.assertMarkup(html, 'noscript', {
+            'data-shape': 'original'
+        })
 
 
     def test_should_raise_error_for_missing_slotname_argument(self):

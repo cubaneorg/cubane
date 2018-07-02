@@ -1,0 +1,157 @@
+.. _topics/modules:
+
+=============================
+Cubane Modules and Extensions
+=============================
+
+Cubane itself is modular: Different Django apps are providing different aspects
+of Cubane.
+
+For example, the app ``cubane`` itself provides the core system but then
+important aspects like fonts, SVG icons, the CMS system or the shop system are
+individual Django apps.
+
+- The app ``cubane.cms`` provides content management functionality.
+- ``cubane.backend`` provides a backend system.
+- ``cubane.shop`` provides an eCommerce system.
+
+This modularity allows you to only load the apps that you actually need but it
+also presents challenges how the different parts can extend each other.
+
+
+
+
+.. _topics/modules/extensions:
+
+Extensions
+==========
+
+For example, the CMS system provides a way to generate a sitemap and provides a
+navigation system. When using the very same CMS system in combination with the
+shop system then the shop system would need to utilise services provided by the
+CMS system such as sitemap and navigation.
+
+For example, since the shop system is introducing products, it would need to
+extend the navigation system to include product pages. Likewise, such product
+pages would also need to be listed within the ``sitemap.xml`` file by extending
+the sitemap system provided by the CMS system.
+
+In the same way your own app might need to extend various parts of various
+sub-systems depending on your requirements.
+
+For this purpose, each Cubane module provides a specific mechanism by which a
+certain aspect can be extended by overriding certain class methods. The pattern
+is always the same, it starts with a specific function that needs to be
+implemented in the ``__init__.py`` file in the root folder of the app or module:
+
+.. code-block:: python
+
+    def install_nav(nav):
+        from myapp.nav import MyNavigationExtension
+        return nav.register_extension(MyNavigationExtension)
+
+The function ``install_nav`` is called by the system in order to extend the
+:class:`cubane.cms.nav.CMSNavigationBuilder` class, which is part of the CMS
+system. Keep in mind that multiple apps may implement the same pattern and will
+therefore extend the very same class.
+
+The class is passed as an argument to the function (``nav``). The class method
+``register_extension`` is then called in order to extend the class with
+additional functionality by basically overriding certain methods.
+
+The extension class itself is simply derived from ``object``:
+
+.. code-block:: python
+
+    class MyNavigationExtension(object):
+        def get_objects(self, objects):
+            """
+            Override: Include 'navigation_image'
+            """
+            objects = super(MyNavigationExtension, self).get_objects(objects)
+            return objects.select_related('navigation_image')
+
+
+        def get_nav_item(self, page, nav_name=None):
+            """
+            Override: Add additional properties to a navigation item.
+            """
+            item = super(MyNavigationExtension, self).get_nav_item(page, nav_name)
+            item['navigation_image'] = page.navigation_image
+            return item
+
+.. note::
+
+    Be aware that your app might not be the only one who is extending a
+    sub-system. Always use ``super()`` in order to play nice with others;
+    otherwise you may end up preventing other apps from overriding methods.
+
+Not all installation methods support the extension of an underlying class via
+``register_extension``. Some may only provide an opportunity to interact with a
+certain object.
+
+
+
+
+.. _topics/modules/common_extensions:
+
+Common Extensions
+=================
+
+A number of different apps are using the extension mechanism in order to allow
+other apps to extend part of their infrastructure. The following list gives an
+overview of the most common extensions that are provided by Cubane which can be
+extended by using the ``register_extension`` method:
+
+==================  ==============================================  =============================================
+App                 Installer Method                                Base Class
+==================  ==============================================  =============================================
+``cubane``          ``install_resource_manager(resource_manager)``  :class:`cubane.lib.resources.ResourceManager`
+``cubane.cms``      ``install_cms(cms)``                            :class:`cubane.cms.views.CMS`
+``cubane.cms``      ``install_page_context(page_context)``          :class:`cubane.cms.views.PageContext`
+``cubane.cms``      ``install_nav(nav)``                            :class:`cubane.cms.nav.CMSNavigationBuilder`
+==================  ==============================================  =============================================
+
+.. seealso::
+
+    Please refer to section :ref:`` for more information about extending the
+    resource manager class :class:`cubane.lib.resources.ResourceManager`.
+
+    Section :ref:`` is describing the extension of the
+    :class:`cubane.cms.views.CMS` class.
+
+    Section :ref:`` is describing the extension of the page context
+    :class:`cubane.cms.views.PageContext` as part of the CMS system.
+
+    Finally, please refer to section :ref:`topics/cms/navigation/builder` for
+    more information about extending the class
+    :class:`cubane.cms.nav.CMSNavigationBuilder` as part of the navigation
+    system.
+
+
+
+
+.. _topics/modules/backend:
+
+Backend
+=======
+
+The backend is using a similar concept, where each app can define an
+installation function such as ``install_backend`` in order to register backend
+sections to the backend system.
+
+.. code-block:: python
+
+    def install_backend(backend):
+        backend.register_api(...)
+        backend.register_section(...)
+        backend.register_dashboard_widget(...)
+
+This way, each app can install certain components for the backend system such
+as backend sections, API endpoints and/or dashboard widgets.
+
+.. seealso::
+
+    Please refer to the reference documentation of the
+    :class:`cubane.backend.views.Backend` class or section
+    :ref:`topics/backend/backend_views` for more information.

@@ -626,6 +626,7 @@ class CMSViewsPaginationTestCase(CMSViewsPageContextBaseTestCase):
 
 
 class CMSViewsNavigationTestCase(CMSViewsPageContextBaseTestCase):
+    @override_settings(PAGE_HIERARCHY=True)
     def test_sets_active_nav_item_for_parent(self):
         parent = self.create_page('Page 1', seq=1)
         child_page = self.create_page('Page 2', seq=1, parent=parent)

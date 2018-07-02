@@ -1,0 +1,26 @@
+.. _topics/cms:
+
+==================
+Content Management
+==================
+
+The content management aspect of Cubane is based around a separate app and the
+ability to derive your own model instances that are representing editable
+content.
+
+The CMS system provides different ways of representing editable content
+alongside website-wide settings.
+
+The system can also be used in combination with other aspects of Cubane, for
+example the shop system.
+
+
+.. toctree::
+    :maxdepth: 2
+
+    install
+    pages
+    posts
+    nav
+    sitemap
+    cache

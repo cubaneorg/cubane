@@ -439,6 +439,11 @@ class PageForm(PageFormBase):
         if edit or self.is_duplicate:
             self.fields['nav'].initial = instance.nav
 
+        # parent page only available if hierarchical pages is enabled
+        if not settings.PAGE_HIERARCHY:
+            self.remove_field('parent')
+            self.update_sections()
+
         # 404 page cannot be disabled!
         cms_settings = get_cms_settings()
         if instance and cms_settings.default_404 and instance.pk == cms_settings.default_404.pk:
@@ -500,7 +505,7 @@ class EntityForm(BaseModelForm):
 
 class ChildPageForm(PageFormBase):
     """
-    Base class for editing cms page entities. Derive from this form in order to
+    Base class for editing CMS page entities. Derive from this form in order to
     create new forms for your specific business objects.
     """
     class Meta:
@@ -552,6 +557,13 @@ class ChildPageForm(PageFormBase):
                     self.field_error('slug', PageForm.ERROR_SLUG_SYSTEM_NAME)
 
         return d
+
+
+class PostForm(ChildPageForm):
+    """
+    Introducing another term instead of ChildPage.
+    """
+    pass
 
 
 class SettingsForm(BaseModelForm):
