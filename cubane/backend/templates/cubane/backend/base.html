@@ -13,6 +13,7 @@
     {% inline_resources 'backend-inline' 'css' %}
     {% resources 'backend' 'css' %}
     {% resources 'backend' 'css' 'print' %}
+    {% block css %}{% endblock %}
 </head>
 
 <body class="{% if is_browse_dialog %}browse-dialog{% endif %}{% if is_create_dialog %} create-dialog{% endif %}{% if is_edit_dialog %} edit-dialog{% endif %}{% if is_dialog %} is-dialog{% endif %}{% if is_index_dialog %} index-dialog{% endif %}{% if is_frontend_editing %} frontend-editing{% endif %}{% if create_edit_page %} create-edit-page{% endif %}{% if not close_index_dialog and messages %} has-messages{% endif %}">
