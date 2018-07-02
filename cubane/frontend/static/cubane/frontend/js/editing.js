@@ -88,6 +88,8 @@
                     ) {
                         h += 220;
                     }
+
+                    h = Math.min(window.clientHeight * 0.9, h);
                     iframe.style.minHeight = h + 'px';
                 }
 

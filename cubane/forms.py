@@ -857,35 +857,7 @@ def form_setup(form):
 
     # if we have a list of fields with sections, split them into fields
     # and sections...
-    fields = []
-    sections = {}
-    if section_fields:
-        for field, next_field in zip(section_fields, section_fields[1:] + [None]):
-            if field.startswith(':') and next_field:
-                sections[next_field] = field[1:]
-            else:
-                fields.append(field)
-
-        if hasattr(form.Meta, 'fields') and form.Meta.fields != '__all__':
-            form.Meta.fields.extend(fields)
-        else:
-            form.Meta.fields = fields
-
-        if hasattr(form.Meta, 'sections'):
-            form.Meta.sections.update(sections)
-        else:
-            form.Meta.sections = sections
-
-        # fix field order
-        for fieldname in fields:
-            _field = form.fields.get(fieldname)
-            if _field is None:
-                raise ValueError('Form field \'%s\' as referenced via \'section_fields\' in form \'%s\' does not exist.' % (
-                    fieldname,
-                    form.__class__.__name__
-                ))
-            del form.fields[fieldname]
-            form.fields[fieldname] = _field
+    fields, sections = form.set_section_fields(section_fields)
 
     # collect field exclusions
     def collect_exclude(cls):
@@ -1066,6 +1038,45 @@ def form_field_with_suffix(form, fieldname, suffix):
     value always ends with the given suffix value.
     """
     return text_with_suffix(form.cleaned_data.get(fieldname), suffix)
+
+
+def form_set_section_fields(form, section_fields):
+    """
+    Set the order of fields to the given list of fields.
+    """
+    fields = []
+    sections = {}
+    if section_fields:
+        for field, next_field in zip(section_fields, section_fields[1:] + [None]):
+            if field.startswith(':') and next_field:
+                sections[next_field] = field[1:]
+            else:
+                fields.append(field)
+
+        if hasattr(form.Meta, 'fields') and form.Meta.fields != '__all__':
+            form.Meta.fields.extend(fields)
+        else:
+            form.Meta.fields = fields
+
+        if hasattr(form.Meta, 'sections'):
+            form.Meta.sections.update(sections)
+        else:
+            form.Meta.sections = sections
+
+        # fix field order
+        for fieldname in fields:
+            _field = form.fields.get(fieldname)
+            if _field is None:
+                raise ValueError('Form field \'%s\' as referenced via \'section_fields\' in form \'%s\' does not exist.' % (
+                    fieldname,
+                    form.__class__.__name__
+                ))
+            del form.fields[fieldname]
+            form.fields[fieldname] = _field
+
+    form._sections = sections
+
+    return fields, sections
 
 
 def form_remove_tab(form, title, remove_fields=False):
@@ -1298,6 +1309,10 @@ class BaseFormMixin(object):
 
     def get_tab_by_title(self, title):
         return form_get_tab_by_title(self._tabs, title)
+
+
+    def set_section_fields(self, fields):
+        return form_set_section_fields(self, fields)
 
 
     def remove_tab(self, title, remove_fields=False):
