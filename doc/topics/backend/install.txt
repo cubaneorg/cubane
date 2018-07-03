@@ -1,0 +1,81 @@
+.. _topics/backend/install:
+
+==================================
+Installing Cubane's backend system
+==================================
+
+First, you need to list the backend system in Django's
+:settings:`INSTALLED_APPS`. We use Cubane's :meth:`add_apps()` helper method in
+the following example:
+
+.. code-block:: python
+
+    env.add_apps([
+        'cubane',
+        'cubane.backend',
+        ...
+        'myApp'
+    ])
+
+The backend system also provides a way to manage user accounts. If you would
+like to use this component, you need to load ``cubane.backend.accounts`` as
+well:
+
+.. code-block:: python
+
+    env.add_apps([
+        'cubane',
+        'cubane.backend',
+        'cubane.backend.accounts',
+        ...
+        'myApp'
+    ])
+
+Finally, your ``urls.py`` file needs to attach the backend to the URL structure
+of your application. A typical ``urls.py`` file for a CMS-enabled website may
+look like this:
+
+.. code-block:: python
+
+    from django.conf.urls import url, include
+    from django.contrib.sitemaps import views as sitemaps_views
+    from cubane.backend.views import Backend
+    from cubane.cms.views import get_cms
+    from cubane.urls import *
+    from cubane import views as cubane_views
+
+    backend = Backend()
+    cms = get_cms()
+
+    setup_default_urls(__name__)
+
+    urlpatterns += [
+        # admin
+        url(r'^admin/', include(backend.urls)),
+
+        # sitemap and robots
+        url(r'^sitemap\.xml$', sitemaps_views.sitemap, {'sitemaps': cms.sitemaps}),
+        url(r'^robots\.txt$', cubane_views.robots_txt),
+
+        # cms
+        url(r'^', include(cms.urls)),
+    ]
+
+
+Please note that we are creating a new instance of the backend system here and
+then attaching it to the url structure of our application. And that's it. You
+now have Cubane's backend system available via the following
+URL: ``http://localhost:8000/admin/``.
+
+.. note::
+
+    In :settings:`DEBUG` mode, after installing a new Cubane application, the
+    default username and password for the backend system are:
+
+    .. parsed-literal::
+
+        Username: admin
+        Password: password
+
+    In *production* mode, however, you will be required to change your password
+    after the first login.

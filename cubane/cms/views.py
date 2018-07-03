@@ -1113,7 +1113,7 @@ class PageContext(object):
             'images': self.get_page_images(current_page, preview),
             'page_links': get_page_links_from_page(current_page, preview),
             'settings': self.settings,
-            'cms_preview': preview,
+            'cms_preview': preview,   # deprecated
             'nav': nav,
             'active_nav': active_nav,
             'pages': pages,
@@ -1127,8 +1127,11 @@ class PageContext(object):
 
         # hierarchical pages
         if settings.PAGE_HIERARCHY and current_page.pk:
+            hierarchical_pages = get_page_model().objects.filter(parent_id=current_page.pk).exclude(disabled=True).order_by('seq')
             context.update({
-                'hierarchical_pages': list(get_page_model().objects.filter(parent_id=current_page.pk).exclude(disabled=True).order_by('seq'))
+                'hierarchical_pages': list(
+                    self._view.get_hierarchical_pages(self.request, current_page, hierarchical_pages)
+                )
             })
 
         # child pages / posts
@@ -1154,8 +1157,10 @@ class PageContext(object):
             })
 
             # deprecated, only available under the old name
+            posts = self.get_child_page_navigation(self.child_page_objects, self.child_page)
             context.get('nav').update({
-                'child_pages': self.get_child_page_navigation(self.child_page_objects, self.child_page)
+                'child_pages': posts,   # deprecated
+                'posts': posts
             })
 
         # slots with content
@@ -1906,11 +1911,26 @@ class CMS(View):
 
     def get_child_pages(self, request, model, child_pages):
         """
-        Override the way the system is determining child pages of the given
+        Deprecated: Use get_posts() instead!
+        """
+        return self.get_posts(request, model, child_pages)
+
+
+    def get_posts(self, request, model, posts):
+        """
+        Override the way the system is determining posts of the given
         model. You may want to change the order by part of the given
         queryset in order to change the default ordering of child pages.
         """
-        return child_pages
+        return posts
+
+
+    def get_hierarchical_pages(self, request, current_page, pages):
+        """
+        Virtual: Return a queryset that represents all direct child pages of the
+        given current page based on the given queryset.
+        """
+        return pages
 
 
     def get_contact_page_url(self, context):
@@ -1981,6 +2001,21 @@ class CMS(View):
         return self.process_hooks(request, context, template_context)
 
 
+    def dispatch_identifier_context(self, request, context, template_context):
+        """
+        Dispatch identifier-based handlers.
+        """
+        current_page = template_context.get('current_page')
+        if current_page and isinstance(current_page, PageAbstract) and current_page.identifier:
+            handler_name = 'on_page_identifier_%s' % current_page.identifier
+            if hasattr(self, handler_name):
+                handler = getattr(self, handler_name)
+                if callable(handler):
+                    template_context = handler(request, context, template_context)
+
+        return template_context
+
+
     def dispatch(self, request, context, preview=False, custom_template_context=None, cache_generator=None):
         """
         Dispatches a content request through the processing pipeline and
@@ -2006,6 +2041,11 @@ class CMS(View):
 
         # accuire template context
         template_context = self.dispatch_template_context(request, context, preview)
+        if isinstance(template_context, HttpResponse):
+            return template_context
+
+        # identifier-based context
+        template_context = self.dispatch_identifier_context(request, context, template_context)
         if isinstance(template_context, HttpResponse):
             return template_context
 

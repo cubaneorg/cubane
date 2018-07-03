@@ -279,7 +279,7 @@ class RadioSelect(forms.RadioSelect):
 
 
     def get_choices(self):
-        if not self._choices:
+        if self._choices is not None:
             if hasattr(self, '_field'):
                 return self._field.choices
         else:

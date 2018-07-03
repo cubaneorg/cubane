@@ -235,6 +235,34 @@ the corresponding page.
 
 
 
+.. _topics/cms/navigation/identifier:
+
+Navigation by Identifier
+========================
+
+A unique identifier can be assigned to specific pages. For example, if you had
+a specific page that is presenting a map of some sort for example and you would
+want to link to that page, you could simply refer to the map page by its
+identifier:
+
+.. code-block:: html+django
+
+    {% if pages.map %}
+        <a href="{{ pages.map.url }}" title="{{ pages.map.page_title }}">{{ pages.map.title }}</a>
+    {% endif %}
+
+The CMS system will generate a navigation item for each page that has a unique
+identifier assigned to it. Such page does not necessarily need to be assigned
+to a navigation section.
+
+The template variable ``pages`` contains a property for each page that has an
+identifier. For example, the identifier ``map`` would yield a property called
+``map`` for the ``pages`` object, so that ``pages.map`` is referring to the
+navigation item that represents the map page.
+
+
+
+
 .. _topics/cms/navigation/builder:
 
 Navigation Builder

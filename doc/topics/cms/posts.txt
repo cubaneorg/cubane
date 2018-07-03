@@ -171,6 +171,6 @@ existing page either.
 Posts in Navigation
 ===================
 
-The n navigation system provides a mechanism by which posts can also be
+The navigation system provides a mechanism by which posts can also be
 integrated into the navigation system. Please refer to section
 :ref:`topics/cms/navigation/nav_item_posts` for more information.

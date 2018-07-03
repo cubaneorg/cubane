@@ -76,3 +76,22 @@ supported. You can simply override the method
 By adding your model class ``MyCustomPageModel`` to the list of supported model
 classes for legacy URLs, the system will automatically start querying your
 model as well in case a legacy URL needs to be resolved.
+
+If a legacy URL redirect is triggered, the CMS system will call the method
+:meth:`cubane.cms.views.CMS.on_legacy_url` prior to the redirect. In this case,
+the redirect target or the response can be changed by returning a response
+object. If no response object is returned then a permanent redirect response
+is generated automatically reflecting a redirection to the legacy target as
+determined by the CMS system.
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def on_legacy_url(self, request, context):
+            return HttpResponse('Intercepted legacy URL redirect for \'%s\' redirecting to \'%s\'.' % (
+                request.path,
+                context.get_redirect_url()
+            ))
+

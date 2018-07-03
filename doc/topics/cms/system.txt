@@ -1,0 +1,461 @@
+.. _topics/cms/system:
+
+==========
+CMS System
+==========
+
+Cubane's content management system is provided by the
+:class:`cubane.cms.views.CMS` class. You need to provide your own class that
+derives from :class:`cubane.cms.views.CMS`. Usually you declare your class in
+your main ``views.py`` file for example:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        pass
+
+By introducing your own class, you can alter the behaviour of the CMS system by
+overriding various methods. The CMS class is declared via the Django setting
+variable :settings:`CMS` for your application in the following way:
+
+.. code-block:: python
+
+    CMS = 'myapp.views.MyCMS'
+
+The given string value is referring to the actual class that is used by Cubane
+for representing the CMS system. The path must include the full path to the
+class including modules and sub-modules.
+
+The following sections will provide details on how to extend and override
+certain methods of the CMS class in order to extend and change the behaviour of
+the CMS system.
+
+
+
+
+.. _topics/cms/system/template_context_pipeline:
+
+Template Context Pipeline
+=========================
+
+The CMS system will derive a default template context by deriving a number of
+variables that are provided when rendering any CMS content.
+
+Then, such template context is further processed by a number of steps until
+finally the actual page is being rendered.
+
+The CMS class can be extended to intercept and process the template content at
+various stages in the pipeline, for example to include page-specific or
+general data that must be available for the template.
+
+The following example demonstrates how the template variable ``featured`` is
+made available to every page that is rendered. This could be used for example
+to render a list of featured posts on every page.
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+    from myapp.models import NewsArticle
+
+    class MyCMS(CMS):
+        def on_template_context(self, request, context, template_context):
+            featured = NewsArticle.objects.order_by('-posted_on')[:3]
+            template_context.update({
+                'featured': featured
+            })
+
+            return template_context
+
+The method :meth:`cubane.views.CMS.on_template_context` is being called by the
+CMS system for every page that is rendered. So, any additional database
+roundtrips or processing work undertaken here occurs for every single page.
+
+The given template context has already been compiled and is ready to be used by
+the page template. Therefore, you can use it within your version of
+:meth:`cubane.views.CMS.on_template_context` in order to obtain critical
+information about what is being rendered as the following example demonstrates:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+    from myapp.models import NewsArticle
+
+    class MyCMS(CMS):
+        def on_template_context(self, request, context, template_context):
+            current_page = template_context.get('current_page')
+            if current_page and current_page.is_homepage:
+                featured = NewsArticle.objects.order_by('-posted_on')[:3]
+                template_context.update({
+                    'featured': featured
+                })
+
+            return template_context
+
+Here, we are only fetching the latest news articles if the current page is the
+homepage. Cubane's CMS system provides a number of similar methods to make
+those common cases easy for us. For example, we could have written the previous
+example in the following way:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+    from myapp.models import NewsArticle
+
+    class MyCMS(CMS):
+        def on_homepage(self, request, context, template_context):
+            featured = NewsArticle.objects.order_by('-posted_on')[:3]
+            template_context.update({
+                'featured': featured
+            })
+
+            return template_context
+
+The method :meth:`cubane.views.CMS.on_homepage` is only being called whenever
+the homepage is rendered. Otherwise the method works in the exact same way as
+:meth:`cubane.views.CMS.on_template_context`.
+
+The following pipeline steps can be overridden:
+
+============================================  =============================================================
+Method                                        Description
+============================================  =============================================================
+:meth:`cubane.views.CMS.on_template_context`  Called for every request.
+:meth:`cubane.views.CMS.on_homepage`          Called only for requests concerning the homepage.
+:meth:`cubane.views.CMS.on_contact_page`      Called only for requests concerning the contact page.
+:meth:`cubane.views.CMS.on_404_page`          Called only for requests that will trigger a 404 status code.
+============================================  =============================================================
+
+
+
+
+.. _topics/cms/system/template_context:
+
+Template Context
+================
+
+The CMS system derives a default template context for every request that is
+being processed. Such template context contains information about the current
+page, the navigation and website-wide settings.
+
+The following template variables are available when rendering CMS content:
+
+``active_nav``
+
+    Contains information about the top level navigation item that is currently
+    the active item. The active navigation item is representing the current
+    page or any parent page therefore.
+
+``current_page``
+
+    Represents the page model instance of the current page that is rendered.
+
+``homepage``
+
+    The page model instance of the page that represents the homepage.
+
+``images``
+
+    A list of all image model instances that are referenced on the current page
+    via one or more content slots.
+
+``is_404_page``
+
+    ``True`` if the current page is rendered as a 404 not found page. Please
+    refer to section :ref:`topics/cms/default_page_roles` for more information
+    about page roles.
+
+``is_contact_page``
+
+    ``True`` if the current page is the contact page. Please refer to section
+    :ref:`topics/cms/default_page_roles` for more information about page roles.
+
+``is_enquiry_template``
+
+    ``True`` if the current page is the enquiry page. Please refer to section
+    :ref:`topics/cms/default_page_roles` for more information about page roles.
+
+``is_homepage``
+
+    ``True`` if the current page is the homepage. Please refer to section
+    :ref:`topics/cms/default_page_roles` for more information about page roles.
+
+``nav``
+
+    Represents the navigation structure of the page. Please refer to section
+    :ref:`topics/cms/navigation` for more information.
+
+``pages``
+
+    Represents a list of navigation items for every page that has a unique
+    navigation identifier assigned to it. Please refer to section
+    :ref:`topics/cms/navigation/identifier` for more information on navigation
+    identifiers.
+
+``page_links``
+
+    Represents a list of CMS content to which the current page is linking to
+    via its content slots. Please refer to section :ref:`topics/cms/links` for
+    more information about page links.
+
+``page``
+
+    Refers to the model instance of the current page or -- if the current page
+    is represented by a post -- the parent page of the current post.
+
+``preview``
+
+    ``True`` if the current page is currently rendered for the purpose of being
+    previewed within the backend system. Please refer to section
+    :ref:`topics/cms/system/preview` for more information.
+
+``settings``
+
+    The model instance of the CMS settings as specified via
+    :settings:`CMS_SETTINGS_MODEL`. Please refer to section
+    :ref:`topics/cms/settings` for more information about CMS settings.
+
+``slots``
+
+    Represents a list of slot names of all slots of the current page that are
+    *not* empty.
+
+If a page hierarchy is used (:settings:`PAGE_HIERARCHY`), then the following
+template variable is made available in addition to the default context:
+
+``hierarchical_pages``
+
+    Represents a list of all page model instances that are direct child pages
+    of the current page. Please refer to section :ref:`topics/cms/hierarchy`
+    for more information about page hierarchies.
+
+If the page has posts assigned to it then the following information is made
+available in addition to the default context:
+
+``paged_posts``
+
+    List of posts that are assigned to the current page -- organised as a list
+    of pages.
+
+``paginator``
+
+    The ``paginator`` object that is responsible to paginate the list of all posts
+    that are assigned to the current page.
+
+``posts``
+
+    List of all posts that are assigned to the current page.
+
+``post_slug``
+
+    The slug representing the type of posts that are assigned to the current
+    page.
+
+``verbose_name_plural``
+
+    The plural verbose name of the model that is representing posts that are
+    assigned to the current page.
+
+``verbose_name``
+
+    The singular verbose name of the model that is representing posts that are
+    assigned to the current page.
+
+The template context is first derived for any request that is being processed.
+Then the template context might be intercepted and further processed by various
+parts of the CMS system. Please refer to section
+:ref:`topics/cms/system/template_context_pipeline` for more information about
+pipeline steps.
+
+
+
+
+.. _topics/cms/system/hierarchical_pages_queryset:
+
+Hierarchical Pages Queryset
+===========================
+
+The list of hierarchical pages is determined by the method
+:meth:`cubane.cms.views.CMS.get_hierarchical_pages`. You can override the
+method in order to customise the list of hierarchical pages that are returned:
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def get_hierarchical_pages(self, request, current_page, pages):
+            pages = pages.order_by('title')
+            return pages
+
+The example changes the order in which child pages are represented. While you
+would normally find child pages to be ordered in their distinct sequential
+order, here the order has been changed to be alphabetically by the page title.
+
+
+
+
+.. _topics/cms/system/posts_queryset:
+
+Posts Queryset
+==============
+
+The list of posts that are assigned to the current page is determined by the
+method :meth:`cubane.cms.views.CMS.get_posts`. You can override the method in
+order to customise the list of posts that are returned:
+
+.. code-block:: python
+
+    from django.http import HttpResponse
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def get_posts(self, request, model, posts):
+            posts = posts.order_by('title)
+            return posts
+
+Again, we are only changing the order of posts here, but we could customise the
+initial query or filter by further arguments.
+
+
+
+
+.. _topics/cms/system/preview:
+
+Preview
+=======
+
+Any CMS-enabled page can be rendered for preview mode in the backend system. In
+fact, the preview is used to select particular page slots in order to edit
+their content.
+
+When rendering page slots via the ``slot`` template tag, then it it
+particularly important to always render to slot if the page is presented in
+preview mode: For example, a slot may only be rendered under a certain
+condition, but in preview mode you would want to always render a slot;
+otherwise users will not be able to select the slot to begin with.
+
+.. code-block:: html
+
+    {% load cms_tags %}
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if 'content' in slots or preview %}
+                <div class="content-slot">{% slot 'content' %}</div>
+            {% endif %}
+        </body>
+    </html>
+
+The example demonstrates a condition under which the slot is rendered: The slot
+is only rendered if the slot has actual content assigned to it. However we also
+render the slot if we are in preview mode; otherwise no-one would be able to
+assign content to the slot to start with.
+
+
+
+
+.. _topics/cms/system/request_response_hooks:
+
+Request/Response Hooks
+======================
+
+On every request, the CMS system calls the methods
+:meth:`cubane.cms.views.CMS.on_request` and
+:meth:`cubane.cms.views.CMS.on_response`.
+:meth:`cubane.cms.views.CMS.on_request` is called first before any other
+pipeline function is called. Just before the response has been compiled, the
+method :meth:`cubane.cms.views.CMS.on_response` is called.
+
+Both methods can alter the response if a response object is returned by either
+of them. If :meth:`cubane.cms.views.CMS.on_request` returns a response object,
+then any further processing is aborted and the returned response object is
+delivered back to the client.
+
+.. code-block:: python
+
+    from django.http import HttpResponse
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def on_request(self, request, context):
+            return HttpResponse('Intercepting each request replacing it with this response.')
+
+
+
+
+.. _topics/cms/system/identifier_hooks:
+
+Identifier Hooks
+================
+
+For CMS pages that have a unique identifier assigned, a method can be defined
+as part of the :class:`cubane.cms.views.CMS` class that matches the identifier.
+For example, if a page is rendered that had an identifier of ``map`` then the
+CMS system would automatically attempt to call the method
+``on_page_identifier_map``.
+
+.. code-block:: python
+
+    from django.conf import settings
+    from django.http import HttpResponse
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def on_page_identifier_map(self, request, context, template_context):
+            template_context.update({
+                'map_api_key': settings.MAP_API_KEY
+            })
+            return template_context
+
+The example above demonstrates how the settings variable ``MAP_API_KEY`` is
+provided to the template for the page with the identifier ``map``.
+
+.. seealso::
+
+    A unique page identifier is also useful when using the navigation system.
+    Please refer to section :ref:`topics/cms/navigation/identifier` for more
+    information about identifiers being used in combination with the navigation
+    system.
+
+
+
+
+.. _topics/cms/system/django_view_handlers:
+
+Django View Handlers
+====================
+
+The CMS system can be integrated with ordinary Django view handlers by allowing
+the system to determine a template context including navigation and other
+aspects to be derived without any real CMS page being present.
+
+For example, you could implement a member area where the login page does not
+really exist as part of the CMS system. However, you can still generate all
+other CMS-related information that is required to render the page, such as the
+navigation:
+
+.. code-block:: python
+
+    from cubane.decorators import template
+    from cubane.cms.decorators import cubane_cms_context
+
+    @template('myapp/login.html')
+    @cubane_cms_context()
+    def members_login(request):
+        ...
+
+        return {
+            'form': form
+        }
+
+The ``template`` decorator can be used to render a template file (in this case
+``myapp/login.html`` based on the template context that is returned by the view
+handler function in the form of a dictionary.
+
+The ``cubane_cms_context`` decorator generates a regular template context as
+you would expect from the CMS system (see section
+:ref:`topics/cms/system/template_context`) but then also updates the template
+context based on the dictionary that is returned from the django view handler
+function.
