@@ -118,7 +118,7 @@ def cubane_send_mail_template(request, to, subject, template, template_context, 
     cubane_send_mail(to, subject, html, attachments)
 
 
-def cubane_send_cms_mail(request, to, subject, page, context=None, cc=None, bcc=None):
+def cubane_send_cms_mail(request, to, subject, page, context=None, cc=None, bcc=None, attachments=None):
     """
     Send an email to the given recepient with given subject line.
     The email is send from the sender that is configured in the
@@ -134,7 +134,7 @@ def cubane_send_cms_mail(request, to, subject, page, context=None, cc=None, bcc=
     html = cms.render_page(page, request=None, additional_context=context).content
 
     # send email
-    cubane_send_mail(to, subject, html, cc=cc, bcc=bcc)
+    cubane_send_mail(to, subject, html, cc=cc, bcc=bcc, attachments=attachments)
 
 
 def cubane_send_cms_enquiry_mail(request, to, subject, context=None):
