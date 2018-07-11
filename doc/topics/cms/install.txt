@@ -1,8 +1,8 @@
 .. _topics/cms/install:
 
-===================================
-Using the content management system
-===================================
+===============
+Getting Started
+===============
 
 Cubane's content management system is implemented as a separate app, which is
 ``cubane.cms``. In order to use it, you would need to load ``cubane.cms`` in
@@ -115,13 +115,18 @@ Whenever an instance to the CMS class is required, the function
     your code, then you can use the function :func:`cubane.cms.views.get_cms`
     to obtain a shared reference.
 
+.. seealso::
+
+    For more information about how to extend the CMS system, please refer to
+    section :ref:`topics/cms/system`.
+
 
 
 
 .. _topics/cms/settings:
 
-Settings
-========
+CMS Settings
+============
 
 When enabling the content-management system, a settings class needs to be
 created which will store all site-wide settings.

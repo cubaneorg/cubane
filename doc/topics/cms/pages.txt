@@ -134,7 +134,7 @@ description as further described in section
 Once a slot has been declared that way, it can be rendered by using the ``slot``
 render tag as part of the ``cms_tags`` template library:
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -165,7 +165,7 @@ circumstances.
 
 You can test if a slot if empty or not in the following way:
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -184,7 +184,7 @@ do not want to render the enclosing div element if the slot is indeed empty.
 .. note::
 
     The if condition is also testing for preview mode which is further
-    explained in section :ref:`topics/cms/preview`.
+    explained in section :ref:`topics/cms/system/preview`.
 
 
 
@@ -200,7 +200,7 @@ such as the meta title and the meta description.
 Most commonly the title of a page is presented somewhere on the page -- usually
 in between ``h1`` tags, for example:
 
-.. code-block:: html
+.. code-block:: html+django
 
     <!DOCTYPE html>
     <html>
@@ -215,7 +215,7 @@ Paired with content slots this may raise the following issue: Content editors
 can simply create headline tags within a slot, so they might introduce another
 headline of the same level (``h1``) which already exists.
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -257,7 +257,7 @@ The meta title of a page is optional and content editors may provide it or not.
 The meta title can be rendered by a template via the ``meta_title`` template
 tag as part of the ``cms_tags`` template library:
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -310,7 +310,7 @@ This process is based on the content of all page slots that have content
 defined for the page. The content is concatenated in the order in which slot
 names have been declared via :settings:`CMS_SLOTNAMES`.
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -338,7 +338,7 @@ content of the page.
 This process is based on the content of all page slots that have content
 defined for the page and are declared via :settings:`CMS_SLOTNAMES`.
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -380,7 +380,7 @@ The following example demonstrates how one of those variables could be tested
 in order to change the way a template renders content based on the role of the
 current page:
 
-.. code-block:: html
+.. code-block:: html+django
 
     {% load cms_tags %}
     <!DOCTYPE html>
@@ -400,35 +400,81 @@ corresponding page template as well.
 
 
 
+.. _topics/cms/hierarchy:
 
-.. _topics/cms/preview:
+Page Hierarchy
+==============
 
-Preview
-=======
+Pages can be organised within a hierarchy. If enabled, a page can be a parent
+page of another page. By default this feature is disabled in order to keep the
+structure very simple. Therefore by default there is only a number of pages
+next to each other without any hierarchy.
 
-Any CMS-enabled page can be rendered for preview mode in the backend system. In
-fact, the preview is used to select particular page slots in order to edit
-their content.
+However, page hierarchy can be enabled in application settings via the
+:settings:`PAGE_HIERARCHY` settings variable:
 
-When rendering page slots via the ``slot`` template tag, then it it
-particularly important to always render to slot if the page is presented in
-preview mode: For example, a slot may only be rendered under a certain
-condition, but in preview mode you would want to always render a slot;
-otherwise users will not be able to select the slot to begin with.
+.. code-block:: python
 
-.. code-block:: html
+    PAGE_HIERARCHY = True
 
-    {% load cms_tags %}
+By enabling the page hierarchy feature, the backend allows content editors to
+arrange pages into a hierarchy by either choosing a specific parent page for
+each page or by using drag and drop to arrange pages into a hierarchy.
+
+With page hierarchies enabled, the template variable ``hierarchical_pages``
+represents a list of all direct child pages of the current page, which can be
+used to generate a list for example:
+
+.. code-block:: html+django
+
     <!DOCTYPE html>
     <html>
         <body>
-            {% if 'content' in slots or preview %}
-                <div class="content-slot">{% slot 'content' %}</div>
+            {% if hierarchical_pages %}
+                <ul class="child-pages">
+                    {% for child in hierarchical_pages %}
+                        <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                    {% endif %}
+                </ul>
             {% endif %}
         </body>
     </html>
 
-The example demonstrates a condition under which the slot is rendered: The slot
-is only rendered if the slot has actual content assigned to it. However we also
-render the slot if we are in preview mode; otherwise no-one would be able to
-assign content to the slot to start with.
+The direct parent of a page can be determined via the parent property:
+
+.. code-block:: html+django
+
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if current_page.parent %}
+                <a href="{{ current_page.parent.url }}">Parent</a></li>
+            {% endif %}
+        </body>
+    </html>
+
+Similarly, the ``page_path`` property can be used to retrieve a list of all
+page instances from the root page down to the current page. This can be used to
+generate breadcrumbs very easily:
+
+.. code-block:: html+django
+
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <ul>
+                {% for page in current_page.page_path %}
+                    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </body>
+    </html>
+
+Likewise, the navigation system provides additional information for each
+navigation item to be able to obtain a list of child pages as part of the
+navigation. Please refer to section
+:ref:`topics/cms/navigation/nav_item_hierarchy` for more information about
+hierarchies within the navigation system.
+
+The query for determining the direct child pages of the current page can be
+altered. Please refer to section :ref:`` for more information.

@@ -121,3 +121,60 @@ For example:
 
 Then the cache system (if enabled) will generate a cached version of the
 corresponding page with the URL ``/my-custom-url/``.
+
+
+
+
+.. _topics/cms/sitemap/html_sitemap:
+
+HTML Sitemap
+============
+
+The method :meth:`cubane.cms.views.CMS.get_sitemap_links` returns a list of all
+sitemap entries sorted alphabetically for the purpose of rendering an HTML
+sitemap on its basis.
+
+Likewise, the method :meth:`cubane.cms.views.CMS.get_sitemap_links_az` can be
+used to receive a list of sitemap entries that are organised within an A to Z
+structure.
+
+The following example would extend the template context for the page to which
+the unique identifier ``sitemap`` has been assigned to.
+
+.. code-block:: python
+
+    from cubane.cms.views import CMS
+
+    class MyCMS(CMS):
+        def on_page_identifier_sitemap(self, request, context, template_context):
+            template_context.update({
+                'sitemap': self.get_sitemap_links()
+            })
+            return template_context
+
+The method ``on_page_identifier_sitemap`` is called by the CMS system whenever
+a page is rendered that has a unique identifier ``sitemap`` assigned, since the
+name of the method ``on_page_identifier_...`` matches the identifier.
+
+.. seealso::
+
+    Please refer to section :ref:`topics/cms/system/identifier_hooks` for more
+    information about using unique page identifiers.
+
+Based on the additional template context variable ``sitemap``, the template may
+render an HTML-based sitemap in the following way:
+
+.. code-block:: html+django
+
+    <!DOCTYPE html>
+    <html>
+        <body>
+            {% if sitemap %}
+                <ul>
+                    {% for page in sitemap %}
+                        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </body>
+    </html>

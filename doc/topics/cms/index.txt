@@ -22,6 +22,7 @@ example the shop system.
     pages
     posts
     nav
+    system
     links
     sitemap
     legacy_urls
