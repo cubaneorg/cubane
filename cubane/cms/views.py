@@ -1871,7 +1871,8 @@ class CMS(View):
         return cubane_send_cms_enquiry_mail(
             request,
             instance.email,
-            '%s | Your enquiry on our website.' % self.settings.name
+            '%s | Your enquiry on our website.' % self.settings.name,
+            data
         )
 
 
