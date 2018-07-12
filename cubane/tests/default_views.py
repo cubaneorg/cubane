@@ -32,4 +32,4 @@ class DefaultViewsCustom500TestCase(DefaultViewsTestCaseBase):
     def test_should_render_default_500_template(self):
         response = custom500(self.request)
         self.assertEqual(500, response.status_code)
-        self.assertIn('<h1>500 - Oops, something went wrong.</h1>', response.content)
+        self.assertIn('Oops, something went wrong', response.content)
