@@ -295,6 +295,11 @@ class OrderForm(BaseModelForm):
             if not postcode: self.field_error('delivery_postcode', self.ERROR_REQUIRED)
             if not country: self.field_error('delivery_country', self.ERROR_REQUIRED)
 
+        # verify that we do not end up with an empty basket
+        basket = Basket(self._request, prefix=self._instance.backend_basket_prefix)
+        if basket.is_empty():
+            raise forms.ValidationError('Cannot save empty basket.')
+
         return d
 
 

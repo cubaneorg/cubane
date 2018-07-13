@@ -88,9 +88,10 @@ class OrderView(ModelView):
             instance.customer_not_present = True
             instance.payment_gateway = shop.get_default_payment_gateway()
 
-        # save basket
+        # save basket.
         basket = Basket(request, prefix=instance.backend_basket_prefix)
-        instance.save_basket(basket)
+        if not basket.is_empty():
+            instance.save_basket(basket)
 
         # change status
         if request.POST.get('next-status'):

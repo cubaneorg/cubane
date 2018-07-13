@@ -1587,7 +1587,8 @@ class Basket(object):
 
     def is_empty(self):
         """
-        Return True, if this basket is empty.
+        Return True, if this basket is empty, e.g. the count of basket item it
+        contains is zero.
         """
         return len(self.items) == 0
 
