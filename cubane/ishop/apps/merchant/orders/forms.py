@@ -298,7 +298,13 @@ class OrderForm(BaseModelForm):
         # verify that we do not end up with an empty basket
         basket = Basket(self._request, prefix=self._instance.backend_basket_prefix)
         if basket.is_empty():
-            raise forms.ValidationError('Cannot save empty basket.')
+            from cubane.lib.mail import trigger_exception_email
+            trigger_exception_email(self._request, 'Cannot save empty order.', data={
+                'form': self,
+                'formdata': d,
+                'basket:': basket.save_to_dict(use_session=False)
+            })
+            raise forms.ValidationError('Cannot save empty order.')
 
         return d
 

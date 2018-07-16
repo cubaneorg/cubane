@@ -14,18 +14,32 @@ import sys
 import traceback
 
 
-def send_exception_email():
+def trigger_exception_email(request, subject, data=None):
+    """
+    Raise an exception with given subject message and send an exception email.
+    """
+    try:
+        raise ValueError(subject)
+    except:
+        send_exception_email(request)
+
+
+def send_exception_email(request=None):
     """
     Send exception report email for the given exception e.
     """
-    factory = RequestFactory()
-    request = factory.get('/')
+    if request is None:
+        factory = RequestFactory()
+        request = factory.get('/')
+
     exc_info = sys.exc_info()
     reporter = ExceptionReporter(request, is_email=True, *exc_info)
     subject = unicode(exc_info[1].message).replace('\n', '\\n').replace('\r', '\\r')[:989]
 
     mail_admins(
-        subject, reporter.get_traceback_text(), fail_silently=True,
+        subject,
+        reporter.get_traceback_text(),
+        fail_silently=True,
         html_message=reporter.get_traceback_html()
     )
 
