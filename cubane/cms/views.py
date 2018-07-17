@@ -43,6 +43,7 @@ from cubane.lib.deploy import load_deploy_timestamp
 from cubane.lib.mail import cubane_send_cms_enquiry_mail
 from cubane.lib.mail import cubane_send_mail_template
 from cubane.lib.mail import get_ordered_list_of_fields
+from cubane.lib.mail import send_exception_email
 from cubane.lib.text import char_range
 from cubane.lib.template import get_compatible_template
 from datetime import datetime
@@ -1900,6 +1901,24 @@ class CMS(View):
         pass
 
 
+    def mailchimp_subscribe(self, request, email):
+        """
+        Subscribe given email address with mailchimp if configured in settings.
+        """
+        from mailsnake import MailSnake
+        from cubane.lib.mail import send_exception_email
+
+        if self.settings and self.settings.mailchimp_api and self.settings.mailchimp_list_id:
+            ms = MailSnake(self.settings.mailchimp_api)
+            try:
+                ms.listSubscribe(id=self.settings.mailchimp_list_id, email_address=email, merge_vars={})
+                return True
+            except:
+                send_exception_email(request)
+
+        return False
+
+
     def is_page_homepage(self, page):
         """
         Check if the page provided is the homepage.
@@ -2405,6 +2424,7 @@ class CMS(View):
             except:
                 msg = 'Unfortunately we were unable to process your request. Please try again later...'
                 msg_type = 'error'
+                send_exception_email(request)
 
         template = get_template('cubane/cms/newsletter_form.html')
         context = {
