@@ -2580,6 +2580,8 @@ class ModelView(TemplateView):
         """
         List all model instances.
         """
+        self._detect_frontend_editing(request)
+
         # get content type
         content_type = ContentType.objects.get_for_model(self.model)
 
@@ -3111,6 +3113,15 @@ class ModelView(TemplateView):
                 form.update_sections()
 
 
+    def _detect_frontend_editing(self, request):
+        """
+        Detect if the given request is frontend editing.
+        """
+        is_frontend_editing = request.GET.get('frontend-editing', 'false') == 'true'
+        request.frontend_editing = settings.CUBANE_FRONTEND_EDITING and is_frontend_editing
+        return request.frontend_editing
+
+
     def _apply_acl_to_form(self, request, form):
         """
         Ensure that ACL rules for model querysets are applied for the given
@@ -3200,6 +3211,8 @@ class ModelView(TemplateView):
         Create a new instance or edit an existing model instance with given
         primary key pk. This is the actual implementation of the view handler.
         """
+        self._detect_frontend_editing(request)
+
         # cancel?
         if request.POST.get('cubane_form_cancel', '0') == '1':
             return self._redirect(request, 'index')
