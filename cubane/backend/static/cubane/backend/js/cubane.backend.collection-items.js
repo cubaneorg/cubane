@@ -173,6 +173,9 @@ var onAddModels = function(e) {
 
     // construct dialog window url
     url = cubane.urls.combineUrlArg(url, 'browse', true);
+    if (cubane.urls.getQueryParamaterByName('frontend-editing') === 'true') {
+        url = cubane.urls.combineUrlArg(url, 'frontend-editing', true);
+    }
 
     // open url in a dialog window...
     cubane.dialog.iframe('Browse ' + title, url, {
