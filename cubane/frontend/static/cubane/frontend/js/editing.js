@@ -75,9 +75,9 @@
                 // make dialog window visible
                 document.body.classList.add('cubane-frontend-modal-open');
 
-                // resize dialog window based on content size. If we have drop
-                // downs, extend the size so that we can use the drop down
-                // control adequately...
+                // resize dialog window based on content size.
+                // If we have drop downs, extend the size so that we can
+                // use the drop down control adequately...
                 var form = d.querySelector('form.form-horizontal .form-content');
                 if (form) {
                     var rect = form.getBoundingClientRect();
@@ -89,7 +89,7 @@
                         h += 220;
                     }
 
-                    h = Math.min(window.clientHeight * 0.9, h);
+                    h = Math.min(window.innerHeight * 0.9, h);
                     iframe.style.minHeight = h + 'px';
                 }
 
