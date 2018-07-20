@@ -13,7 +13,6 @@
 # serve to show the default.
 from __future__ import unicode_literals
 from os.path import abspath, dirname, join
-from ..cubane import VERSION_STRING
 import sys
 
 
@@ -21,6 +20,13 @@ import sys
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.append(abspath(join(dirname(__file__), "_ext")))
+
+# append cubane
+sys.path.append(abspath(join(dirname(__file__), "..")))
+
+# import version of cubane
+from cubane import VERSION_STRING
+
 
 # -- General configuration ------------------------------------------------
 
