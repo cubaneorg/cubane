@@ -13,7 +13,7 @@
 # serve to show the default.
 from __future__ import unicode_literals
 from os.path import abspath, dirname, join
-from cubane import VERSION_STRING
+from ..cubane import VERSION_STRING
 import sys
 
 
