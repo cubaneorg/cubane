@@ -35,6 +35,7 @@ from cubane.backend.dashboard import *
 from cubane.tasks import TaskRunner
 from cubane.decorators import is_dialog_window_request
 from cubane.frontend import *
+from cubane.models import DateTimeBase
 from cubane.lib.app import hash_to_model
 from cubane.lib.libjson import *
 from cubane.lib.mail import cubane_send_cms_enquiry_mail
@@ -208,6 +209,12 @@ class EmbeddedCollection(object):
             # additional assignments
             for attr_name, attr_value in assignments.items():
                 setattr(item, attr_name, attr_value)
+
+            # ownership
+            if isinstance(item, DateTimeBase):
+                if not item.pk:
+                    item.created_by = request.user
+                item.updated_by = request.user
 
             # save item and keep pks
             item.save()
