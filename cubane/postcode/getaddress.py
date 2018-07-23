@@ -84,6 +84,7 @@ class GetAddressPostcodeLookup(PostcodeLookup):
             address_dict['address_line_3']   = lines[2] if len(lines) > 2 else ''
             address_dict['address_city']     = address_chunks[5]
             address_dict['address_county']   = address_chunks[6]
+            address_dict['address_country']  = 'GB'
             address_dict['address_postcode'] = self.clean_postcode(postcode)
             address_dict['address_full']     = ', '.join(x.strip() for x in address_chunks if x.strip())
             addresses.append(address_dict)

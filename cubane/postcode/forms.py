@@ -25,6 +25,7 @@ class PostcodeLookupField(forms.CharField):
         locality=None,
         city='id_city',
         county='id_county',
+        country='id_country',
         postcode='id_postcode',
         single_field=None,
         max_length=10,
@@ -40,6 +41,7 @@ class PostcodeLookupField(forms.CharField):
         self.address_locality = locality
         self.address_city     = city
         self.address_county   = county
+        self.address_country  = country
         self.address_postcode = postcode
         self.single_field     = single_field
         self.size             = size
@@ -75,6 +77,8 @@ class PostcodeLookupField(forms.CharField):
                     attrs['data-address-city'] = self.ref_name(self.address_city)
                 if self.address_county is not None:
                     attrs['data-address-county'] = self.ref_name(self.address_county)
+                if self.address_country is not None:
+                    attrs['data-address-country'] = self.ref_name(self.address_country)
 
             if self.address_postcode is not None:
                 attrs['data-address-postcode'] = self.ref_name(self.address_postcode)

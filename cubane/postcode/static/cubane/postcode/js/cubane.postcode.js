@@ -121,6 +121,7 @@
             var field = container.querySelector('#' + prefix + refFieldname);
             if (field) {
                 field.value = value;
+                field.dispatchEvent(new Event('change'));
             }
         }
     }
