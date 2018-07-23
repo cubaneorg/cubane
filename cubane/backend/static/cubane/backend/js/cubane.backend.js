@@ -1059,13 +1059,24 @@ cubane.backend.BackendController.prototype = {
             return false;
         }
 
-        function arePredicatesTrue(form, predicates, prefix) {
-            for (var k = 0; k < predicates.length; k++) {
-                if (!isPredicateTrue(form, predicates[k], prefix)) {
-                    return false;
+        function arePredicatesTrue(form, predicates, all, prefix) {
+            if (all) {
+                // AND
+                for (var k = 0; k < predicates.length; k++) {
+                    if (!isPredicateTrue(form, predicates[k], prefix)) {
+                        return false;
+                    }
                 }
+                return true;
+            } else {
+                // OR
+                for (var k = 0; k < predicates.length; k++) {
+                    if (isPredicateTrue(form, predicates[k], prefix)) {
+                        return true;
+                    }
+                }
+                return false;
             }
-            return true;
         }
 
         function predicateContainsFieldRef(predicates, targetName) {
@@ -1210,10 +1221,11 @@ cubane.backend.BackendController.prototype = {
             // determine hidden and visible fields
             var fields = {};
             var fieldnamesToClear = [];
+            fields.__keys = [];
             for (var i = 0; i < visibilityRules.length; i++) {
                 var visibilityRule = visibilityRules[i];
                 if (visibilityRule && visibilityRule.p) {
-                    var predicatesTrue = arePredicatesTrue(form, visibilityRule.p, prefix);
+                    var predicatesTrue = arePredicatesTrue(form, visibilityRule.p, visibilityRule.a, prefix);
                     extendFields(
                         fields,
                         visibilityRule,

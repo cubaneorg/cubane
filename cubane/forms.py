@@ -403,7 +403,21 @@ class FormVisibilityPredicate(object):
         """
         Return True, if this predicate holds true for the given form data.
         """
-        return data.get(self.field) == self.value
+        v = data.get(self.field)
+        if self.compare == '==':
+            return v == self.value
+        elif self.compare == '!=':
+            return v != self.value
+        elif self.compare == '>':
+            return v > self.value
+        elif self.compare == '>=':
+            return v >= self.value
+        elif self.compare == '<':
+            return v < self.value
+        elif self.compare == '<=':
+            return v <= self.value
+        else:
+            return False
 
 
 class FormVisibility(object):
@@ -412,7 +426,7 @@ class FormVisibility(object):
     to control the visibility of form fields based on current values of other
     form fields.
     """
-    def __init__(self, predicates=None, field=None, value=None, compare='==', visible=None, required=None, clear=None):
+    def __init__(self, predicates=None, field=None, value=None, compare='==', visible=None, required=None, clear=None, all=True):
         if predicates:
             self.predicates = predicates
         elif field and value is not None:
@@ -423,7 +437,7 @@ class FormVisibility(object):
         self.visible = visible
         self.required = required
         self.clear = clear
-        self.field = field
+        self.all = all
 
 
     def to_dict(self):
@@ -435,20 +449,56 @@ class FormVisibility(object):
                 'p': [p.to_dict() for p in self.predicates],
                 'v': self.visible,
                 'r': self.required,
-                'c': self.clear
+                'c': self.clear,
+                'a': self.all
             }
         else:
             return None
+
+
+    @property
+    def field(self):
+        """
+        Return the first field that is references by any predicate rule.
+        """
+        for predicate in self.predicates:
+            return predicate.field
+
+
+    def get_field(self, data):
+        """
+        Return the field based on the predicate rule that is responsible for
+        the evaluation of the rule as a whole.
+        """
+        if self.all:
+            # AND
+            for predicate in self.predicates:
+                if not predicate.is_true(data):
+                    return predicate.field
+        else:
+            # OR
+            for predicate in self.predicates:
+                if predicate.is_true(data):
+                    return predicate.field
+        return None
 
 
     def is_true(self, data):
         """
         Return True, if the predicate holds true for the given form data.
         """
-        for predicate in self.predicates:
-            if not predicate.is_true(data):
-                return False
-        return True
+        if self.all:
+            # AND
+            for predicate in self.predicates:
+                if not predicate.is_true(data):
+                    return False
+            return True
+        else:
+            # OR
+            for predicate in self.predicates:
+                if predicate.is_true(data):
+                    return True
+            return False
 
 
 class FormInputLimit(object):
@@ -505,7 +555,8 @@ def form_clean(form, cleaned_data):
         for visibility_rule in form._visibility:
             if visibility_rule.is_true(cleaned_data):
                 # make sure that fields are required
-                ref_field = form.fields.get(visibility_rule.field)
+                ref_fieldname = visibility_rule.get_field(cleaned_data)
+                ref_field = form.fields.get(ref_fieldname)
                 if visibility_rule.required:
                     for fieldname in visibility_rule.required:
                         field = form.fields.get(fieldname)

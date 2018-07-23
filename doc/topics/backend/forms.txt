@@ -809,6 +809,31 @@ constructor of :class:`FormVisibility` takes a list of
 In this example, the field ``rrp`` is only visible if the field ``recommended``
 is ``True`` *and* the field ``price`` is *greater than* ``0``.
 
+The comparison can also be liked in such a way so that either of the two (or
+more) predicates are *true*:
+
+.. code-block:: python
+
+    from cubane.forms import BaseModelForm
+    from models import Book
+
+
+    class BookForm(BaseModelForm):
+        class Meta:
+            model = Book
+            fields = '__all__'
+            visibility = [
+                FormVisibility([
+                    FormVisibilityPredicate(field='recommended', value=True),
+                    FormVisibilityPredicate(field='price', compare='>', value=0)
+                ], all=False, visible=[
+                    'rrp'
+                ])
+            ]
+
+Now the field ``rrp`` is visible if the field ``recommended`` is ``True`` *or*
+the field ``price`` is *greater than* ``0``.
+
 
 
 
