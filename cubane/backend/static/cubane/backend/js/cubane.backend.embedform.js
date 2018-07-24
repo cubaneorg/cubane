@@ -58,8 +58,9 @@ function makeSortable(container) {
 function onAdd(e) {
     e.preventDefault();
 
-    // make copy of template row and append to list
+    // make copy of template row
     var container = $(e.target).closest('.embed-forms');
+    var reverse = container.hasClass('embed-forms-reverse');
     var rows = container.find('> .embed-forms-container > .embed-forms-body');
     var template = container.find('> .embed-form-template');
 
@@ -67,9 +68,15 @@ function onAdd(e) {
     var row = $(template.html());
     var seqIndex = getHighestSeqIndex(container) + 1;
 
-    // rewrite form prefix and append to listing
+    // rewrite form prefix
     rewriteSeqIndex(container, row, seqIndex);
-    rows.append(row);
+
+    // append/prepend to list
+    if (reverse) {
+        rows.prepend(row);
+    } else {
+        rows.append(row);
+    }
 
     // initialize custom controls
     row.trigger('init-controls');

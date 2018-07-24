@@ -735,6 +735,7 @@ class RelatedEditWidget(widgets.Widget):
             'prefix_pattern': self._field.get_prefix_pattern(),
             'form_template': form_template,
             'sortable': self.attrs.get('sortable', False),
+            'reverse': self.attrs.get('reverse', False),
             'form_summary': self._field.get_summary(forms),
             'field_template': self._field.template_path + '/form_embedded_fields.html',
             'verbose_name': verbose_name
@@ -765,6 +766,7 @@ class RelatedEditField(fields.Field):
         self.model = kwargs.pop('model', None)
         self.no_label = kwargs.pop('no_label', False)
         self.sortable = kwargs.pop('sortable', False)
+        self.reverse = kwargs.pop('reverse', False)
         self.calc = kwargs.pop('calc', None)
         self.template_path = kwargs.pop('template_path', 'cubane/backend/form/')
         self.initial_rows = kwargs.pop('initial_rows', 0)
@@ -974,6 +976,7 @@ class RelatedEditField(fields.Field):
         attrs = super(RelatedEditField, self).widget_attrs(widget)
         attrs['model'] = self.model
         attrs['sortable'] = self.sortable
+        attrs['reverse'] = self.reverse
         attrs['class'] = 'no-label' if self.no_label else ''
         return attrs
 

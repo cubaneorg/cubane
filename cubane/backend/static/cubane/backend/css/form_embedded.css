@@ -100,8 +100,6 @@
     display: none;
 }
 
-
-
 @media only screen and (max-width: 1200px) {
     .embed-forms-container.embedded-line-items .embed-forms-container .embed-forms-header {
         display: none;
@@ -128,6 +126,15 @@
     .embed-forms-container.embedded-line-items .control-group-total {
         flex: 0 0 30%;
     }
+}
+
+
+/*
+ * Reverse
+ */
+.embed-forms-reverse {
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 
@@ -209,6 +216,11 @@
 .embed-forms-footer {
     background-color: #f0f0f0;
     border-top: 2px solid #ccc;
+}
+
+.embed-forms-reverse .embed-forms-footer {
+    border-top: none;
+    border-bottom: 2px solid #ccc;
 }
 
 .embed-forms-footer-columns {

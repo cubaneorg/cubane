@@ -1,6 +1,6 @@
 {% load list_tags %}
 
-<div class="embed-forms" data-prefix-pattern="{{ prefix_pattern }}" data-sortable="{{ sortable }}"{% if form_template.has_visibility_rules %} data-visibility-rules="{{ form_template.get_encoded_visibility_rules }}"{% endif %}{% if form_template.has_blueprint_rules %} data-blueprint-rules="{{ form_template.get_encoded_blueprint_rules }}"{% endif %}{% if form.has_limit_rules %} data-limit-rules="{{ form.get_encoded_limit_rules }}"{% endif %}>
+<div class="embed-forms{% if reverse %} embed-forms-reverse{% endif %}" data-prefix-pattern="{{ prefix_pattern }}" data-sortable="{{ sortable }}"{% if form_template.has_visibility_rules %} data-visibility-rules="{{ form_template.get_encoded_visibility_rules }}"{% endif %}{% if form_template.has_blueprint_rules %} data-blueprint-rules="{{ form_template.get_encoded_blueprint_rules }}"{% endif %}{% if form.has_limit_rules %} data-limit-rules="{{ form.get_encoded_limit_rules }}"{% endif %}>
     <div class="embed-forms-container{% if form_template.has_line_items %} embedded-line-items{% endif %}">
         <div class="embed-forms-header">
             <div class="embed-forms-header-columns">
