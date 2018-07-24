@@ -81,3 +81,54 @@ def _format_days(
         (week, tdelta.days / 7),
         (day, tdelta.days % 7)
     ]
+
+
+def get_monthly_renewal_date(start_date, today):
+    """
+    Return the (monthly) renewal date based on the given start date and
+    today's date.
+    """
+    if today < start_date:
+        return start_date
+
+    year = today.year
+    month = today.month
+    day = start_date.day
+
+    try:
+        result = datetime.date(year, month, day)
+    except ValueError:
+        month += 1
+        day = 1
+        result = datetime.date(year, month, day)
+
+    if result < today:
+        try:
+            result = datetime.date(year, month + 1, day)
+        except ValueError:
+            result = datetime.date(year, month + 2, 1)
+
+    return result
+
+
+def get_yearly_renewal_date(start_date, today):
+    """
+    Return the (yearly) renewal date based on the given start date and
+    today's date.
+    """
+    if today < start_date:
+        return start_date
+
+    year = today.year
+    month = start_date.month
+    day = start_date.day
+
+    result = datetime.date(year, month, day)
+    if result < today:
+        try:
+            result = datetime.date(year + 1, month, day)
+        except ValueError:
+            # leap year overflow
+            result = datetime.date(year + 1, month + 1, 1)
+
+    return result
