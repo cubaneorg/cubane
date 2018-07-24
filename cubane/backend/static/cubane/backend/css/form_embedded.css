@@ -291,6 +291,10 @@
     visibility: hidden;
 }
 
+.embed-form-field textarea:not(.editable-html) {
+    resize: none;
+}
+
 
 /*
  * Postcode lookup

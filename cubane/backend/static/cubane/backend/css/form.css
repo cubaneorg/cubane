@@ -140,6 +140,15 @@ form.disabled .control-group {
 
 
 /*
+ * Resizeable textarea fields (min/max height)
+ */
+.form-horizontal textarea:not(.editable-html) {
+    min-height: 100px;
+    max-height: 400px;
+}
+
+
+/*
  * Visibility rules
  */
 .control-group-visibility-rule-hidden:not(.embed-form-field) {

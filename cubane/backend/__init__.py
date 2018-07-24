@@ -38,6 +38,9 @@ RESOURCES = [
     # interact
     'interact/interact.js',
 
+    # textarea autosize
+    'js/autosize.js',
+
     # tiny-mce
     'tinymce/js/tinymce/tinymce.min.js',
     'tinymce/js/tinymce/plugins/emoticons/plugin.min.js',

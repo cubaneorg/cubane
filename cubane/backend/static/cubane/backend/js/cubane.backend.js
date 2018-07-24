@@ -416,6 +416,7 @@ cubane.backend.BackendController = function () {
     this.enableTimepicker();
     this.enableShareMedia();
     this.enableColorPicker();
+    this.enableAutoSize();
     this.evaluateAllLimitsForForms();
 
     $(document).on('click', '.nav-steps a', this.bound.onFormStep);
@@ -1849,6 +1850,9 @@ cubane.backend.BackendController.prototype = {
             showWidgetOnFocus: false,
             defaultTime: false,
         });
+
+        // textareas
+        autosize(container.get(0).querySelectorAll('.form-horizontal textarea:not(.editable-html)'));
     },
 
 
@@ -1962,6 +1966,14 @@ cubane.backend.BackendController.prototype = {
             $('.color-text').minicolors(settings);
         }
     },
+
+
+    /*
+     * Enable auto-resizing of textarea fields
+     */
+    enableAutoSize: function() {
+        autosize(document.querySelectorAll('.form-horizontal textarea:not(.editable-html)'));
+    }
 };
 
 
