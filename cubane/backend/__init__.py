@@ -138,3 +138,9 @@ def install_backend(backend):
 
     from cubane.backend.views import ChangeLogBackendSection
     backend.register_section(ChangeLogBackendSection())
+
+
+def cleanup():
+    from django.core.management import call_command
+    call_command('changelog', interactive=False)
+    call_command('tokens', interactive=False)

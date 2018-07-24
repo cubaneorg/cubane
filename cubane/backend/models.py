@@ -295,6 +295,19 @@ class ChangeLog(models.Model):
     )
 
 
+    @classmethod
+    def cleanup(cls):
+        """
+        Deletes all expired change-log entries.
+        """
+        t = datetime.datetime.now() - datetime.timedelta(days=settings.CUBANE_BACKEND_CHANGELOG_EXPIRY_DAYS)
+        entries = ChangeLog.objects.filter(
+            created_on__lt=t
+        )
+
+        entries.delete()
+
+
     @property
     def plain_title(self):
         """

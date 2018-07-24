@@ -40,7 +40,7 @@ class ChangeLogForm(BaseModelForm):
 
 class BackendLoginForm(BaseLoginForm):
     """
-    Login form that is used by the backend system to authentificate users.
+    Login form that is used by the backend system to authenticate users.
     """
     username = forms.CharField(
         label='Username or Email',

@@ -2,24 +2,23 @@
 from __future__ import unicode_literals
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from cubane.backend.models import UserToken
+from cubane.backend.models import ChangeLog
 
 
 class Command(BaseCommand):
     """
-    Destroys all invalid and/or expired user tokens (for example password forgotten).
+    Deletes all change-log entries that are older than 1 month.
     """
     args = ''
-    help = 'Destroys invalid/expired user tokens.'
+    help = 'Deletes expired change-log entries.'
 
 
     def handle(self, *args, **options):
         """
         Run command.
         """
-        print 'Destroying invalid/expired user tokens...Please Wait...'
-        print
+        print 'Deleting expired change-log entries...Please Wait...'
 
-        UserToken.cleanup()
+        ChangeLog.cleanup()
 
         print 'done.'

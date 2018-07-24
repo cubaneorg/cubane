@@ -11,6 +11,7 @@ from cubane.lib.model import get_model_field_names
 from cubane.lib.libjson import to_json
 from cubane.lib.app import get_models
 from cubane.backend.models import ChangeLog
+from cubane.models import DateTimeBase
 import datetime
 import random
 import hashlib
@@ -197,22 +198,29 @@ class ChangeLogManager(object):
 
         if len(self._log) == 1 and self._parent_log.content_type == self._log[0].content_type and self._parent_log.target_id == self._log[0].target_id:
             # single change
-            self._parent_log.action = self._log[0].action
-            self._parent_log.changes = self._log[0].changes
-            self._parent_log.save()
+            if not self._log[0].no_changes:
+                self._parent_log.action = self._log[0].action
+                self._parent_log.changes = self._log[0].changes
+                self._parent_log.save()
         else:
-            # extract action and content type from first log item
-            self._parent_log.action = self._log[-1].action
-            self._parent_log.changes = None
+            n_changes = [True for log in self._log if not log.no_changes]
+            if any(n_changes):
+                # extract action and content type from first log item
+                self._parent_log.action = self._log[-1].action
+                self._parent_log.changes = None
+                self._log[-1].no_changes = False
 
-            # save outer entry (parent)
-            self._parent_log.save()
+                # save outer entry (parent)
+                self._parent_log.save()
 
-            # create inner change records
-            for seq, log in enumerate(self._log, start=1):
-                log.parent = self._parent_log
-                log.seq = seq
-                log.save()
+                # create inner change records
+                seq = 1
+                for log in self._log:
+                    if not log.no_changes:
+                        log.parent = self._parent_log
+                        log.seq = seq
+                        log.save()
+                        seq += 1
 
         # clear log
         self._log = []
@@ -365,6 +373,13 @@ class ChangeLogManager(object):
         # ignore if there are no changes
         if previous_instance is not None and not changes:
             return None
+
+        # annotate log entries if the only change that would happen is to
+        # update the last modification timestamp...
+        log.no_changes = False
+        if isinstance(instance, DateTimeBase):
+            if len(changes) == 1 and changes[0]['n'] == 'updated_on':
+                log.no_changes = True
 
         # create unique hash identifier
         log.hashcode = self._generate_hashcode()

@@ -365,6 +365,12 @@ def default_env(
 
 
     #
+    # Changelog entry lifespan
+    #
+    m.CUBANE_BACKEND_CHANGELOG_EXPIRY_DAYS = 180
+
+
+    #
     # Cubane backend editor
     #
     m.CUBANE_BACKEND_EDITOR_PLUGINS = [
