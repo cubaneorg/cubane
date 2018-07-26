@@ -101,14 +101,14 @@ class LibDateGetMonthlyRenewalDateTestCase(CubaneTestCase):
 
     def test_should_renew_today_next_month(self):
         self.assertEqual(
-            datetime.date(2018, 8, 14),
+            datetime.date(2018, 9, 14),
             get_monthly_renewal_date(datetime.date(2018, 7, 14), datetime.date(2018, 8, 14))
         )
 
 
     def test_should_renew_on_start_date(self):
         self.assertEqual(
-            datetime.date(2018, 7, 14),
+            datetime.date(2018, 8, 14),
             get_monthly_renewal_date(datetime.date(2018, 7, 14), datetime.date(2018, 7, 14))
         )
 
@@ -154,14 +154,14 @@ class LibDateGetYearlyRenewalDateTestCase(CubaneTestCase):
 
     def test_should_renew_today_next_year(self):
         self.assertEqual(
-            datetime.date(2019, 7, 14),
+            datetime.date(2020, 7, 14),
             get_yearly_renewal_date(datetime.date(2018, 7, 14), datetime.date(2019, 7, 14))
         )
 
 
     def test_should_renew_on_start_date(self):
         self.assertEqual(
-            datetime.date(2018, 7, 14),
+            datetime.date(2019, 7, 14),
             get_yearly_renewal_date(datetime.date(2018, 7, 14), datetime.date(2018, 7, 14))
         )
 

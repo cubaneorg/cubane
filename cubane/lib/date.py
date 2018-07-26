@@ -102,7 +102,7 @@ def get_monthly_renewal_date(start_date, today):
         day = 1
         result = datetime.date(year, month, day)
 
-    if result < today:
+    if result <= today:
         try:
             result = datetime.date(year, month + 1, day)
         except ValueError:
@@ -124,7 +124,7 @@ def get_yearly_renewal_date(start_date, today):
     day = start_date.day
 
     result = datetime.date(year, month, day)
-    if result < today:
+    if result <= today:
         try:
             result = datetime.date(year + 1, month, day)
         except ValueError:
