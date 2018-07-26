@@ -146,6 +146,23 @@ class ImportExportBase(object):
         return names
 
 
+    def get_column_title(self, fieldname, objects):
+        """
+        Return the full verbose name of the model field with the given field
+        name.
+        """
+        try:
+            field = self.model._meta.get_field(fieldname)
+            title = field.verbose_name
+        except FieldDoesNotExist:
+            title = ''
+
+        if hasattr(self.model, 'on_data_column_title'):
+            title = self.model.on_data_column_title(fieldname, title, objects)
+
+        return title
+
+
     def get_mapped_fieldnames(self):
         mappedfieldnames = get_listing_option(self.model, 'data_map_fields', {})
         names = {}
@@ -527,6 +544,11 @@ class Exporter(ImportExportBase):
 
         # write header row
         writer.writerow(column_names)
+
+        # optionally write header column titles
+        if get_listing_option(self.model, 'data_title'):
+            titles = [self.get_column_title(fieldname, objects) for fieldname, _ in fields]
+            writer.writerow(titles)
 
         # export data
         for obj in objects:

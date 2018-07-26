@@ -726,6 +726,33 @@ detail:
         not be more than one record with the same column value.
 
 
+.. listing:: data_title
+
+``data_title``
+
+    Declares whether the CSV file data export contains an additional row
+    that contains a full column verbose title for each data column.
+
+    By default, CSV data exports *do not* contain verbose column title names.
+
+    The verbose name for each column is usually derived from the data model.
+    However, by implementing the static method ``on_data_column_title``,
+    individual verbose names can be specified.
+
+    .. code-block:: python
+
+        class Listing:
+            data_export = True
+            data_title = True
+
+        @classmethod
+        def on_data_column_title(cls, fieldname, title, objects):
+            if fieldname == 'get_status_display':
+                title = 'Status'
+
+            return title
+
+
 
 
 .. _topics/backend/model_view_overrides:

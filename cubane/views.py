@@ -3720,10 +3720,15 @@ class ModelView(TemplateView):
         """
         Export data and provide file download.
         """
-        # get data
+        # get base list of objects
         objects = self._get_objects_base(request)
+
+        # filter by folder
+        session_prefix = self._get_session_prefix(request)
+        objects, _, _ = self._filter_by_folders(request, objects, session_prefix)
+
+        # pick selected objects
         pks = request.POST.getlist('pks[]', []);
-        objects = self._get_objects_base(request)
         if len(pks) > 0:
             objects = objects.filter(pk__in=pks)
 
