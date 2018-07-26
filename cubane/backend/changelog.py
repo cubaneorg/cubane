@@ -127,7 +127,12 @@ class ChangeLogManager(object):
         """
         Instance updated.
         """
-        self._add_log(ChangeLog.ACTION_EDIT, instance, previous_instance, instance_label)
+        log = self._add_log(ChangeLog.ACTION_EDIT, instance, previous_instance, instance_label)
+
+        if log:
+            return not log.no_changes
+        else:
+            return False
 
 
     def delete(self, instance):
@@ -476,6 +481,8 @@ class ChangeLogManager(object):
         log = self._create_log(action.title(), instance, previous_instance, action, instance_label)
         if log:
             self._log.append(log)
+
+        return log
 
 
     def _get_content_type(self, _class):

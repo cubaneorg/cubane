@@ -212,19 +212,23 @@ class EmbeddedCollection(object):
 
             # ownership
             if isinstance(item, DateTimeBase):
-                if not item.pk:
+                if not previous_item:
                     item.created_by = request.user
-                item.updated_by = request.user
 
-            # save item and keep pks
-            item.save()
-            pks.append(item.pk)
+                if not item.updated_by:
+                    item.updated_by = request.user
 
             # update changelog
             if previous_item:
-                request.changelog.edit(item, previous_item)
+                # only save changes if we actually made a change
+                if request.changelog.edit(item, previous_item):
+                    item.save()
             else:
+                item.save()
                 request.changelog.create(item)
+
+            # keep track of pks
+            pks.append(item.pk)
 
             # save embedded items
             if hasattr(item, '_embedded_instances') and hasattr(item.__class__, 'embedded_save_items'):

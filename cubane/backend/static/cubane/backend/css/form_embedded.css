@@ -253,6 +253,7 @@
 .embed-form-field input[type="text"],
 .embed-form-field input[type="email"],
 .embed-form-field input[type="url"],
+.embed-form-field input[type="number"],
 .embed-form-field textarea,
 .embed-form-field .uneditable-input {
     width: 100%;
