@@ -41,6 +41,9 @@ class TreeBuilder(object):
         def _set_children(node, children):
             setattr(node, children_name, children)
 
+        def _append_child(node, child):
+            getattr(node, children_name).append(child)
+
         def _get_children(node):
             return getattr(node, children_name)
 
@@ -53,13 +56,10 @@ class TreeBuilder(object):
         def _set_level(node, level):
             setattr(node, level_name, level)
 
-        def _find_children(parent, items, level):
-            return [_get_node_with_children(child, items, level) for child in items if _is_child_of(child, parent)]
-
-        def _get_node_with_children(node, items, level=0):
-            _set_children(node, _find_children(node, items, level + 1))
-            _set_level(node, level)
-            return node
+        def _assign_level(nodes, level=0):
+            for node in nodes:
+                _set_level(node, level)
+                _assign_level(_get_children(node), level + 1)
 
         def _get_title(node):
             return getattr(node, title_name)
@@ -75,12 +75,12 @@ class TreeBuilder(object):
         self.get_parent_id = _get_parent_id
         self.is_root = _is_root
         self.set_children = _set_children
+        self.append_child = _append_child
         self.is_child_of = _is_child_of
         self.get_level = _get_level
         self.set_level = _set_level
+        self.assign_level = _assign_level
         self.get_children = _get_children
-        self.find_children = _find_children
-        self.get_node_with_children = _get_node_with_children
         self.get_title = _get_title
         self.get_title_with_level = _get_title_with_level
         self.get_title_with_level_html = _get_title_with_level_html
@@ -95,10 +95,30 @@ class TreeBuilder(object):
         if items == None:
             return []
 
+        # materialize
         if isinstance(items, QuerySet):
             items = list(items)
 
-        return [self.get_node_with_children(node, items) for node in items if self.is_root(node)]
+        # build index
+        self._index = {}
+        for item in items:
+            self._index[self.get_id(item)] = item
+            self.set_children(item, [])
+
+        # collect children and root
+        root = []
+        for item in items:
+            parent_id = self.get_parent_id(item)
+            parent = self._index.get(parent_id)
+            if parent:
+                self.append_child(parent, item)
+            else:
+                root.append(item)
+
+        # assign levels
+        self.assign_level(root, 0)
+
+        return root
 
 
     def make_choices(self, tree):
