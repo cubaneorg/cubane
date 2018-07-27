@@ -5,7 +5,7 @@
         {{ field }}
     </td>
 {% else %}
-    <div class="control-group control-group-{{ field.name }}{% if field.field.required %} required{% endif %}{% if field.errors %} error{% endif %}{% if 'no-label' in field.field.widget.attrs.class or field.field.no_label %} flattened{% endif %}{% if field|widget_type == 'CheckboxInput' %} bootstrap-checkbox{% endif %}{% if field|widget_type == 'RadioSelect' %} radio-select{% endif %}{% if field|widget_type == 'SectionWidget' %} form-section-control-group{% endif %}{% if field|widget_type == 'URLInput' %} url-input{% endif %}{% if field_class %} {{ field_class }}{% endif %}{% if field.field.widget.group_class %} {{ field.field.widget.group_class }}{% endif %}">
+    <div class="control-group control-group-{{ field.name }}{% if field.field.required %} required{% endif %}{% if field.errors %} error{% endif %}{% if 'no-label' in field.field.widget.attrs.class or field.field.no_label %} flattened{% endif %}{% if field|widget_type == 'CheckboxInput' %} bootstrap-checkbox{% endif %}{% if field|widget_type == 'RadioSelect' %} radio-select{% endif %}{% if field|widget_type == 'SectionWidget' %} form-section-control-group{% endif %}{% if field|widget_type == 'URLInput' %} url-input{% endif %}{% if field|widget_type == 'EmailInput' %} email-input{% endif %}{% if field|widget_type == 'PhoneInput' %} tel-input{% endif %}{% if field_class %} {{ field_class }}{% endif %}{% if field.field.widget.group_class %} {{ field.field.widget.group_class }}{% endif %}">
         {% if field|widget_type == 'SectionWidget' %}
             {% if not forloop.first %}<br/>{% endif %}
             {{ field }}

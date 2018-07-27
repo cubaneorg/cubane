@@ -78,6 +78,7 @@ RESOURCES = [
     'css/theme.css',
     'css/form.css',
     'css/form_embedded.css',
+    'css/form_inputbtn.css',
     'css/table.css',
     'css/tree.css',
     'css/listing.css',
@@ -121,7 +122,7 @@ RESOURCES = [
     'js/cubane.backend.sidepanel.js',
     'js/cubane.backend.embedform.js',
     'js/cubane.backend.dashboard.js',
-    'js/cubane.backend.urlinput.js'
+    'js/cubane.backend.inputbtn.js'
 ]
 
 

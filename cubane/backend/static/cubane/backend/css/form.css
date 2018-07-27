@@ -167,6 +167,7 @@ form.disabled .control-group {
 .content-frame input[type="text"],
 .content-frame input[type="email"],
 .content-frame input[type="url"],
+.content-frame input[type="tel"],
 .content-frame textarea,
 .content-frame .uneditable-input {
     width: 100%;
@@ -908,28 +909,4 @@ input[type="radio"]:checked {
  */
 .form-content-condensed select {
     width: 100%;
-}
-
-
-/*
- * URL field
- */
-.control-group.url-input .field {
-    display: flex;
-}
-
-.control-group.url-input .field:after {
-    content: 'Go';
-    display: inline-block;
-    background-color: #f49e2d;
-    color: #fff;
-    border: 1px solid #d38826;
-    font-size: 12.5px;
-    font-weight: 600;
-    line-height: 26px;
-    padding: 0 12px;
-    font-size: 12.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-left: -1px;
 }
