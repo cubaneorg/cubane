@@ -2575,6 +2575,31 @@ class ModelView(TemplateView):
             return False
 
 
+    def _get_listing_actions_tabs(self):
+        """
+        Return a list of tabs that can be opened directly from within the
+        listing screen.
+        """
+        shortcut_tabs = get_listing_option(self.model, 'shortcut_tabs')
+        actions_tabs = []
+
+        if shortcut_tabs:
+            formclass = self._get_form()
+            form = formclass()
+
+            if isinstance(shortcut_tabs, list):
+                for tabname in shortcut_tabs:
+                    tabname = tabname.lower().strip()
+                    for tab in form.tabs:
+                        if tab.slug == tabname or tab.title.lower().strip() == tabname:
+                            actions_tabs.append(tab)
+
+            elif shortcut_tabs == True:
+                actions_tabs = form.tabs
+
+        return actions_tabs
+
+
     @view(permission_required('view'))
     def index(self, request):
         """
@@ -2795,7 +2820,8 @@ class ModelView(TemplateView):
                 'filter_enabled': args.get('ff', False),
                 'search': True,
                 'listing_with_image': self.listing_with_image,
-                'open_in_new_window': self._open_in_new_window()
+                'open_in_new_window': self._open_in_new_window(),
+                'listing_actions_tabs': self._get_listing_actions_tabs()
             }
 
             # determine if there are actions available
