@@ -9,6 +9,7 @@ RESOURCES = [
     # cubane core
     '/cubane/js/cubane.polyfill.js',
     '/cubane/js/cubane.js',
+    '/cubane/js/cubane.dom.js',
     '/cubane/js/cubane.string.js',
     '/cubane/js/cubane.html.js',
     '/cubane/js/cubane.urls.js',
@@ -119,7 +120,8 @@ RESOURCES = [
     'js/cubane.backend.gmap.js',
     'js/cubane.backend.sidepanel.js',
     'js/cubane.backend.embedform.js',
-    'js/cubane.backend.dashboard.js'
+    'js/cubane.backend.dashboard.js',
+    'js/cubane.backend.urlinput.js'
 ]
 
 
