@@ -804,6 +804,8 @@ cubane.backend.BackendController.prototype = {
 
         this.focusFirstInputField(tab, false);
         $(document).trigger('cubane-tab-switched');
+
+        autosize.update(document.querySelectorAll('.form-horizontal textarea:not(.editable-html)'));
     },
 
 
