@@ -62,7 +62,9 @@ class DashboardWidget(object):
     SIZE_2X2 = '2x2'
     SIZE_2X3 = '2x3'
     SIZE_3X1 = '3x1'
+    SIZE_3X2 = '3x2'
     SIZE_4X1 = '4x1'
+    SIZE_4X2 = '4x2'
     SIZE_DEFAULT = SIZE_1X1
     SIZES = [
         SIZE_1X1,
@@ -72,7 +74,9 @@ class DashboardWidget(object):
         SIZE_2X2,
         SIZE_2X3,
         SIZE_3X1,
-        SIZE_4X1
+        SIZE_3X2,
+        SIZE_4X1,
+        SIZE_4X2
     ]
 
 

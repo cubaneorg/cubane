@@ -164,12 +164,22 @@
     height: calc(3 * 300px + 60px);
 }
 
-.dashboard-widget-size-3x1 {
+.dashboard-widget-size-3x1,
+.dashboard-widget-size-3x2 {
     width: calc((100% / 4 * 3) - 30px);
 }
 
-.dashboard-widget-size-4x1 {
+.dashboard-widget-size-3x2 {
+    height: calc(2 * 300px + 30px);
+}
+
+.dashboard-widget-size-4x1,
+.dashboard-widget-size-4x2 {
     width: calc(100% - 30px);
+}
+
+.dashboard-widget-size-4x2 {
+    height: calc(2 * 300px + 30px);
 }
 
 
