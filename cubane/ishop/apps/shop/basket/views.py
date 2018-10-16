@@ -116,15 +116,16 @@ def index(request):
 
 
 def get_product_or_404(request):
-    product_id = request.POST.get('product_id', None)
-    if product_id == None:
-        raise Http404('Missing argument: product_id.')
+    product_id = request.POST.getlist('product_id')
 
+    if len(product_id) >= 1:
+        product_id = product_id[0]
+    else:
+        raise Http404('Missing argument: product_id.')
     try:
         product_id = int(product_id)
     except ValueError:
         raise Http404('Argument product_id is not an integer.')
-
     return get_object_or_404(get_product_model(), pk=product_id, draft=False)
 
 
