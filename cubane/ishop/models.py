@@ -300,12 +300,14 @@ class Variety(DateTimeBase):
     STYLE_SELECT                      = 1
     STYLE_LIST                        = 2
     STYLE_LIST_WITH_IMAGE             = 3
+    STYLE_SELECT_WITH_IMAGE           = 4
     STYLE_ATTRIBUTE                   = 999
     STYLE_CHOICES = (
-        (STYLE_SELECT,          'Select Box (or List)'),
-        (STYLE_LIST,            'List'),
-        (STYLE_LIST_WITH_IMAGE, 'List with image'),
-        (STYLE_ATTRIBUTE,       'Attribute'),
+        (STYLE_SELECT,              'Select Box (or List)'),
+        (STYLE_SELECT_WITH_IMAGE,   'Select box with image'),
+        (STYLE_LIST,                'List'),
+        (STYLE_LIST_WITH_IMAGE,     'List with image'),
+        (STYLE_ATTRIBUTE,           'Attribute'),
     )
 
 

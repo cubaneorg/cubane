@@ -65,6 +65,13 @@ class VarietySelectWidget(forms.Widget):
             options = self.render_options(shop, self._assignments, [value])
             if options: output.append(options)
             output.append('</select>')
+        elif self._variety.style == Variety.STYLE_SELECT_WITH_IMAGE:
+            output.append('<select%s>' % flatatt(final_attrs))
+
+            options = self.render_options(shop, self._assignments, [value], True)
+            if options: output.append(options)
+            output.append('</select>')
+            output.append('<div class="select-with-image-preview"></div>')
         else:
             with_image = self._variety.style == Variety.STYLE_LIST_WITH_IMAGE
             attrs['class'] += ' select-list' + (' select-list-image' if with_image else ' select-list-plain')
@@ -86,16 +93,16 @@ class VarietySelectWidget(forms.Widget):
         return mark_safe(u'\n'.join(output))
 
 
-    def render_options(self, shop, assignments, selected_options):
+    def render_options(self, shop, assignments, selected_options, with_image=False):
         selected_options = set(force_unicode(v) for v in selected_options)
         output = []
         for assignment in assignments:
-            output.append(self.render_option(shop, selected_options, assignment))
+            output.append(self.render_option(shop, selected_options, assignment, with_image))
 
         return u'\n'.join(output)
 
 
-    def render_option(self, shop, selected_options, assignment):
+    def render_option(self, shop, selected_options, assignment, with_image=False):
         option = assignment.variety_option
         option_label = unicode(option)
         option_value = force_unicode(option.id)
@@ -130,6 +137,10 @@ class VarietySelectWidget(forms.Widget):
         # price increase for the given option...
         if not self._has_skus:
             option_label = shop.get_variety_display_title(self._request, option_label, assignment)
+
+        # add image data to option to allow js to render it in preview div
+        if with_image and option.image != None:
+            attrs['data-image'] = option.image.url
 
         # render markup
         return u'<option %s%s>%s</option>' % (
