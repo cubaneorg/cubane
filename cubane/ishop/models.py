@@ -371,7 +371,8 @@ class Variety(DateTimeBase):
     style = models.IntegerField(
         verbose_name='Presentation Style',
         choices=STYLE_CHOICES,
-        default=1
+        default=1,
+        db_index=True
     )
 
     layer = models.CharField(

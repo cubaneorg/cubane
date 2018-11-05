@@ -527,6 +527,14 @@ def default_env(
     m.MEDIA_DOWNLOAD_URL = 'download/'
 
 
+    m.CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': '/var/tmp/django_cache',
+        }
+    }
+
+
     #
     # Fonts
     #
@@ -968,7 +976,7 @@ def default_env(
     #
     m.DEBUG_TOOLBAR = debug_toolbar
     if m.DEBUG and debug_toolbar:
-        m.INSTALLED_APPS = m.INSTALLED_APPS + ('debug_toolbar',)
+        m.INSTALLED_APPS = m.INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
         m.MIDDLEWARE_CLASSES = ('debug_toolbar.middleware.DebugToolbarMiddleware',) + m.MIDDLEWARE_CLASSES
         m.DEBUG_TOOLBAR_PANELS = [
             'debug_toolbar.panels.versions.VersionsPanel',
@@ -982,6 +990,7 @@ def default_env(
             'debug_toolbar.panels.signals.SignalsPanel',
             'debug_toolbar.panels.logging.LoggingPanel',
             'debug_toolbar.panels.redirects.RedirectsPanel',
+            'template_timings_panel.panels.TemplateTimings.TemplateTimings'
             #'debug_toolbar.panels.templates.TemplatesPanel'
         ]
 
