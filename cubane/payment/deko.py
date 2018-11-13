@@ -178,6 +178,7 @@ class DekoPaymentGateway(PaymentGateway):
                 order.loan_status = OrderBase.LOAN_STATUS_VERIFIED
                 order.status = OrderBase.STATUS_PAYMENT_CONFIRMED
                 order.payment_confirmed_at = datetime.datetime.now()
+                generate_emails_and_notes(request, order)
             elif status == 'amended':
                 order.loan_status = OrderBase.LOAN_STATUS_AMENDED
             elif status == 'fulfilled':
