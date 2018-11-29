@@ -622,7 +622,7 @@ class MediaBackendSection(BackendSection):
     )
 
 
-def serve_media_api(request, media, shape=None):
+def serve_media_api(request, media, shape=None, size=None):
     """
     Serve the given media asset with given shape (or original shape).
     """
@@ -686,7 +686,7 @@ def media_api(request, shape, size, bucket, pk, filename):
     if media.bucket_id != bucket:
         raise Http404('Bucket does not match.')
 
-    return serve_media_api(request, media, shape)
+    return serve_media_api(request, media, shape, size)
 
 
 def media_api_original(request, bucket, pk, filename):
