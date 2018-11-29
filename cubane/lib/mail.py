@@ -184,7 +184,7 @@ def cubane_send_shop_mail(request, to, subject, context=None, attachments=None, 
     html = cms.render_page(page, request=None, additional_context=context).content
 
     # send email
-    return cubane_send_mail(to, subject, html, attachments, bcc)
+    return cubane_send_mail(to, subject, html, attachments, bcc=bcc)
 
 
 def get_ordered_list_of_fields(fields, fields_items):
