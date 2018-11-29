@@ -168,7 +168,7 @@ def cubane_send_cms_enquiry_mail(request, to, subject, context=None):
     return cubane_send_cms_mail(request, to, subject, page, context)
 
 
-def cubane_send_shop_mail(request, to, subject, context=None, attachments=None):
+def cubane_send_shop_mail(request, to, subject, context=None, attachments=None, bcc=None):
     """
     Send an email to the given recepient with the given subject line.
     The email is sent from the sender that is configured in the cms settings.
@@ -184,7 +184,7 @@ def cubane_send_shop_mail(request, to, subject, context=None, attachments=None):
     html = cms.render_page(page, request=None, additional_context=context).content
 
     # send email
-    return cubane_send_mail(to, subject, html, attachments)
+    return cubane_send_mail(to, subject, html, attachments, bcc)
 
 
 def get_ordered_list_of_fields(fields, fields_items):

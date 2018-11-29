@@ -902,6 +902,7 @@ def default_env(
     m.SHOP_MULTIPLE_CATEGORIES = False
     m.SHOP_CHANGE_CUSTOMER_PASSWORD_ENABLED = True
     m.SHOP_LOAD_VARIETY_PREVIEW = True
+    m.SHOP_NEW_ORDER_BCC = None
 
 
     #

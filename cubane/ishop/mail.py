@@ -15,10 +15,10 @@ def mail_error(msg):
     mail_admins('[ISHOP] Error', msg)
 
 
-def send_client_mail(request, email, subject, context, attachments=None):
+def send_client_mail(request, email, subject, context, attachments=None, bcc=None):
     from cubane.cms.views import get_cms
     cms = get_cms()
-    cubane_send_shop_mail(request, email, subject, context, attachments=attachments)
+    cubane_send_shop_mail(request, email, subject, context, attachments=attachments, bcc=bcc)
 
 
 def get_mail_order_context(request, order, customer=True, extras=None):
@@ -121,9 +121,9 @@ def mail_client_new_order(request, order, attachments=None):
             return False
 
 
-def mail_customer_new_order(request, order):
+def mail_customer_new_order(request, order, bcc=None):
     try:
-        send_client_mail(request, order.email, 'Order: %s' % order.order_id, get_mail_order_context(request, order, extras={'order_customer': True}))
+        send_client_mail(request, order.email, 'Order: %s' % order.order_id, get_mail_order_context(request, order, extras={'order_customer': True}), bcc=bcc)
         return True
     except:
         if settings.DEBUG:

@@ -910,7 +910,8 @@ def generate_emails_and_notes(request, order):
 
         # send mail confirmation to customer and client
         mail_client_new_order(request, order)
-        mail_customer_new_order(request, order)
+        bcc = settings.SHOP_NEW_ORDER_BCC if settings.SHOP_NEW_ORDER_BCC else None
+        mail_customer_new_order(request, order, bcc)
 
 
 @deny_bot()
