@@ -143,7 +143,7 @@ class MediaForm(BaseForm):
     Form for editing media content, such as images or documents.
     """
     IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.svg']
-    DOCUMENT_EXT = ['.pdf', '.xlsx', '.xls', '.doc', '.docx', '.odt', '.csv', '.gpx', '.ogg']
+    DOCUMENT_EXT = ['.pdf', '.xlsx', '.xls', '.doc', '.docx', '.odt', '.csv']
 
 
     media = ExtFileField(
@@ -214,6 +214,9 @@ class MediaForm(BaseForm):
 
     def configure(self, request, instance, edit):
         super(MediaForm, self).configure(request, instance, edit)
+
+        if settings.CUBANE_MEDIA_ALLOWED_DOCUMENT_EXTENSIONS:
+            self.DOCUMENT_EXT = settings.CUBANE_MEDIA_ALLOWED_DOCUMENT_EXTENSIONS
 
         # caption
         self.fields['caption'].label = settings.IMAGE_CAPTION_LABEL
