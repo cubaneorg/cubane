@@ -143,7 +143,7 @@ class MediaForm(BaseForm):
     Form for editing media content, such as images or documents.
     """
     IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.svg']
-    DOCUMENT_EXT = ['.pdf', '.xlsx', '.xls', '.doc', '.docx', '.odt', '.csv']
+    DOCUMENT_EXT = ['.pdf', '.xlsx', '.xls', '.doc', '.docx', '.odt', '.csv', '.gpx', '.ogg']
 
 
     media = ExtFileField(
