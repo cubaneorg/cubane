@@ -32,7 +32,8 @@ NOT_AN_IMAGE_WAND_EXCEPTIONS = (
     wand_exceptions.BlobError,
     wand_exceptions.CorruptImageError,
     wand_exceptions.TypeError,
-    wand_exceptions.FileOpenError
+    wand_exceptions.FileOpenError,
+    wand_exceptions.OptionError
 )
 
 
@@ -49,12 +50,15 @@ def open_image(filename):
     return WandImage(filename=filename)
 
 
-def is_image(filename):
+def is_image(filename, not_image_ext=[]):
     """
     Return True, if the given file is an image file.
     """
     ext = get_ext(filename)
     if ext == 'pdf':
+        return False
+
+    if ext in not_image_ext:
         return False
 
     try:

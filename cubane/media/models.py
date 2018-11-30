@@ -1010,7 +1010,8 @@ class Media(DateTimeBase):
         """
         resized = False
         # determine media asset type (image, document) and image size
-        self.is_image = is_image(self.original_path)
+
+        self.is_image = is_image(self.original_path, self.get_document_ext())
         if self.is_image:
             resized = resize_image_if_too_wide(self.original_path)
             (self.width, self.height) = get_image_size(self.original_path)
@@ -1041,6 +1042,10 @@ class Media(DateTimeBase):
         """
         fn, _ = os.path.splitext(filename)
         return '%s%s' % (fn, ext)
+
+
+    def get_document_ext(self):
+        return settings.CUBANE_MEDIA_ALLOWED_DOCUMENT_EXTENSIONS
 
 
     def get_image_path(self, size, shape=settings.DEFAULT_IMAGE_SHAPE, filename=None, version=-1):
@@ -1483,7 +1488,7 @@ class Media(DateTimeBase):
         writer(dest)
         dest.close()
 
-        self.is_image = is_image(self.original_path)
+        self.is_image = is_image(self.original_path, self.get_document_ext())
 
         if self.is_image and settings.IMAGE_CONVERT_PNG_TO_JPG:
             # if we uploaded a PNG file without transparency, then replace it
@@ -1550,7 +1555,7 @@ class Media(DateTimeBase):
         # determine media asset type (image, document) and image size
         is_pdf = get_ext(self.filename) == 'pdf'
         self.is_svg = get_ext(self.filename) == 'svg'
-        self.is_image = is_image(self.original_path)
+        self.is_image = is_image(self.original_path, self.get_document_ext())
 
         if self.is_image:
             # scale original image down if it is too big

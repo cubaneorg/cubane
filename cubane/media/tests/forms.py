@@ -82,7 +82,7 @@ class MediaFormsMediaFormTestCase(CubaneTestCase):
 
     def test_should_validate_document_formats_for_documents(self):
         form = self._create_form(is_image=False)
-        self.assertEqual(MediaForm.DOCUMENT_EXT, form.fields['media'].ext)
+        self.assertEqual(settings.CUBANE_MEDIA_ALLOWED_DOCUMENT_EXTENSIONS, form.fields['media'].ext)
 
 
     def test_should_require_file_upload_field_when_creating_new_instance(self):
@@ -113,7 +113,7 @@ class MediaFormsMultiMediaFormTestCase(CubaneTestCase):
 
     def test_should_validate_document_formats_for_documents(self):
         form = self._create_form(is_image=False)
-        self.assertEqual(MediaForm.DOCUMENT_EXT, form.fields['media'].ext)
+        self.assertEqual(settings.CUBANE_MEDIA_ALLOWED_DOCUMENT_EXTENSIONS, form.fields['media'].ext)
 
 
     def _create_form(self, is_image=True):
