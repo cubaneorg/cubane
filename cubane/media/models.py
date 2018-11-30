@@ -1483,9 +1483,9 @@ class Media(DateTimeBase):
         writer(dest)
         dest.close()
 
-        is_image = is_image(self.original_path)
+        self.is_image = is_image(self.original_path)
 
-        if is_image and settings.IMAGE_CONVERT_PNG_TO_JPG:
+        if self.is_image and settings.IMAGE_CONVERT_PNG_TO_JPG:
             # if we uploaded a PNG file without transparency, then replace it
             # with a JPG version, simply pretending that the JPG file was
             # uploaded to begin with
