@@ -132,12 +132,11 @@ class RelatedModelCollection(object):
             if previous_assignment:
                 for field in previous_assignment._meta.get_fields():
                     if field.name not in ['id', from_name, to_name]:
-                        setattr(t, field.name, getattr(assignment, field.name))
+                        setattr(t, field.name, getattr(previous_assignment, field.name))
 
             # set assignment
             setattr(t, from_name, instance)
             setattr(t, to_name, x)
-
             # set seq. order if sortable
             if sortable:
                 t.seq = i
