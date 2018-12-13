@@ -104,7 +104,7 @@ class VarietySelectWidget(forms.Widget):
 
     def render_option(self, shop, selected_options, assignment, with_image=False):
         option = assignment.variety_option
-        option_label = unicode(option)
+        option_label = option.title
         option_value = force_unicode(option.id)
         if option_value in selected_options:
             selected_html = ' selected="selected"'
