@@ -111,7 +111,7 @@ def get_monthly_renewal_date(start_date, today):
     return result
 
 
-def get_yearly_renewal_date(start_date, today):
+def get_yearly_renewal_date(start_date, today, years=1):
     """
     Return the (yearly) renewal date based on the given start date and
     today's date.
@@ -126,9 +126,9 @@ def get_yearly_renewal_date(start_date, today):
     result = datetime.date(year, month, day)
     if result <= today:
         try:
-            result = datetime.date(year + 1, month, day)
+            result = datetime.date(year + years, month, day)
         except ValueError:
             # leap year overflow
-            result = datetime.date(year + 1, month + 1, 1)
+            result = datetime.date(year + years, month + 1, 1)
 
     return result
