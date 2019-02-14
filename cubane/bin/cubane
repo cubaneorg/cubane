@@ -2,7 +2,6 @@
 # coding=UTF-8
 from __future__ import unicode_literals
 from cubane import VERSION
-from cubane.generator import generate_from_template
 import os
 import sys
 import argparse
@@ -12,14 +11,7 @@ def get_argument_parser():
     """
     Construct argument parser.
     """
-    parser = argparse.ArgumentParser(description='Perform cubane utility tasks, such as creating a new cubane project from a template.')
-
-    parser.add_argument(
-        '--create',
-        nargs=3,
-        metavar=('name', 'domain-name', 'admin-email'),
-        help='Create a new cubane project with given name in the current working directory.'
-    )
+    parser = argparse.ArgumentParser(description='Perform cubane utility tasks.')
 
     parser.add_argument(
         '--scan',
@@ -41,22 +33,10 @@ def run_action(args):
     """
     Execute main script action according to given arguments.
     """
-    if args.create:
-        _create(args.create[0], args.create[1], args.create[2])
-    elif args.scan:
+    if args.scan:
         _scan(args.scan[0])
     elif args.version:
         _version()
-
-
-def _create(name, domain_name, admin_email):
-    """
-    Create a new cubane project
-    """
-    success = generate_from_template('blank_project', name, domain_name, admin_email)
-
-    if success:
-        print 'New project created: %s.' % name
 
 
 def _scan(folder):
