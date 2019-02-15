@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
+from cubane.backend.models import UserProfile
 from django.utils import timezone
 import os
 
@@ -34,7 +35,7 @@ class Command(BaseCommand):
             user.username = os.environ.get('DEFAULT_ADMIN_USER', settings.DEFAULT_ADMIN_USER)
             user.is_staff = True
             user.is_superuser = True
-            user.last_login = timezone.now() 
+            user.last_login = timezone.now()
             user.set_password(os.environ.get('DEFAULT_ADMIN_PASSWORD', settings.DEFAULT_ADMIN_PASSWORD))
             user.save()
 
