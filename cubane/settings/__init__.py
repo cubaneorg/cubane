@@ -973,6 +973,11 @@ def default_env(
     }
 
 
+    # Default Admin User
+    m.DEFAULT_ADMIN_USER = 'admin'
+    m.DEFAULT_ADMIN_PASSWORD = 'password'
+
+
     #
     # Debug Toolbar (Debug only)
     #
