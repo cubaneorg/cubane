@@ -2273,7 +2273,7 @@ class CMS(View):
                 return render_response
         except HomepageNotDefinedError, e:
             # render welcome page in DEBUG mode if there is no homepage
-            if settings.DEBUG and not preview:
+            if not preview:
                 return self._welcome_page(request)
             else:
                 raise e
