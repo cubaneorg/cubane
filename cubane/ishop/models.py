@@ -3509,7 +3509,7 @@ class OrderBase(DateTimeBase):
     @property
     def billing_address_title_display(self):
         if self.billing_address:
-            return get_customer_model().get_user_title_display(self.billing_address.get('title', ''))
+            return get_customer_model().get_user_title_display(self.billing_address.get('title', -1))
         else:
             return None
 
