@@ -59,7 +59,7 @@ class FontsGoogleFontsBackendGetFontTestCase(CubaneTestCase):
         self.assertEqual('Abel', d.font_name)
         self.assertEqual('Abel', d.family)
         self.assertEqual('sans-serif', d.category)
-        self.assertEqual('v8', d.version)
+        self.assertEqual('v9', d.version)
         self.assertEqual([{
             'id': 'regular',
             'fontFamily': 'Abel',
