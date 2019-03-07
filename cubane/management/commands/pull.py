@@ -74,7 +74,6 @@ class Command(BaseCommand):
             self.remove_db_dump(options, 'Remove database dump file on server')
             self.install_empty('Re-installing new (empty) database')
             self.import_db_dump(options, 'Importing remote database dump file')
-            self.dbmigrate('Migrating database')
             self.install_admin_account('Installing admin account')
             self.rsync_media(options, 'Synchronising media files...Please Wait...')
 
@@ -153,14 +152,6 @@ class Command(BaseCommand):
 
         # remove local file
         os.unlink('%s.sql' % options.dbname)
-
-
-    def dbmigrate(self, task):
-        """
-        Run database migrations
-        """
-        self.verbose_task(task)
-        call_command('dbmigrate', interactive=True)
 
 
     def install_admin_account(self, task):

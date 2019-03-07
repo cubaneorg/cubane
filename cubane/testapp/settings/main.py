@@ -47,7 +47,6 @@ env.add_apps([
     'cubane.default_frontend',
     'cubane.scrollable',
     'cubane.lightbox',
-    'cubane.dbmigrate',
     'cubane.fonts',
     'cubane.aggregator',
     'cubane.blog',

@@ -15,7 +15,6 @@ from cubane.aggregator.tests import *
 from cubane.backend.tests import *
 from cubane.blog.tests import *
 from cubane.cms.tests import *
-from cubane.dbmigrate.tests import *
 from cubane.directory.tests import *
 from cubane.enquiry.tests import *
 from cubane.fonts.tests import *

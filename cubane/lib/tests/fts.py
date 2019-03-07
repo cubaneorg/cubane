@@ -1,7 +1,6 @@
 # coding=UTF-8
 from __future__ import unicode_literals
 from cubane.tests.base import CubaneTestCase, CubaneManualTransactionTestCase
-from cubane.dbmigrate import auto_migrate
 from cubane.testapp.models import TestFTSPart
 from cubane.lib.fts import fts_query
 from cubane.lib.fts import sanitize_search_term
@@ -17,9 +16,7 @@ class LibFTSTestCase(CubaneManualTransactionTestCase):
     @classmethod
     def setUpClass(cls):
         super(LibFTSTestCase, cls).setUpClass()
-        # run dbmigrate once for the first setup, so that we get full FTS
         # indices on the database level (postgresql).
-        auto_migrate(interactive=False, load_fixtures=False)
 
 
     def setUp(self):
