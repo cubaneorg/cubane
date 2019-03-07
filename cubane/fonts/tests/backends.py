@@ -66,11 +66,11 @@ class FontsGoogleFontsBackendGetFontTestCase(CubaneTestCase):
             'fontStyle': 'normal',
             'fontWeight': '400',
             'local': ['Abel Regular', 'Abel-Regular'],
-            'svg': 'https://fonts.gstatic.com/l/font?kit=MwQ5bhbm2POE2V9BOg&skey=bf47258294911e6d&v=v8#Abel',
-            'eot': 'https://fonts.gstatic.com/s/abel/v8/MwQ5bhbm2POE2V9BOQ.eot',
-            'ttf': 'https://fonts.gstatic.com/s/abel/v8/MwQ5bhbm2POE2V9BOA.ttf',
-            'woff': 'https://fonts.gstatic.com/s/abel/v8/MwQ5bhbm2POE2V9BOw.woff',
-            'woff2': 'https://fonts.gstatic.com/s/abel/v8/MwQ5bhbm2POE2V9BPQ.woff2',
+            'svg': 'https://fonts.gstatic.com/l/font?kit=MwQ5bhbm2POE2V9BOg&skey=bf47258294911e6d&v=v9#Abel',
+            'eot': 'https://fonts.gstatic.com/s/abel/v9/MwQ5bhbm2POE2V9BOQ.eot',
+            'ttf': 'https://fonts.gstatic.com/s/abel/v9/MwQ5bhbm2POE2V9BOA.ttf',
+            'woff': 'https://fonts.gstatic.com/s/abel/v9/MwQ5bhbm2POE2V9BOw.woff',
+            'woff2': 'https://fonts.gstatic.com/s/abel/v9/MwQ5bhbm2POE2V9BPQ.woff2',
         }], d.variants)
         self.assertEqual(datetime(2017, 10, 10), d.mtime)
 
