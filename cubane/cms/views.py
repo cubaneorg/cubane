@@ -1872,7 +1872,7 @@ class CMS(View):
         return cubane_send_cms_enquiry_mail(
             request,
             instance.email,
-            '%s | Your enquiry on our website.' % self.settings.name,
+            settings.EMAIL_CUSTOM_ENQUIRY_SUBJECT_CUSTOMER if settings.EMAIL_CUSTOM_ENQUIRY_SUBJECT_CUSTOMER else '%s | Your enquiry on our website.' % self.settings.name,
             data
         )
 
@@ -1885,7 +1885,7 @@ class CMS(View):
         return cubane_send_mail_template(
             request,
             self.settings.enquiry_email,
-            '%s | Enquiry from your website' % self.settings.name,
+            settings.EMAIL_CUSTOM_ENQUIRY_SUBJECT_CLIENT if settings.EMAIL_CUSTOM_ENQUIRY_SUBJECT_CLIENT else '%s | Enquiry from your website' % self.settings.name,
             settings.ENQUIRY_CLIENT_TEMPLATE, {
                 'data': data,
                 'fields': get_ordered_list_of_fields(data, data.items()),
