@@ -72,7 +72,6 @@ class Command(BaseCommand):
             self.create_db_dump(options, 'Creating database dump on server')
             self.secure_copy(options, 'Copying database dump file from server')
             self.remove_db_dump(options, 'Remove database dump file on server')
-            self.install_empty('Re-installing new (empty) database')
             self.import_db_dump(options, 'Importing remote database dump file')
             self.install_admin_account('Installing admin account')
             self.rsync_media(options, 'Synchronising media files...Please Wait...')
@@ -130,14 +129,6 @@ class Command(BaseCommand):
         self.verbose_task(task)
         cmd = 'rm ~/tmp/%s.sql' % options.dbname
         self.run_remote_cmd(cmd, options)
-
-
-    def install_empty(self, task):
-        """
-        Re-install app with empty database.
-        """
-        self.verbose_task(task)
-        call_command('install', interactive=False, empty=True)
 
 
     def import_db_dump(self, options, task):
