@@ -191,7 +191,7 @@ class RegisterTransactionNotificationResponse:
         self.r = response
         from django.core.mail import mail_admins
 
-        if response.get('Status', None) not in ['OK', 'ABORT', 'REJECTED']:
+        if response.get('Status', None) not in ['OK', 'ABORT', 'REJECTED', 'ABORT REPEATED', 'NOTAUTHED']:
             import json
             mail_admins('Sagepay error handle', json.dumps(response, indent=4, sort_keys=True))
 
