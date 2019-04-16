@@ -779,6 +779,8 @@ def default_env(
     # Mail
     #
     m.EMAIL_SUBJECT_PREFIX = '[%s] ' % domain_name
+    m.EMAIL_CUSTOM_ENQUIRY_SUBJECT_CUSTOMER = None
+    m.EMAIL_CUSTOM_ENQUIRY_SUBJECT_CLIENT = None
     if m.DEBUG:
         if email_file_log:
             m.EMAIL_BACKEND = 'cubane.backends.EmailEmlFileBackend'
