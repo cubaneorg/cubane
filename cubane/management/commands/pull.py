@@ -171,7 +171,7 @@ class Command(BaseCommand):
         self.verbose_task(task)
 
         username = self.get_username(options)
-        cmd = 'rsync -r --progress %(user)s@%(host)s:%(path)s ./' % {
+        cmd = 'rsync -r --progress %(user)s@%(host)s:%(path)s ./public' % {
             'user': options.user,
             'host': options.host,
             'path': os.path.join('/', 'home', username, 'public_html', 'media')
