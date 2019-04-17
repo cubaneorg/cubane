@@ -135,7 +135,7 @@ class VarietySelectWidget(forms.Widget):
 
         # if we do not have SKUs, the display label may include the
         # price increase for the given option...
-        if not self._has_skus:
+        if not option.variety.sku:
             option_label = shop.get_variety_display_title(self._request, option_label, assignment)
 
         # add image data to option to allow js to render it in preview div
