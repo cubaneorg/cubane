@@ -72,7 +72,7 @@ class FontsGoogleFontsBackendGetFontTestCase(CubaneTestCase):
             'woff': 'https://fonts.gstatic.com/s/abel/v9/MwQ5bhbm2POE2V9BOw.woff',
             'woff2': 'https://fonts.gstatic.com/s/abel/v9/MwQ5bhbm2POE2V9BPQ.woff2',
         }], d.variants)
-        self.assertEqual(datetime(2017, 10, 10), d.mtime)
+        self.assertEqual(datetime(2019, 02, 21), d.mtime)
 
 
     @patch('requests.get')
