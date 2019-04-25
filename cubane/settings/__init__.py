@@ -284,7 +284,7 @@ def default_env(
         m.MINIFY_CMD_JS  = 'java -jar %s --type js' % os.path.join(m.CUBANE_PATH, 'bin', 'yui', 'yuicompressor-2.4.8.jar')
         m.MINIFY_CMD_CSS = 'java -jar %s --type css' % os.path.join(m.CUBANE_PATH, 'bin', 'yui', 'yuicompressor-2.4.8.jar')
     else:
-        m.MINIFY_CMD_JS  = 'java -jar %s' % os.path.join(m.CUBANE_PATH, 'bin', 'closure-compiler', 'compiler.jar')
+        m.MINIFY_CMD_JS  = 'java -jar %s' % os.path.join(m.CUBANE_PATH, 'bin', 'closure-compiler', 'compiler.jar --language_out=ES5')
         m.MINIFY_CMD_CSS = 'java -jar %s --type css' % os.path.join(m.CUBANE_PATH, 'bin', 'yui', 'yuicompressor-2.4.8.jar')
 
 
