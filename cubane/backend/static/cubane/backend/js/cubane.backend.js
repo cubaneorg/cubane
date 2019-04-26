@@ -21,6 +21,21 @@ function getEmbeddedFormPrefix(embeddedForm, prefixPattern) {
     return prefixPattern + '_' + seq + '--';
 }
 
+/*
+ * Performance improvement for keyup event.
+ * https://stackoverflow.com/questions/1909441/how-to-delay-the-keyup-handler-until-the-user-stops-typing
+ */
+function delay(callback, ms) {
+    var timer = 0;
+    return function() {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+}
+
 
 /*
  * Submit the given form by creating a submit button and clicking it,
@@ -429,9 +444,9 @@ cubane.backend.BackendController = function () {
     $(document).on('click', '.alert-messages .alert a', this.bound.onAlertMessageLink);
     $(document).on('click', '.cubane-undo', this.bound.onUndoClicked);
     $(document).on('cubane-dialog-init', this.bound.onDialogInit);
-    $(document).on('change keyup cubane-listing-item-edit-changed', 'form[data-visibility-rules], .embed-forms[data-visibility-rules]', this.bound.onFormWithVisibilityRulesChanged);
+    $(document).on('change keyup cubane-listing-item-edit-changed', 'form[data-visibility-rules], .embed-forms[data-visibility-rules]', delay(this.bound.onFormWithVisibilityRulesChanged, 500));
     $(document).on('change', 'form[data-blueprint-rules] select, .embed-forms[data-blueprint-rules] select', this.bound.onFormWithBlueprintRulesChanged);
-    $(document).on('keyup', 'form[data-limit-rules] input, form[data-limit-rules] textarea', this.bound.onFormWithLimitRulesChanged);
+    $(document).on('keyup', 'form[data-limit-rules] input, form[data-limit-rules] textarea', delay(this.bound.onFormWithLimitRulesChanged, 500));
     $(document).on('click', '.download-with-encoding', this.bound.onDownloadWithEncodingClicked);
     $(document).on('init-controls', this.bound.onInitControls);
     $(document).on('click', '.btn-summary-items', this.bound.onBtnSummaryItemsClicked);
