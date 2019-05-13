@@ -35,26 +35,26 @@ class DeliveryAddressFrom(BaseForm):
         label='First Name',
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'First Name'})
     )
 
     last_name = forms.CharField(
         label='Last Name',
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Last Name'})
     )
 
     email = forms.EmailField(
         max_length=255,
         required=True,
-        widget=EmailInput
+        widget=EmailInput(attrs={'placeholder': 'E-mail'})
     )
 
     telephone = forms.CharField(
         max_length=40,
         required=True,
-        widget=PhoneInput
+        widget=PhoneInput(attrs={'placeholder': 'Phone'})
     )
 
     postcode_lookup = PostcodeLookupField(
@@ -67,7 +67,8 @@ class DeliveryAddressFrom(BaseForm):
         city='id_city',
         county='id_county',
         postcode='id_postcode',
-        custom_css='text'
+        custom_css='text',
+        placeholder='Postcode'
     )
 
     _billing_address = SectionField(label='Billing Address')
@@ -76,34 +77,34 @@ class DeliveryAddressFrom(BaseForm):
         label='Company',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Company'})
     )
 
     address1 = forms.CharField(
         label='Address 1',
         max_length=255,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Address 1'})
     )
 
     address2 = forms.CharField(
         label='Address 2',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Address 2'})
     )
 
     address3 = forms.CharField(
         label='Address 3',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Address 3'})
     )
 
     city = forms.CharField(
         max_length=255,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'City'})
     )
 
     country = forms.ModelChoiceField(
@@ -116,13 +117,13 @@ class DeliveryAddressFrom(BaseForm):
     county = forms.CharField(
         max_length=255,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'County'})
     )
 
     postcode = forms.CharField(
         max_length=10,
         required=True,
-        widget=forms.TextInput(attrs={'size':'10', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'10', 'class': 'text', 'placeholder': 'Postcode'})
     )
 
     update_profile = forms.BooleanField(
@@ -171,49 +172,50 @@ class DeliveryAddressFrom(BaseForm):
     delivery_free_name = forms.CharField(
         label='Name',
         max_length='255',
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Name'})
     )
 
     delivery_name = forms.CharField(
         label='Name',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Name'})
     )
 
     delivery_company = forms.CharField(
         label='Company',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Company'})
     )
 
     delivery_address1 = forms.CharField(
         label='Address 1',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Address 1'})
     )
 
     delivery_address2 = forms.CharField(
         label='Address 2',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Address 2'})
     )
 
     delivery_address3 = forms.CharField(
         label='Address 3',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Address 3'})
     )
 
     delivery_city = forms.CharField(
         label='City',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'City'})
     )
 
     delivery_country = forms.ModelChoiceField(
@@ -228,14 +230,14 @@ class DeliveryAddressFrom(BaseForm):
         label='County',
         max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'County'})
     )
 
     delivery_postcode = forms.CharField(
         label='Postcode',
         max_length=10,
         required=False,
-        widget=forms.TextInput(attrs={'size':'10', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'10', 'class': 'text', 'placeholder': 'Postcode'})
     )
 
     _discount = SectionField(label='Discount')
@@ -252,7 +254,7 @@ class DeliveryAddressFrom(BaseForm):
         max_length=255,
         required=False,
         help_text='Your password must be at least 6 characters in length.',
-        widget=forms.PasswordInput(render_value=True)
+        widget=forms.PasswordInput(render_value=True, attrs={'placeholder': 'Password'})
     )
 
     password_confirm = forms.CharField(
@@ -261,7 +263,7 @@ class DeliveryAddressFrom(BaseForm):
         max_length=255,
         required=False,
         help_text='Confirm your new password.',
-        widget=forms.PasswordInput(render_value=True)
+        widget=forms.PasswordInput(render_value=True, attrs={'placeholder': 'Password (Confirm)'})
     )
 
     newsletter = forms.BooleanField(
@@ -274,14 +276,15 @@ class DeliveryAddressFrom(BaseForm):
     delivery_code = forms.CharField(
         label='Delivery Code',
         required=False,
-        max_length=32
+        max_length=32,
+        widget=forms.TextInput(attrs={'placeholder': 'Delivery Code'})
     )
 
     special_req = forms.CharField(
         label='Special Requirements',
         required=False,
         max_length=500,
-        widget=forms.Textarea(attrs={'cols': '40', 'rows': '4'}),
+        widget=forms.Textarea(attrs={'cols': '40', 'rows': '4', 'placeholder': 'Special Requirements'}),
         help_text='For example: Special Delivery Requirements.'
     )
 
