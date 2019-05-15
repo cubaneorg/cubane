@@ -17,12 +17,12 @@ class CustomerLoginForm(forms.Form):
     email    = forms.EmailField(
         label='Email',
         max_length=255,
-        widget=EmailInput,
+        widget=EmailInput(attrs={'placeholder': 'E-mail'}),
     )
 
     password = forms.CharField(
         label='Password',
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}),
     )
 
     checkout = forms.BooleanField(
@@ -80,7 +80,7 @@ class GuestLoginForm(forms.Form):
     email = forms.EmailField(
         label='Email',
         max_length=255,
-        widget=EmailInput
+        widget=EmailInput(attrs={'placeholder': 'E-mail'})
     )
 
 
@@ -91,7 +91,7 @@ class NewCustomerForm(forms.Form):
     email = forms.EmailField(
         label='Email',
         max_length=255,
-        widget=EmailInput
+        widget=EmailInput(attrs={'placeholder': 'E-mail'})
     )
 
     checkout = forms.BooleanField(
