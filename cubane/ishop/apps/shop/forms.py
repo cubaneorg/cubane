@@ -128,14 +128,14 @@ class SignupForm(BaseForm):
         label='First Name',
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'First Name'})
     )
 
     last_name = forms.CharField(
         label='Last Name',
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'size':'40', 'class': 'text'})
+        widget=forms.TextInput(attrs={'size':'40', 'class': 'text', 'placeholder': 'Last Name'})
     )
 
     country = forms.ModelChoiceField(
@@ -151,7 +151,7 @@ class SignupForm(BaseForm):
         label='Email', max_length=255,
         required=True,
         help_text='This E-mail address is also your username for this website',
-        widget=EmailInput
+        widget=EmailInput(attrs={'placeholder': 'Email'})
     )
 
     password = forms.CharField(
@@ -160,7 +160,7 @@ class SignupForm(BaseForm):
         max_length=255,
         required=True,
         help_text='Your password must be at least 6 characters in length.',
-        widget=forms.PasswordInput(render_value=True)
+        widget=forms.PasswordInput(render_value=True, attrs={'placeholder': 'Password'})
     )
 
     password_confirm = forms.CharField(
@@ -169,7 +169,7 @@ class SignupForm(BaseForm):
         max_length=255,
         required=True,
         help_text='Confirm your password.',
-        widget=forms.PasswordInput(render_value=True)
+        widget=forms.PasswordInput(render_value=True, attrs={'placeholder': 'Confirm Password'})
     )
 
     _newsletter = SectionField(label='Newsletter (Optional)')
