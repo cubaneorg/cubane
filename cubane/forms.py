@@ -470,17 +470,7 @@ class FormVisibility(object):
         Return the field based on the predicate rule that is responsible for
         the evaluation of the rule as a whole.
         """
-        if self.all:
-            # AND
-            for predicate in self.predicates:
-                if not predicate.is_true(data):
-                    return predicate.field
-        else:
-            # OR
-            for predicate in self.predicates:
-                if predicate.is_true(data):
-                    return predicate.field
-        return None
+        return self.field
 
 
     def is_true(self, data):
