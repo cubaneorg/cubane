@@ -22,7 +22,7 @@ from django.db import router
 from django.db import transaction
 from django.db import IntegrityError
 from django.db.models import Q, Max
-from django.db.models import CharField, TextField, EmailField, BooleanField, DateField
+from django.db.models import CharField, TextField, EmailField, BooleanField, DateField, DecimalField
 from django.db.models import ManyToManyField, IntegerField, AutoField
 from django.db.models import Case, When
 from django.db.models.functions import Lower
@@ -1837,6 +1837,18 @@ class ModelView(TemplateView):
             value = value_arr
             if len(value) > 0:
                 objects = objects.filter(**{filtername: value})
+        elif isinstance(field, (DecimalField, IntegerField)):
+            r = re.compile(r'([><]=?) ?[£$]?(\d*(?:\.\d+)?)')
+            matches = r.findall(value)
+            if matches:
+                for match in matches:
+                    comparison = 'gt' if match[0][0] == '>' else 'lt'
+                    if len(match[0]) == 2 and match[0][1] == '=':
+                        comparison += 'e'
+                    filtername = '%s__%s' % (fieldname, comparison)
+                    objects = objects.filter(**{filtername: match[1]})
+            else:
+                objects = objects.filter(**{fieldname: value})
         else:
             objects = objects.filter(**{fieldname: value})
 
