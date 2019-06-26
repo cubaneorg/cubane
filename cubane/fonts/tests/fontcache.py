@@ -101,7 +101,7 @@ class FontCacheUpdateTestCase(FontCacheTestCaseBase):
             # folder should contain fonts used, but only those that actually
             # exist
             fontbase = os.path.join(settings.CUBANE_FONT_ROOT, 'open-sans')
-            version = 'v15'
+            version = 'v16'
             self.assertTrue(os.path.isdir(fontbase))
             for weight in ['300', '400']:
                 for style in ['normal', 'italic']:

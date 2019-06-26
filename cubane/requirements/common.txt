@@ -14,5 +14,5 @@ ifaddr>=0.1.4
 pydns>=2.3.6
 chardet>=2.3.0
 stripe>=1.46.0
-pyBarcode>=0.7
+pyBarcode==0.8b1
 idna>=2.5
