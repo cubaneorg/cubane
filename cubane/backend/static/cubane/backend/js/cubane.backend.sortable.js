@@ -96,7 +96,7 @@ function _setupDraggable(itemsSelector, handleSelector, onChanged, placeholderCl
             if (onChanged) {
                 var newSeq = _getSeqOfElement(selection);
                 if (seq != newSeq) {
-                    onChanged();
+                    onChanged(selection.parents('.embed-forms'));
                 }
             }
 

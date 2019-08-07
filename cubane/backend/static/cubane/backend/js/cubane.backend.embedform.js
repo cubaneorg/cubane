@@ -45,9 +45,7 @@ function makeSortable(container) {
     cubane.backend.sortable(
         '.embed-form',
         '.ui-sortable-handle',
-        function() {
-            reindexSequence(container);
-        }
+        reindexSequence
     );
 }
 
