@@ -45,9 +45,7 @@ function makeSortable(container) {
     cubane.backend.sortable(
         '.embed-form',
         '.ui-sortable-handle',
-        function() {
-            reindexSequence(container);
-        }
+        reindexSequence
     );
 }
 
@@ -151,7 +149,7 @@ function onRemove(e) {
  * Return the highest index seq number.
  */
 function getHighestSeqIndex(container) {
-    var rows = container.find('.embed-forms-body .embed-form-seq-index');
+    var rows = container.find('> .embed-forms-container > .embed-forms-body > .embed-form > .embed-form-seq-index');
     var seq = 0;
     for (var i = 0; i < rows.length; i++) {
         var newSeq = parseInt(rows.eq(i).val());
