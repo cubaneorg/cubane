@@ -519,7 +519,7 @@ def default_env(
     else:
         m.MEDIA_ROOT = os.path.abspath(os.path.join(m.BASE_PATH, '..', '..', 'public_html', 'media'))
     m.MEDIA_URL = 'media/'
-    m.MEDIA_API_URL = 'api-media/'
+    m.MEDIA_API_URL = 'media-api/'
 
 
     #
