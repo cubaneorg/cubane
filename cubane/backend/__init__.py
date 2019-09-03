@@ -34,7 +34,7 @@ RESOURCES = [
 
     # select2
     'select2/css/select2.min.css',
-    'select2/js/select2.min.js',
+    'select2/js/select2.full.min.js',
 
     # interact
     'interact/interact.js',
