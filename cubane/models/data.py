@@ -544,11 +544,22 @@ class Exporter(ImportExportBase):
 
         # write header row
         writer.writerow(column_names)
+        f.flush()
 
         # optionally write header column titles
         if get_listing_option(self.model, 'data_title'):
             titles = [self.get_column_title(fieldname, objects) for fieldname, _ in fields]
             writer.writerow(titles)
+            f.flush()
+
+        # prefetch many2many
+        for fieldname in fieldnames:
+            try:
+                field = self.model._meta.get_field(fieldname)
+                if isinstance(field, ManyToManyField):
+                    objects = objects.prefetch_related(fieldname)
+            except:
+                field = None
 
         # export data
         for obj in objects:
@@ -571,6 +582,7 @@ class Exporter(ImportExportBase):
             else:
                 first_row_values = values
             writer.writerow(first_row_values)
+            f.flush()
 
             # write subsequent data rows, repeating all initial data by default
             if related_records:
@@ -580,6 +592,7 @@ class Exporter(ImportExportBase):
                     repeat_values = [''] * len(values)
             for related_record in related_records:
                 writer.writerow(repeat_values + related_record)
+                f.flush()
 
 
     def export_to_tmp(self, objects):
