@@ -1236,7 +1236,7 @@ class Shop(View):
                 # create customer
                 newsletter = 0
                 if request.settings.mailchimp_enabled:
-                    if d['newsletter']:
+                    if d.get('newsletter'):
                         person_name = (d['first_name'],d['last_name'])
                         merge_vars = {'FNAME': " ".join(person_name)}
                         ms = MailSnake(request.settings.mailchimp_api)
