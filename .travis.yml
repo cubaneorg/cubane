@@ -6,6 +6,12 @@ os: linux
 
 sudo: required
 
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
 env:
 - DJANGO=1.10
 - DJANGO=1.11
