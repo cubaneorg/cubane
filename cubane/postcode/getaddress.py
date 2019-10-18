@@ -28,13 +28,15 @@ class GetAddressPostcodeLookup(PostcodeLookup):
         if not postcode:
             return None
 
-        request = requests.get('https://api.getAddress.io/find/%s?sort=True&api-key=%s' % (postcode, settings.POSTCODE_API_KEY), timeout=5)
+        try:
+            request = requests.get('https://api.getAddress.io/find/%s?sort=True&api-key=%s' % (postcode, settings.POSTCODE_API_KEY), timeout=5)
 
-        if request.status_code == 200:
-            return self._normalize_addresses(postcode, request.text)
-        else:
+            if request.status_code == 200:
+                return self._normalize_addresses(postcode, request.text)
+            else:
+                return None
+        except requests.exceptions.Timeout: # catches ReadTimeout and ConnectionTimeout
             return None
-
 
     def _get_address_lines(self, address_chunks):
         # we only support address line 1, 2 and 3 and no locality
