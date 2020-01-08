@@ -54,9 +54,7 @@ def is_image(filename, not_image_ext=[]):
     """
     Return True, if the given file is an image file.
     """
-    ext = get_ext(filename)
-    if ext == 'pdf':
-        return False
+    ext = '.' + get_ext(filename)
 
     if ext in not_image_ext:
         return False
