@@ -277,7 +277,8 @@ class SlotNode(template.Node):
         content = transpose_html_headlines(content, headline_transpose)
 
         # cleanup markup
-        content = cleanup_html(content)
+        if settings.CMS_CLEAN_HTML:
+            content = cleanup_html(content)
 
         # mark content as safe
         content = mark_safe(content)
@@ -889,7 +890,8 @@ def cms_content(context, content, headline_transpose=0, image_shape=None):
         content = transpose_html_headlines(content, headline_transpose)
 
     # cleanup markup
-    content = cleanup_html(content)
+    if settings.CMS_CLEAN_HTML:
+        content = cleanup_html(content)
 
     # frontend editing
     return mark_safe(content)
