@@ -24,7 +24,7 @@ from cubane.lib.url import get_absolute_url
 from cubane.lib.default import default_choice
 from cubane.lib.excerpt import excerpt_from_text, excerpt_from_html
 from cubane.lib.app import get_models
-from cubane.lib.utf8 import ENCODING_CHOICES, DEFAULT_ENCOPDING
+from cubane.lib.utf8 import ENCODING_CHOICES, DEFAULT_ENCODING
 from cubane.lib.model import get_listing_option
 from datetime import datetime
 import cPickle as pickle
@@ -1561,7 +1561,7 @@ class SettingsBase(
         verbose_name='Default Encoding',
         max_length=64,
         choices=ENCODING_CHOICES,
-        default=DEFAULT_ENCOPDING,
+        default=DEFAULT_ENCODING,
         null=True,
         blank=False,
         help_text='Default Encoding when importing/exporting data.'

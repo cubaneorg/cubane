@@ -4,7 +4,7 @@ from django.conf import settings
 from django import forms
 from cubane.forms import BaseForm, BaseModelForm, DataImportForm, DataExportForm, BootstrapTextInput
 from cubane.backend.forms import ModelCollectionField
-from cubane.lib.utf8 import ENCODING_CHOICES, DEFAULT_ENCOPDING
+from cubane.lib.utf8 import ENCODING_CHOICES, DEFAULT_ENCODING
 from cubane.lib.barcodes import verify_barcode, BarcodeError
 from cubane.ishop import get_product_model
 from cubane.ishop.models import ProductSKU
