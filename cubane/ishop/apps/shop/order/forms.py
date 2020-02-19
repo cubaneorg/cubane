@@ -304,7 +304,7 @@ class DeliveryAddressFrom(BaseForm):
     loan_deposit = forms.IntegerField(
         label='Deposit',
         required=False,
-        widget=RangeInput(attrs={'step': '1', 'min': '10', 'max': '50'})
+        widget=RangeInput(attrs={'step': '10', 'min': '10', 'max': '50'})
     )
 
     terms = forms.BooleanField(
