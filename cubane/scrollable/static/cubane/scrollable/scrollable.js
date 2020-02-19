@@ -121,8 +121,15 @@ function _updateButtonState(button, disabled) {
 function _updateButtons(context) {
     var offset = _getOffset(context);
 
-    _updateButtonState(context.scrollable.find('.scroll-btn-left'), offset <= 0);
-    _updateButtonState(context.scrollable.find('.scroll-btn-right'), offset >= context.innerSize - context.windowSize);
+    if (context.x) {
+        _updateButtonState(context.scrollable.find('.scroll-btn-left'), offset <= 0);
+        _updateButtonState(context.scrollable.find('.scroll-btn-right'), offset >= context.innerSize - context.windowSize);
+    }
+    else {
+        _updateButtonState(context.scrollable.find('.scroll-btn-up'), offset <= 0);
+        _updateButtonState(context.scrollable.find('.scroll-btn-down'), offset >= context.innerSize - context.windowSize);
+    }
+
 }
 
 
@@ -375,12 +382,22 @@ function _createScrollable(scrollable) {
     });
 
     // left/right
-    scrollable.find('.scroll-btn-left').on('click', function() {
-        _scrollLeft(context);
-    });
-    scrollable.find('.scroll-btn-right').on('click', function() {
-        _scrollRight(context);
-    });
+    if (context.x) {
+        scrollable.find('.scroll-btn-left').on('click', function() {
+            _scrollLeft(context);
+        });
+        scrollable.find('.scroll-btn-right').on('click', function() {
+            _scrollRight(context);
+        });
+    }
+    else {
+        scrollable.find('.scroll-btn-up').on('click', function() {
+            _scrollLeft(context);
+        });
+        scrollable.find('.scroll-btn-down').on('click', function() {
+            _scrollRight(context);
+        });
+    }
 
     // indicator
     context.indicators.on('click', function(event) {
