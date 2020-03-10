@@ -72,6 +72,8 @@ def clean_county(form, d, county_name='county', country_name='country'):
     country = d.get(country_name)
     if country:
         county = d.get(county_name, '')
+        if not county:
+            county = ''
         if country.iso == 'US':
             county = county.strip()
 

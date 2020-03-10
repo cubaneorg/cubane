@@ -88,6 +88,10 @@ class OrderView(ModelView):
             instance.customer_not_present = True
             instance.payment_gateway = shop.get_default_payment_gateway()
 
+            # duplicate needs these values to be None (duplicate key)
+            instance.secret_id = None
+            instance.order_id = None
+
         # save basket.
         basket = Basket(request, prefix=instance.backend_basket_prefix)
         if not basket.is_empty():
