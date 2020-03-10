@@ -381,13 +381,17 @@ function overwriteSvgLayer(layer, color) {
  * Update price based on server request
  */
 function _onUpdatePriceForAddToBasketForm(variety) {
-    var addToBasketForm = $('form.add-to-basket');
-    $.post('/shop/basket/get-basket-item-price/', addToBasketForm.serialize(), function(response) {
-        if (!response.errors) {
-            var pp = addToBasketForm.find('.product-price');
-            pp.html(response.html);
+    if (variety) {
+        var addToBasketForm = variety.parents('form.add-to-basket');
+        if (addToBasketForm.length > 0) {
+            $.post('/shop/basket/get-basket-item-price/', addToBasketForm.serialize(), function(response) {
+                if (!response.errors) {
+                    var pp = addToBasketForm.find('.product-price');
+                    pp.html(response.html);
+                }
+            }, 'JSON');
         }
-    }, 'JSON');
+    }
 }
 
 
