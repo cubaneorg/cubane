@@ -104,7 +104,7 @@ def cubane_send_mail(to, subject, html, attachments=None, cc=None, bcc=None):
         cc=cc,
         bcc=bcc
     )
-    msg.attach_alternative(html, 'text/html')
+    msg.attach_alternative(html.decode('utf-8'), 'text/html')
 
     # attachement(s)
     if attachments:
