@@ -9,10 +9,10 @@ from cubane.lib.url import make_absolute_url, get_absolute_url
 from cubane.lib.mail import cubane_send_shop_mail
 from cubane.lib.template import get_template
 import os.path
-
+import traceback
 
 def mail_error(msg):
-    mail_admins('[ISHOP] Error', msg)
+    mail_admins('[ISHOP] Error', '%s\n\n%s' % (msg, traceback.format_exc()))
 
 
 def send_client_mail(request, email, subject, context, attachments=None, bcc=None):
