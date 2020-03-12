@@ -1118,17 +1118,21 @@ class ProductBase(DateTimeBase, ExcerptMixin, SEOMixin):
     ORDER_BY_PRICE_HIGH_TO_LOW = 'price-high-low'
     ORDER_BY_PRICE_LOW_TO_HIGH = 'price-low-high'
     ORDER_BY_NAME              = 'name'
+    ORDER_BY_SIMILARITY        = 'similarity'
     ORDER_BY_CHOICES = (
         (ORDER_BY_RELEVANCE,         'Relevance'),
         (ORDER_BY_DATE_ADDED,        'Date Added'),
         (ORDER_BY_PRICE_LOW_TO_HIGH, 'Price (Low to High)'),
         (ORDER_BY_PRICE_HIGH_TO_LOW, 'Price (High to Low)'),
         (ORDER_BY_NAME,              'Alphabetically'),
+        (ORDER_BY_SIMILARITY,        'Similarity'),
     )
     ORDER_BY_DEFAULT_OPTIONS = ','.join([
+        ORDER_BY_SIMILARITY,
         ORDER_BY_RELEVANCE,
         ORDER_BY_PRICE_HIGH_TO_LOW,
-        ORDER_BY_PRICE_LOW_TO_HIGH
+        ORDER_BY_PRICE_LOW_TO_HIGH,
+
     ])
 
 

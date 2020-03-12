@@ -509,7 +509,7 @@ class Shop(View):
         return products
 
 
-    def order_product_listing(self, request, products, order_by):
+    def order_product_listing(self, request, products, order_by, is_search):
         """
         Order given queryset of products based on the given order criterium.
         """
@@ -521,11 +521,13 @@ class Shop(View):
             products = products.order_by('price')
         elif order_by == ProductBase.ORDER_BY_RELEVANCE:
             products = self.order_product_listing_by_relavance(request, products)
+        elif order_by == ProductBase.ORDER_BY_SIMILARITY and is_search:
+            products = products.order_by('-similarity')
 
         return products
 
 
-    def product_listing(self, request, products, context={}, category=None, has_subcategories=False):
+    def product_listing(self, request, products, context={}, category=None, has_subcategories=False, is_search=False):
         """
         Return a template context for presenting a list of products including filter
         varieties.
@@ -558,7 +560,7 @@ class Shop(View):
             order_by = request.settings.ordering_options[0]
 
         # order products
-        products = self.order_product_listing(request, products, order_by)
+        products = self.order_product_listing(request, products, order_by, is_search)
 
         # paginator
         products = create_paginator(
