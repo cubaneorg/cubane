@@ -8,11 +8,11 @@ from django.db.models.query import QuerySet
 from django.test import RequestFactory
 from cubane.lib.text import text_from_html
 from cubane.lib.template import get_template
+from django.utils.encoding import force_unicode
 import email
 import os
 import sys
 import traceback
-
 
 def trigger_exception_email(request, subject, data=None):
     """
@@ -104,7 +104,7 @@ def cubane_send_mail(to, subject, html, attachments=None, cc=None, bcc=None):
         cc=cc,
         bcc=bcc
     )
-    msg.attach_alternative(html, 'text/html')
+    msg.attach_alternative(force_unicode(html), 'text/html')
 
     # attachement(s)
     if attachments:
