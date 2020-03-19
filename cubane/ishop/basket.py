@@ -711,10 +711,15 @@ class BasketItem(object):
 
             if discounted_category_ids and len(discounted_category_ids) > 0:
                 # matches any of discounted categories?
-                if self.product.category_id in discounted_category_ids:
-                    return self.total
-                else:
+                if settings.SHOP_MULTIPLE_CATEGORIES:
+                    if any([cat.pk in discounted_category_ids for cat in self.product.categories.all()]):
+                        return self.total
                     return decimal.Decimal('0.00')
+                else:
+                    if self.product.category_id in discounted_category_ids:
+                        return self.total
+                    else:
+                        return decimal.Decimal('0.00')
             else:
                 # no categories given, so every category is discounted...
                 return self.total
