@@ -153,7 +153,7 @@
         {% endif %}
     </div>
 
-    <div class="order-form screen-only">
+    <div class="order-form screen-only{% if order.waits_for_approval %} approval{% endif %}">
         {% include 'cubane/backend/form/form_start.html' with id='backend-order-form' %}
             {% if not permissions or permissions.edit or permissions.create %}
                 {% if not is_browse_dialog and not is_create_dialog and not is_edit_dialog and not is_frontend_editing %}
