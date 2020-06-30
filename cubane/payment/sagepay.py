@@ -34,7 +34,8 @@ class SagepayPaymentGateway(PaymentGateway):
             'city':      order.billing_address.get('city', '')[:40],
             'postcode':  order.billing_address.get('postcode','')[:10],
             'country':   order.billing_address.get('country-iso'),
-            'state':     order.billing_address.get('state')
+            'state':     order.billing_address.get('state'),
+            'phone':     order.telephone[:20]
         }
         sp.user_address('billing', billing_address)
         if order.delivery_address and not order.is_click_and_collect:
@@ -47,7 +48,8 @@ class SagepayPaymentGateway(PaymentGateway):
                 'city':      order.delivery_address.get('city', '')[:40],
                 'postcode':  order.delivery_address.get('postcode','')[:10],
                 'country':   order.delivery_address.get('country-iso'),
-                'state':     order.delivery_address.get('state')
+                'state':     order.delivery_address.get('state'),
+                'phone':     order.telephone[:20]
             }
             sp.user_address('shipping', delivery_address)
         else:

@@ -120,6 +120,9 @@ class RegisterTransaction:
         self.sd.append(('%sPostCode' % type, address['postcode'].encode('utf8')))
         self.sd.append(('%sCountry' % type, address['country'].encode('utf8')))
 
+        if 'phone' in address and address.get('phone'):
+            self.sd.append(('%sPhone' % type, address['phone'].encode('utf8')))
+
         if 'state' in address and address.get('state'):
             self.sd.append(('%sState' % type, address['state'].upper().encode('utf8')))
 
