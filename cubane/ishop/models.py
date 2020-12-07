@@ -4518,11 +4518,13 @@ class CustomerBase(models.Model):
     TITLE_MRS  = 2
     TITLE_MS   = 3
     TITLE_MISS = 4
+    TITLE_MX   = 5
     TITLE_CHOICES = (
         (TITLE_MR,   'Mr'),
         (TITLE_MRS,  'Mrs'),
         (TITLE_MS,   'Ms'),
         (TITLE_MISS, 'Miss'),
+        (TITLE_MX, 'Mx'),
     )
 
 
