@@ -786,6 +786,7 @@
 
     .content .form-content {
         margin: 10px 10px 0 10px;
+        padding-bottom: 60px;
     }
 
     .content form .form-actions {
