@@ -15,7 +15,7 @@ from django.template import Context
 from django.template.defaultfilters import slugify
 from cubane.templatetags.form_tags import FormNode
 from cubane.lib.text import text_with_prefix, text_with_suffix
-from cubane.lib.utf8 import ENCODING_CHOICES, DEFAULT_ENCOPDING
+from cubane.lib.utf8 import ENCODING_CHOICES, DEFAULT_ENCODING
 from cubane.lib.tree import TreeModelChoiceIterator
 from cubane.lib.queryset import MaterializedQuerySet
 from cubane.lib.libjson import to_json
@@ -1644,7 +1644,7 @@ class DataImportForm(BaseForm):
     encoding = forms.ChoiceField(
         required=True,
         choices=ENCODING_CHOICES,
-        initial=DEFAULT_ENCOPDING,
+        initial=DEFAULT_ENCODING,
         help_text='Choose the correct file encoding of the uploaded file.'
     )
 
@@ -1657,7 +1657,7 @@ class DataExportForm(BaseForm):
     encoding = forms.ChoiceField(
         required=True,
         choices=ENCODING_CHOICES,
-        initial=DEFAULT_ENCOPDING,
+        initial=DEFAULT_ENCODING,
         help_text='Choose the file encoding of the file to be exported.'
     )
 

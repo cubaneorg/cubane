@@ -42,7 +42,7 @@ from cubane.lib.mail import cubane_send_cms_enquiry_mail
 from cubane.lib.url import get_absolute_url
 from cubane.lib.app import get_models
 from cubane.lib.auth import login_user_without_password
-from cubane.lib.utf8 import DEFAULT_ENCOPDING
+from cubane.lib.utf8 import DEFAULT_ENCODING
 from cubane.lib.file import ensure_dir
 from cubane.lib.acl import Acl
 import cubane
@@ -1553,7 +1553,7 @@ class Backend(TemplateView):
         """
         Return the default encoding.
         """
-        encoding = DEFAULT_ENCOPDING
+        encoding = DEFAULT_ENCODING
         if 'cubane.cms' in settings.INSTALLED_APPS:
             from cubane.cms.views import get_cms_settings
             cms_settings = get_cms_settings()

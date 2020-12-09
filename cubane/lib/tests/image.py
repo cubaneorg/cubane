@@ -429,7 +429,7 @@ class LibImageIsJpegImageTestCase(CubaneTestCase):
 
 
     def test_is_jpeg_image_object_should_return_false_for_none_jpg_image(self):
-        for ext in ['png', 'gif', 'tiff', 'bmp', 'svg', 'pdf']:
+        for ext in ['png', 'gif', 'tiff', 'bmp', 'svg']:
             self._assert_image_format('test.%s' % ext, 'JPEG', False)
 
 
@@ -438,7 +438,7 @@ class LibImageIsJpegImageTestCase(CubaneTestCase):
 
 
     def test_is_png_image_object_should_return_false_for_none_png_image(self):
-        for ext in ['jpg', 'gif', 'tiff', 'bmp', 'svg', 'pdf']:
+        for ext in ['jpg', 'gif', 'tiff', 'bmp', 'svg']:
             self._assert_image_format('test.%s' % ext, 'PNG', False)
 
 
@@ -484,7 +484,7 @@ class LibImageOptimizeImageTestCase(CubaneTestCase):
     cubane.lib.image.optimize_image()
     """
     def test_optimized_image_should_be_smaller(self):
-        for ext in ['jpg', 'gif', 'tiff', 'bmp', 'svg', 'pdf']:
+        for ext in ['jpg', 'gif', 'tiff', 'bmp', 'svg']:
             filename = self.get_test_image_path('test.%s' % ext)
             dst_filename = os.path.join(tempfile.gettempdir(), 'optimized_image.%s' % ext)
 

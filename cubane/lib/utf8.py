@@ -5,7 +5,7 @@ from StringIO import StringIO
 import chardet
 
 
-DEFAULT_ENCOPDING = 'utf_8'
+DEFAULT_ENCODING = 'utf_8'
 DETECT_ENCODING   = 'detect'
 ENCODING_CHOICES  = (
     ('utf_8',          'UTF-8 (All Languages)'),
@@ -128,7 +128,7 @@ BYTE_ORDER_MARKERS = [
 ]
 
 
-def get_file_encoding(f, default_encoding=DEFAULT_ENCOPDING):
+def get_file_encoding(f, default_encoding=DEFAULT_ENCODING):
     """
     Attempt to read BOM marker at the beginning of the given file stream
     and return the expected encoding.

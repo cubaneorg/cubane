@@ -2405,9 +2405,9 @@ class OrderBase(DateTimeBase):
         STATUS_PAYMENT_CANCELLED: 'Your order has been cancelled. Please retry if you want to make your order again.',
         STATUS_PAYMENT_DECLINED: 'Sorry something went wrong and your order was declined. Please try again or come in store to make your purchase.',
         STATUS_PAYMENT_ERROR: 'There seems to have been an error with the payment. Please try again.',
-        STATUS_PAYMENT_CONFIRMED: 'Your order has been placed and is currently being processed. Please come back later to see if your status has changed.',
-        STATUS_PLACED_INVOICE: 'Your order has been placed and is currently being processed. Please come back later to see if your status has changed.',
-        STATUS_PLACED_ZERO_AMOUNT: 'Your order has been placed and is currently being processed. Please come back later to see if your status has changed.',
+        STATUS_PAYMENT_CONFIRMED: 'Thank you for your order which has just been successfully placed, we will let you know once your order has been moved into processing.',
+        STATUS_PLACED_INVOICE: 'Thank you for your order which has just been successfully placed, we will let you know once your order has been moved into processing.',
+        STATUS_PLACED_ZERO_AMOUNT: 'Thank you for your order which has just been successfully placed, we will let you know once your order has been moved into processing.',
         STATUS_PARTIALLY_SHIPPED: 'Some of your order has been shipped and will be with you shortly.',
         STATUS_SHIPPED: 'Your order has been shipped and should be with you shortly.',
         STATUS_CHECKOUT: 'Your order is ready, in order to complete it please use our secure payment gateway by clicking the Pay Now button below.',
@@ -2416,7 +2416,7 @@ class OrderBase(DateTimeBase):
         STATUS_NEW_ORDER: 'Your order is currently being created.',
         STATUS_READY_TO_COLLECT: 'Your order is now ready to collect from store.',
         STATUS_COLLECTED: 'Your order has been collected.',
-        STATUS_PROCESSING: 'Your order is currently being processed.'
+        STATUS_PROCESSING: 'Your order is now processing, we will let you know once your order is ready.'
     }
 
     # processing order status (backend)
@@ -4518,11 +4518,13 @@ class CustomerBase(models.Model):
     TITLE_MRS  = 2
     TITLE_MS   = 3
     TITLE_MISS = 4
+    TITLE_MX   = 5
     TITLE_CHOICES = (
         (TITLE_MR,   'Mr'),
         (TITLE_MRS,  'Mrs'),
         (TITLE_MS,   'Ms'),
         (TITLE_MISS, 'Miss'),
+        (TITLE_MX, 'Mx'),
     )
 
 
