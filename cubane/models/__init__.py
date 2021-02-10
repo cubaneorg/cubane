@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from cubane.lib.model import get_fields, get_model_checksum
+from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 import datetime
 import re
 
@@ -167,6 +169,11 @@ class DateTimeBase(models.Model):
         if not self.created_on:
             self.created_on = timezone.now()
         self.updated_on = timezone.now()
+
+        # remove cache
+        if self.pk:
+            key = make_template_fragment_key('record', ['%s_%s' % (self.__class__.__name__, self.pk)])
+            cache.delete(key)
 
         # save
         super(DateTimeBase, self).save(*args, **kwargs)

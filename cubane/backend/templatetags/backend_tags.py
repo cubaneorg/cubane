@@ -97,3 +97,8 @@ def listing_format_percent(v):
         return '%s%%' % v
     else:
         return v
+
+
+@register.filter
+def to_class_name(value):
+    return value.__class__.__name__
