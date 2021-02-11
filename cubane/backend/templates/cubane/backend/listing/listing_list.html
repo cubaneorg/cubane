@@ -32,7 +32,7 @@
                 <div class="t-body lazy-load-container">
                     {% for obj in objects %}
                       {% with record=obj.pk|stringformat:"i" %}
-                          {% cache 31622400 record obj|to_class_name|add:'_'|add:record %}
+                          {% cache 31622400 record obj|to_class_name|add:'_'|add:record view %}
                               <div id="item_{{ obj.pk }}" class="t-row cubane-listing-item{% if obj.listing_annotation %} cubane-listing-annotation-{{ obj.listing_annotation }}{% endif %}{% if has_folders %} draggable{% endif %}{% if sortable %} sortable{% endif %}{% if obj.listing_actions or listing_actions_tabs %} with-shortcut-actions{% endif %}{% if view == 'list-compact' %} cubane-listing-item-compact{% endif %}{% if listing_with_image %} has-image{% endif %}{% if obj.external_image_url and obj.embed_html %} cubane-listing-item-video{% endif %}" data-id="{{ obj.pk }}" data-title="{{ obj }}" data-image-url="{% if obj.image %}{% if obj.image.is_image_or_preview %}{{ obj.image.original_or_preview_url }}{% else %}{{ obj.image.url }}{% endif %}{% else %}{% if obj.is_image_or_preview %}{{ obj.original_or_preview_url }}{% endif %}{% endif %}" data-image-ar="{% if obj.image %} {{ obj.image.backend_orientation  }}{% else %}{% if obj.is_image %} {{ obj.backend_orientation }}{% endif %}{% endif %}">
                                   <div class="t-col-fixed-1">
                                       <div class="cubane-listing-annotation-frame"></div>
