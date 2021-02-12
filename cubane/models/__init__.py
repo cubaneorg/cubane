@@ -172,8 +172,9 @@ class DateTimeBase(models.Model):
 
         # remove cache
         if self.pk:
-            key = make_template_fragment_key('record', ['%s_%s' % (self.__class__.__name__, self.pk)])
-            cache.delete(key)
+            for view in ['list', 'list-compact']:
+                key = make_template_fragment_key('record', ['%s_%s' % (self.__class__.__name__, self.pk), view])
+                cache.delete(key)
 
         # save
         super(DateTimeBase, self).save(*args, **kwargs)
