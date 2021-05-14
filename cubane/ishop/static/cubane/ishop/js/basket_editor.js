@@ -86,6 +86,12 @@
      */
     function search() {
         var q = $('.basket-editor-search-input').val();
+
+        if (q.length < 3) {
+          $('.basket-editor-panel-listing').html();
+          return;
+        }
+
         $.post(cubane.urls.reverse('cubane.ishop.orders.basket_editor_search'), {q: q}, function(html) {
             $('.basket-editor-panel-listing').html(html);
             document.lazyloadImages();

@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from cubane.forms import BaseModelForm, BaseForm, SectionField, FilterFormMixin
 from cubane.ishop import get_order_model
 from cubane.ishop.forms import *
-from cubane.ishop.apps.merchant.customers.forms import BrowseCustomerField
 from cubane.ishop.models import OrderBase
 from cubane.models import Country
 from cubane.ishop.basket import Basket
@@ -87,7 +86,6 @@ class OrderForm(BaseModelForm):
             'tracking_code',
 
             # customer
-            'customer',
             'email',
             'telephone',
 
@@ -138,7 +136,6 @@ class OrderForm(BaseModelForm):
                 'title': 'Details',
                 'fields': [
                     # customer
-                    'customer',
                     'email',
                     'telephone',
 
@@ -174,7 +171,7 @@ class OrderForm(BaseModelForm):
         sections = {
             'status': 'Order Status',
             'tracking_provider': 'Order Delivery Tracking',
-            'customer': 'Customer Information',
+            'email': 'Customer Information',
             'special_requirements': 'Customer Details',
             'billing_postcode_lookup': 'Billing Address',
             'delivery_postcode_lookup': 'Delivery Address',
@@ -182,11 +179,6 @@ class OrderForm(BaseModelForm):
 
 
     _basket = BasketField()
-
-    customer = BrowseCustomerField(
-        required=False,
-        help_text='The registered customer of this order; otherwise this order is a Guest Checkout.'
-    )
 
     tracking_provider = forms.ChoiceField(
         label='Tracking Provider',
@@ -335,10 +327,6 @@ class OrderForm(BaseModelForm):
 
         # status
         self.fields['status'].choices = self.get_available_status_choices(instance)
-
-        # customer
-        self.fields['customer'].queryset = User.objects.filter(is_staff=False, is_superuser=False, is_active=True)
-        self.fields['customer'].label_from_instance = lambda user: user.full_name_email
 
         # tracking provider
         if len(settings.TRACKING_PROVIDERS) > 0:
