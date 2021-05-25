@@ -3,10 +3,18 @@
 {% load form_tags %}
 
 
-<form class="basket" method="post" action="{{ post_url }}" data-total="{{ basket.total }}">
+<form class="basket" method="post" action="{{ post_url }}" data-total="{{ basket.total }}" data-prefix="{{ basket.prefix }}">
     {% auto_csrf_token %}
 
     <div class="basket-title">Basket<img src="{{ STATIC_URL }}cubane/ishop/frontend/img/basket.svg" alt="basket icon" ></div>
+
+    {% if messages %}
+        <div class="basket-messages">
+            {% for message in messages %}
+                <div class="basket-message basket-message-warning">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {% if basket.items %}
         {% if basket.customer_messages %}
