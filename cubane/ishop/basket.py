@@ -1900,16 +1900,16 @@ class Basket(object):
             return None
 
         # make sure it's actually in stock
-        if product.stock == ProductBase.STOCKLEVEL_OUT_OF_STOCK:
-            return None
-        if product.stock == ProductBase.STOCKLEVEL_AUTO and product.stocklevel < quantity:
-            return None
+        # if product.stock == ProductBase.STOCKLEVEL_OUT_OF_STOCK:
+        #     return None
+        # if product.stock == ProductBase.STOCKLEVEL_AUTO and product.stocklevel < quantity:
+        #     return None
 
         item = self.get_item_by_product(product, variety_options, custom, labels)
         if item != None:
             # just update quantity. Product already inside the basket.
-            if product.stock == ProductBase.STOCKLEVEL_AUTO and product.stocklevel < item.quantity + quantity:
-                return None
+            # if product.stock == ProductBase.STOCKLEVEL_AUTO and product.stocklevel < item.quantity + quantity:
+            #     return None
             item.increase_quantity_by(quantity)
         else:
             item = BasketItem(
