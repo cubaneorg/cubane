@@ -20,9 +20,10 @@ class KlarnaPaymentGateway(PaymentGateway):
     @staticmethod
     def place_order(request, secret_id, authorization_token, confirmation_url):
         auth = HTTPBasicAuth(os.environ.get('KLARNA_API_USERNAME'), os.environ.get('KLARNA_API_PASSWORD'))
+
         order = get_order_model().objects.get(secret_id=secret_id)
-        print 'gateway', settings.GATEWAY_KLARNA
         order.paymet_gateway = settings.GATEWAY_KLARNA
+        order.save()
 
         json = {
             'merchant_urls': {
@@ -38,7 +39,7 @@ class KlarnaPaymentGateway(PaymentGateway):
         response = requests.post('%s/payments/v1/authorizations/%s/order' % (self.LIVE_URL, authorization_token), json=json, auth=auth, headers=headers)
 
         return response.json()
-        # generate_emails_and_notes(request, order)
+
 
     @staticmethod
     def create_session(request, secret_id):
