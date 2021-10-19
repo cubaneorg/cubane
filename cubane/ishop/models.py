@@ -2621,7 +2621,7 @@ class OrderBase(DateTimeBase):
         LOAN_STATUS_REFER: 'The credit application has been given a refer decision which requires manual decision from the lender to be either declined or accepted.',
         LOAN_STATUS_VERIFIED: 'The customer has successfully paid their deposit.',
         LOAN_STATUS_AMENDED: 'The credit application has been amended and is awaiting the consumer\'s approval.',
-        LOAN_STATUS_FULFILLED: 'The retailer has notified Deko that they have fulfilled the order. Fulfilment is defined as the consumer having receipt of all items eg their complete order.',
+        LOAN_STATUS_FULFILLED: 'The retailer has notified provider that they have fulfilled the order. Fulfilment is defined as the consumer having receipt of all items eg their complete order.',
         LOAN_STATUS_COMPLETE: 'The credit application has been included in a settlement payment from the lender to the retailer.',
         LOAN_STATUS_CANCELLED: 'The credit application has been cancelled and the deposit refunded if it was paid.',
         LOAN_STATUS_ACTION_CUSTOMER: 'The customer has been accepted, paid their deposit but the application requires an ID upload to proceed.',

@@ -137,9 +137,15 @@ class IShopModelsShopOrderGetPaymentGatewayTestCase(CubaneTestCase):
 
 
     @override_settings(DEBUG=False, SHOP_TEST_MODE=False)
-    def test_should_return_stripe_gateway(self):
+    def test_should_return_deko_gateway(self):
         from cubane.payment.deko import DekoPaymentGateway
         self.assertIsInstance(Order(payment_gateway=settings.GATEWAY_DEKO).get_payment_gateway(), DekoPaymentGateway)
+
+
+    @override_settings(DEBUG=False, SHOP_TEST_MODE=False)
+    def test_should_return_klarna_gateway(self):
+        from cubane.payment.klarna import KlarnaPaymentGateway
+        self.assertIsInstance(Order(payment_gateway=settings.GATEWAY_KLARNA).get_payment_gateway(), KlarnaPaymentGateway)
 
 
     @override_settings(DEBUG=False, SHOP_TEST_MODE=True)
