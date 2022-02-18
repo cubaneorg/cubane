@@ -14,8 +14,7 @@ from cubane.ishop.apps.shop.order.views import generate_emails_and_notes
 
 
 class KlarnaPaymentGateway(PaymentGateway):
-    LIVE_URL = 'https://api.klarna.com/'
-    TEST_URL = 'https://api.playground.klarna.com/'
+    URL = 'https://api.playground.klarna.com/' if os.environ.get('DEV_MODE') == '1' else 'https://api.klarna.com/'
 
     @staticmethod
     def place_order(request, secret_id, authorization_token, confirmation_url):
@@ -36,7 +35,7 @@ class KlarnaPaymentGateway(PaymentGateway):
             'content-type': 'application/json'
         }
 
-        response = requests.post('%s/payments/v1/authorizations/%s/order' % (self.LIVE_URL, authorization_token), json=json, auth=auth, headers=headers)
+        response = requests.post('%s/payments/v1/authorizations/%s/order' % (self.URL, authorization_token), json=json, auth=auth, headers=headers)
 
         return response.json()
 
@@ -90,6 +89,5 @@ class KlarnaPaymentGateway(PaymentGateway):
             'content-type': 'application/json'
         }
 
-        response = requests.post('%s/payments/v1/sessions' % KlarnaPaymentGateway.LIVE_URL, json=json, auth=auth, headers=headers)
-        print 'response', response.json()
+        response = requests.post('%s/payments/v1/sessions' % KlarnaPaymentGateway.URL, json=json, auth=auth, headers=headers)
         return response.json()
