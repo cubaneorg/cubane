@@ -1123,7 +1123,7 @@ cubane.backend.ListingController.prototype = {
         // ignore change events from input fields, this will be
         // dealt with via key events already and would just couse another
         // roundtrip, unless this is a checkbox...
-        if (e.type == 'change' && e.target && e.target.nodeName.toLowerCase() == 'input' && $(e.target).attr('type') != 'radio')
+        if (e.type == 'change' && e.target && e.target.nodeName.toLowerCase() == 'input' && $(e.target).attr('type') != 'radio' && e.target.parentNode.classList.contains('date-field') == false)
             return;
 
         // clear any previously scheduled update
