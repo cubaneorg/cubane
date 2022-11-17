@@ -25,8 +25,8 @@ class SagepayPaymentGateway(PaymentGateway):
         sp.user_details(order.billing_address.get('first_name', '')[:20], order.billing_address.get('last_name', '')[:20])
 
         billing_address = {
-            'address_1': order.billing_address.get('address1', '')[:100],
-            'address_2': order.billing_address.get('address2', '')[:100],
+            'address_1': order.billing_address.get('address1', '')[:50],
+            'address_2': order.billing_address.get('address2', '')[:50],
             'city':      order.billing_address.get('city', '')[:40],
             'postcode':  order.billing_address.get('postcode','')[:10],
             'country':   order.billing_address.get('country-iso'),
@@ -35,8 +35,8 @@ class SagepayPaymentGateway(PaymentGateway):
         sp.user_address('billing', billing_address)
         if order.delivery_address and not order.is_click_and_collect:
             delivery_address = {
-                'address_1': order.delivery_address.get('address1', '')[:100],
-                'address_2': order.delivery_address.get('address2', '')[:100],
+                'address_1': order.delivery_address.get('address1', '')[:50],
+                'address_2': order.delivery_address.get('address2', '')[:50],
                 'city':      order.delivery_address.get('city', '')[:40],
                 'postcode':  order.delivery_address.get('postcode','')[:10],
                 'country':   order.delivery_address.get('country-iso'),
