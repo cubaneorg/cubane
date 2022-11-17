@@ -29,8 +29,8 @@ class SagepayPaymentGateway(PaymentGateway):
             address2 = ''
 
         billing_address = {
-            'address_1': order.billing_address.get('address1', '')[:100],
-            'address_2': address2[:100],
+            'address_1': order.billing_address.get('address1', '')[:50],
+            'address_2': address2[:50],
             'city':      order.billing_address.get('city', '')[:40],
             'postcode':  order.billing_address.get('postcode','')[:10],
             'country':   order.billing_address.get('country-iso'),
@@ -43,8 +43,8 @@ class SagepayPaymentGateway(PaymentGateway):
             if not address2:
                 address2 = ''
             delivery_address = {
-                'address_1': order.delivery_address.get('address1', '')[:100],
-                'address_2': address2[:100],
+                'address_1': order.delivery_address.get('address1', '')[:50],
+                'address_2': address2[:50],
                 'city':      order.delivery_address.get('city', '')[:40],
                 'postcode':  order.delivery_address.get('postcode','')[:10],
                 'country':   order.delivery_address.get('country-iso'),

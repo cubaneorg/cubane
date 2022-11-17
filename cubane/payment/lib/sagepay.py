@@ -14,7 +14,7 @@ from django.conf import settings
 
 '''
 
-VPS_PROTOCOL = '3.00'
+VPS_PROTOCOL = '4.00'
 
 
 class BASE:
@@ -205,7 +205,7 @@ class RegisterTransactionNotificationResponse:
         h.append(self.r.get('VendorTxCode', ''))
         h.append(self.r.get('Status', ''))
         h.append(self.r.get('TxAuthNo', ''))
-        h.append(vendor)
+        h.append(vendor.lower())
         h.append(self.r.get('AVSCV2', ''))
         h.append(security_key)
         h.append(self.r.get('AddressResult', ''))
@@ -222,6 +222,9 @@ class RegisterTransactionNotificationResponse:
         h.append(self.r.get('ExpiryDate', ''))
         h.append(self.r.get('FraudResponse', ''))
         h.append(self.r.get('BankAuthCode', ''))
+        h.append(self.r.get('ACSTransID', ''))
+        h.append(self.r.get('DSTransID', ''))
+        h.append(self.r.get('SchemeTraceID', ''))
 
         import md5
         our_hash = md5.new(''.join(h)).hexdigest().upper()
