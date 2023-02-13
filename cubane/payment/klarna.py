@@ -64,7 +64,7 @@ class KlarnaPaymentGateway(PaymentGateway):
                 "postal_code": order.delivery_address.get('postcode',''),
                 "city": order.delivery_address.get('city', ''),
                 "region": "",
-                "country": order.delivery_address.get('country')['iso']
+                "country": order.delivery_address.get('country')['iso'] if order.delivery_address.get('country') else ''
             }
 
         }
