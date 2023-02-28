@@ -154,9 +154,6 @@ def default_enquiry_form(request, context, template_context, modelclass, formcla
                         'Thank you for your enquiry. We will contact you shortly.'
                     )
 
-                # send email to website visitor
-                cms.enquiry_send_mail_to_customer(request, instance, d)
-
                 # remove captcha information from the email to the client
                 if 'captcha' in d: del d['captcha']
                 if 'captcha_hash' in d: del d['captcha_hash']
