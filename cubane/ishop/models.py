@@ -2329,6 +2329,7 @@ class OrderBase(DateTimeBase):
     STATUS_NEW_ORDER            = 16
     STATUS_CHECKOUT_ZERO_AMOUNT = 17
     STATUS_PLACED_ZERO_AMOUNT   = 18
+    STATUS_REFUNDED             = 19
     STATUS_CHOICES = (
         (STATUS_CHECKOUT,             'Ready for Payment'),
         (STATUS_CHECKOUT_INVOICE,     'Ready for Placement (Invoice)'),
@@ -2346,6 +2347,7 @@ class OrderBase(DateTimeBase):
         (STATUS_SHIPPED,              'Shipped'),
         (STATUS_READY_TO_COLLECT,     'Ready To Collect'),
         (STATUS_COLLECTED,            'Collected'),
+        (STATUS_REFUNDED,             'Refunded'),
     )
 
     @property
@@ -2403,6 +2405,7 @@ class OrderBase(DateTimeBase):
         STATUS_COLLECTED:          'success',
         STATUS_CHECKOUT_INVOICE:   'warning',
         STATUS_NEW_ORDER:          'warning',
+        STATUS_REFUNDED:           'refunded',
     }
 
     # status description test
@@ -2422,7 +2425,8 @@ class OrderBase(DateTimeBase):
         STATUS_NEW_ORDER: 'Your order is currently being created.',
         STATUS_READY_TO_COLLECT: 'Your order is now ready to collect from store.',
         STATUS_COLLECTED: 'Your order has been collected.',
-        STATUS_PROCESSING: 'Your order is currently being processed.'
+        STATUS_PROCESSING: 'Your order is currently being processed.',
+        STATUS_REFUNDED: 'Your order has been refunded.',
     }
 
     # processing order status (backend)
@@ -2458,7 +2462,8 @@ class OrderBase(DateTimeBase):
         STATUS_COLLECTED,
         STATUS_PAYMENT_CANCELLED,
         STATUS_PAYMENT_DECLINED,
-        STATUS_PAYMENT_ERROR
+        STATUS_PAYMENT_ERROR,
+        STATUS_REFUNDED,
     ]
 
     # Successful status: Any order that has been placed successfully.
@@ -2469,7 +2474,8 @@ class OrderBase(DateTimeBase):
         STATUS_PARTIALLY_SHIPPED,
         STATUS_SHIPPED,
         STATUS_READY_TO_COLLECT,
-        STATUS_COLLECTED
+        STATUS_COLLECTED,
+        STATUS_REFUNDED,
     ]
 
     # order status where the order can still be edited in the backend
@@ -2486,7 +2492,8 @@ class OrderBase(DateTimeBase):
 
     # successfully canceled
     CANCELLED_STATUS = [
-        STATUS_PAYMENT_CANCELLED
+        STATUS_PAYMENT_CANCELLED,
+        STATUS_REFUNDED,
     ]
 
     # invoice-related only
@@ -2523,7 +2530,8 @@ class OrderBase(DateTimeBase):
         STATUS_SHIPPED,
         STATUS_READY_TO_COLLECT,
         STATUS_COLLECTED,
-        STATUS_PROCESSING
+        STATUS_PROCESSING,
+        STATUS_REFUNDED,
     ]
 
     # created via backend (customer not present)
@@ -2539,6 +2547,7 @@ class OrderBase(DateTimeBase):
         STATUS_SHIPPED,
         STATUS_READY_TO_COLLECT,
         STATUS_COLLECTED,
+        STATUS_REFUNDED,
     ]
 
     # payment status (backend)
@@ -2558,7 +2567,8 @@ class OrderBase(DateTimeBase):
         (STATUS_PARTIALLY_SHIPPED,    'Partially Shipped'),
         (STATUS_SHIPPED,              'Shipped'),
         (STATUS_READY_TO_COLLECT,     'Ready To Collect'),
-        (STATUS_COLLECTED,            'Collected')
+        (STATUS_COLLECTED,            'Collected'),
+        (STATUS_REFUNDED,             'Refunded'),
     )
 
     # approval status
@@ -2613,7 +2623,7 @@ class OrderBase(DateTimeBase):
         LOAN_STATUS_REFER: 'The credit application has been given a refer decision which requires manual decision from the lender to be either declined or accepted.',
         LOAN_STATUS_VERIFIED: 'The customer has successfully paid their deposit.',
         LOAN_STATUS_AMENDED: 'The credit application has been amended and is awaiting the consumer\'s approval.',
-        LOAN_STATUS_FULFILLED: 'The retailer has notified Deko that they have fulfilled the order. Fulfilment is defined as the consumer having receipt of all items eg their complete order.',
+        LOAN_STATUS_FULFILLED: 'The retailer has notified provider that they have fulfilled the order. Fulfilment is defined as the consumer having receipt of all items eg their complete order.',
         LOAN_STATUS_COMPLETE: 'The credit application has been included in a settlement payment from the lender to the retailer.',
         LOAN_STATUS_CANCELLED: 'The credit application has been cancelled and the deposit refunded if it was paid.',
         LOAN_STATUS_ACTION_CUSTOMER: 'The customer has been accepted, paid their deposit but the application requires an ID upload to proceed.',

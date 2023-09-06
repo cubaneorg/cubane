@@ -293,6 +293,10 @@ class Shop(View):
             from cubane.payment.deko import DekoPaymentGateway
             return DekoPaymentGateway(config, settings.GATEWAY_DEKO)
 
+        elif identifier == settings.GATEWAY_KLARNA:
+            from cubane.payment.klarna import KlarnaPaymentGateway
+            return KlarnaPaymentGateway(config, settings.GATEWAY_KLARNA)
+
         # TODO: Add payment gateways here
         raise ValueError(
             'Unknown or unsupported payment gateway %s.' % (

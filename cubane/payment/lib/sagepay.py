@@ -14,7 +14,7 @@ from django.conf import settings
 
 '''
 
-VPS_PROTOCOL = '3.00'
+VPS_PROTOCOL = '4.00'
 
 
 class BASE:
@@ -120,6 +120,9 @@ class RegisterTransaction:
         self.sd.append(('%sPostCode' % type, address['postcode'].encode('utf8')))
         self.sd.append(('%sCountry' % type, address['country'].encode('utf8')))
 
+        if 'phone' in address and address.get('phone'):
+            self.sd.append(('%sPhone' % type, address['phone'].encode('utf8')))
+
         if 'state' in address and address.get('state'):
             self.sd.append(('%sState' % type, address['state'].upper().encode('utf8')))
 
@@ -191,7 +194,7 @@ class RegisterTransactionNotificationResponse:
         self.r = response
         from django.core.mail import mail_admins
 
-        if response.get('Status', None) not in ['OK', 'ABORT', 'REJECTED']:
+        if response.get('Status', None) not in ['OK', 'ABORT', 'REJECTED', 'NOTAUTHED']:
             import json
             mail_admins('Sagepay error handle', json.dumps(response, indent=4, sort_keys=True))
 
@@ -202,7 +205,7 @@ class RegisterTransactionNotificationResponse:
         h.append(self.r.get('VendorTxCode', ''))
         h.append(self.r.get('Status', ''))
         h.append(self.r.get('TxAuthNo', ''))
-        h.append(vendor)
+        h.append(vendor.lower())
         h.append(self.r.get('AVSCV2', ''))
         h.append(security_key)
         h.append(self.r.get('AddressResult', ''))
@@ -219,6 +222,9 @@ class RegisterTransactionNotificationResponse:
         h.append(self.r.get('ExpiryDate', ''))
         h.append(self.r.get('FraudResponse', ''))
         h.append(self.r.get('BankAuthCode', ''))
+        h.append(self.r.get('ACSTransID', ''))
+        h.append(self.r.get('DSTransID', ''))
+        h.append(self.r.get('SchemeTraceID', ''))
 
         import md5
         our_hash = md5.new(''.join(h)).hexdigest().upper()

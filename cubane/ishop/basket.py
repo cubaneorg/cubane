@@ -10,7 +10,7 @@ from cubane.models import Country
 from cubane.ishop import get_product_model, get_category_model
 from cubane.ishop.models import VarietyAssignment, Voucher
 from cubane.ishop.models import DeliveryOption, ProductDeliveryOption
-from cubane.ishop.models import ProductSKU, FinanceOption, ProductCategory
+from cubane.ishop.models import ProductSKU, FinanceOption, ProductCategory, ProductBase
 from cubane.ishop.apps.shop.basket.forms import AddToBasketForm
 from cubane.media.models import Media
 from cubane.lib.libjson import decode_json, to_json_response
@@ -1899,9 +1899,17 @@ class Basket(object):
         if quantity <= 0:
             return None
 
+        # make sure it's actually in stock
+        # if product.stock == ProductBase.STOCKLEVEL_OUT_OF_STOCK:
+        #     return None
+        # if product.stock == ProductBase.STOCKLEVEL_AUTO and product.stocklevel < quantity:
+        #     return None
+
         item = self.get_item_by_product(product, variety_options, custom, labels)
         if item != None:
             # just update quantity. Product already inside the basket.
+            # if product.stock == ProductBase.STOCKLEVEL_AUTO and product.stocklevel < item.quantity + quantity:
+            #     return None
             item.increase_quantity_by(quantity)
         else:
             item = BasketItem(

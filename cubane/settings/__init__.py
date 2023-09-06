@@ -916,13 +916,15 @@ def default_env(
     m.GATEWAY_STRIPE    = 3
     m.GATEWAY_DEKO      = 4
     m.GATEWAY_OMNIPORT  = 5
+    m.GATEWAY_KLARNA    = 6
     m.GATEWAY_CHOICES = (
         (m.GATEWAY_TEST, 'Test Gateway'),
         (m.GATEWAY_SAGEPAY, 'Sagepay'),
         (m.GATEWAY_PAYPAL, 'PayPal'),
         (m.GATEWAY_STRIPE, 'Stripe'),
         (m.GATEWAY_DEKO, 'Deko'),
-        (m.GATEWAY_OMNIPORT, 'OmniPort')
+        (m.GATEWAY_OMNIPORT, 'OmniPort'),
+        (m.GATEWAY_KLARNA, 'Klarna')
     )
 
 
