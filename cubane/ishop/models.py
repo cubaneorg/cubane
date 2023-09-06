@@ -2026,7 +2026,8 @@ class Voucher(DateTimeBase):
     )
     DISCOUNT_VALUE_REQUIRED = [
         DISCOUNT_PERCENTAGE,
-        DISCOUNT_PRICE
+        DISCOUNT_PRICE,
+        DISCOUNT_FREE_DELIVERY_PRICE
     ]
 
 
