@@ -2017,10 +2017,12 @@ class Voucher(DateTimeBase):
     DISCOUNT_PERCENTAGE    = 0
     DISCOUNT_PRICE         = 1
     DISCOUNT_FREE_DELIVERY = 2
+    DISCOUNT_FREE_DELIVERY_PRICE = 3
     DISCOUNT_TYPE_CHOICES = (
         (DISCOUNT_PERCENTAGE,    'Percentage (%)'),
         (DISCOUNT_PRICE,         'Fixed Amount (£)'),
-        (DISCOUNT_FREE_DELIVERY, 'Free Delivery')
+        (DISCOUNT_FREE_DELIVERY, 'Free Delivery'),
+        (DISCOUNT_FREE_DELIVERY_PRICE, 'Free Delivery - Fixed Amount')
     )
     DISCOUNT_VALUE_REQUIRED = [
         DISCOUNT_PERCENTAGE,

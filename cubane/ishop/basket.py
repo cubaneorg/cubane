@@ -2770,6 +2770,20 @@ class Basket(object):
                     return total_discountable
                 else:
                     return self.voucher.discount_value
+                
+            elif self.voucher.discount_type == Voucher.DISCOUNT_FREE_DELIVERY_PRICE:
+                discountable = 0
+                discounted = total_discountable - self.voucher.discount_value
+                if discounted < 0:
+                    discountable = total_discountable
+                else:
+                    discountable = self.voucher.discount_value
+
+                if not exclude_free_delivery:
+                    delivery_country = self.get_delivery_country()
+                    if delivery_country is None or self.voucher.matches_delivery_country(delivery_country):
+                        return self.delivery + discountable
+                    
             elif self.voucher.discount_type == Voucher.DISCOUNT_FREE_DELIVERY:
                 # free delivery excluded when calculating the discountable
                 # total, otherwise we would end up within an inifinite loop
